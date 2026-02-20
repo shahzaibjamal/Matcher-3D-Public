@@ -17,14 +17,14 @@ public class GameFlowManager : MonoBehaviour
         // slotManager.OnLevelComplete += HandleLevelComplete;
 
         // Kick off the game by spawning the first level
-        spawner.SpawnLevel(startLevelUID);
+        // spawner.SpawnLevel(startLevelUID);
 
     }
 
     private void HandleLevelInitialized(LevelData level)
     {
         // Tell SlotManager to initialize slots for this level
-        slotManager.InitializeLevel(level);
+        // slotManager.InitializeLevel(level);
     }
 
     private void HandleLevelComplete(LevelData level)

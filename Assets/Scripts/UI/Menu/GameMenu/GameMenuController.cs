@@ -25,8 +25,7 @@ public class GameMenuController : MenuController<GameMenuView, GameMenuData>
 
     public void StartGame()
     {
-        Debug.Log("GameMenuBaseState controller: start.");
-
         OnGameStarted?.Invoke();
+        View.TrayView.Initialize(Data.SlotManager, Data.SlotCount);
     }
 }

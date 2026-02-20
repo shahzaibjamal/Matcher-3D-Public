@@ -14,10 +14,10 @@ public partial class Spawner : MonoBehaviour
     public void SpawnLevel()
     {
         Cleanup();
-        SpawnLevel(LevelUid);
+        // SpawnLevel(LevelUid);
     }
 
-    public void SpawnLevel(string levelUID)
+    public void SpawnLevel(string levelUID, Action<ItemData, Transform> onItemClicked)
     {
         LevelData level = Metadata.Instance.levelDatabase.GetLevelByUID(levelUID);
         if (level == null)
@@ -46,7 +46,8 @@ public partial class Spawner : MonoBehaviour
                 ClickableItem clickable = go.GetComponent<ClickableItem>();
                 if (clickable != null)
                 {
-                    clickable.itemData = item; // link the data
+                    clickable.ItemData = item;
+                    clickable.OnItemClicked = onItemClicked;
                 }
 
                 // Optional: give each item a slight random rotation so they look tossed

@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     [Header("Prefabs & References")]
     [SerializeField] private Spawner spawnerPrefab;
     private Spawner activeSpawner;
+    private SlotManager _slotManager;
+
+    const int SLOT_COUNT = 7;
 
     // Events for other systems to subscribe to
     public static event Action OnGameStarted;
@@ -32,6 +35,9 @@ public class GameManager : MonoBehaviour
         MainMenuController.OnStartButtonClicked += StartGame;
         GameMenuController.OnGameStarted += SpawnGameSystems;
 
+        _slotManager = new SlotManager(SLOT_COUNT);
+
+
         // 1. Launch the Main Menu on Startup
         MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(
             Menus.Type.Main,
@@ -50,7 +56,7 @@ public class GameManager : MonoBehaviour
         OnGameStarted?.Invoke();
         MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(
             Menus.Type.Game,
-            new GameMenuData()
+            new GameMenuData(_slotManager, SLOT_COUNT)
         );
 
         // 3. Example: Close Main Menu and Open Game UI
@@ -60,18 +66,17 @@ public class GameManager : MonoBehaviour
 
     private void SpawnGameSystems()
     {
-        Debug.Log("Game Manager: SpawnGameSystems." + (activeSpawner == null) + " " + (spawnerPrefab != null));
-
         if (activeSpawner == null && spawnerPrefab != null)
         {
+            // 3. Spawn the world spawner
             activeSpawner = Instantiate(spawnerPrefab);
-            activeSpawner.SpawnLevel("level_01");
-            Debug.Log("Game Manager: Spawner Spawned.");
+            activeSpawner.SpawnLevel("level_01", (itemData, sourceTransform) =>
+            {
+                // _slotManager.AddItem(itemData);
+                GameEvents.OnItemCollected?.Invoke(itemData, sourceTransform);
+            });
         }
-
-
     }
-
     public void TriggerGameOver()
     {
         Debug.Log("Game Manager: Game Over!");

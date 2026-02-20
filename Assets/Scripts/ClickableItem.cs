@@ -1,14 +1,20 @@
+using System;
 using UnityEngine;
 
 public class ClickableItem : MonoBehaviour
 {
-    public ItemData itemData; // assigned by Spawner
+    public ItemData ItemData;
+    public Action<ItemData, Transform> OnItemClicked;
 
     void OnMouseDown()
     {
-        if (itemData == null) return;
+        if (ItemData == null) return;
 
-        // Occupy slot immediately, animate this item into slot
-        SlotManager.Instance.AnimateItemToSlot(itemData, transform);
+        OnItemClicked?.Invoke(ItemData, transform);
+    }
+
+    void OnDestroy()
+    {
+        OnItemClicked = null;
     }
 }
