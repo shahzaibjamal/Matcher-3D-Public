@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 /// <summary>
 /// The Pure Logic "Brain" of the Tray system. 
@@ -60,53 +61,51 @@ public class SlotManager
     /// <summary>
     /// Triggered by the UI View once an animation finishes settling.
     /// </summary>
-    public void RequestMatchCheck()
+    public async void RequestMatchCheck()
     {
         if (_isProcessing) return;
-        ProcessMatch();
+        await ProcessMatch();
     }
-
-    private void ProcessMatch()
+    private async Task ProcessMatch()
     {
-        int startIndex = CheckMatch();
+        int startIdx = CheckMatch();
 
-        if (startIndex == -1)
+        if (startIdx == -1)
         {
             _isProcessing = false;
-            // Final check: if no matches and full, it's game over
             if (IsTrayFull()) OnGameOver?.Invoke();
             return;
         }
 
         _isProcessing = true;
 
-        // 1. Logic Clear: Remove the 3 matched items
-        for (int i = 0; i < 3; i++)
-        {
-            _slots[startIndex + i] = null;
-        }
+        // 1. Logic Clear: Remove matched items
+        for (int i = 0; i < 3; i++) _slots[startIdx + i] = null;
 
-        // 2. Notify UI to play the Merge/Poof animation
-        OnMatchFound?.Invoke(startIndex);
+        // 2. Notify UI: Start Merge Animation
+        OnMatchFound?.Invoke(startIdx);
 
-        // 3. Compact Logic: Shift everything on the right to the left
-        for (int i = startIndex; i < _slots.Length - 3; i++)
+        // --- THE DELAY ---
+        // Wait for the Merge Animation (Cheer + Vacuum) to finish
+        // Adjust 500ms to match your mergeSeq duration
+        await Task.Delay(500);
+
+        // 3. Compact Logic: Now shift items
+        for (int i = startIdx; i < _slots.Length - 3; i++)
         {
             if (_slots[i + 3] != null)
             {
                 _slots[i] = _slots[i + 3];
                 _slots[i + 3] = null;
 
-                // Tell UI to move the icon left
+                // This now fires AFTER the delay
                 OnItemLeaped?.Invoke(i + 3, i, _slots[i]);
             }
         }
 
-        // 4. Chain Reaction: Check if the shift created a new match
-        // Note: In production, you might want a small delay here via the View
-        ProcessMatch();
+        // Check for chain reactions
+        await ProcessMatch();
     }
-
     private int CheckMatch()
     {
         for (int i = 0; i <= _slots.Length - 3; i++)

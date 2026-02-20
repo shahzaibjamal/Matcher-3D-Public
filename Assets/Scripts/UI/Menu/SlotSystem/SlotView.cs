@@ -57,6 +57,7 @@ public class SlotView : MonoBehaviour
         icon.transform.localScale = Vector3.one;
         icon.transform.localPosition = Vector3.zero;
     }
+
     public void ClearDataOnly()
     {
         CurrentItem = null;

@@ -47,27 +47,24 @@ public class TrayView : MonoBehaviour
     {
         if (ghostIconPrefab == null || item == null) return;
 
-        // 1. Prepare the destination slot's DATA
+        // 1. Data Handover
         _slots[to].SetItemDataOnly(item);
 
-        // 2. Create the Ghost
+        // 2. Ghost Setup
         Image ghost = Instantiate(ghostIconPrefab, transform.parent);
         ghost.sprite = item.UISprite;
+        // Get the exact world position of the icon's current visual
         ghost.transform.position = _slots[from].IconTransform.position;
 
-        // 3. VISUAL HANDOFF
-        // Hide the source icon immediately (the ghost is now representing it)
-        _slots[from].HideIcon();
+        // 3. Visual Handoff
+        _slots[from].HideIcon(); // Hide source
+        _slots[to].HideIcon();   // Target stays hidden until ghost lands
 
-        // Ensure the target icon is hidden while the ghost is traveling
-        _slots[to].HideIcon();
-
-        ghost.transform.DOJump(_slots[to].transform.position, 60f, 1, 0.3f)
+        // 4. Animation
+        ghost.transform.DOJump(_slots[to].transform.position, 60f, 1, 0.35f) // Slightly longer jump
             .SetEase(Ease.OutQuad)
             .OnComplete(() =>
             {
-                // 4. LANDING
-                // Only reveal if the logic still says this specific item is in this slot
                 if (_slots[to].CurrentItem == item)
                 {
                     _slots[to].RevealIcon();
