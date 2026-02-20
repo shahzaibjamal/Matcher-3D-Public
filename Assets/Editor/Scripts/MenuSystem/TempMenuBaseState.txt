@@ -1,0 +1,17 @@
+using Unity.VisualScripting;
+
+public class TempMenuBaseState : MenuBaseState<TempMenuController, TempMenuView, TempMenuData>
+{
+    public TempMenuBaseState(TempMenuController controller) : base(controller)
+    {
+    }
+
+    public override void Enter()
+    {
+    }
+
+
+    public override void Exit()
+    {
+    }
+}

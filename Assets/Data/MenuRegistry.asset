@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aff945e8d426a3438852a29f28306cf, type: 3}
+  m_Name: MenuRegistry
+  m_EditorClassIdentifier: Assembly-CSharp::MenuRegistry
+  entries:
+  - type: 1
+    prefab: {fileID: 6100885566448096069, guid: 107fd64bece2ccd4385a9603c3c8a88d, type: 3}
+    defaultMode: 0
+  - type: 6
+    prefab: {fileID: 0}
+    defaultMode: 0

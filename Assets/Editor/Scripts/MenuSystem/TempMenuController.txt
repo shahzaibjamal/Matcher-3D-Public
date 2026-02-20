@@ -1,0 +1,19 @@
+public class TempMenuController : MenuController<TempMenuView, TempMenuData>
+{
+    public override void OnEnter()
+    {
+        SetState(new TempMenuBaseState_Main(this));
+    }
+    public override void OnExit()
+    {
+        base.OnExit();
+    }
+
+    public override void OnPause()
+    {
+    }
+
+    public override void OnResume()
+    {
+    }
+}

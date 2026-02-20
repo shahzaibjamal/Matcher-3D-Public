@@ -1,0 +1,16 @@
+public class TempMenuBaseState_Main : TempMenuBaseState
+{
+    public TempMenuBaseState_Main(TempMenuController controller) : base(controller)
+    {
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+}

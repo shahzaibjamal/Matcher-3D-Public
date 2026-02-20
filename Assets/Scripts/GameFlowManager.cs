@@ -18,6 +18,7 @@ public class GameFlowManager : MonoBehaviour
 
         // Kick off the game by spawning the first level
         spawner.SpawnLevel(startLevelUID);
+
     }
 
     private void HandleLevelInitialized(LevelData level)

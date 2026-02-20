@@ -24,6 +24,7 @@
   <Project Path="Unity.AI.Navigation.Editor.ConversionSystem.csproj" />
   <Project Path="Unity.VisualScripting.State.Editor.csproj" />
   <Project Path="Unity.Services.Core.Editor.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.Services.Core.Configuration.Editor.csproj" />
   <Project Path="Unity.Services.Core.csproj" />
   <Project Path="Unity.AI.Navigation.csproj" />
@@ -35,7 +36,6 @@
   <Project Path="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.csproj" />
   <Project Path="UnityEngine.Purchasing.AppleMacosStub.csproj" />
   <Project Path="Unity.AI.Navigation.Updater.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="UnityEngine.Purchasing.Codeless.csproj" />
   <Project Path="DOTween.Modules.csproj" />
   <Project Path="Unity.Analytics.DataPrivacy.csproj" />
@@ -67,5 +67,6 @@
   <Project Path="Analytics.csproj" />
   <Project Path="UnityEditor.SpatialTracking.csproj" />
   <Project Path="Unity.Services.Core.Registration.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Unity.Services.Core.Environments.csproj" />
 </Solution>

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6cc4f705626c4841a7862a17c25802b, type: 3}
+  m_Name: ItemDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDatabase
+  items:
+  - uid: cog_1
+    itemName: Cog 1
+    prefab: {fileID: 6721454954599402670, guid: 6a8fcd966223f4240a5a8a0cc03aa3b0, type: 3}
+    uiSprite: {fileID: 21300000, guid: 57fb9e3f62d538649a880cfbcd8155d2, type: 3}
+  - uid: heart
+    itemName: Heart
+    prefab: {fileID: 6214208447556539794, guid: e0e9449f84012d2428859176cd2d0b06, type: 3}
+    uiSprite: {fileID: 21300000, guid: 7568e6ef0c236c64e8c3977ad6f4c093, type: 3}
+  - uid: beer
+    itemName: Beer
+    prefab: {fileID: 1014010837996452403, guid: 31da8749afad8b94f8020ce2fe4e78c1, type: 3}
+    uiSprite: {fileID: 21300000, guid: 2066c7a6edfc0194eaeb5e63e4aa2c70, type: 3}

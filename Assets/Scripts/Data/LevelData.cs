@@ -11,6 +11,6 @@ public class LevelData
 
     [Header("Items to Spawn")]
     public List<LevelItemEntry> itemsToSpawn;
-    [Header("Items to Spawn")]
+    [Header("Items to Collect")]
     public List<string> itemsToCollect;
 }
