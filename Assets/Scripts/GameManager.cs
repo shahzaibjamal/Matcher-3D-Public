@@ -72,8 +72,8 @@ public class GameManager : MonoBehaviour
             activeSpawner = Instantiate(spawnerPrefab);
             activeSpawner.SpawnLevel("level_01", (itemData, sourceTransform) =>
             {
-                // _slotManager.AddItem(itemData);
-                GameEvents.OnItemCollected?.Invoke(itemData, sourceTransform);
+                _slotManager.AddItem(itemData, sourceTransform);
+                // GameEvents.OnItemCollected?.Invoke(itemData, sourceTransform);
             });
         }
     }

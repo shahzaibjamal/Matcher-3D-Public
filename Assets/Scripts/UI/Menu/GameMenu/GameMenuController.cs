@@ -26,6 +26,6 @@ public class GameMenuController : MenuController<GameMenuView, GameMenuData>
     public void StartGame()
     {
         OnGameStarted?.Invoke();
-        View.TrayView.Initialize(Data.SlotManager, Data.SlotCount);
+        View.TrayView.Initialize(Data.SlotCount);
     }
 }

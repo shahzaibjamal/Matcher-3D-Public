@@ -1,157 +1,145 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
+using UnityEngine;
 
-/// <summary>
-/// The Pure Logic "Brain" of the Tray system. 
-/// It handles data arrays and tells the View what to animate.
-/// </summary>
 public class SlotManager
 {
     private readonly ItemData[] _slots;
     private bool _isProcessing;
 
-    // Events for the TrayView to subscribe to
-    public event Action<int, int, ItemData> OnItemLeaped;   // (fromIndex, toIndex, item)
-    public event Action<int, ItemData> OnNewItemReserved;  // (index, item)
-    public event Action<int> OnMatchFound;                 // (startIndex)
-    public event Action OnGameOver;
+    // The single source of truth for all pending actions
+    private readonly Queue<(ItemData data, Transform source)> _inputQueue = new();
 
     public SlotManager(int size)
     {
         _slots = new ItemData[size];
     }
 
-    /// <summary>
-    /// Attempts to add an item. Returns true if successful.
-    /// </summary>
-    public bool AddItem(ItemData data)
+    // Public entry point - just adds to the list and tries to run the processor
+    public void AddItem(ItemData data, Transform source)
     {
-        int targetIndex = GetInsertionIndex(data);
+        _inputQueue.Enqueue((data, source));
+        TryProcessNext();
+    }
 
-        // Check if the tray is full
-        if (targetIndex >= _slots.Length)
+    private async void TryProcessNext()
+    {
+        if (_isProcessing || _inputQueue.Count == 0) return;
+
+        _isProcessing = true;
+
+        while (_inputQueue.Count > 0)
         {
-            OnGameOver?.Invoke();
-            return false;
+            var (data, source) = _inputQueue.Dequeue();
+            await HandleFullSequence(data, source);
         }
 
-        // 1. Logic Shift: Move existing items to the right to make a hole
-        for (int i = _slots.Length - 1; i > targetIndex; i--)
+        _isProcessing = false;
+    }
+
+    private async Task HandleFullSequence(ItemData data, Transform source)
+    {
+        int targetIdx = GetInsertionIndex(data);
+
+        // 1. Check for Room
+        if (targetIdx >= _slots.Length)
+        {
+            Debug.LogWarning("Tray Full! Waiting for matches...");
+            // Optionally: Destroy(source.gameObject) or bounce it back
+            return;
+        }
+
+        // 2. Logical Shift & Leaps (Moving items to make room)
+        // We do this BEFORE the flight so the hole is visually created
+        for (int i = _slots.Length - 1; i > targetIdx; i--)
         {
             if (_slots[i - 1] != null)
             {
                 _slots[i] = _slots[i - 1];
-                _slots[i - 1] = null; // Clear the old spot logic-wise
-
-                // Notify UI to move the icon
-                OnItemLeaped?.Invoke(i - 1, i, _slots[i]);
+                _slots[i - 1] = null;
+                await ExecuteLeap(i - 1, i, _slots[i]);
             }
         }
 
-        // 2. Insert the new item into the logic array
-        _slots[targetIndex] = data;
-        UnityEngine.Debug.LogError("_slot set - " + targetIndex + "  with " + data.ItemName);
+        // 3. The Flight (Wait for it to land)
+        _slots[targetIdx] = data;
+        await ExecuteFlight(data, targetIdx, source);
 
-        // 3. Tell UI: "Reserve this slot for the 3D item currently flying in"
-        OnNewItemReserved?.Invoke(targetIndex, data);
-
-        return true;
+        // 4. Resolve Matches (Chain reactions included)
+        await ResolveAllMatches();
     }
 
-    /// <summary>
-    /// Triggered by the UI View once an animation finishes settling.
-    /// </summary>
-    public async void RequestMatchCheck()
+    private async Task ResolveAllMatches()
     {
-        if (_isProcessing) return;
-        await ProcessMatch();
-    }
-    private async Task ProcessMatch()
-    {
-        int startIdx = CheckMatch();
-
-        if (startIdx == -1)
+        int matchIdx = FindMatch();
+        while (matchIdx != -1)
         {
-            _isProcessing = false;
-            if (IsTrayFull()) OnGameOver?.Invoke();
-            return;
-        }
+            // A. Clear Logic
+            for (int i = 0; i < 3; i++) _slots[matchIdx + i] = null;
 
-        _isProcessing = true;
+            // B. Animate Match
+            await ExecuteMatch(matchIdx);
 
-        // 1. Logic Clear: Remove matched items
-        for (int i = 0; i < 3; i++) _slots[startIdx + i] = null;
-
-        // 2. Notify UI: Start Merge Animation
-        OnMatchFound?.Invoke(startIdx);
-
-        // --- THE DELAY ---
-        // Wait for the Merge Animation (Cheer + Vacuum) to finish
-        // Adjust 500ms to match your mergeSeq duration
-        await Task.Delay(500);
-
-        // 3. Compact Logic: Now shift items
-        for (int i = startIdx; i < _slots.Length - 3; i++)
-        {
-            if (_slots[i + 3] != null)
+            // C. Compact Tray (Shift left)
+            for (int i = matchIdx; i < _slots.Length - 3; i++)
             {
-                _slots[i] = _slots[i + 3];
-                _slots[i + 3] = null;
-
-                // This now fires AFTER the delay
-                OnItemLeaped?.Invoke(i + 3, i, _slots[i]);
+                if (_slots[i + 3] != null)
+                {
+                    _slots[i] = _slots[i + 3];
+                    _slots[i + 3] = null;
+                    await ExecuteLeap(i + 3, i, _slots[i]);
+                }
             }
-        }
 
-        // Check for chain reactions
-        await ProcessMatch();
+            // D. Check for next match in the chain
+            matchIdx = FindMatch();
+        }
     }
-    private int CheckMatch()
+
+    // --- WRAPPERS FOR ASYNC EVENTS ---
+
+    private Task ExecuteFlight(ItemData d, int idx, Transform s)
+    {
+        var tcs = new TaskCompletionSource<bool>();
+        GameEvents.OnRequestFlight?.Invoke(d, idx, s, () => tcs.SetResult(true));
+        return tcs.Task;
+    }
+
+    private Task ExecuteLeap(int f, int t, ItemData d)
+    {
+        var tcs = new TaskCompletionSource<bool>();
+        GameEvents.OnRequestLeap?.Invoke(f, t, d, () => tcs.SetResult(true));
+        return tcs.Task;
+    }
+
+    private Task ExecuteMatch(int start)
+    {
+        var tcs = new TaskCompletionSource<bool>();
+        GameEvents.OnRequestMatchResolve?.Invoke(start, () => tcs.SetResult(true));
+        return tcs.Task;
+    }
+
+    // --- HELPERS ---
+
+    private int GetInsertionIndex(ItemData newItem)
+    {
+        for (int i = _slots.Length - 1; i >= 0; i--)
+            if (_slots[i]?.UID == newItem.UID) return i + 1;
+        for (int i = 0; i < _slots.Length; i++)
+            if (_slots[i] == null) return i;
+        return _slots.Length;
+    }
+
+    private int FindMatch()
     {
         for (int i = 0; i <= _slots.Length - 3; i++)
         {
             if (_slots[i] == null) continue;
-
-            string currentId = _slots[i].UID;
-            if (_slots[i + 1]?.UID == currentId &&
-                _slots[i + 2]?.UID == currentId)
-            {
+            string id = _slots[i].UID;
+            if (_slots[i + 1]?.UID == id && _slots[i + 2]?.UID == id)
                 return i;
-            }
         }
         return -1;
     }
-
-    private int GetInsertionIndex(ItemData newItem)
-    {
-        // Find last existing twin to group them
-        for (int i = _slots.Length - 1; i >= 0; i--)
-        {
-            if (_slots[i] != null && _slots[i].UID == newItem.UID)
-                return i + 1;
-        }
-
-        // Otherwise, find the first available empty slot
-        for (int i = 0; i < _slots.Length; i++)
-        {
-            if (_slots[i] == null)
-                return i;
-        }
-
-        return _slots.Length; // Represents "Full"
-    }
-
-    private bool IsTrayFull()
-    {
-        foreach (var item in _slots)
-        {
-            if (item == null) return false;
-        }
-        return true;
-    }
-
-    // Helper for the View to know what is where
-    public ItemData GetItemAt(int index) => _slots[index];
 }

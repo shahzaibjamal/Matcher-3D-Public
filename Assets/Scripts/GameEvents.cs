@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class GameEvents
 {
-    // The Spawner calls this, the TrayView listens to it.
-    public static Action<ItemData, Transform> OnItemCollected;
+    public static Action<ItemData, int, Transform, Action> OnRequestFlight;
+    public static Action<int, int, ItemData, Action> OnRequestLeap;
+    public static Action<int, Action> OnRequestMatchResolve;
+    public static Action<int, ItemData> OnItemLanded; // Optional, for debug
 }

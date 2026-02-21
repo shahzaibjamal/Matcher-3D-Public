@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class ClickableItem : MonoBehaviour
 {
+    [HideInInspector]
     public ItemData ItemData;
+    public Collider Collider;
     public Action<ItemData, Transform> OnItemClicked;
 
     void OnMouseDown()
