@@ -90,6 +90,7 @@ public class TrayView : MonoBehaviour
         // Safety check if index is invalid
         if (targetIndex == -1) return;
 
+        _slots[targetIndex].IsReservedFor3DFlight = true;
         Vector3 targetWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(
             _slots[targetIndex].transform.position.x,
             _slots[targetIndex].transform.position.y,
@@ -102,7 +103,7 @@ public class TrayView : MonoBehaviour
         seq.Append(sourceTransform.DOMove(peak, flightDuration * 0.4f).SetEase(Ease.OutQuad));
         seq.Join(sourceTransform.DORotate(Vector3.zero, flightDuration * 0.6f));
 
-        seq.Append(sourceTransform.DOMove(targetWorldPos, flightDuration * 0.6f).SetEase(Ease.InBack));
+        seq.Append(sourceTransform.DOMove(targetWorldPos, 0.3f).SetEase(Ease.InBack));
         seq.Join(sourceTransform.DOScale(Vector3.one * 0.3f, flightDuration * 0.6f));
 
         seq.OnComplete(() =>
@@ -113,7 +114,7 @@ public class TrayView : MonoBehaviour
             // Reveal the landing icon
             _slots[targetIndex].RevealIcon();
 
-            // if (_itemsInFlight <= 0)
+            if (_itemsInFlight <= 0)
             {
                 _slotManager.RequestMatchCheck();
             }
@@ -167,9 +168,16 @@ public class TrayView : MonoBehaviour
     {
         for (int i = 0; i < _slots.Length; i++)
         {
-            // A slot is "hidden" if it has the data but its Image component is disabled
-            if (_slots[i].CurrentItem == item && !_slots[i].IsImageEnabled)
+            // Conditions for a valid 3D landing spot:
+            // 1. Logic says this slot belongs to this item.
+            // 2. No icon is showing yet.
+            // 3. No other 3D item is currently flying toward this specific slot.
+            if (_slots[i].CurrentItem == item &&
+                !_slots[i].IsImageEnabled &&
+                !_slots[i].IsReservedFor3DFlight)
+            {
                 return i;
+            }
         }
         return -1;
     }

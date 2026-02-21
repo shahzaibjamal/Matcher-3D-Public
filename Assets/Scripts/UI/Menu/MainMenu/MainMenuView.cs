@@ -4,4 +4,5 @@ using UnityEngine.UI;
 public class MainMenuView : MenuView
 {
     public Button StartButton;
+    public Button DebugButton;
 }

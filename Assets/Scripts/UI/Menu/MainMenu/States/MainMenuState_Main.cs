@@ -9,6 +9,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         base.Enter();
 
         View.StartButton.onClick.AddListener(OnStartButtonClicked);
+        View.DebugButton.onClick.AddListener(OnDebugButtonClicked);
     }
 
     public override void Exit()
@@ -19,5 +20,9 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     private void OnStartButtonClicked()
     {
         Controller.StartButtonClicked();
+    }
+    private void OnDebugButtonClicked()
+    {
+        MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug, new DebugMenuData(), Menus.MenuDisplayMode.Overlay);
     }
 }

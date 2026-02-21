@@ -11,7 +11,8 @@ public static class Menus
 
         Game = 6,
 
-        ConfirmationPopup = 7
+        ConfirmationPopup = 7,
+        Debug = 8
     }
     public enum MenuDisplayMode
     {

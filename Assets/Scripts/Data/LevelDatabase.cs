@@ -9,6 +9,17 @@ public class LevelDatabase : ScriptableObject
 
     public LevelData GetLevelByUID(string uid)
     {
-        return levels.Find(l => l.levelUID == uid);
+        var level = levels.Find(l => l.levelUID == uid);
+        if (level != null)
+        {
+            foreach (var entry in level.itemsToSpawn)
+            {
+                if (entry.count % 3 != 0)
+                {
+                    entry.count = (entry.count / 3) * 3; // round down
+                }
+            }
+        }
+        return level;
     }
 }

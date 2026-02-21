@@ -88,4 +88,11 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    [ContextMenu("Restart")]
+    public void Restart()
+    {
+        DestroyImmediate(activeSpawner);
+        SpawnGameSystems();
+    }
 }

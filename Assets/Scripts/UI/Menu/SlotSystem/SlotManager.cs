@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -51,6 +52,7 @@ public class SlotManager
 
         // 2. Insert the new item into the logic array
         _slots[targetIndex] = data;
+        UnityEngine.Debug.LogError("_slot set - " + targetIndex + "  with " + data.ItemName);
 
         // 3. Tell UI: "Reserve this slot for the 3D item currently flying in"
         OnNewItemReserved?.Invoke(targetIndex, data);

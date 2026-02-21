@@ -13,6 +13,8 @@ public class SlotView : MonoBehaviour
     public int Index => _index;
     private int _index = -1;
 
+    public bool IsReservedFor3DFlight { get; set; }
+
     public void SetIndex(int index)
     {
         _index = index;
@@ -35,6 +37,7 @@ public class SlotView : MonoBehaviour
         if (CurrentItem == null) return; // Safety: Don't reveal if empty
         icon.sprite = CurrentItem.UISprite;
         icon.enabled = true;
+        IsReservedFor3DFlight = false;
         // Add a small scale punch for "juice"
         transform.DOPunchScale(Vector3.one * 0.1f, 0.2f);
     }
@@ -53,7 +56,7 @@ public class SlotView : MonoBehaviour
         CurrentItem = null;
         icon.sprite = null;
         icon.enabled = false;
-        // Reset transforms in case a merge animation left them scaled/moved
+        IsReservedFor3DFlight = false; // Reset on clear        // Reset transforms in case a merge animation left them scaled/moved
         icon.transform.localScale = Vector3.one;
         icon.transform.localPosition = Vector3.zero;
     }
