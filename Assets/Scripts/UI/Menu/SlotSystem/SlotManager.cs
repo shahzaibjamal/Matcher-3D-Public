@@ -42,31 +42,28 @@ public class SlotManager
     {
         int targetIdx = GetInsertionIndex(data);
 
-        // 1. Check for Room
-        if (targetIdx >= _slots.Length)
-        {
-            Debug.LogWarning("Tray Full! Waiting for matches...");
-            // Optionally: Destroy(source.gameObject) or bounce it back
-            return;
-        }
+        if (targetIdx >= _slots.Length) return;
 
-        // 2. Logical Shift & Leaps (Moving items to make room)
-        // We do this BEFORE the flight so the hole is visually created
+        // 1. GROUPED LEAPS (Parallel)
+        List<Task> shiftTasks = new List<Task>();
         for (int i = _slots.Length - 1; i > targetIdx; i--)
         {
             if (_slots[i - 1] != null)
             {
                 _slots[i] = _slots[i - 1];
                 _slots[i - 1] = null;
-                await ExecuteLeap(i - 1, i, _slots[i]);
+                // Add to list instead of awaiting immediately
+                shiftTasks.Add(ExecuteLeap(i - 1, i, _slots[i]));
             }
         }
+        // Wait for all icons to finish jumping to their new spots
+        await Task.WhenAll(shiftTasks);
 
-        // 3. The Flight (Wait for it to land)
+        // 2. THE FLIGHT
         _slots[targetIdx] = data;
         await ExecuteFlight(data, targetIdx, source);
 
-        // 4. Resolve Matches (Chain reactions included)
+        // 3. RESOLVE MATCHES
         await ResolveAllMatches();
     }
 
@@ -75,29 +72,26 @@ public class SlotManager
         int matchIdx = FindMatch();
         while (matchIdx != -1)
         {
-            // A. Clear Logic
             for (int i = 0; i < 3; i++) _slots[matchIdx + i] = null;
 
-            // B. Animate Match
             await ExecuteMatch(matchIdx);
 
-            // C. Compact Tray (Shift left)
+            // GROUPED COMPACTION (Parallel)
+            List<Task> compactTasks = new List<Task>();
             for (int i = matchIdx; i < _slots.Length - 3; i++)
             {
                 if (_slots[i + 3] != null)
                 {
                     _slots[i] = _slots[i + 3];
                     _slots[i + 3] = null;
-                    await ExecuteLeap(i + 3, i, _slots[i]);
+                    compactTasks.Add(ExecuteLeap(i + 3, i, _slots[i]));
                 }
             }
+            await Task.WhenAll(compactTasks);
 
-            // D. Check for next match in the chain
             matchIdx = FindMatch();
         }
-    }
-
-    // --- WRAPPERS FOR ASYNC EVENTS ---
+    }    // --- WRAPPERS FOR ASYNC EVENTS ---
 
     private Task ExecuteFlight(ItemData d, int idx, Transform s)
     {

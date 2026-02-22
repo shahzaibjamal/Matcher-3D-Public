@@ -16,6 +16,7 @@ public class TrayView : MonoBehaviour
     [SerializeField] private float cameraZOffset = 10.0f;
     [SerializeField] private float mergeUpHeight = 100f;
     [SerializeField] private ParticleSystem matchParticlePrefab;
+    [SerializeField] private GameData GameData;
 
     private SlotView[] _slots;
 
@@ -64,13 +65,13 @@ public class TrayView : MonoBehaviour
         Sequence flightSeq = DOTween.Sequence();
 
         // STAGE A: Pick Up (Move up slightly and rotate)
-        flightSeq.Append(source.DOMove(source.position + Vector3.up * 2f, 0.2f).SetEase(Ease.OutQuad));
-        flightSeq.Join(source.DORotate(Vector3.zero, 0.2f, RotateMode.FastBeyond360));
-        flightSeq.Join(source.DOScale(source.localScale * 1.2f, 0.2f));
+        flightSeq.Append(source.DOMove(source.position + Vector3.up * 2f, GameData.FlightUpDuration).SetEase(Ease.OutQuad));
+        flightSeq.Join(source.DORotate(Vector3.zero, GameData.FlightUpDuration, RotateMode.FastBeyond360));
+        flightSeq.Join(source.DOScale(source.localScale * 1.2f, GameData.FlightUpDuration));
 
         // STAGE B: The Toss (Move to UI Slot)
-        flightSeq.Append(source.DOMove(worldTarget, 0.5f).SetEase(Ease.InBack));
-        flightSeq.Join(source.DOScale(Vector3.one * 0.3f, 0.5f)); // Shrink to fit UI
+        flightSeq.Append(source.DOMove(worldTarget, GameData.FlightToTrayDuration).SetEase(Ease.InBack));
+        flightSeq.Join(source.DOScale(Vector3.one * 0.3f, GameData.FlightToTrayDuration)); // Shrink to fit UI
 
         // Ensure it renders on top of everything
         if (source.TryGetComponent<Renderer>(out var rend))
@@ -90,27 +91,28 @@ public class TrayView : MonoBehaviour
     }
     private void HandleLeapRequest(int from, int to, ItemData data, Action onComplete)
     {
-        // Source is currently visible, Target is currently empty.
+        // Visual setup
+        _slots[to].SetItemDataOnly(data);
+        _slots[from].Clear();
+
         Image ghost = Instantiate(ghostIconPrefab, transform.parent);
         ghost.sprite = data.UISprite;
         ghost.transform.position = _slots[from].IconTransform.position;
 
-        // Visual handoff
-        _slots[to].SetItemDataOnly(data); // Target gets data but stays hidden
-        _slots[from].Clear();            // Source wiped immediately
+        // Optional: Add a slight stagger based on the 'to' index 
+        // so they ripple across the tray
+        float delay = Math.Abs(to - from) * 0.02f;
 
-        ghost.transform.DOJump(_slots[to].transform.position, 60f, 1, 0.35f)
+        ghost.transform.DOJump(_slots[to].transform.position, 50f, 1, GameData.LeapDuration)
+            // .SetDelay(delay)
             .SetEase(Ease.OutQuad)
             .OnComplete(() =>
             {
                 _slots[to].RevealIcon();
                 Destroy(ghost.gameObject);
-
-                // NOTIFY CONDUCTOR: Leap finished, move to next item in queue
                 onComplete?.Invoke();
             });
     }
-
     // --- 3. RESOLVE MATCH-3 ---
     private void HandleMatchRequest(int startIndex, Action onComplete)
     {
@@ -128,8 +130,8 @@ public class TrayView : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             Transform icon = _slots[startIdx + i].IconTransform;
-            mergeSeq.Join(icon.DOMove(peakPoint, 0.3f).SetEase(Ease.InBack));
-            mergeSeq.Join(icon.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBack));
+            mergeSeq.Join(icon.DOMove(peakPoint, GameData.MergeDuration).SetEase(Ease.InBack));
+            mergeSeq.Join(icon.DOScale(Vector3.zero, GameData.MergeDuration).SetEase(Ease.InBack));
         }
 
         yield return mergeSeq.WaitForCompletion();

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class DebugMenuView : MenuView
 {
     public LevelDatabase LevelDatabase;
+    public GameData GameData;
     public TMP_InputField LevelUidInput;
     public Transform ItemsParent;
     public GameObject ItemRowPrefab;

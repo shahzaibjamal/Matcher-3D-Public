@@ -17,6 +17,7 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
         {
             MenuManager.Instance.GoBack();
         });
+        LoadGameData();
     }
 
 
@@ -45,12 +46,9 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
 
         foreach (var entry in _currentLevel.itemsToSpawn)
         {
-            GameObject row = GameObject.Instantiate(View.ItemRowPrefab, View.ItemsParent);
-            var debugItemRow = row.GetComponent<DebugItemRow>();
+            var debugItemRow = CreateDebugItemRow(entry.itemUID, entry.count);
             if (debugItemRow != null)
             {
-                debugItemRow.Uid.text = entry.itemUID;
-                debugItemRow.Quantity.text = entry.count.ToString();
                 debugItemRow.Quantity.onEndEdit.AddListener(val =>
                 {
                     if (int.TryParse(val, out int newCount))
@@ -58,5 +56,27 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
                 });
             }
         }
+    }
+
+    private void LoadGameData()
+    {
+        CreateDebugItemRow("LeapDuration", View.GameData.LeapDuration);
+        CreateDebugItemRow("MergeDuration", View.GameData.MergeDuration);
+        CreateDebugItemRow("FlightUpDuration", View.GameData.FlightUpDuration);
+        CreateDebugItemRow("FlightToTrayDuration", View.GameData.FlightToTrayDuration);
+
+    }
+
+    private DebugItemRow CreateDebugItemRow(string uid, float quantity)
+    {
+        GameObject row = GameObject.Instantiate(View.ItemRowPrefab, View.ItemsParent);
+        var debugItemRow = row.GetComponent<DebugItemRow>();
+
+        if (debugItemRow != null)
+        {
+            debugItemRow.Uid.text = uid;
+            debugItemRow.Quantity.text = quantity.ToString();
+        }
+        return debugItemRow;
     }
 }

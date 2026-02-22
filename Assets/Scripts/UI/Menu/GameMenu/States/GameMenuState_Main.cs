@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameMenuBaseState_Main : GameMenuBaseState
 {
@@ -16,6 +17,11 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         base.Enter();
 
         View.StartCoroutine(StartGame());
+        View.RestartButton.onClick.AddListener(() =>
+        {
+            Scene currentScene = SceneManager.GetActiveScene(); // Reload it by name 
+            SceneManager.LoadScene(currentScene.name);
+        });
     }
 
     public override void Exit()
@@ -25,8 +31,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
     IEnumerator StartGame()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
         Controller.StartGame();
-        // View.SlotManager.gameObject.SetActive(true);
     }
 }
