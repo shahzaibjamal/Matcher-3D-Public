@@ -32,6 +32,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = -1; // -1 means "unlimited"
+
+
         MainMenuController.OnStartButtonClicked += StartGame;
         GameMenuController.OnGameStarted += SpawnGameSystems;
 
