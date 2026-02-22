@@ -48,4 +48,31 @@ public class SlotView : MonoBehaviour
         icon.enabled = false;
         icon.transform.DOKill();
     }
+    private int debugFontSize = 48; // adjustable font size
+
+    private void OnGUI()
+    {
+        if (CurrentItem == null) return;
+
+        GUIStyle style = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = debugFontSize,
+            normal = { textColor = Color.red }
+        };
+
+        string truncatedUniqueId = CurrentItem.UniqueId.Length > 7
+            ? CurrentItem.UniqueId.Substring(0, 7)
+            : CurrentItem.UniqueId;
+
+        string text = $"{truncatedUniqueId} \n {CurrentItem.UID}";
+
+        float startY = Screen.height - debugFontSize * 3; // anchor near bottom
+        float xSpacing = 220f;                            // horizontal spacing
+        float x = 10f + (_index * xSpacing);
+
+        // Use font size for rect height
+        GUI.Label(new Rect(x, startY, 400, debugFontSize * 3), text, style);
+    }
+
+
 }

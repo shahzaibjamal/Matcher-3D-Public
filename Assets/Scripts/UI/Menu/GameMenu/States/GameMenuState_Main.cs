@@ -19,8 +19,9 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         View.StartCoroutine(StartGame());
         View.RestartButton.onClick.AddListener(() =>
         {
-            Scene currentScene = SceneManager.GetActiveScene(); // Reload it by name 
-            SceneManager.LoadScene(currentScene.name);
+            // Scene currentScene = SceneManager.GetActiveScene(); // Reload it by name 
+            // SceneManager.LoadScene(currentScene.name);
+            SceneManager.LoadScene(0);
         });
     }
 

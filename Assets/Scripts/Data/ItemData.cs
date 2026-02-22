@@ -16,4 +16,7 @@ public class ItemData
     public string ItemName => itemName;
     public GameObject Prefab => prefab;
     public Sprite UISprite => uiSprite;
+
+    public string UniqueId;
+
 }

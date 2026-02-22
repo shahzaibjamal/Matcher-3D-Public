@@ -13,6 +13,7 @@ public class SlotManager
     public async void AddItem(ItemData data, Transform source)
     {
         int targetIdx = GetInsertionIndex(data);
+        data.UniqueId = Guid.NewGuid().ToString();
 
         // Prevent out of bounds if tray is full
         if (targetIdx >= _slots.Length)
@@ -28,7 +29,7 @@ public class SlotManager
         _slots[targetIdx] = data;
 
         // 2. Parallel Shifts
-        for (int i = _slots.Length - 1; i > targetIdx; i--)
+        for (int i = targetIdx + 1; i < _slots.Length - 1; i++)
         {
             if (_slots[i] != null)
                 GameEvents.OnRequestSteppedLeap?.Invoke(_slots[i], i, null);
@@ -111,4 +112,6 @@ public class SlotManager
         }
         return -1;
     }
+
+
 }
