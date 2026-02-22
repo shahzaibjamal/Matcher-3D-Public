@@ -38,6 +38,7 @@ public class TrayView : MonoBehaviour
         GameEvents.OnRequestFlight += HandleFlightRequest;
         GameEvents.OnRequestLeap += HandleLeapRequest;
         GameEvents.OnRequestMatchResolve += HandleMatchRequest;
+        GameEvents.OnRequestSteppedLeap += HandleSteppedLeap;
     }
 
     private void OnDisable()
@@ -45,6 +46,7 @@ public class TrayView : MonoBehaviour
         GameEvents.OnRequestFlight -= HandleFlightRequest;
         GameEvents.OnRequestLeap -= HandleLeapRequest;
         GameEvents.OnRequestMatchResolve -= HandleMatchRequest;
+        GameEvents.OnRequestSteppedLeap -= HandleSteppedLeap;
     }
 
     // --- 1. FLY FROM WORLD TO TRAY ---
@@ -118,7 +120,46 @@ public class TrayView : MonoBehaviour
     {
         StartCoroutine(MatchSequence(startIndex, onComplete));
     }
+    private void HandleSteppedLeap(int from, int to, ItemData data, Action onComplete)
+    {
+        StartCoroutine(SteppedLeapRoutine(from, to, data, onComplete));
+    }
 
+    private IEnumerator SteppedLeapRoutine(int from, int to, ItemData data, Action onComplete)
+    {
+        _slots[from].Clear();
+
+        Image ghost = Instantiate(ghostIconPrefab, transform.parent);
+        ghost.sprite = data.UISprite;
+        ghost.transform.position = _slots[from].transform.position;
+
+        int currentIdx = from;
+        // Determine direction: +1 for Forward, -1 for Backward
+        int stepDirection = (to > from) ? 1 : -1;
+
+        // Loop until we reach the 'to' index
+        while (currentIdx != to)
+        {
+            int nextIdx = currentIdx + stepDirection;
+            Vector3 targetPos = _slots[nextIdx].transform.position;
+
+            // The Step
+            yield return ghost.transform.DOJump(targetPos, 40f, 1, 0.15f)
+                .SetEase(Ease.OutQuad)
+                .WaitForCompletion();
+
+            currentIdx = nextIdx;
+
+            // Bouncy landing juice
+            ghost.transform.DOPunchScale(new Vector3(0.05f, -0.05f, 0), 0.1f);
+        }
+
+        _slots[to].SetItemDataOnly(data);
+        _slots[to].RevealIcon();
+
+        Destroy(ghost.gameObject);
+        onComplete?.Invoke();
+    }
     private IEnumerator MatchSequence(int startIdx, Action onComplete)
     {
         // The slots at startIdx, +1, and +2 are the ones to merge

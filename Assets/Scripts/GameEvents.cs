@@ -7,4 +7,5 @@ public static class GameEvents
     public static Action<int, int, ItemData, Action> OnRequestLeap;
     public static Action<int, Action> OnRequestMatchResolve;
     public static Action<int, ItemData> OnItemLanded; // Optional, for debug
+    public static Action<int, int, ItemData, Action> OnRequestSteppedLeap;
 }

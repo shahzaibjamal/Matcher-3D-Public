@@ -41,22 +41,26 @@ public class SlotManager
     private async Task HandleFullSequence(ItemData data, Transform source)
     {
         int targetIdx = GetInsertionIndex(data);
-
         if (targetIdx >= _slots.Length) return;
 
-        // 1. GROUPED LEAPS (Parallel)
+        // 1. PARALLEL STEPPED SHIFT RIGHT
         List<Task> shiftTasks = new List<Task>();
+
+        // Iterate backwards to shift data logically without overwriting
         for (int i = _slots.Length - 1; i > targetIdx; i--)
         {
             if (_slots[i - 1] != null)
             {
-                _slots[i] = _slots[i - 1];
+                ItemData itemToMove = _slots[i - 1];
+                _slots[i] = itemToMove;
                 _slots[i - 1] = null;
-                // Add to list instead of awaiting immediately
-                shiftTasks.Add(ExecuteLeap(i - 1, i, _slots[i]));
+
+                // Add the "Forward Step" task (moving from i-1 to i)
+                shiftTasks.Add(ExecuteSteppedLeap(i - 1, i, itemToMove));
             }
         }
-        // Wait for all icons to finish jumping to their new spots
+
+        // Wait for the "opening" animation to finish
         await Task.WhenAll(shiftTasks);
 
         // 2. THE FLIGHT
@@ -66,33 +70,47 @@ public class SlotManager
         // 3. RESOLVE MATCHES
         await ResolveAllMatches();
     }
-
     private async Task ResolveAllMatches()
     {
         int matchIdx = FindMatch();
         while (matchIdx != -1)
         {
+            // 1. Logic Clear
             for (int i = 0; i < 3; i++) _slots[matchIdx + i] = null;
 
+            // 2. Animate Match
             await ExecuteMatch(matchIdx);
 
-            // GROUPED COMPACTION (Parallel)
+            // 3. PARALLEL STEPPED COMPACTION
             List<Task> compactTasks = new List<Task>();
+
             for (int i = matchIdx; i < _slots.Length - 3; i++)
             {
                 if (_slots[i + 3] != null)
                 {
-                    _slots[i] = _slots[i + 3];
+                    ItemData itemToMove = _slots[i + 3];
+                    _slots[i] = itemToMove;
                     _slots[i + 3] = null;
-                    compactTasks.Add(ExecuteLeap(i + 3, i, _slots[i]));
+
+                    // Fire the task but DON'T await it yet
+                    compactTasks.Add(ExecuteSteppedLeap(i + 3, i, itemToMove));
                 }
             }
+
+            // Wait for ALL items to finish their multi-hop journeys
             await Task.WhenAll(compactTasks);
 
+            // 4. Check for chain reactions
             matchIdx = FindMatch();
         }
-    }    // --- WRAPPERS FOR ASYNC EVENTS ---
-
+    }
+    private Task ExecuteSteppedLeap(int from, int to, ItemData d)
+    {
+        var tcs = new TaskCompletionSource<bool>();
+        // Note: OnRequestSteppedLeap is a new event we'll define
+        GameEvents.OnRequestSteppedLeap?.Invoke(from, to, d, () => tcs.SetResult(true));
+        return tcs.Task;
+    }
     private Task ExecuteFlight(ItemData d, int idx, Transform s)
     {
         var tcs = new TaskCompletionSource<bool>();
