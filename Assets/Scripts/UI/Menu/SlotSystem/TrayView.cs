@@ -135,14 +135,11 @@ public class TrayView : MonoBehaviour
             _slots[startIdx + i].Clear();
         }
 
-        // Vector3 peak = _slots[startIdx + 1].transform.position + Vector3.up * mergeHeight;
         Vector3 centerPoint = _slots[startIdx + 1].transform.position;
         Vector3 peakPoint = centerPoint + Vector3.up * 100;
         Sequence mergeSeq = DOTween.Sequence();
         foreach (var g in ghosts)
         {
-            // s.Join(g.transform.DOMove(peak, 0.4f).SetEase(Ease.InBack));
-            // s.Join(g.transform.DOScale(0, 0.4f));
             Transform icon = g.transform;
             mergeSeq.Join(icon.DOMove(peakPoint, gameData.MergeDuration).SetEase(Ease.InBack));
             mergeSeq.Join(icon.DOScale(Vector3.zero, gameData.MergeDuration).SetEase(Ease.InBack));
