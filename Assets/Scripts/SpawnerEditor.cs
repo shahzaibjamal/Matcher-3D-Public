@@ -6,7 +6,7 @@ using System.Reflection;
 public partial class Spawner
 {
     [MenuItem("Tools/Spawn Game Systems")]
-    private static void SpawnViaGameManager()
+    public static void SpawnViaGameManager()
     {
 
         // Find and delete any Spawner in the scene
@@ -41,6 +41,16 @@ public partial class Spawner
         else
         {
             Debug.LogWarning("No GameManager found in scene.");
+        }
+        var trayView = Object.FindObjectOfType<TrayView>();
+        if (trayView != null)
+        {
+
+            trayView.Initialize(7);
+        }
+        else
+        {
+            Debug.LogWarning("No trayView found in scene.");
         }
     }
 }

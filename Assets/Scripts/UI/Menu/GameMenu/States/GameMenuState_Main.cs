@@ -21,7 +21,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         {
             // Scene currentScene = SceneManager.GetActiveScene(); // Reload it by name 
             // SceneManager.LoadScene(currentScene.name);
-            SceneManager.LoadScene(0);
+            Spawner.SpawnViaGameManager();
         });
     }
 

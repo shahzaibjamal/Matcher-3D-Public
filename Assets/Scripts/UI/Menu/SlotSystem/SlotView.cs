@@ -13,6 +13,7 @@ public class SlotView : MonoBehaviour
     private int _index = -1;
 
     public void SetIndex(int index) => _index = index;
+    public int Index => _index;
 
     public void SetItemDataOnly(ItemData itemData)
     {
@@ -48,7 +49,7 @@ public class SlotView : MonoBehaviour
         icon.enabled = false;
         icon.transform.DOKill();
     }
-    private int debugFontSize = 48; // adjustable font size
+    private int debugFontSize = 38; // adjustable font size
 
     private void OnGUI()
     {
