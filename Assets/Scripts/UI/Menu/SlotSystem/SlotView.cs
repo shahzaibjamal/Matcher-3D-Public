@@ -14,7 +14,6 @@ public class SlotView : MonoBehaviour
 
     public void SetIndex(int index) => _index = index;
 
-    // Sets the data and prepares the sprite, but keeps it invisible
     public void SetItemDataOnly(ItemData itemData)
     {
         CurrentItem = itemData;
@@ -22,6 +21,7 @@ public class SlotView : MonoBehaviour
         {
             icon.sprite = itemData.UISprite;
         }
+        // Keep it hidden; the TrayView will call RevealIcon after the animation lands
         icon.enabled = false;
     }
 
@@ -29,23 +29,23 @@ public class SlotView : MonoBehaviour
     {
         if (CurrentItem == null) return;
 
+        icon.transform.DOKill(); // Stop any pending match-scales
+        icon.enabled = true;
         icon.sprite = CurrentItem.UISprite;
-        icon.enabled = true; // FORCE ENABLE
 
-        // Ensure Alpha is 1 and Scale is 1
-        icon.canvasRenderer.SetAlpha(1f);
+        // Ensure we are at full scale and visible
         icon.transform.localScale = Vector3.one;
-        icon.transform.localPosition = Vector3.zero;
+        icon.canvasRenderer.SetAlpha(1f);
 
-        // Visual feedback
-        transform.DOPunchScale(Vector3.one * 0.1f, 0.2f);
+        // Add the landing juice
+        icon.transform.DOPunchScale(Vector3.one * 0.2f, 0.2f);
     }
     public void Clear()
     {
+        // Important: Only clear if we aren't currently "Reserved" by a landing flight
+        // But for now, let's keep it simple:
         CurrentItem = null;
-        icon.sprite = null;
         icon.enabled = false;
-        icon.transform.localScale = Vector3.one;
-        icon.transform.localPosition = Vector3.zero;
+        icon.transform.DOKill();
     }
 }

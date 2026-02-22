@@ -3,25 +3,21 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System;
 using System.Collections;
+using System.Linq;
 
 public class TrayView : MonoBehaviour
 {
-    [Header("UI References")]
     [SerializeField] private SlotView slotPrefab;
     [SerializeField] private Transform slotParent;
     [SerializeField] private Image ghostIconPrefab;
-
-    [Header("Animation Settings")]
-    [SerializeField] private float flightDuration = 0.5f;
-    [SerializeField] private float cameraZOffset = 10.0f;
-    [SerializeField] private float mergeUpHeight = 100f;
-    [SerializeField] private ParticleSystem matchParticlePrefab;
-    [SerializeField] private GameData GameData;
+    [SerializeField] private GameData gameData;
+    [SerializeField] private float mergeHeight = 120f;
 
     private SlotView[] _slots;
 
     public void Initialize(int slotCount)
     {
+        // Kill existing slots if any (Cleanup)
         foreach (Transform child in slotParent) Destroy(child.gameObject);
 
         _slots = new SlotView[slotCount];
@@ -34,156 +30,111 @@ public class TrayView : MonoBehaviour
 
     private void OnEnable()
     {
-        // Listen for direct commands from SlotManager
-        GameEvents.OnRequestFlight += HandleFlightRequest;
-        GameEvents.OnRequestLeap += HandleLeapRequest;
-        GameEvents.OnRequestMatchResolve += HandleMatchRequest;
-        GameEvents.OnRequestSteppedLeap += HandleSteppedLeap;
+        GameEvents.OnRequestFlight += HandleFlight;
+        GameEvents.OnRequestSteppedLeap += (d, to, cb) => StartCoroutine(SteppedLeapRoutine(d, to, cb));
+        GameEvents.OnRequestMatchResolve += (idx, data, cb) => StartCoroutine(MatchGhostSequence(idx, data, cb));
     }
 
     private void OnDisable()
     {
-        GameEvents.OnRequestFlight -= HandleFlightRequest;
-        GameEvents.OnRequestLeap -= HandleLeapRequest;
-        GameEvents.OnRequestMatchResolve -= HandleMatchRequest;
-        GameEvents.OnRequestSteppedLeap -= HandleSteppedLeap;
+        GameEvents.OnRequestFlight -= HandleFlight;
+        // Clean up coroutine references if needed
     }
 
-    // --- 1. FLY FROM WORLD TO TRAY ---
-    private void HandleFlightRequest(ItemData data, int targetIdx, Transform source, Action onComplete)
+    private void HandleFlight(ItemData data, int targetIdx, Transform source, Action onComplete)
     {
-        if (source.TryGetComponent<Rigidbody>(out var rb)) rb.isKinematic = true;
+        // SAFETY CHECK: Line 46 fix
+        if (_slots == null || targetIdx < 0 || targetIdx >= _slots.Length)
+        {
+            Debug.LogError($"[TrayView] Target index {targetIdx} is out of bounds or _slots is null!");
+            onComplete?.Invoke();
+            return;
+        }
+
+        if (source == null) return;
         if (source.TryGetComponent<Collider>(out var col)) col.enabled = false;
 
         SlotView targetSlot = _slots[targetIdx];
         targetSlot.SetItemDataOnly(data);
 
-        // 1. Prepare Coordinates
+        // Convert UI position to World Space for the 3D item to fly to
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, targetSlot.transform.position);
-        // Depth (Z) should be roughly 5-10 units in front of the camera
         Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 8f));
 
-        // 2. Multi-Stage Animation Sequence
-        Sequence flightSeq = DOTween.Sequence();
-
-        // STAGE A: Pick Up (Move up slightly and rotate)
-        flightSeq.Append(source.DOMove(source.position + Vector3.up * 2f, GameData.FlightUpDuration).SetEase(Ease.OutQuad));
-        flightSeq.Join(source.DORotate(Vector3.zero, GameData.FlightUpDuration, RotateMode.FastBeyond360));
-        flightSeq.Join(source.DOScale(source.localScale * 1.2f, GameData.FlightUpDuration));
-
-        // STAGE B: The Toss (Move to UI Slot)
-        flightSeq.Append(source.DOMove(worldTarget, GameData.FlightToTrayDuration).SetEase(Ease.InBack));
-        flightSeq.Join(source.DOScale(Vector3.one * 0.3f, GameData.FlightToTrayDuration)); // Shrink to fit UI
-
-        // Ensure it renders on top of everything
-        if (source.TryGetComponent<Renderer>(out var rend))
-        {
-            rend.sortingLayerName = "UI";
-            rend.sortingOrder = 32767;
-        }
-
-        flightSeq.OnComplete(() =>
-        {
-            targetSlot.RevealIcon();
-            Destroy(source.gameObject);
-
-            // Tell SlotManager we are done
-            onComplete?.Invoke();
-        });
-    }
-    private void HandleLeapRequest(int from, int to, ItemData data, Action onComplete)
-    {
-        // Visual setup
-        _slots[to].SetItemDataOnly(data);
-        _slots[from].Clear();
-
-        Image ghost = Instantiate(ghostIconPrefab, transform.parent);
-        ghost.sprite = data.UISprite;
-        ghost.transform.position = _slots[from].IconTransform.position;
-
-        // Optional: Add a slight stagger based on the 'to' index 
-        // so they ripple across the tray
-        float delay = Math.Abs(to - from) * 0.02f;
-
-        ghost.transform.DOJump(_slots[to].transform.position, 50f, 1, GameData.LeapDuration)
-            // .SetDelay(delay)
-            .SetEase(Ease.OutQuad)
+        source.DOMove(worldTarget, gameData.FlightToTrayDuration)
+            .SetEase(Ease.InSine)
             .OnComplete(() =>
             {
-                _slots[to].RevealIcon();
-                Destroy(ghost.gameObject);
+                // Double check slot still holds this data (in case of rapid shifts)
+                if (targetSlot.CurrentItem == data)
+                    targetSlot.RevealIcon();
+                else
+                    RevealCorrectDataSlot(data);
+
+                Destroy(source.gameObject);
                 onComplete?.Invoke();
             });
     }
-    // --- 3. RESOLVE MATCH-3 ---
-    private void HandleMatchRequest(int startIndex, Action onComplete)
+
+    private void RevealCorrectDataSlot(ItemData data)
     {
-        StartCoroutine(MatchSequence(startIndex, onComplete));
-    }
-    private void HandleSteppedLeap(int from, int to, ItemData data, Action onComplete)
-    {
-        StartCoroutine(SteppedLeapRoutine(from, to, data, onComplete));
+        var actualSlot = _slots.FirstOrDefault(s => s.CurrentItem == data);
+        actualSlot?.RevealIcon();
     }
 
-    private IEnumerator SteppedLeapRoutine(int from, int to, ItemData data, Action onComplete)
+    private IEnumerator SteppedLeapRoutine(ItemData data, int targetIdx, Action onComplete)
     {
-        _slots[from].Clear();
+        SlotView fromSlot = _slots.FirstOrDefault(s => s.IsImageEnabled && s.CurrentItem == data);
+        if (fromSlot == null || targetIdx >= _slots.Length) { onComplete?.Invoke(); yield break; }
+
+        int startIdx = Array.IndexOf(_slots, fromSlot);
+        if (startIdx == targetIdx) { onComplete?.Invoke(); yield break; }
+
+        fromSlot.Clear();
 
         Image ghost = Instantiate(ghostIconPrefab, transform.parent);
         ghost.sprite = data.UISprite;
-        ghost.transform.position = _slots[from].transform.position;
+        ghost.transform.position = fromSlot.transform.position;
 
-        int currentIdx = from;
-        // Determine direction: +1 for Forward, -1 for Backward
-        int stepDirection = (to > from) ? 1 : -1;
+        int current = startIdx;
+        int dir = (targetIdx > startIdx) ? 1 : -1;
 
-        // Loop until we reach the 'to' index
-        while (currentIdx != to)
+        while (current != targetIdx)
         {
-            int nextIdx = currentIdx + stepDirection;
-            Vector3 targetPos = _slots[nextIdx].transform.position;
-
-            // The Step
-            yield return ghost.transform.DOJump(targetPos, 40f, 1, 0.15f)
-                .SetEase(Ease.OutQuad)
-                .WaitForCompletion();
-
-            currentIdx = nextIdx;
-
-            // Bouncy landing juice
-            ghost.transform.DOPunchScale(new Vector3(0.05f, -0.05f, 0), 0.1f);
+            current += dir;
+            yield return ghost.transform.DOJump(_slots[current].transform.position, 40f, 1, 0.12f)
+                .SetEase(Ease.OutQuad).WaitForCompletion();
         }
 
-        _slots[to].SetItemDataOnly(data);
-        _slots[to].RevealIcon();
-
+        _slots[targetIdx].SetItemDataOnly(data);
+        _slots[targetIdx].RevealIcon();
         Destroy(ghost.gameObject);
         onComplete?.Invoke();
     }
-    private IEnumerator MatchSequence(int startIdx, Action onComplete)
+
+    private IEnumerator MatchGhostSequence(int startIdx, ItemData[] data, Action onComplete)
     {
-        // The slots at startIdx, +1, and +2 are the ones to merge
-        Vector3 centerPoint = _slots[startIdx + 1].transform.position;
-        Vector3 peakPoint = centerPoint + Vector3.up * mergeUpHeight;
+        yield return new WaitForSeconds(0.05f);
 
-        Sequence mergeSeq = DOTween.Sequence();
-
+        Image[] ghosts = new Image[3];
         for (int i = 0; i < 3; i++)
         {
-            Transform icon = _slots[startIdx + i].IconTransform;
-            mergeSeq.Join(icon.DOMove(peakPoint, GameData.MergeDuration).SetEase(Ease.InBack));
-            mergeSeq.Join(icon.DOScale(Vector3.zero, GameData.MergeDuration).SetEase(Ease.InBack));
+            ghosts[i] = Instantiate(ghostIconPrefab, transform.parent);
+            ghosts[i].sprite = data[i].UISprite;
+            ghosts[i].transform.position = _slots[startIdx + i].transform.position;
+            _slots[startIdx + i].Clear();
         }
 
-        yield return mergeSeq.WaitForCompletion();
+        Vector3 peak = _slots[startIdx + 1].transform.position + Vector3.up * mergeHeight;
+        Sequence s = DOTween.Sequence();
+        foreach (var g in ghosts)
+        {
+            s.Join(g.transform.DOMove(peak, 0.4f).SetEase(Ease.InBack));
+            s.Join(g.transform.DOScale(0, 0.4f));
+        }
 
-        if (matchParticlePrefab)
-            Instantiate(matchParticlePrefab, peakPoint, Quaternion.identity);
-
-        // Wipe the 3 matched slots visually
-        for (int i = 0; i < 3; i++) _slots[startIdx + i].Clear();
-
-        // NOTIFY CONDUCTOR: Match resolved, safe to start compaction leaps
+        yield return s.WaitForCompletion();
+        foreach (var g in ghosts) if (g) Destroy(g.gameObject);
         onComplete?.Invoke();
     }
 }

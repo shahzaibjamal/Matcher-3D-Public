@@ -3,9 +3,10 @@ using UnityEngine;
 
 public static class GameEvents
 {
+    // For new items entering the tray
     public static Action<ItemData, int, Transform, Action> OnRequestFlight;
-    public static Action<int, int, ItemData, Action> OnRequestLeap;
-    public static Action<int, Action> OnRequestMatchResolve;
-    public static Action<int, ItemData> OnItemLanded; // Optional, for debug
-    public static Action<int, int, ItemData, Action> OnRequestSteppedLeap;
+    // For items shifting left/right
+    public static Action<ItemData, int, Action> OnRequestSteppedLeap;
+    // For the match-3 merge
+    public static Action<int, ItemData[], Action> OnRequestMatchResolve;
 }

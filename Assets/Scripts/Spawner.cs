@@ -117,6 +117,7 @@ public partial class Spawner : MonoBehaviour
                 Debug.Log("No items left to click.");
                 return;
             }
+            _itemClickables.RemoveAll(i => i == null || i.ItemData == null);
 
             int index = UnityEngine.Random.Range(0, _itemClickables.Count);
             var item = _itemClickables[index];
