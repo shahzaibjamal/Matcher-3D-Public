@@ -49,17 +49,18 @@ public class MenuManager : MonoBehaviour
     }
     public void OpenMenu<TView, TController, TData>(
         Menus.Type menuType,
-        TData tData,
-        Menus.MenuDisplayMode displayMode = Menus.MenuDisplayMode.ScreenReplace)
+        TData tData)
         where TView : MenuView
         where TController : MenuController<TView, TData>, new()
         where TData : MenuData
     {
         // 1. Get prefab from Registry instead of string path
-        GameObject prefab = registry.GetPrefab(menuType);
+        MenuRegistry.MenuEntry menuEntry = registry.GetMenuEntry(menuType);
 
-        if (prefab != null)
+
+        if (menuEntry.prefab != null)
         {
+            Menus.MenuDisplayMode displayMode = menuEntry.defaultMode;
             // 2. Handle previous menu only if the NEW one is a ScreenReplace
             if (_menuStack.Count > 0 && displayMode == Menus.MenuDisplayMode.ScreenReplace)
             {
@@ -71,7 +72,7 @@ public class MenuManager : MonoBehaviour
             // 3. Determine correct layer parent
             RectTransform parentLayer = GetLayer(displayMode);
 
-            GameObject menuObject = Instantiate(prefab, parentLayer);
+            GameObject menuObject = Instantiate(menuEntry.prefab, parentLayer);
             if (menuObject != null && menuObject.TryGetComponent<TView>(out TView menuView))
             {
                 // Assign the display mode to the view so GoBack knows how to handle it

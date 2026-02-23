@@ -19,15 +19,35 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         View.StartCoroutine(StartGame());
         View.RestartButton.onClick.AddListener(() =>
         {
-            // Scene currentScene = SceneManager.GetActiveScene(); // Reload it by name 
-            // SceneManager.LoadScene(currentScene.name);
             Spawner.SpawnGameSystems();
         });
+        GameEvents.OnMatchStarted += HandleMatchStarted;
+    }
+
+
+    void HandleMatchStarted(LevelData levelData)
+    {
+        foreach (var levelItemEntry in levelData.itemsToSpawn)
+        {
+            var itemData = Metadata.Instance.itemDatabase.GetItemByUID(levelItemEntry.itemUID);
+
+            ItemView itemView = GameObject.Instantiate<ItemView>(View.ItemViewPrefab, View.ItemViewParent);
+            itemView.SetItem(itemData, levelItemEntry.count);
+            GameEvents.OnRequestMatchResolve += (_, datas, _) =>
+            {
+                if (datas.Length > 0 && itemData.UID == datas[0].UID)
+                {
+                    itemView.UpdateCount(-3);
+                }
+            };
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
+        GameEvents.OnMatchStarted -= HandleMatchStarted;
+
     }
 
     IEnumerator StartGame()

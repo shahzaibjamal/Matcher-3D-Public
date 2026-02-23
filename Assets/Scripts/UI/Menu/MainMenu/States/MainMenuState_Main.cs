@@ -23,6 +23,6 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnDebugButtonClicked()
     {
-        MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug, new DebugMenuData(), Menus.MenuDisplayMode.Overlay);
+        MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug, new DebugMenuData());
     }
 }

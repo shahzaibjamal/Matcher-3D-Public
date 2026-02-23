@@ -11,7 +11,6 @@ public class TrayView : MonoBehaviour
     [SerializeField] private Transform slotParent;
     [SerializeField] private Image ghostIconPrefab;
     [SerializeField] private GameData gameData;
-    [SerializeField] private float mergeHeight = 120f;
 
     private SlotView[] _slots;
 
@@ -52,7 +51,11 @@ public class TrayView : MonoBehaviour
         }
 
         if (source == null) return;
-        if (source.TryGetComponent<Collider>(out var col)) col.enabled = false;
+        if (source.TryGetComponent<ClickableItem>(out var clickableItem))
+        {
+            clickableItem.Rigidbody.isKinematic = false;
+            clickableItem.Collider.enabled = false;
+        }
 
         SlotView targetSlot = _slots[targetIdx];
         targetSlot.SetItemDataOnly(data);
@@ -90,30 +93,39 @@ public class TrayView : MonoBehaviour
 
     private IEnumerator SteppedLeapRoutine(ItemData data, int from, int targetIdx, Action onComplete)
     {
-        // 1. Validate the source
         if (from < 0 || from >= _slots.Length) { onComplete?.Invoke(); yield break; }
 
         SlotView fromSlot = _slots[from];
 
-        // 2. IMMEDIATELY clear the old slot so no 'garbage' stays there
-        // Even if we are just starting the animation
+        // 1. Clear the visual immediately
         fromSlot.Clear();
 
-        // 3. Create Ghost
+        // 2. Setup Ghost
         Image ghost = Instantiate(ghostIconPrefab, transform.parent);
         ghost.sprite = data.UISprite;
         ghost.transform.position = fromSlot.transform.position;
 
-        // 4. Update the Target Logic Slot
-        // We tell the target slot it "owns" this data now, but keep it hidden
+        // 3. Preparation: The target slot should know it's getting this data
+        // so that if a match triggers mid-leap, the logic stays consistent.
         _slots[targetIdx].SetItemDataOnly(data);
 
-        // 5. Jump Animation
-        yield return ghost.transform.DOJump(_slots[targetIdx].transform.position, 40f, 1, gameData.LeapDuration)
-            .SetEase(Ease.OutQuad).WaitForCompletion();
+        // 4. STEPPING LOGIC
+        int currentIdx = from;
+        int direction = (targetIdx > from) ? 1 : -1;
 
-        // 6. Reveal at Destination
-        // Only reveal if the manager hasn't moved a DIFFERENT item here in the meantime
+        while (currentIdx != targetIdx)
+        {
+            currentIdx += direction;
+
+            // Jump to the NEXT neighbor slot
+            yield return ghost.transform.DOJump(_slots[currentIdx].transform.position, 40f, 1, gameData.LeapDuration)
+                .SetEase(Ease.OutQuad)
+                .WaitForCompletion();
+        }
+
+        // 5. Finalize Reveal
+        // We check UniqueId because the item might have been matched/cleared 
+        // while the Coroutine was yielding during the jumps.
         if (_slots[targetIdx].CurrentItem?.UniqueId == data.UniqueId)
         {
             _slots[targetIdx].RevealIcon();

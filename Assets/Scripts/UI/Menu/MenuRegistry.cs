@@ -14,9 +14,9 @@ public class MenuRegistry : ScriptableObject
 
     public List<MenuEntry> entries;
 
-    public GameObject GetPrefab(Menus.Type type)
+    public MenuEntry GetMenuEntry(Menus.Type type)
     {
         var entry = entries.Find(e => e.type == type);
-        return entry.prefab;
+        return entry;
     }
 }

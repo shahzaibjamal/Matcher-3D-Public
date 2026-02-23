@@ -9,4 +9,6 @@ public static class GameEvents
     // Change SteppedLeap to include the 'from' index
     public static Action<ItemData, int, int, Action> OnRequestSteppedLeap;    // For the match-3 merge
     public static Action<int, ItemData[], Action> OnRequestMatchResolve;
+    public static Action<LevelData> OnMatchStarted;
+    public static Action OnGameOver;
 }

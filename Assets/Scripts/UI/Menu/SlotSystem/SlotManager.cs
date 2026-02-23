@@ -23,8 +23,19 @@ public class SlotManager
     {
         int targetIdx = GetInsertionIndex(data);
         data.UniqueId = Guid.NewGuid().ToString(); // Assigned IMMEDIATELY
+        Debug.LogError("targetIdx " + targetIdx);
 
-        if (targetIdx >= _slots.Length) return;
+        if (targetIdx >= _slots.Length)
+        {
+            if (_isProcessingMatches)
+            {
+            }
+            else
+            {
+                Debug.LogError("GameOver");
+            }
+            return;
+        }
 
         // 1. Shift logic (Right to Left)
         for (int i = _slots.Length - 1; i > targetIdx; i--)
@@ -51,6 +62,25 @@ public class SlotManager
             await ResolveAllMatches();
             _isProcessingMatches = false;
         }
+
+        if (IsTrayFull() && FindMatch() == -1)
+        {
+            TriggerGameOver("Tray full - no more moves possible");
+        }
+    }
+    private bool IsTrayFull()
+    {
+        foreach (var slot in _slots)
+        {
+            if (slot == null) return false;
+        }
+        return true;
+    }
+
+    private void TriggerGameOver(string reason)
+    {
+        Debug.LogError($"[GAME OVER] {reason}");
+        GameEvents.OnGameOver?.Invoke(); // Fire an event to show UI
     }
     private async Task ResolveAllMatches()
     {

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GameData
   m_EditorClassIdentifier: Assembly-CSharp::GameData
   FlightUpDuration: 0.1
-  FlightToTrayDuration: 0.3
+  FlightToTrayDuration: 0.2
   LeapDuration: 0.1
-  MergeDuration: 0.3
+  MergeDuration: 0.2

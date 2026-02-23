@@ -82,19 +82,24 @@ public partial class Spawner : MonoBehaviour
 
         LevelData level = Metadata.Instance.levelDatabase.GetLevelByUID(levelUID);
         if (level == null) return;
+        GameEvents.OnMatchStarted?.Invoke(level);
 
         foreach (var entry in level.itemsToSpawn)
         {
             ItemData item = Metadata.Instance.itemDatabase.GetItemByUID(entry.itemUID);
             for (int i = 0; i < entry.count; i++)
             {
-                // Toss items inside the generated bounds
                 float x = UnityEngine.Random.Range(-_spawnXMax + 0.5f, _spawnXMax - 0.5f);
                 float z = UnityEngine.Random.Range(-_spawnZMax + 0.5f, _spawnZMax - 0.5f);
 
-                Vector3 spawnPos = Parent.position + new Vector3(x, VerticalOffset, z);
-                GameObject go = Instantiate(item.Prefab, spawnPos, Quaternion.identity, Parent);
+                // FIX 1: Randomize Height (Y) so they aren't all in one layer
+                float randomHeight = VerticalOffset + UnityEngine.Random.Range(0f, 5.0f);
 
+                // FIX 2: Randomize Rotation so they don't land perfectly flat and stack weirdly
+                Quaternion randomRot = UnityEngine.Random.rotation;
+
+                Vector3 spawnPos = Parent.position + new Vector3(x, randomHeight, z);
+                GameObject go = Instantiate(item.Prefab, spawnPos, randomRot, Parent);
                 // Setup Clickable logic...
                 ClickableItem clickable = go.GetComponent<ClickableItem>();
                 if (clickable != null)

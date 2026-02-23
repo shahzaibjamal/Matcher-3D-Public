@@ -22,6 +22,8 @@ MonoBehaviour:
       count: 9
     - itemUID: beer
       count: 12
+    - itemUID: potion_1
+      count: 6
     itemsToCollect:
     - cog_1
     - heart
