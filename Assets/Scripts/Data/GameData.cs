@@ -9,5 +9,4 @@ public class GameData : ScriptableObject
     public float FlightToTrayDuration;
     public float LeapDuration;
     public float MergeDuration;
-
 }

@@ -29,14 +29,14 @@ public class TrayView : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnRequestFlight += HandleFlight;
-        GameEvents.OnRequestSteppedLeap += (d, from, to, cb) => StartCoroutine(SteppedLeapRoutine(d, from, to, cb));
-        GameEvents.OnRequestMatchResolve += (idx, data, cb) => StartCoroutine(MatchGhostSequence(idx, data, cb));
+        GameEvents.OnRequestFlightEvent += HandleFlight;
+        GameEvents.OnRequestSteppedLeapEvent += (d, from, to, cb) => StartCoroutine(SteppedLeapRoutine(d, from, to, cb));
+        GameEvents.OnRequestMatchResolveEvent += (idx, data, cb) => StartCoroutine(MatchGhostSequence(idx, data, cb));
     }
 
     private void OnDisable()
     {
-        GameEvents.OnRequestFlight -= HandleFlight;
+        GameEvents.OnRequestFlightEvent -= HandleFlight;
         // Clean up coroutine references if needed
     }
 
@@ -76,7 +76,7 @@ public class TrayView : MonoBehaviour
         {
             // Double check slot still holds this data (in case of rapid shifts)
             if (targetSlot.CurrentItem == data)
-                targetSlot.RevealIcon();
+                targetSlot.RevealIcon(true);
             else
                 RevealCorrectDataSlot(data);
 

@@ -8,11 +8,11 @@ public static class Menus
         Settings = 3,
         Inventory = 4,
         PlayerInfo = 5,
-
         Game = 6,
-
         ConfirmationPopup = 7,
-        Debug = 8
+        Debug = 8,
+        Pause = 9,
+
     }
     public enum MenuDisplayMode
     {

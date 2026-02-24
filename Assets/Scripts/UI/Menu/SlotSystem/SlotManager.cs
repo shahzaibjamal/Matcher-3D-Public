@@ -18,7 +18,14 @@ public class SlotManager
 
         // Subscribe fresh
         Scheduler.Instance.SubscribeGUI(OnGUI);
+        // GameEvents.OnGameOver += GameOver;
     }
+
+    public void Reset()
+    {
+
+    }
+
     public async void AddItem(ItemData data, Transform source)
     {
         int targetIdx = GetInsertionIndex(data);
@@ -33,6 +40,7 @@ public class SlotManager
             else
             {
                 Debug.LogError("GameOver");
+                TriggerGameOver("", false);
             }
             return;
         }
@@ -47,7 +55,7 @@ public class SlotManager
                 _slots[i - 1] = null; // CRITICAL: Clear the old logic slot immediately
 
                 // We don't await this; we let the View queue the animation
-                GameEvents.OnRequestSteppedLeap?.Invoke(itemToMove, i - 1, i, null);
+                GameEvents.OnRequestSteppedLeapEvent?.Invoke(itemToMove, i - 1, i, null);
             }
         }
 
@@ -65,7 +73,7 @@ public class SlotManager
 
         if (IsTrayFull() && FindMatch() == -1)
         {
-            TriggerGameOver("Tray full - no more moves possible");
+            TriggerGameOver("Tray full - no more moves possible", false);
         }
     }
     private bool IsTrayFull()
@@ -77,10 +85,11 @@ public class SlotManager
         return true;
     }
 
-    private void TriggerGameOver(string reason)
+    private void TriggerGameOver(string reason, bool win)
     {
         Debug.LogError($"[GAME OVER] {reason}");
-        GameEvents.OnGameOver?.Invoke(); // Fire an event to show UI
+        GameEvents.OnGameOverEvent?.Invoke(win); // Fire an event to show UI
+
     }
     private async Task ResolveAllMatches()
     {
@@ -114,19 +123,19 @@ public class SlotManager
     private Task ExecuteFlight(ItemData d, int idx, Transform s)
     {
         var tcs = new TaskCompletionSource<bool>();
-        GameEvents.OnRequestFlight?.Invoke(d, idx, s, () => tcs.SetResult(true));
+        GameEvents.OnRequestFlightEvent?.Invoke(d, idx, s, () => tcs.SetResult(true));
         return tcs.Task;
     }
     private Task ExecuteSteppedLeap(ItemData d, int from, int to)
     {
         var tcs = new TaskCompletionSource<bool>();
-        GameEvents.OnRequestSteppedLeap?.Invoke(d, from, to, () => tcs.SetResult(true));
+        GameEvents.OnRequestSteppedLeapEvent?.Invoke(d, from, to, () => tcs.SetResult(true));
         return tcs.Task;
     }
     private Task ExecuteMatch(int start, ItemData[] data)
     {
         var tcs = new TaskCompletionSource<bool>();
-        GameEvents.OnRequestMatchResolve?.Invoke(start, data, () => tcs.SetResult(true));
+        GameEvents.OnRequestMatchResolveEvent?.Invoke(start, data, () => tcs.SetResult(true));
         return tcs.Task;
     }
 
@@ -148,6 +157,7 @@ public class SlotManager
         }
         return -1;
     }
+
 
     private void OnGUI()
     {

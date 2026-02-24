@@ -46,28 +46,51 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
 
         foreach (var entry in _currentLevel.itemsToSpawn)
         {
-            var debugItemRow = CreateDebugItemRow(entry.itemUID, entry.count);
-            if (debugItemRow != null)
+            // var debugItemRow = CreateDebugItemRow(entry.itemUID, entry.count);
+            CreateDebugItemRow(entry.itemUID, entry.count, (val) =>
             {
-                debugItemRow.Quantity.onEndEdit.AddListener(val =>
-                {
-                    if (int.TryParse(val, out int newCount))
-                        entry.count = newCount;
-                });
-            }
+                entry.count = (int)val;
+            });
+            // if (debugItemRow != null)
+            // {
+            //     debugItemRow.Quantity.onEndEdit.AddListener(val =>
+            //     {
+            //         if (int.TryParse(val, out int newCount))
+            //             entry.count = newCount;
+            //     });
+            // }
         }
     }
 
     private void LoadGameData()
     {
-        CreateDebugItemRow("LeapDuration", View.GameData.LeapDuration);
-        CreateDebugItemRow("MergeDuration", View.GameData.MergeDuration);
-        CreateDebugItemRow("FlightUpDuration", View.GameData.FlightUpDuration);
-        CreateDebugItemRow("FlightToTrayDuration", View.GameData.FlightToTrayDuration);
+        CreateDebugItemRow("LeapDuration", View.GameData.LeapDuration,
+            (val) => View.GameData.LeapDuration = val);
+
+        CreateDebugItemRow("MergeDuration", View.GameData.MergeDuration,
+            (val) => View.GameData.MergeDuration = val);
+
+        CreateDebugItemRow("FlightUpDuration", View.GameData.FlightUpDuration,
+            (val) => View.GameData.FlightUpDuration = val);
+
+        CreateDebugItemRow("FlightToTrayDuration", View.GameData.FlightToTrayDuration,
+            (val) => View.GameData.FlightToTrayDuration = val);
 
     }
+    // private DebugItemRow CreateDebugItemRow(string uid, float quantity)
+    // {
+    //     GameObject row = GameObject.Instantiate(View.ItemRowPrefab, View.ItemsParent);
+    //     var debugItemRow = row.GetComponent<DebugItemRow>();
 
-    private DebugItemRow CreateDebugItemRow(string uid, float quantity)
+    //     if (debugItemRow != null)
+    //     {
+    //         debugItemRow.Uid.text = uid;
+    //         debugItemRow.Quantity.text = quantity.ToString();
+    //     }
+    //     return debugItemRow;
+    // }
+
+    private DebugItemRow CreateDebugItemRow(string uid, float initialValue, System.Action<float> onValueChanged)
     {
         GameObject row = GameObject.Instantiate(View.ItemRowPrefab, View.ItemsParent);
         var debugItemRow = row.GetComponent<DebugItemRow>();
@@ -75,7 +98,17 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
         if (debugItemRow != null)
         {
             debugItemRow.Uid.text = uid;
-            debugItemRow.Quantity.text = quantity.ToString();
+            debugItemRow.Quantity.text = initialValue.ToString();
+
+            // Clear existing listeners to avoid double-firing
+            debugItemRow.Quantity.onEndEdit.RemoveAllListeners();
+            debugItemRow.Quantity.onEndEdit.AddListener(val =>
+            {
+                if (float.TryParse(val, out float newValue))
+                {
+                    onValueChanged?.Invoke(newValue);
+                }
+            });
         }
         return debugItemRow;
     }

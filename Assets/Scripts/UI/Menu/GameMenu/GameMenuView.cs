@@ -7,5 +7,5 @@ public class GameMenuView : MenuView
     public ItemView ItemViewPrefab;
     public TrayView TrayView;
 
-    public Button RestartButton;
+    public Button PauseButton;
 }

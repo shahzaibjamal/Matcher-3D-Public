@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class GameMenuBaseState_Main : GameMenuBaseState
 {
-    private Dictionary<string, ItemView> itemViews = new Dictionary<string, ItemView>();
-
-
+    // private Dictionary<string, ItemView> itemViews = new Dictionary<string, ItemView>();
+    private List<ItemView> activeItemViews = new List<ItemView>();
+    private List<Action<int, ItemData[], Action>> activeResolvers = new List<Action<int, ItemData[], Action>>();
+    private Dictionary<string, int> collectionGoals = new Dictionary<string, int>();
     public GameMenuBaseState_Main(GameMenuController controller) : base(controller)
     {
     }
@@ -17,42 +19,147 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         base.Enter();
 
         View.StartCoroutine(StartGame());
-        View.RestartButton.onClick.AddListener(() =>
-        {
-            Spawner.SpawnGameSystems();
-        });
-        GameEvents.OnMatchStarted += HandleMatchStarted;
+        View.PauseButton.onClick.AddListener(OnPauseButtonClicked);
+        GameEvents.OnMatchStartedEvent += HandleMatchStarted;
+        GameEvents.OnGameOverEvent += HandleGameOver;
     }
-
 
     void HandleMatchStarted(LevelData levelData)
     {
-        foreach (var levelItemEntry in levelData.itemsToSpawn)
-        {
-            var itemData = Metadata.Instance.itemDatabase.GetItemByUID(levelItemEntry.itemUID);
+        ClearExistingItems();
+        collectionGoals.Clear();
 
+        // 1. Loop through everything the level intends to spawn
+        foreach (var spawnEntry in levelData.itemsToSpawn)
+        {
+            // 2. CHECK: Is this item actually supposed to be a "Collection Goal"?
+            // We look for the UID in the itemsToCollect list
+            bool isGoal = levelData.itemsToCollect.Exists(c => c == spawnEntry.itemUID);
+
+            if (!isGoal) continue; // If it's not a goal, don't create a UI element for it
+
+            // 3. Since it IS a goal, get the metadata and the count from spawnEntry
+            var itemData = Metadata.Instance.itemDatabase.GetItemByUID(spawnEntry.itemUID);
+            int targetCount = spawnEntry.count;
+
+            // 4. Instantiate the View
             ItemView itemView = GameObject.Instantiate<ItemView>(View.ItemViewPrefab, View.ItemViewParent);
-            itemView.SetItem(itemData, levelItemEntry.count);
-            GameEvents.OnRequestMatchResolve += (_, datas, _) =>
+            itemView.SetItem(itemData, targetCount);
+            activeItemViews.Add(itemView);
+
+            // 5. Track the goal
+            collectionGoals[itemData.UID] = targetCount;
+            ItemView currentView = itemView;
+
+            Action<int, ItemData[], Action> resolver = (_, datas, _) =>
             {
-                if (datas.Length > 0 && itemData.UID == datas[0].UID)
+                if (currentView != null && datas.Length > 0 && itemData.UID == datas[0].UID)
                 {
-                    itemView.UpdateCount(-3);
+                    currentView.UpdateCount(-3);
+
+                    if (collectionGoals.ContainsKey(itemData.UID))
+                    {
+                        collectionGoals[itemData.UID] -= 3;
+
+                        if (collectionGoals[itemData.UID] <= 0)
+                        {
+                            RemoveItemView(currentView);
+                        }
+
+                        CheckWinCondition();
+                    }
                 }
             };
+
+            GameEvents.OnRequestMatchResolveEvent += resolver;
+            activeResolvers.Add(resolver);
         }
+    }
+    private void RemoveItemView(ItemView view)
+    {
+        if (view == null) return;
+
+        // Remove from our tracking list so ClearExistingItems doesn't try to destroy it again
+        if (activeItemViews.Contains(view))
+        {
+            activeItemViews.Remove(view);
+        }
+
+        // Optionally: Play a "Goal Reached" sound or particle effect here
+        GameObject.Destroy(view.gameObject);
+    }
+    private void CheckWinCondition()
+    {
+        // If all values in the dictionary are 0 or less, the player wins
+        bool allCollected = true;
+        foreach (var remaining in collectionGoals.Values)
+        {
+            if (remaining > 0)
+            {
+                allCollected = false;
+                break;
+            }
+        }
+
+        if (allCollected)
+        {
+            // Trigger GameOver with win = true
+            // We use a small delay or check to ensure UI finishes animating
+            GameEvents.OnGameOverEvent?.Invoke(true);
+        }
+    }
+    private void ClearExistingItems()
+    {
+        Debug.Log("Cleaning up items...");
+
+        // 1. Unsubscribe from the static event first
+        // Use a for-loop to avoid "Collection Modified" errors if necessary
+        if (activeResolvers != null)
+        {
+            foreach (var resolver in activeResolvers)
+            {
+                GameEvents.OnRequestMatchResolveEvent -= resolver;
+            }
+            activeResolvers.Clear();
+        }
+
+        // 2. Destroy the GameObjects
+        if (activeItemViews != null)
+        {
+            foreach (var view in activeItemViews)
+            {
+                if (view != null)
+                {
+                    GameObject.Destroy(view.gameObject);
+                }
+            }
+            activeItemViews.Clear();
+        }
+    }
+
+    private void HandleGameOver(bool win)
+    {
+        MenuManager.Instance.GoBack();
+
+        // show victory/los screen
     }
 
     public override void Exit()
     {
         base.Exit();
-        GameEvents.OnMatchStarted -= HandleMatchStarted;
-
+        GameEvents.OnMatchStartedEvent -= HandleMatchStarted;
+        GameEvents.OnGameOverEvent -= HandleGameOver;
+        View.PauseButton.onClick.RemoveListener(OnPauseButtonClicked);
     }
 
     IEnumerator StartGame()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return null;
         Controller.StartGame();
+    }
+
+    private void OnPauseButtonClicked()
+    {
+        MenuManager.Instance.OpenMenu<PauseMenuView, PauseMenuController, PauseMenuData>(Menus.Type.Pause);
     }
 }

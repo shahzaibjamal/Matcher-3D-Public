@@ -82,7 +82,7 @@ public partial class Spawner : MonoBehaviour
 
         LevelData level = Metadata.Instance.levelDatabase.GetLevelByUID(levelUID);
         if (level == null) return;
-        GameEvents.OnMatchStarted?.Invoke(level);
+        GameEvents.OnMatchStartedEvent?.Invoke(level);
 
         foreach (var entry in level.itemsToSpawn)
         {

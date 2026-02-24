@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class SlotView : MonoBehaviour
 {
     [SerializeField] private Image icon;
+    [SerializeField] private Image _backgroundImage;
 
     public ItemData CurrentItem { get; private set; }
     public bool IsImageEnabled => icon.enabled;
@@ -26,7 +27,7 @@ public class SlotView : MonoBehaviour
         icon.enabled = false;
     }
 
-    public void RevealIcon()
+    public void RevealIcon(bool impact = false)
     {
         if (CurrentItem == null) return;
 
@@ -40,11 +41,26 @@ public class SlotView : MonoBehaviour
 
         // Add the landing juice
         icon.transform.DOPunchScale(Vector3.one * 0.2f, 0.2f);
+
+        if (impact)
+        {
+            RectTransform rect = _backgroundImage.rectTransform;
+            Sequence impactSeq = DOTween.Sequence();
+
+            Vector3 originalPos = rect.localPosition;
+            // 1. The Slam: Move down quickly with a heavy ease
+            impactSeq.Append(transform.DOLocalMoveY(originalPos.y - 20f, 0.1f)
+                .SetEase(Ease.InQuad));
+            // 2. The Rebound: Use a Punch or Shake to simulate the weight settling
+            // This moves it back to originalPos while vibrating
+            impactSeq.Append(transform.DOPunchPosition(new Vector3(0, 20f * 0.8f, 0), 0.4f, 5, 0.5f));
+
+            // Ensure it ends exactly where it started
+            impactSeq.OnComplete(() => rect.localPosition = originalPos);
+        }
     }
     public void Clear()
     {
-        // Important: Only clear if we aren't currently "Reserved" by a landing flight
-        // But for now, let's keep it simple:
         CurrentItem = null;
         icon.enabled = false;
         icon.transform.DOKill();

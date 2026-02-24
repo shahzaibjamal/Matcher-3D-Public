@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using TS.LocalizationSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,10 +13,10 @@ public class GameManager : MonoBehaviour
     private SlotManager _slotManager;
 
     const int SLOT_COUNT = 7;
+    public GameSaveData SaveData { get; private set; }
 
     // Events for other systems to subscribe to
     public static event Action OnGameStarted;
-    public static event Action OnGameOver;
 
     private void Awake()
     {
@@ -28,19 +29,24 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        LocaleManager.SetDefaultLocale();
     }
 
     private void Start()
     {
+        SaveData = SaveSystem.Load();
+        LevelManager.Instance.Initialize(SaveData);
+
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = -1; // -1 means "unlimited"
 
 
         MainMenuController.OnStartButtonClicked += StartGame;
-        GameMenuController.OnGameStarted += SpawnGameSystems;
+        GameEvents.OnGameInitializedEvent += SpawnGameSystems;
+        GameEvents.OnGameOverEvent += TriggerGameOver;
 
         _slotManager = new SlotManager(SLOT_COUNT);
-
 
         // 1. Launch the Main Menu on Startup
         MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(
@@ -80,22 +86,19 @@ public class GameManager : MonoBehaviour
             });
         }
     }
-    public void TriggerGameOver()
+    public void TriggerGameOver(bool won)
     {
-        Debug.Log("Game Manager: Game Over!");
+        Debug.Log("Game Manager: Game Over!" + (won ? " You won " : " You lost"));
+        SaveGame();
 
         // Cleanup spawner if necessary
-        if (activeSpawner != null) Destroy(activeSpawner);
-
-        OnGameOver?.Invoke();
+        if (activeSpawner != null) Destroy(activeSpawner.gameObject);
     }
 
+    public void SaveGame()
+    {
+        SaveSystem.Save(SaveData);
+    }
     #endregion
 
-    [ContextMenu("Restart")]
-    public void Restart()
-    {
-        DestroyImmediate(activeSpawner);
-        SpawnGameSystems();
-    }
 }

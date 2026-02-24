@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,7 +50,7 @@ public class MenuManager : MonoBehaviour
     }
     public void OpenMenu<TView, TController, TData>(
         Menus.Type menuType,
-        TData tData)
+        TData tData = null)
         where TView : MenuView
         where TController : MenuController<TView, TData>, new()
         where TData : MenuData
@@ -57,9 +58,19 @@ public class MenuManager : MonoBehaviour
         // 1. Get prefab from Registry instead of string path
         MenuRegistry.MenuEntry menuEntry = registry.GetMenuEntry(menuType);
 
-
         if (menuEntry.prefab != null)
         {
+            MenuSession existingSession = _menuStack.FirstOrDefault(s => s.View is TView);
+
+            if (existingSession.View != null)
+            {
+                // Pop until the existing menu is at the top
+                while (_menuStack.Peek().View != existingSession.View)
+                {
+                    GoBack();
+                }
+                return; // We are now back at the original instance
+            }
             Menus.MenuDisplayMode displayMode = menuEntry.defaultMode;
             // 2. Handle previous menu only if the NEW one is a ScreenReplace
             if (_menuStack.Count > 0 && displayMode == Menus.MenuDisplayMode.ScreenReplace)
