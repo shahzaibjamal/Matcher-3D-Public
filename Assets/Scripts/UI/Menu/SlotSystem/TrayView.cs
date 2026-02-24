@@ -27,17 +27,49 @@ public class TrayView : MonoBehaviour
         }
     }
 
+    // private void OnEnable()
+    // {
+    //     GameEvents.OnRequestFlightEvent += HandleFlight;
+    //     GameEvents.OnRequestSteppedLeapEvent += (d, from, to, cb) => StartCoroutine(SteppedLeapRoutine(d, from, to, cb));
+    //     GameEvents.OnRequestMatchResolveEvent += (idx, data, cb) => StartCoroutine(MatchGhostSequence(idx, data, cb));
+    // }
+
+    // private void OnDisable()
+    // {
+    //     GameEvents.OnRequestFlightEvent -= HandleFlight;
+    //     // Clean up coroutine references if needed
+    //     GameEvents.OnRequestSteppedLeapEvent -= (d, from, to, cb) => StartCoroutine(SteppedLeapRoutine(d, from, to, cb));
+    //     GameEvents.OnRequestMatchResolveEvent -= (idx, data, cb) => StartCoroutine(MatchGhostSequence(idx, data, cb));
+    // }
+
     private void OnEnable()
     {
         GameEvents.OnRequestFlightEvent += HandleFlight;
-        GameEvents.OnRequestSteppedLeapEvent += (d, from, to, cb) => StartCoroutine(SteppedLeapRoutine(d, from, to, cb));
-        GameEvents.OnRequestMatchResolveEvent += (idx, data, cb) => StartCoroutine(MatchGhostSequence(idx, data, cb));
+        // USE NAMED METHODS HERE
+        GameEvents.OnRequestSteppedLeapEvent += HandleSteppedLeapRequest;
+        GameEvents.OnRequestMatchResolveEvent += HandleMatchResolveRequest;
     }
 
     private void OnDisable()
     {
         GameEvents.OnRequestFlightEvent -= HandleFlight;
-        // Clean up coroutine references if needed
+        // NOW THESE WILL ACTUALLY UNSUBSCRIBE
+        GameEvents.OnRequestSteppedLeapEvent -= HandleSteppedLeapRequest;
+        GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolveRequest;
+    }
+
+    // Wrapper methods to bridge the Event to the Coroutine
+    private void HandleSteppedLeapRequest(ItemData d, int from, int to, Action cb)
+    {
+        // Safety check: Unity objects can be "fake null" when destroyed
+        if (this == null) return;
+        StartCoroutine(SteppedLeapRoutine(d, from, to, cb));
+    }
+
+    private void HandleMatchResolveRequest(int idx, ItemData[] data, Action cb)
+    {
+        if (this == null) return;
+        StartCoroutine(MatchGhostSequence(idx, data, cb));
     }
 
     private void HandleFlight(ItemData data, int targetIdx, Transform source, Action onComplete)

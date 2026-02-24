@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
         MainMenuController.OnStartButtonClicked += StartGame;
         GameEvents.OnGameInitializedEvent += SpawnGameSystems;
         GameEvents.OnGameOverEvent += TriggerGameOver;
+        GameEvents.OnLevelRestartEvent += RestartLevel;
 
         _slotManager = new SlotManager(SLOT_COUNT);
 
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
             {
                 _slotManager.AddItem(itemData, sourceTransform);
             });
+            _slotManager.Reset();
         }
     }
     public void TriggerGameOver(bool won)
@@ -98,6 +100,16 @@ public class GameManager : MonoBehaviour
     public void SaveGame()
     {
         SaveSystem.Save(SaveData);
+    }
+
+    private void RestartLevel()
+    {
+        if (activeSpawner != null)
+        {
+            Destroy(activeSpawner.gameObject);
+        }
+        activeSpawner = null;
+        SpawnGameSystems();
     }
     #endregion
 

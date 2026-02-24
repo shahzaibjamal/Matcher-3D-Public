@@ -21,6 +21,7 @@ public class GameMenuController : MenuController<GameMenuView, GameMenuData>
 
     public override void OnResume()
     {
+        CurrentState.Enter();
     }
 
     public void StartGame()

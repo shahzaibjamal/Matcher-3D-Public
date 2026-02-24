@@ -7,23 +7,28 @@ public class SlotManager
 {
     private readonly ItemData[] _slots;
     private bool _isProcessingMatches;
-
+    private bool _allGoalsReached;
     public SlotManager(int size)
     {
-        // Clear old subscription if any
-        Scheduler.Instance.UnsubscribeGUI(OnGUI);
-
-        // Reset slots
         _slots = new ItemData[size];
-
-        // Subscribe fresh
-        Scheduler.Instance.SubscribeGUI(OnGUI);
-        // GameEvents.OnGameOver += GameOver;
     }
 
     public void Reset()
     {
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            _slots[i] = null;
+        }
+        Scheduler.Instance.UnsubscribeGUI(OnGUI);
+        Scheduler.Instance.SubscribeGUI(OnGUI);
+        GameEvents.OnItemsCollectedEvent -= OnItemsCollected;
+        GameEvents.OnItemsCollectedEvent += OnItemsCollected;
+        _allGoalsReached = false;
+    }
 
+    private void OnItemsCollected()
+    {
+        _allGoalsReached = true;
     }
 
     public async void AddItem(ItemData data, Transform source)
@@ -71,6 +76,11 @@ public class SlotManager
             _isProcessingMatches = false;
         }
 
+        if (_allGoalsReached)
+        {
+            TriggerGameOver("All items collected", true);
+            return; // Stop here, don't check for Tray Full
+        }
         if (IsTrayFull() && FindMatch() == -1)
         {
             TriggerGameOver("Tray full - no more moves possible", false);
@@ -89,7 +99,6 @@ public class SlotManager
     {
         Debug.LogError($"[GAME OVER] {reason}");
         GameEvents.OnGameOverEvent?.Invoke(win); // Fire an event to show UI
-
     }
     private async Task ResolveAllMatches()
     {

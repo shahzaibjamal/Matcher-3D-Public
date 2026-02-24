@@ -38,7 +38,7 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
 
     private void OnRestarButton()
     {
-        Spawner.SpawnGameSystems();
+        GameEvents.OnLevelRestartEvent?.Invoke();
         OnResumeButtonClicked();
     }
 }

@@ -23,7 +23,14 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         GameEvents.OnMatchStartedEvent += HandleMatchStarted;
         GameEvents.OnGameOverEvent += HandleGameOver;
     }
-
+    public override void Exit()
+    {
+        base.Exit();
+        ClearExistingItems();
+        GameEvents.OnMatchStartedEvent -= HandleMatchStarted;
+        GameEvents.OnGameOverEvent -= HandleGameOver;
+        View.PauseButton.onClick.RemoveListener(OnPauseButtonClicked);
+    }
     void HandleMatchStarted(LevelData levelData)
     {
         ClearExistingItems();
@@ -105,51 +112,34 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         {
             // Trigger GameOver with win = true
             // We use a small delay or check to ensure UI finishes animating
-            GameEvents.OnGameOverEvent?.Invoke(true);
+            // GameEvents.OnGameOverEvent?.Invoke(true);
+            GameEvents.OnItemsCollectedEvent?.Invoke();
         }
     }
     private void ClearExistingItems()
     {
-        Debug.Log("Cleaning up items...");
-
-        // 1. Unsubscribe from the static event first
-        // Use a for-loop to avoid "Collection Modified" errors if necessary
-        if (activeResolvers != null)
+        if (activeResolvers.Count > 0)
         {
-            foreach (var resolver in activeResolvers)
+            // Copy to array to avoid "Collection Modified" during unsubscription
+            var resolversToClear = activeResolvers.ToArray();
+            foreach (var resolver in resolversToClear)
             {
                 GameEvents.OnRequestMatchResolveEvent -= resolver;
             }
             activeResolvers.Clear();
         }
 
-        // 2. Destroy the GameObjects
-        if (activeItemViews != null)
+        foreach (var view in activeItemViews)
         {
-            foreach (var view in activeItemViews)
-            {
-                if (view != null)
-                {
-                    GameObject.Destroy(view.gameObject);
-                }
-            }
-            activeItemViews.Clear();
+            if (view != null) GameObject.Destroy(view.gameObject);
         }
+        activeItemViews.Clear();
     }
-
     private void HandleGameOver(bool win)
     {
         MenuManager.Instance.GoBack();
 
         // show victory/los screen
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-        GameEvents.OnMatchStartedEvent -= HandleMatchStarted;
-        GameEvents.OnGameOverEvent -= HandleGameOver;
-        View.PauseButton.onClick.RemoveListener(OnPauseButtonClicked);
     }
 
     IEnumerator StartGame()

@@ -5,7 +5,7 @@ public abstract class MenuController<TView, TData> : IMenuController
     public TView View { get; private set; }
     public TData Data { get; private set; }
 
-    private IMenuState _currentState;
+    public IMenuState CurrentState { get; private set; }
 
     public void Bind(TView view, TData data)
     {
@@ -15,17 +15,17 @@ public abstract class MenuController<TView, TData> : IMenuController
 
     public void SetState(IMenuState newState)
     {
-        _currentState?.Exit();
-        _currentState = newState;
-        _currentState?.Enter();
+        CurrentState?.Exit();
+        CurrentState = newState;
+        CurrentState?.Enter();
     }
 
     public abstract void OnEnter();
 
     public virtual void OnExit()
     {
-        _currentState?.Exit();
-        _currentState = null;
+        CurrentState?.Exit();
+        CurrentState = null;
     }
 
     public abstract void OnPause();
