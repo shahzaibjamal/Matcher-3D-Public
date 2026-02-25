@@ -26,22 +26,6 @@ public class TrayView : MonoBehaviour
             _slots[i].SetIndex(i);
         }
     }
-
-    // private void OnEnable()
-    // {
-    //     GameEvents.OnRequestFlightEvent += HandleFlight;
-    //     GameEvents.OnRequestSteppedLeapEvent += (d, from, to, cb) => StartCoroutine(SteppedLeapRoutine(d, from, to, cb));
-    //     GameEvents.OnRequestMatchResolveEvent += (idx, data, cb) => StartCoroutine(MatchGhostSequence(idx, data, cb));
-    // }
-
-    // private void OnDisable()
-    // {
-    //     GameEvents.OnRequestFlightEvent -= HandleFlight;
-    //     // Clean up coroutine references if needed
-    //     GameEvents.OnRequestSteppedLeapEvent -= (d, from, to, cb) => StartCoroutine(SteppedLeapRoutine(d, from, to, cb));
-    //     GameEvents.OnRequestMatchResolveEvent -= (idx, data, cb) => StartCoroutine(MatchGhostSequence(idx, data, cb));
-    // }
-
     private void OnEnable()
     {
         GameEvents.OnRequestFlightEvent += HandleFlight;
@@ -168,7 +152,7 @@ public class TrayView : MonoBehaviour
     }
     private IEnumerator MatchGhostSequence(int startIdx, ItemData[] data, Action onComplete)
     {
-        yield return new WaitForSeconds(0.05f);
+        yield return null;
 
         Image[] ghosts = new Image[3];
         for (int i = 0; i < 3; i++)
@@ -179,18 +163,38 @@ public class TrayView : MonoBehaviour
             _slots[startIdx + i].Clear();
         }
 
-        Vector3 centerPoint = _slots[startIdx + 1].transform.position;
-        Vector3 peakPoint = centerPoint + Vector3.up * 100;
-        Sequence mergeSeq = DOTween.Sequence();
+        Vector3 up = new Vector3(0, 40f, 0);
+        // Center slot position
+        Vector3 centerSlotPos = _slots[startIdx + 1].transform.position + up;
+
+        Sequence mainSeq = DOTween.Sequence();
+
+        // --- STAGE 1: Lift all three slightly ---
         foreach (var g in ghosts)
         {
-            Transform icon = g.transform;
-            mergeSeq.Join(icon.DOMove(peakPoint, gameData.MergeDuration).SetEase(Ease.InBack));
-            mergeSeq.Join(icon.DOScale(Vector3.zero, gameData.MergeDuration).SetEase(Ease.InBack));
+            mainSeq.Join(g.transform.DOMoveY(g.transform.position.y + up.y, 0.15f).SetEase(Ease.OutQuint));
         }
 
-        yield return mergeSeq.WaitForCompletion();
+        // --- STAGE 2: Merge 1st and 3rd into 2nd ---
+        // Ghosts[0] and Ghosts[2] move toward Ghosts[1] with elastic bounce
+        mainSeq.Append(ghosts[0].transform.DOMove(centerSlotPos, 0.4f).SetEase(Ease.InOutElastic));
+        mainSeq.Join(ghosts[2].transform.DOMove(centerSlotPos, 0.4f).SetEase(Ease.InOutElastic));
+
+        // Optionally shrink them as they merge
+        mainSeq.Join(ghosts[0].transform.DOScale(Vector3.zero, 0.4f).SetEase(Ease.InQuad));
+        mainSeq.Join(ghosts[2].transform.DOScale(Vector3.zero, 0.4f).SetEase(Ease.InQuad));
+
+        // --- STAGE 3: Impact shake when they collide ---
+        mainSeq.InsertCallback(0.4f, () =>
+        {
+            transform.DOPunchPosition(Vector3.down * 15f, 0.3f, 15, 0.5f);
+            // ParticleManager.Instance.Play("MergePoof", centerSlotPos);
+        });
+
+        yield return mainSeq.WaitForCompletion();
+
         foreach (var g in ghosts) if (g) Destroy(g.gameObject);
         onComplete?.Invoke();
     }
+
 }

@@ -53,7 +53,7 @@ public class SlotView : MonoBehaviour
                 .SetEase(Ease.InQuad));
             // 2. The Rebound: Use a Punch or Shake to simulate the weight settling
             // This moves it back to originalPos while vibrating
-            impactSeq.Append(transform.DOPunchPosition(new Vector3(0, 20f * 0.8f, 0), 0.4f, 5, 0.5f));
+            impactSeq.Append(transform.DOPunchPosition(new Vector3(0, 20f * 0.8f, 0), 0.4f, 8, 0.5f));
 
             // Ensure it ends exactly where it started
             impactSeq.OnComplete(() => rect.localPosition = originalPos);

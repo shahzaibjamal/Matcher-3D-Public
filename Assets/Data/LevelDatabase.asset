@@ -17,9 +17,9 @@ MonoBehaviour:
     levelName: Level 1
     itemsToSpawn:
     - itemUID: cog_1
-      count: 12
+      count: 3
     - itemUID: heart
-      count: 9
+      count: 3
     - itemUID: beer
       count: 12
     - itemUID: potion_1

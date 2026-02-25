@@ -35,7 +35,6 @@ public class SlotManager
     {
         int targetIdx = GetInsertionIndex(data);
         data.UniqueId = Guid.NewGuid().ToString(); // Assigned IMMEDIATELY
-        Debug.LogError("targetIdx " + targetIdx);
 
         if (targetIdx >= _slots.Length)
         {
@@ -44,8 +43,7 @@ public class SlotManager
             }
             else
             {
-                Debug.LogError("GameOver");
-                TriggerGameOver("", false);
+                TriggerGameOver("new item added - but tray full", false);
             }
             return;
         }
