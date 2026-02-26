@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class GameEvents
@@ -15,9 +16,18 @@ public static class GameEvents
     public static Action OnGameInitializedEvent; //gameplya started
     public static Action OnGameQuitEvent; //gameplya started
     public static Action OnItemsCollectedEvent;
+    public static Action<bool, float> OnShowMatchResultEvent; // match status, match rate
 
     public static Action OnLevelCompleteEvent;
     public static Action OnLevelRestartEvent;
 
+    public static Action OnUndoPowerupEvent;
+    public static Action<Transform> OnUndoAddItemEvent;
+
+    public static Action OnHintPowerupEvent;
+    public static Action<string> OnHintSlotsItemAvailableEvent; //fired by slotmanager to tell what item can be picked up
+
+    public static Action OnShakePowerupEvent; //shake and shuffle the items 
+    public static Action OnMagnetPowerupEvent; // auto pickup collectable items
 
 }

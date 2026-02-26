@@ -16,8 +16,13 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         base.Enter();
         View.StartCoroutine(StartGame());
         View.PauseButton.onClick.AddListener(OnPauseButtonClicked);
+        View.UndoButton.onClick.AddListener(OnUndoButtonClicked);
+        View.ShakeButton.onClick.AddListener(OnShakeButtonClicked);
+        View.HintButton.onClick.AddListener(OnHintButtonClicked);
+        View.MagnetButton.onClick.AddListener(OnMagnetButtonClicked);
         // GameEvents.OnGameOverEvent += HandleGameOver;
         GameEvents.OnMatchStartedEvent += HandleMatchStarted;
+        GameEvents.OnShowMatchResultEvent += HandleMatchResult;
     }
 
     public override void Exit()
@@ -26,7 +31,12 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
         GameEvents.OnMatchStartedEvent -= HandleMatchStarted;
         // GameEvents.OnGameOverEvent -= HandleGameOver;
+        GameEvents.OnShowMatchResultEvent -= HandleMatchResult;
         View.PauseButton.onClick.RemoveListener(OnPauseButtonClicked);
+        View.UndoButton.onClick.RemoveListener(OnUndoButtonClicked);
+        View.ShakeButton.onClick.RemoveListener(OnShakeButtonClicked);
+        View.HintButton.onClick.RemoveListener(OnHintButtonClicked);
+        View.MagnetButton.onClick.RemoveListener(OnMagnetButtonClicked);
     }
 
     private void HandleMatchStarted(LevelData levelData)
@@ -59,13 +69,19 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         {
             Debug.LogError("GameMenuBaseState_Main: OnItemsCollectedEvent fired");
             GameEvents.OnItemsCollectedEvent?.Invoke();
-            HandleGameOver(true);
+            GameEvents.OnGameOverEvent?.Invoke(true);
         }
     }
-    private void HandleGameOver(bool win)
+    private void HandleMatchResult(bool win, float matchRate)
     {
-        Debug.LogError(" GameMenuBaseState_Main: On Game Over");
-        MenuManager.Instance.OpenMenu<MatchResultMenuView, MatchResultMenuController, MatchResultMenuData>(Menus.Type.MatchResult);
+        Debug.LogError(" GameMenuBaseState_Main: HandleMatchResult");
+        MenuManager.Instance.OpenMenu<MatchResultMenuView, MatchResultMenuController, MatchResultMenuData>(Menus.Type.MatchResult, new MatchResultMenuData
+        {
+            IsWin = win,
+            GoldAmount = 27,
+            Level = 1,
+            MatchRate = matchRate
+        });
     }
     private void OnPauseButtonClicked() =>
         MenuManager.Instance.OpenMenu<PauseMenuView, PauseMenuController, PauseMenuData>(Menus.Type.Pause);
@@ -74,5 +90,22 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     {
         yield return null;
         Controller.StartGame();
+    }
+
+    private void OnUndoButtonClicked()
+    {
+        GameEvents.OnUndoPowerupEvent?.Invoke();
+    }
+    private void OnShakeButtonClicked()
+    {
+        GameEvents.OnUndoPowerupEvent?.Invoke();
+    }
+    private void OnMagnetButtonClicked()
+    {
+        GameEvents.OnUndoPowerupEvent?.Invoke();
+    }
+    private void OnHintButtonClicked()
+    {
+        GameEvents.OnUndoPowerupEvent?.Invoke();
     }
 }

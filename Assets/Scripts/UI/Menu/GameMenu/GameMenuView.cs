@@ -8,4 +8,11 @@ public class GameMenuView : MenuView
     public TrayView TrayView;
 
     public Button PauseButton;
+
+    public Button UndoButton;
+    public Button ShakeButton;
+    public Button HintButton;
+    public Button MagnetButton;
+
+
 }

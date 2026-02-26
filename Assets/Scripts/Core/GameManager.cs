@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     // Events for other systems to subscribe to
     public static event Action OnGameStarted;
+    public float _levelStartTime;
 
     private void Awake()
     {
@@ -73,6 +74,7 @@ public class GameManager : MonoBehaviour
             new GameMenuData(_slotManager, SLOT_COUNT)
         );
         Cleanup();
+        _levelStartTime = Time.time;
 
         // 3. Example: Close Main Menu and Open Game UI
         // MenuManager.Instance.CloseMenu(Menus.Type.Main);
@@ -97,8 +99,65 @@ public class GameManager : MonoBehaviour
         SaveGame();
 
         // Cleanup spawner if necessary
-        Cleanup();
+
+
+
+        float score = 0;
+        if (won)
+        {
+            int initialTotalCount = _activeSpawner.InitialTotalItems;
+            int currentTotalCount = _activeSpawner.CurrentTotalRemaining;
+            int initialCollectableItems = _activeSpawner.InitialCollectableItems;
+            int currentCollectablesRemaining = _activeSpawner.CurrentCollectablesRemaining;
+            // Debug.Log("InitialTotalItems " + initialTotalCount);
+            // Debug.Log("CurrentTotalRemaining " + currentTotalCount);
+            // Debug.Log("InitialCollectableItems " + initialCollectableItems);
+            // Debug.Log("CurrentCollectablesRemaining " + currentCollectablesRemaining);
+            score = CalculateScore(currentTotalCount - currentCollectablesRemaining, initialTotalCount - initialCollectableItems, initialCollectableItems);
+        }
+        GameEvents.OnShowMatchResultEvent?.Invoke(won, score);
+
+        // Cleanup();
     }
+
+    private float CalculateScore(float currentJunk, float totalJunk, int initialCollectableItems)
+    {
+        // 1. Dynamic Target Calculation
+        // We give 2 seconds per item, but clamp it between 30s and 90s.
+        // This creates a "Gold Standard" time for that specific level size.
+        float avgTimePerItem = 1.0f;
+        float targetTime = Mathf.Clamp(initialCollectableItems * avgTimePerItem, 30f, 90f);
+        float maxTime = 180f; // 3 Minute Hard Cap
+        float timeTaken = Time.time - _levelStartTime;
+
+        // 2. Accuracy (The "Perfect Match" Factor)
+        // 1.0 = No junk clicked.
+        float accuracy = totalJunk > 0 ? currentJunk / totalJunk : 1.0f;
+
+        // 3. Time Score (The "Speed" Factor)
+        float timeScore = 1.0f;
+
+        if (timeTaken > targetTime)
+        {
+            // How far are we between the Target (1.0) and the Hard Cap (0.5)?
+            // If they hit 3 mins, they get 0.5.
+            float timeRemainingRatio = (timeTaken - targetTime) / (maxTime - targetTime);
+            timeScore = Mathf.Lerp(1.0f, 0.5f, timeRemainingRatio);
+        }
+
+        // Ensure timeScore doesn't drop below 0.5 even if they exceed 3 mins
+        timeScore = Mathf.Max(0.5f, timeScore);
+
+        // 4. Final Calculation
+        // Accuracy is the multiplier. 
+        // To get 0.9 (3 stars), you MUST be accurate AND fast.
+        float finalScore = accuracy * timeScore;
+
+        Debug.Log($"[SCORE] Actual: {timeTaken:F1}s | Target: {targetTime}s | Acc: {accuracy:F2} | Final: {finalScore:F2}");
+
+        return finalScore;
+    }
+
     public void Cleanup()
     {
         if (_activeSpawner != null)
