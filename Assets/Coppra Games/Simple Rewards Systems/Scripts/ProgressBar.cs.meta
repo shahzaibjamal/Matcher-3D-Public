@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: fcf862a5c3bc34f8eb722c36ad8d5cc4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273508
+  packageName: Simple Rewards System
+  packageVersion: 1.0
+  assetPath: Assets/Coppra Games/Simple Rewards Systems/Scripts/ProgressBar.cs
+  uploadId: 649747

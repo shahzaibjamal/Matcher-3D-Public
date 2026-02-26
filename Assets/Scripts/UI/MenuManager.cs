@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,12 +42,13 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-        // Ensure the blocking layer has a Button component
-        if (blockingLayer.TryGetComponent<Button>(out Button btn))
-        {
-            // When the dark background is clicked, it acts as a "Back" button
-            btn.onClick.AddListener(() => GoBack());
-        }
+        // // Ensure the blocking layer has a Button component
+        // if (blockingLayer.TryGetComponent<Button>(out Button btn))
+        // {
+        //     // When the dark background is clicked, it acts as a "Back" button
+        //     btn.onClick.AddListener(() => GoBack());
+        // }
+        SubscribeBlockingButton();
     }
     public void OpenMenu<TView, TController, TData>(
         Menus.Type menuType,
@@ -148,7 +150,28 @@ public class MenuManager : MonoBehaviour
         // Usually, we dim for Popups and specific Overlays (like FTUE)
         bool shouldDim = (mode == Menus.MenuDisplayMode.Popup || mode == Menus.MenuDisplayMode.Overlay);
 
-        blockingLayer.SetActive(shouldDim);
+        //        blockingLayer.SetActive(shouldDim);
+
+        Image dimImage = blockingLayer.GetComponent<Image>();
+
+        if (shouldDim)
+        {
+            // If it's already on, don't restart the animation
+            if (!blockingLayer.activeSelf)
+            {
+                blockingLayer.SetActive(true);
+                dimImage.DOFade(0.7f, 0.3f).From(0); // Fade from transparent to 70% black
+            }
+        }
+        else
+        {
+            // Only fade out if it is actually active
+            if (blockingLayer.activeSelf)
+            {
+                dimImage.DOKill();
+                dimImage.DOFade(0, 0.2f).OnComplete(() => blockingLayer.SetActive(false));
+            }
+        }
 
         if (shouldDim)
         {
@@ -167,6 +190,26 @@ public class MenuManager : MonoBehaviour
             rect.sizeDelta = Vector2.zero; // Assuming it's set to stretch
             rect.anchorMin = Vector2.zero;
             rect.anchorMax = Vector2.one;
+        }
+    }
+
+    private void SubscribeBlockingButton()
+    {
+        if (blockingLayer != null)
+        {
+            if (blockingLayer.TryGetComponent<Button>(out Button btn))
+            {
+                // Remove any existing listeners first to prevent double-calls
+                btn.onClick.RemoveAllListeners();
+                btn.onClick.AddListener(() => GoBack());
+            }
+            else
+            {
+                // Add it if it's missing so you don't have to do it manually in the Inspector
+                btn = blockingLayer.AddComponent<Button>();
+                btn.transition = Selectable.Transition.None; // No visual change on click
+                btn.onClick.AddListener(() => GoBack());
+            }
         }
     }
 }

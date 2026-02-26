@@ -12,6 +12,7 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
     public override void Enter()
     {
         View.LoadButton.onClick.AddListener(OnLoadButtonClicked);
+        View.SaveButton.onClick.AddListener(() => GameManager.Instance.UseRaycast = !GameManager.Instance.UseRaycast);
         View.LevelUidInput.onSubmit.AddListener((input) => { OnLoadButtonClicked(); });
         View.BackButton.onClick.AddListener(() =>
         {
@@ -46,19 +47,10 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
 
         foreach (var entry in _currentLevel.itemsToSpawn)
         {
-            // var debugItemRow = CreateDebugItemRow(entry.itemUID, entry.count);
             CreateDebugItemRow(entry.itemUID, entry.count, (val) =>
             {
                 entry.count = (int)val;
             });
-            // if (debugItemRow != null)
-            // {
-            //     debugItemRow.Quantity.onEndEdit.AddListener(val =>
-            //     {
-            //         if (int.TryParse(val, out int newCount))
-            //             entry.count = newCount;
-            //     });
-            // }
         }
     }
 
@@ -77,18 +69,6 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
             (val) => View.GameData.FlightToTrayDuration = val);
 
     }
-    // private DebugItemRow CreateDebugItemRow(string uid, float quantity)
-    // {
-    //     GameObject row = GameObject.Instantiate(View.ItemRowPrefab, View.ItemsParent);
-    //     var debugItemRow = row.GetComponent<DebugItemRow>();
-
-    //     if (debugItemRow != null)
-    //     {
-    //         debugItemRow.Uid.text = uid;
-    //         debugItemRow.Quantity.text = quantity.ToString();
-    //     }
-    //     return debugItemRow;
-    // }
 
     private DebugItemRow CreateDebugItemRow(string uid, float initialValue, System.Action<float> onValueChanged)
     {

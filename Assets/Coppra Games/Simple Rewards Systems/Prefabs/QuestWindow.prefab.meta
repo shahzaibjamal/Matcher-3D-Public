@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: de386fb832e92491783ad34b3daca82a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273508
+  packageName: Simple Rewards System
+  packageVersion: 1.0
+  assetPath: Assets/Coppra Games/Simple Rewards Systems/Prefabs/QuestWindow.prefab
+  uploadId: 649747

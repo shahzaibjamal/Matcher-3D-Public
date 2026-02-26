@@ -124,6 +124,7 @@ namespace TS.LocalizationSystem
             {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.LogError("No value for key " + key);
+                return key;
 #endif
             }
 

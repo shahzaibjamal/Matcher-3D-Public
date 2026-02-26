@@ -1,4 +1,4 @@
-public enum RewardType { DailyLogin, Achievement, SpecialOffer }
+public enum RewardType { DailyLogin, Achievement, SpecialOffer, DailySpin }
 
 public class RewardData
 {

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ClickableItem : MonoBehaviour
+public class ClickableItem : MonoBehaviour, IClickable
 {
     [HideInInspector]
     public ItemData ItemData;
@@ -12,18 +12,37 @@ public class ClickableItem : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (ItemData == null) return;
+        if (GameManager.Instance.UseRaycast)
+        {
+            return;
+        }
 
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return; // Stop here, the click was on UI
         }
 
-        OnItemClicked?.Invoke(ItemData, transform);
+        HandleLogic();
     }
 
     void OnDestroy()
     {
         OnItemClicked = null;
+    }
+
+    public void OnHandleClick(RaycastHit hitInfo)
+    {
+        if (!GameManager.Instance.UseRaycast)
+        {
+            return;
+        }
+        HandleLogic();
+    }
+
+    private void HandleLogic()
+    {
+        if (ItemData == null) return;
+
+        OnItemClicked?.Invoke(ItemData, transform);
     }
 }

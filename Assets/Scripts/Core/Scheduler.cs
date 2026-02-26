@@ -8,7 +8,7 @@ public class Scheduler : MonoBehaviour
     private static Scheduler _instance;
     public static Scheduler Instance => _instance;
 
-    private readonly List<Action> _updateCallbacks = new List<Action>();
+    private readonly List<Action<float>> _updateCallbacks = new List<Action<float>>();
     private readonly List<Action> _guiCallbacks = new List<Action>();
 
     private void Awake()
@@ -27,7 +27,7 @@ public class Scheduler : MonoBehaviour
     {
         for (int i = 0; i < _updateCallbacks.Count; i++)
         {
-            _updateCallbacks[i]?.Invoke();
+            _updateCallbacks[i]?.Invoke(Time.deltaTime);
         }
     }
 
@@ -42,7 +42,7 @@ public class Scheduler : MonoBehaviour
     /// <summary>
     /// Subscribe an update callback.
     /// </summary>
-    public void SubscribeUpdate(Action callback)
+    public void SubscribeUpdate(Action<float> callback)
     {
         if (callback != null && !_updateCallbacks.Contains(callback))
             _updateCallbacks.Add(callback);
@@ -51,7 +51,7 @@ public class Scheduler : MonoBehaviour
     /// <summary>
     /// Unsubscribe an update callback.
     /// </summary>
-    public void UnsubscribeUpdate(Action callback)
+    public void UnsubscribeUpdate(Action<float> callback)
     {
         if (callback != null)
             _updateCallbacks.Remove(callback);

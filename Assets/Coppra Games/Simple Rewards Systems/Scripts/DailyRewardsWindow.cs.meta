@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 56402addeb83f4e7f8b454bed73a134b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273508
+  packageName: Simple Rewards System
+  packageVersion: 1.0
+  assetPath: Assets/Coppra Games/Simple Rewards Systems/Scripts/DailyRewardsWindow.cs
+  uploadId: 649747

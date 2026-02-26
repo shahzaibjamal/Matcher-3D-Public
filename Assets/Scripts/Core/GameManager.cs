@@ -5,11 +5,14 @@ using TS.LocalizationSystem;
 public class GameManager : MonoBehaviour
 {
     // Singleton Instance
+
+    public bool UseRaycast;    //remove this
+
     public static GameManager Instance { get; private set; }
 
     [Header("Prefabs & References")]
-    [SerializeField] private Spawner spawnerPrefab;
-    private Spawner activeSpawner;
+    [SerializeField] private Spawner _spawnerPrefab;
+    private Spawner _activeSpawner;
     private SlotManager _slotManager;
 
     const int SLOT_COUNT = 7;
@@ -41,9 +44,9 @@ public class GameManager : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = -1; // -1 means "unlimited"
 
-
         MainMenuController.OnStartButtonClicked += StartGame;
         GameEvents.OnGameInitializedEvent += SpawnGameSystems;
+        GameEvents.OnGameQuitEvent += Cleanup;
         GameEvents.OnGameOverEvent += TriggerGameOver;
         GameEvents.OnLevelRestartEvent += RestartLevel;
 
@@ -77,15 +80,14 @@ public class GameManager : MonoBehaviour
 
     private void SpawnGameSystems()
     {
-        if (activeSpawner == null && spawnerPrefab != null)
+        if (_activeSpawner == null && _spawnerPrefab != null)
         {
             // 3. Spawn the world spawner
-            activeSpawner = Instantiate(spawnerPrefab);
-            activeSpawner.SpawnLevel("level_01", (itemData, sourceTransform) =>
+            _activeSpawner = Instantiate(_spawnerPrefab);
+            _activeSpawner.SpawnLevel("level_01", (itemData, sourceTransform) =>
             {
                 _slotManager.AddItem(itemData, sourceTransform);
             });
-            _slotManager.Reset();
         }
     }
     public void TriggerGameOver(bool won)
@@ -94,7 +96,16 @@ public class GameManager : MonoBehaviour
         SaveGame();
 
         // Cleanup spawner if necessary
-        if (activeSpawner != null) Destroy(activeSpawner.gameObject);
+        Cleanup();
+    }
+    public void Cleanup()
+    {
+        if (_activeSpawner != null)
+        {
+            Destroy(_activeSpawner.gameObject);
+        }
+        _activeSpawner = null;
+        _slotManager.Reset();
     }
 
     public void SaveGame()
@@ -104,11 +115,7 @@ public class GameManager : MonoBehaviour
 
     private void RestartLevel()
     {
-        if (activeSpawner != null)
-        {
-            Destroy(activeSpawner.gameObject);
-        }
-        activeSpawner = null;
+        Cleanup();
         SpawnGameSystems();
     }
     #endregion

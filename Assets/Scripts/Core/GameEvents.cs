@@ -13,6 +13,7 @@ public static class GameEvents
 
     public static Action OnGameLaunchedEvent; // game (menu) opened. waiting for game start
     public static Action OnGameInitializedEvent; //gameplya started
+    public static Action OnGameQuitEvent; //gameplya started
     public static Action OnItemsCollectedEvent;
 
     public static Action OnLevelCompleteEvent;

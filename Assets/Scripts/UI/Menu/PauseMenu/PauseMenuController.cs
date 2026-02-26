@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
 {
     public override void OnEnter()
@@ -5,16 +7,22 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
         SetState(new PauseMenuBaseState(this));
 
         View.ResumeButton.onClick.AddListener(OnResumeButtonClicked);
-        View.RestartButton.onClick.AddListener(OnRestarButton);
+        View.RestartButton.onClick.AddListener(OnRestartButtonClicked);
+        View.BGButton.onClick.AddListener(OnResumeButtonClicked);
         View.HomeButton.onClick.AddListener(OnHomeButtonClicked);
         View.CloseButton.onClick.AddListener(OnResumeButtonClicked);
+        View.SettingsButton.onClick.AddListener(OnSettingsButtonClicked);
+
+        UIAnimations.ToonIn(View.GetComponent<CanvasGroup>(), View.Root, null);
     }
     public override void OnExit()
     {
         View.ResumeButton.onClick.RemoveListener(OnResumeButtonClicked);
-        View.RestartButton.onClick.RemoveListener(OnRestarButton);
+        View.RestartButton.onClick.RemoveListener(OnRestartButtonClicked);
         View.HomeButton.onClick.RemoveListener(OnHomeButtonClicked);
         View.CloseButton.onClick.RemoveListener(OnResumeButtonClicked);
+        View.BGButton.onClick.RemoveListener(OnResumeButtonClicked);
+        View.SettingsButton.onClick.RemoveListener(OnSettingsButtonClicked);
         base.OnExit();
     }
 
@@ -28,17 +36,27 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
 
     private void OnHomeButtonClicked()
     {
-        GameEvents.OnGameInitializedEvent?.Invoke();
-        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main, new MainMenuData());
+        UIAnimations.ToonOut(View.GetComponent<CanvasGroup>(), View.Root, () =>
+        {
+            GameEvents.OnGameQuitEvent?.Invoke();
+            MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main, new MainMenuData());
+        });
     }
     private void OnResumeButtonClicked()
     {
-        MenuManager.Instance.GoBack();
+        UIAnimations.ToonOut(View.GetComponent<CanvasGroup>(), View.Root, () =>
+        {
+            MenuManager.Instance.GoBack();
+        });
     }
 
-    private void OnRestarButton()
+    private void OnRestartButtonClicked()
     {
         GameEvents.OnLevelRestartEvent?.Invoke();
         OnResumeButtonClicked();
+    }
+    private void OnSettingsButtonClicked()
+    {
+        MenuManager.Instance.OpenMenu<SettingsMenuView, SettingsMenuController, SettingsMenuData>(Menus.Type.Settings);
     }
 }
