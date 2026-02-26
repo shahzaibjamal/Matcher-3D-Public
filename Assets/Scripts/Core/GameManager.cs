@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
             Menus.Type.Game,
             new GameMenuData(_slotManager, SLOT_COUNT)
         );
+        Cleanup();
 
         // 3. Example: Close Main Menu and Open Game UI
         // MenuManager.Instance.CloseMenu(Menus.Type.Main);

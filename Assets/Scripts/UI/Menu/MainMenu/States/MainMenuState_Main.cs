@@ -87,10 +87,10 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnSettingsButtonClicked()
     {
-        MenuManager.Instance.OpenMenu<SettingsMenuView, SettingsMenuController, SettingsMenuData>(Menus.Type.Settings, new SettingsMenuData());
+        MenuManager.Instance.OpenMenu<SettingsMenuView, SettingsMenuController, SettingsMenuData>(Menus.Type.Settings);
     }
     private void OnDebugButtonClicked()
     {
-        MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug, new DebugMenuData());
+        MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug);
     }
 }

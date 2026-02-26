@@ -12,7 +12,8 @@ public static class Menus
         ConfirmationPopup = 7,
         Debug = 8,
         Pause = 9,
-        Reward = 10
+        Reward = 10,
+        MatchResult = 11
 
     }
     public enum MenuDisplayMode

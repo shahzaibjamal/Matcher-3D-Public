@@ -16,6 +16,13 @@ public class SlotView : MonoBehaviour
     public void SetIndex(int index) => _index = index;
     public int Index => _index;
 
+    private Vector3 _originalSlotPos; // Store the home position
+
+    private void Awake()
+    {
+        // Capture the starting position on start
+        _originalSlotPos = _backgroundImage.rectTransform.localPosition;
+    }
     public void SetItemDataOnly(ItemData itemData)
     {
         CurrentItem = itemData;
@@ -47,23 +54,38 @@ public class SlotView : MonoBehaviour
             RectTransform rect = _backgroundImage.rectTransform;
             Sequence impactSeq = DOTween.Sequence();
 
-            Vector3 originalPos = rect.localPosition;
             // 1. The Slam: Move down quickly with a heavy ease
-            impactSeq.Append(transform.DOLocalMoveY(originalPos.y - 20f, 0.1f)
+            impactSeq.Append(rect.DOLocalMoveY(_originalSlotPos.y - 10f, 0.1f)
                 .SetEase(Ease.InQuad));
             // 2. The Rebound: Use a Punch or Shake to simulate the weight settling
             // This moves it back to originalPos while vibrating
-            impactSeq.Append(transform.DOPunchPosition(new Vector3(0, 20f * 0.8f, 0), 0.4f, 8, 0.5f));
+            impactSeq.Append(rect.DOPunchPosition(new Vector3(0, 10f * 0.8f, 0), 0.2f, 2, 0.5f));
 
             // Ensure it ends exactly where it started
-            impactSeq.OnComplete(() => rect.localPosition = originalPos);
+            impactSeq.OnComplete(() =>
+            {
+                if (CurrentItem == null)
+                {
+                    Clear();
+                }
+            });
         }
     }
     public void Clear()
     {
         CurrentItem = null;
         icon.enabled = false;
+        // 1. Kill any active tweens on the icon and the slot itself
         icon.transform.DOKill();
+        _backgroundImage.rectTransform.DOKill();        // transform.DOKill();
+        _backgroundImage.rectTransform.localPosition = _originalSlotPos;
+        // 2. Snap back to original location instantly
+        // transform.localPosition = _originalSlotPos;
+
+        /* // --- TWEEN VERSION ---
+        // If you want it to slide back up smoothly instead of snapping:
+        */
+        // transform.DOLocalMove(_originalSlotPos, 0.2f).SetEase(Ease.OutCubic);
     }
     private int debugFontSize = 38; // adjustable font size
 

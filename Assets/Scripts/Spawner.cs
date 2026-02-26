@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public partial class Spawner : MonoBehaviour
@@ -22,6 +23,9 @@ public partial class Spawner : MonoBehaviour
     private float _spawnZMax;
     private List<ClickableItem> _itemClickables = new();
     private Action<ItemData, Transform> _onItemClicked;
+    private LevelData _currentLevelData;
+
+    private Dictionary<String, int> _collectableLeft;
 
     public void GenerateBounds()
     {
@@ -80,11 +84,14 @@ public partial class Spawner : MonoBehaviour
         // Always ensure bounds match the current resolution before spawning
         GenerateBounds();
 
-        LevelData level = Metadata.Instance.levelDatabase.GetLevelByUID(levelUID);
-        if (level == null) return;
-        GameEvents.OnMatchStartedEvent?.Invoke(level);
+        _currentLevelData = Metadata.Instance.levelDatabase.GetLevelByUID(levelUID);
+        if (_currentLevelData == null) return;
+        GameEvents.OnMatchStartedEvent?.Invoke(_currentLevelData);
 
-        foreach (var entry in level.itemsToSpawn)
+        // For debugging
+        PopulateCollectableLeft(_currentLevelData);
+
+        foreach (var entry in _currentLevelData.itemsToSpawn)
         {
             ItemData item = Metadata.Instance.itemDatabase.GetItemByUID(entry.itemUID);
             for (int i = 0; i < entry.count; i++)
@@ -112,7 +119,16 @@ public partial class Spawner : MonoBehaviour
         }
 
     }
-
+    // For debugging
+    private void PopulateCollectableLeft(LevelData levelData)
+    {
+        _collectableLeft = new Dictionary<string, int>();
+        foreach (var item in levelData.itemsToCollect)
+        {
+            int count = levelData.itemsToSpawn.Find(itemData => itemData.itemUID == item).count;
+            _collectableLeft.Add(item, count);
+        }
+    }
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Space))
@@ -137,6 +153,36 @@ public partial class Spawner : MonoBehaviour
             }
 
             _itemClickables.RemoveAt(index);
+        }
+        if (Input.GetKeyUp(KeyCode.M))
+        {
+            // 1. Guard Clauses (Early exits to avoid nesting)
+            if (_currentLevelData == null || _itemClickables == null || _itemClickables.Count == 0) return;
+            if (_collectableLeft.Count == 0) return;
+
+            // 2. Optimization: Get the first key without LINQ ElementAt (which is slow)
+            var firstKey = string.Empty;
+            foreach (var key in _collectableLeft.Keys) { firstKey = key; break; }
+
+            // 3. Find the item
+            ClickableItem clickableItem = _itemClickables.Find(c => c != null && c.ItemData != null && c.ItemData.UID == firstKey);
+
+            if (clickableItem != null)
+            {
+                // Execute click logic
+                _onItemClicked?.Invoke(clickableItem.ItemData, clickableItem.transform);
+
+                // 4. Update Dictionary Safely
+                _collectableLeft[firstKey]--;
+                if (_collectableLeft[firstKey] <= 0)
+                {
+                    _collectableLeft.Remove(firstKey);
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Item with UID {firstKey} not found in clickables list.");
+            }
         }
     }
 

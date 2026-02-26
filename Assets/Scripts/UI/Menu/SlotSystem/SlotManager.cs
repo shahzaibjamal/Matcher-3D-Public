@@ -29,10 +29,17 @@ public class SlotManager
     private void OnItemsCollected()
     {
         _allGoalsReached = true;
+        Debug.LogError("OnItemsCollected received - _allGoalsReached");
     }
 
     public async void AddItem(ItemData data, Transform source)
     {
+        if (_allGoalsReached)
+        {
+            TriggerGameOver("All items collected", true);
+            return; // Stop here, don't check for Tray Full
+        }
+
         int targetIdx = GetInsertionIndex(data);
         data.UniqueId = Guid.NewGuid().ToString(); // Assigned IMMEDIATELY
 
@@ -74,11 +81,6 @@ public class SlotManager
             _isProcessingMatches = false;
         }
 
-        if (_allGoalsReached)
-        {
-            TriggerGameOver("All items collected", true);
-            return; // Stop here, don't check for Tray Full
-        }
         if (IsTrayFull() && FindMatch() == -1)
         {
             TriggerGameOver("Tray full - no more moves possible", false);

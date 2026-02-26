@@ -91,4 +91,17 @@ public class Scheduler : MonoBehaviour
         if (coroutine != null)
             StopCoroutine(coroutine);
     }
+    /// <summary>
+    /// Helper to run a delayed action and return the coroutine handle.
+    /// </summary>
+    public Coroutine ExecuteAfterDelay(float delay, Action action)
+    {
+        return StartCoroutine(DelayedActionRoutine(delay, action));
+    }
+
+    private IEnumerator DelayedActionRoutine(float delay, Action action)
+    {
+        yield return new WaitForSeconds(delay);
+        action?.Invoke();
+    }
 }

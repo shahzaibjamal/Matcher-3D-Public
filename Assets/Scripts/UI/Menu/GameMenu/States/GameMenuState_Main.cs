@@ -16,7 +16,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         base.Enter();
         View.StartCoroutine(StartGame());
         View.PauseButton.onClick.AddListener(OnPauseButtonClicked);
-        GameEvents.OnGameOverEvent += HandleGameOver;
+        // GameEvents.OnGameOverEvent += HandleGameOver;
         GameEvents.OnMatchStartedEvent += HandleMatchStarted;
     }
 
@@ -25,7 +25,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         base.Exit();
 
         GameEvents.OnMatchStartedEvent -= HandleMatchStarted;
-        GameEvents.OnGameOverEvent -= HandleGameOver;
+        // GameEvents.OnGameOverEvent -= HandleGameOver;
         View.PauseButton.onClick.RemoveListener(OnPauseButtonClicked);
     }
 
@@ -57,13 +57,15 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     {
         if (_activeViews.Count == 0)
         {
+            Debug.LogError("GameMenuBaseState_Main: OnItemsCollectedEvent fired");
             GameEvents.OnItemsCollectedEvent?.Invoke();
+            HandleGameOver(true);
         }
     }
     private void HandleGameOver(bool win)
     {
         Debug.LogError(" GameMenuBaseState_Main: On Game Over");
-        MenuManager.Instance.GoBack();
+        MenuManager.Instance.OpenMenu<MatchResultMenuView, MatchResultMenuController, MatchResultMenuData>(Menus.Type.MatchResult);
     }
     private void OnPauseButtonClicked() =>
         MenuManager.Instance.OpenMenu<PauseMenuView, PauseMenuController, PauseMenuData>(Menus.Type.Pause);
