@@ -20,11 +20,27 @@ MonoBehaviour:
   - settings
   - sound
   - music
+  - title_paused
+  - continue
+  - title_level
+  - status_perfect
+  - status_good
+  - status_amazing
+  - result_win
+  - result_lose
   _values:
   - Escolher idioma
   - "Ol\xE1 Pessoal"
   - "Dizer ol\xE1"
-  - Iniciar jogo
+  - Jogar
   - "Configura\xE7\xF5es"
   - Som
   - "M\xFAsica"
+  - Em pausa
+  - Continuar
+  - "N\xEDvel {}"
+  - Perfeito
+  - Bom
+  - "Incr\xEDvel"
+  - "Voc\xEA venceu!"
+  - "Voc\xEA perdeu!"

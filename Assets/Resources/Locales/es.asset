@@ -20,11 +20,27 @@ MonoBehaviour:
   - settings
   - sound
   - music
+  - title_paused
+  - continue
+  - title_level
+  - status_perfect
+  - status_good
+  - status_amazing
+  - result_win
+  - result_lose
   _values:
-  - Elija el idioma
+  - Elija idioma
   - Hola
   - Saluda
-  - Iniciar juego
+  - Jugar
   - Configuraciones
   - Algunos
   - "M\xFAsica"
+  - En pausa
+  - Continuar
+  - Nivel {}
+  - Perfecto
+  - Bomba
+  - "Incre\xEDble"
+  - "Voc\xEA venceu!"
+  - "Voc\xEA perdeu!"

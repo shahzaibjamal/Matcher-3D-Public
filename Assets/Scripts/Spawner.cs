@@ -26,7 +26,11 @@ public partial class Spawner : MonoBehaviour
     private LevelData _currentLevelData;
 
     private Dictionary<String, int> _collectableLeft;
+    private int _initialTotalItems;
+    private int _initialCollectableItems;
 
+    // For efficiency tracking
+    private float _levelStartTime;
     public void GenerateBounds()
     {
         // 1. Calculate world bounds based on camera
@@ -81,6 +85,10 @@ public partial class Spawner : MonoBehaviour
     public void SpawnLevel(string levelUID, Action<ItemData, Transform> onItemClicked)
     {
         _onItemClicked = onItemClicked;
+
+        _itemClickables.Clear();
+        _levelStartTime = Time.time; // Start the clock
+
         // Always ensure bounds match the current resolution before spawning
         GenerateBounds();
 
@@ -114,10 +122,64 @@ public partial class Spawner : MonoBehaviour
                     _itemClickables.Add(clickable);
                     clickable.ItemData = item;
                     clickable.OnItemClicked = onItemClicked;
+                    clickable.OnItemClicked += HandleInternalItemClicked;
                 }
             }
         }
 
+    }
+
+    private void HandleInternalItemClicked(ItemData data, Transform t)
+    {
+        // Remove based on the transform/instance rather than searching by UID
+        _itemClickables.RemoveAll(c => c == null || c.transform == t);
+
+        // Update the dictionary for items we are tracking
+        if (_collectableLeft.ContainsKey(data.UID))
+        {
+            _collectableLeft[data.UID]--;
+            if (_collectableLeft[data.UID] <= 0)
+                _collectableLeft.Remove(data.UID);
+        }
+
+        UpdateCount();
+    }
+
+    private void UpdateCount()
+    {
+        int collectableRemaining = _itemClickables.Count(c =>
+            _currentLevelData.itemsToCollect.Contains(c.ItemData.UID));
+
+        int totalRemaining = _itemClickables.Count;
+
+        float progress = 1f - ((float)collectableRemaining / _initialCollectableItems);
+
+        Debug.Log($"Progress: {progress * 100}% | Total Items in Scene: {totalRemaining}");
+
+        if (collectableRemaining == 0)
+        {
+            float finalTime = Time.time - _levelStartTime;
+            Debug.Log($"Level Cleared in {finalTime:F2} seconds!");
+            // Trigger your GoldRewardUI here
+        }
+    }
+    public void GetLevelProgress(out float totalProgress, out float collectableProgress, out float efficiencyScore)
+    {
+        // Total items remaining in the scene
+        int currentTotalInScene = _itemClickables.Count;
+
+        // Items remaining that are on the "Target" list
+        int currentCollectablesInScene = _itemClickables.Count(c =>
+            _currentLevelData.itemsToCollect.Contains(c.ItemData.UID));
+
+        // Progress as 0.0 to 1.0
+        totalProgress = 1f - ((float)currentTotalInScene / _initialTotalItems);
+        collectableProgress = 1f - ((float)currentCollectablesInScene / _initialCollectableItems);
+
+        // Efficiency: (Items Collected / Total Clicks or Time)
+        // Here we use Time as a simple example
+        float timeTaken = Time.time - _levelStartTime;
+        efficiencyScore = collectableProgress / (timeTaken / 60f); // Progress per minute
     }
     // For debugging
     private void PopulateCollectableLeft(LevelData levelData)

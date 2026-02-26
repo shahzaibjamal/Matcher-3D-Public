@@ -1,3 +1,4 @@
+using TS.LocalizationSystem;
 using Unity.VisualScripting;
 
 public class MatchResultMenuBaseState : MenuBaseState<MatchResultMenuController, MatchResultMenuView, MatchResultMenuData>

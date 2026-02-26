@@ -20,11 +20,27 @@ MonoBehaviour:
   - settings
   - sound
   - music
+  - title_paused
+  - continue
+  - title_level
+  - status_perfect
+  - status_good
+  - status_amazing
+  - result_win
+  - result_lose
   _values:
   - Select language
   - Hey Guys
   - Say hello
-  - Start Game
+  - Play
   - Settings
   - Sound
   - Music
+  - Paused
+  - Continue
+  - Level {}
+  - Perfect
+  - Good
+  - Amazing
+  - You Won!
+  - You Lost!

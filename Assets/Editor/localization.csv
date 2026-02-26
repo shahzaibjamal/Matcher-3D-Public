@@ -6,3 +6,11 @@ start_game,Play,Jogar,Jugar
 settings,Settings,Configurações,Configuraciones
 sound,Sound,Som,Algunos
 music,Music,Música,Música
+title_paused,Paused,Em pausa,En pausa
+continue,Continue,Continuar,Continuar
+title_level,Level {},Nível {},Nivel {}
+status_perfect,Perfect,Perfeito,Perfecto
+status_good,Good,Bom,Bomba
+status_amazing,Amazing,Incrível,Increíble
+result_win,You Won!,Você venceu!,Você venceu!
+result_lose,You Lost!,Você perdeu!,Você perdeu!

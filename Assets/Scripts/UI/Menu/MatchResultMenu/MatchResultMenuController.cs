@@ -6,10 +6,18 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
 {
     public override void OnEnter()
     {
-        SetState(new MatchResultMenuBaseState_Main(this));
+        if (Data.IsWin)
+        {
+            SetState(new MatchResultMenuBaseState_Win(this));
+        }
+        else
+        {
+            SetState(new MatchResultMenuBaseState_Lose(this));
+        }
         View.ContinueButton.onClick.AddListener(OnContinueButtonClicked);
         View.GoldMulitplierButton.onClick.AddListener(OnGoldMultiplierButtonClicked);
         ShowMatchResultAnimation();
+        View.GoldRewardView.SetInitialHudAmount(978);
     }
 
     private void ShowMatchResultAnimation()
@@ -20,7 +28,7 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
         Scheduler.Instance.ExecuteAfterDelay(0.5f, ShowMenu);
 
         View.GoldMulitplierButton.interactable = false;
-        View.GoldMulitplierButton.interactable = false;
+        View.ContinueButton.interactable = false;
         Scheduler.Instance.ExecuteAfterDelay(3.0f, () =>
         {
             View.ContinueButton.interactable = true;
@@ -28,7 +36,7 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
             View.TextAnimation.PlayReveal();
             StartButtonGlow(View.GoldMulitplierButton);
         });
-
+        ResetView();
     }
     public override void OnExit()
     {
@@ -38,6 +46,14 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
         View.GoldMulitplierButton.onClick.RemoveListener(OnGoldMultiplierButtonClicked);
 
         base.OnExit();
+    }
+
+    private void ResetView()
+    {
+        for (int i = 0; i < View.StarViews.Length; i++)
+        {
+            View.StarViews[i].ResetView();
+        }
     }
 
     public override void OnPause()
@@ -98,6 +114,7 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
             .SetDelay(delay)            // Wait before starting
             .SetEase(Ease.Linear)      // Constant speed (essential for loops)
             .SetLoops(-1, LoopType.Incremental); // -1 means infinite    
+        View.GoldRewardView.ShowReward(87, delay, null);
 
     }
     private Sequence _buttonSequence;
@@ -108,7 +125,7 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
         targetButton.transform.localScale = Vector3.one;
 
         _buttonSequence = DOTween.Sequence();
-
+        _buttonSequence.SetDelay(2.5f);
         // 1. Subtle Pulse (Scale 1.0 -> 1.08)
         _buttonSequence.Append(targetButton.transform.DOScale(1.08f, 0.8f).SetEase(Ease.InOutSine));
         _buttonSequence.Append(targetButton.transform.DOScale(1.0f, 0.8f).SetEase(Ease.InOutSine));
