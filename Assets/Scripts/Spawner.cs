@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 public partial class Spawner : MonoBehaviour
@@ -37,12 +38,32 @@ public partial class Spawner : MonoBehaviour
     private Action<ItemData, Transform> _onItemClicked;
     private LevelData _currentLevelData;
     private Dictionary<string, int> _collectableLeft;
+    private Stack<ItemData> _undoHistory = new();
 
-    #region Level Lifecycle
+    private void OnEnable()
+    {
+        GameEvents.OnUndoPowerupEvent += HandleUndoRequest;
+        GameEvents.OnShakePowerupEvent += ShakeArea;
+        // We listen to this to clear history of items that are officially matched/destroyed
+        GameEvents.OnRequestMatchResolveEvent += HandleMatchResolved;
+        GameEvents.OnHintPowerupEvent += HandleHintPowerUp;
+
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnUndoPowerupEvent -= HandleUndoRequest;
+        GameEvents.OnShakePowerupEvent -= ShakeArea;
+        GameEvents.OnHintPowerupEvent -= HandleHintPowerUp;
+        // GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolved;
+    }
+
     void Awake()
     {
         Physics.gravity = new Vector3(0, -4.0f, 0);
     }
+
+    #region Level Lifecycle
     public void SpawnLevel(string levelUID, Action<ItemData, Transform> onItemClicked)
     {
         _onItemClicked = onItemClicked;
@@ -108,7 +129,11 @@ public partial class Spawner : MonoBehaviour
 
     private void HandleInternalItemClicked(ItemData data, Transform t)
     {
+        // Record the data before the object is destroyed by your Tray logic
+        _undoHistory.Push(data);
+
         _itemClickables.RemoveAll(c => c == null || c.transform == t);
+
         if (_collectableLeft.ContainsKey(data.UID))
         {
             _collectableLeft[data.UID]--;
@@ -116,12 +141,141 @@ public partial class Spawner : MonoBehaviour
                 _collectableLeft.Remove(data.UID);
         }
     }
+    private void HandleUndoRequest()
+    {
+        if (_undoHistory.Count == 0) return;
 
+        ItemData dataToRestore = _undoHistory.Pop();
+
+        // 1. Re-increment Dictionary
+        if (_collectableLeft.ContainsKey(dataToRestore.UID))
+            _collectableLeft[dataToRestore.UID]++;
+        else
+            _collectableLeft.Add(dataToRestore.UID, 1);
+
+        // 2. Specialized Spawn Logic
+        // We assume 'trayPosition' is where the item was just removed from in the UI
+        // For now, we'll use a position slightly above the center of the tray
+        Vector3 trayWorldPos = MainCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2, 100, 5));
+        GameEvents.OnUndoAddItemEvent?.Invoke(dataToRestore.UID);
+        SpawnFromTray(dataToRestore, trayWorldPos);
+    }
+
+    private void SpawnFromTray(ItemData item, Vector3 startPos)
+    {
+        // 1. Instantiate at the Tray's location
+        GameObject go = Instantiate(item.Prefab, startPos, UnityEngine.Random.rotation, Parent);
+
+        // 2. Setup Clickable Logic
+        if (go.TryGetComponent<ClickableItem>(out var clickable))
+        {
+            _itemClickables.Add(clickable);
+            clickable.ItemData = item;
+            clickable.OnItemClicked = _onItemClicked;
+            clickable.OnItemClicked += HandleInternalItemClicked;
+
+            // 3. The "Throw" Physics
+            if (go.TryGetComponent<Rigidbody>(out var rb))
+            {
+                rb.isKinematic = false;
+
+                // Calculate direction to the center of the spawn area
+                Vector3 targetCenter = Parent.position + new Vector3(0, 1f, 0);
+                Vector3 throwDirection = (targetCenter - startPos).normalized;
+
+                // Apply an arc force (Forward + Up)
+                // rb.AddForce((throwDirection + Vector3.up) * 12f, ForceMode.Impulse);
+                // rb.AddTorque(UnityEngine.Random.insideUnitSphere * 20f, ForceMode.Impulse);
+                go.transform.DOJump(CalculateRandomSpawnPos(), 0.5f, 1, 0.5f).OnComplete(() =>
+                {
+                    if (go.TryGetComponent<Rigidbody>(out var rb)) rb.isKinematic = false;
+                });
+            }
+        }
+    }
+    private void HandleMatchResolved(int firstItemIndex, ItemData[] items, Action onComplete)
+    {
+        // In a stack, we can't easily remove items from the middle.
+        // However, since a match usually happens with the most recent clicks:
+        // We remove the last 3 items from the Undo History.
+
+        int itemsInMatch = 3;
+        for (int i = 0; i < itemsInMatch; i++)
+        {
+            if (_undoHistory.Count > 0)
+            {
+                _undoHistory.Pop();
+            }
+        }
+
+        onComplete?.Invoke();
+    }
+
+    private void HandleHintPowerUp()
+    {
+        if (_undoHistory.Count == 0) return;
+
+        // 1. Count frequencies in history
+        Dictionary<string, int> counts = new Dictionary<string, int>();
+        foreach (var item in _undoHistory)
+        {
+            if (counts.ContainsKey(item.UID)) counts[item.UID]++;
+            else counts[item.UID] = 1;
+        }
+
+        // 2. Determine Best Candidate with Goal Priority
+        string bestUID = null;
+        int highestCount = 0;
+        bool bestIsGoal = false;
+
+        foreach (var pair in counts)
+        {
+            // Is this specific UID part of our collection goals?
+            bool isGoal = _currentLevelData.itemsToCollect.Any(goal => goal == pair.Key);
+
+            // Logic: 
+            // - If we find a goal and the current best isn't a goal, take it.
+            // - If both are goals (or both aren't), take the one with the higher count.
+            if (bestUID == null || (isGoal && !bestIsGoal) || (isGoal == bestIsGoal && pair.Value > highestCount))
+            {
+                highestCount = pair.Value;
+                bestUID = pair.Key;
+                bestIsGoal = isGoal;
+            }
+        }
+
+        // 3. Danger Zone Safety (Dynamic check)
+        int trayCount = _undoHistory.Count;
+        int max = 7;
+
+        if (trayCount >= max - 1 && highestCount < 2) return;
+        if (trayCount == max - 2 && highestCount == 1) return;
+
+        // 4. Highlight Logic
+        if (bestUID != null)
+        {
+            HighlightItemsInField(bestUID);
+        }
+    }
+
+    private void HighlightItemsInField(string uid)
+    {
+        foreach (var item in _itemClickables)
+        {
+            if (item != null && item.ItemData.UID == uid)
+            {
+                item.Highlight(true);
+
+                // Auto-stop after 3 seconds
+                DOVirtual.DelayedCall(3f, () => item.Highlight(false));
+            }
+        }
+    }
     private Vector3 CalculateRandomSpawnPos()
     {
         float x = UnityEngine.Random.Range(-_spawnXMax + 0.5f, _spawnXMax - 0.5f);
         float z = UnityEngine.Random.Range(-_spawnZMax + 0.5f, _spawnZMax - 0.5f);
-        float y = VerticalOffset + UnityEngine.Random.Range(0f, 5.0f);
+        float y = VerticalOffset + UnityEngine.Random.Range(0f, 1.0f);
 
         return Parent.position + new Vector3(x, y, z);
     }
@@ -199,50 +353,25 @@ public partial class Spawner : MonoBehaviour
         }
     }
 
-    public void ShakeLevel()
+    public void ShakeArea()
     {
+        if (_itemClickables.Count == 0) return;
+
         foreach (var item in _itemClickables)
         {
             if (item == null) continue;
 
             if (item.TryGetComponent<Rigidbody>(out var rb))
             {
-                // Apply a strong upward and random horizontal burst
+                // Apply a burst: Random horizontal + strong upward
                 Vector3 force = new Vector3(
-                    UnityEngine.Random.Range(-5f, 5f),
-                    UnityEngine.Random.Range(5f, 10f),
-                    UnityEngine.Random.Range(-5f, 5f)
+                    UnityEngine.Random.Range(-1f, 1f),
+                    UnityEngine.Random.Range(0f, 1f),
+                    UnityEngine.Random.Range(-1f, 1f)
                 );
+
                 rb.AddForce(force, ForceMode.Impulse);
-
-                // Add a random torque to make them tumble
-                rb.AddTorque(UnityEngine.Random.insideUnitSphere * 10f, ForceMode.Impulse);
-            }
-        }
-    }
-
-    public void ReturnItemToField(GameObject itemGo, ItemData data)
-    {
-        if (itemGo.TryGetComponent<ClickableItem>(out var clickable))
-        {
-            // 1. Re-add to our tracking list
-            if (!_itemClickables.Contains(clickable))
-                _itemClickables.Add(clickable);
-
-            // 2. Increment the dictionary count back up
-            if (_collectableLeft.ContainsKey(data.UID))
-                _collectableLeft[data.UID]++;
-            else
-                _collectableLeft.Add(data.UID, 1);
-
-            // 3. Physics & Visuals
-            itemGo.SetActive(true);
-            if (itemGo.TryGetComponent<Rigidbody>(out var rb))
-            {
-                rb.isKinematic = false; // Turn physics back on
-                                        // Optional: Launch it from the tray back into the center
-                Vector3 launchDir = (Parent.position - itemGo.transform.position).normalized + Vector3.up;
-                rb.AddForce(launchDir * 5f, ForceMode.Impulse);
+                rb.AddTorque(UnityEngine.Random.insideUnitSphere * 5, ForceMode.Impulse);
             }
         }
     }

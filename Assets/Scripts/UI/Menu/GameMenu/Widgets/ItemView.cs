@@ -23,20 +23,16 @@ public class ItemView : MonoBehaviour
         // Subscribe to global events directly
         GameEvents.OnRequestFlightEvent += HandleFlight;
         GameEvents.OnRequestMatchResolveEvent += HandleMatch;
+        GameEvents.OnUndoAddItemEvent += HandleUndo;
     }
 
     private void OnDestroy()
     {
         GameEvents.OnRequestFlightEvent -= HandleFlight;
         GameEvents.OnRequestMatchResolveEvent -= HandleMatch;
+        GameEvents.OnUndoAddItemEvent -= HandleUndo;
     }
 
-
-    // public void UpdateCount(int delta)
-    // {
-    //     CurrentCount += delta;
-    //     UpdateUI();
-    // }
 
     private void UpdateUI()
     {
@@ -71,6 +67,14 @@ public class ItemView : MonoBehaviour
                 Destroy(gameObject);
             });
         }
+    }
+    private void HandleUndo(string Uid)
+    {
+        if (ItemData == null || Uid != ItemData.UID) return;
+
+        CurrentCount++;
+        UpdateUI();
+        PlayMatchShake();
     }
     public void PlayMatchShake()
     {

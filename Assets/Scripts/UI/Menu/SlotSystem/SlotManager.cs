@@ -23,6 +23,8 @@ public class SlotManager
         Scheduler.Instance.SubscribeGUI(OnGUI);
         GameEvents.OnItemsCollectedEvent -= OnItemsCollected;
         GameEvents.OnItemsCollectedEvent += OnItemsCollected;
+        GameEvents.OnUndoPowerupEvent -= OnUndoRequest;
+        GameEvents.OnUndoPowerupEvent += OnUndoRequest;
         _allGoalsReached = false;
     }
 
@@ -30,6 +32,28 @@ public class SlotManager
     {
         _allGoalsReached = true;
         Debug.LogError("OnItemsCollected received - _allGoalsReached");
+    }
+    private void OnUndoRequest()
+    {
+        for (int i = _slots.Length - 1; i >= 0; i--)
+        {
+            if (_slots[i] != null)
+            {
+                _slots[i] = null;
+                break;
+            }
+        }
+    }
+    private void OnHintPowerup()
+    {
+        for (int i = 0; i < _slots.Length - 1; i++)
+        {
+            if (_slots[i] != null)
+            {
+                _slots[i] = null;
+                break;
+            }
+        }
     }
 
     public async void AddItem(ItemData data, Transform source)
@@ -132,19 +156,19 @@ public class SlotManager
     private Task ExecuteFlight(ItemData d, int idx, Transform s)
     {
         var tcs = new TaskCompletionSource<bool>();
-        GameEvents.OnRequestFlightEvent?.Invoke(d, idx, s, () => tcs.SetResult(true));
+        GameEvents.OnRequestFlightEvent?.Invoke(d, idx, s, () => tcs.TrySetResult(true));
         return tcs.Task;
     }
     private Task ExecuteSteppedLeap(ItemData d, int from, int to)
     {
         var tcs = new TaskCompletionSource<bool>();
-        GameEvents.OnRequestSteppedLeapEvent?.Invoke(d, from, to, () => tcs.SetResult(true));
+        GameEvents.OnRequestSteppedLeapEvent?.Invoke(d, from, to, () => tcs.TrySetResult(true));
         return tcs.Task;
     }
     private Task ExecuteMatch(int start, ItemData[] data)
     {
         var tcs = new TaskCompletionSource<bool>();
-        GameEvents.OnRequestMatchResolveEvent?.Invoke(start, data, () => tcs.SetResult(true));
+        GameEvents.OnRequestMatchResolveEvent?.Invoke(start, data, () => tcs.TrySetResult(true));
         return tcs.Task;
     }
 

@@ -98,14 +98,14 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     }
     private void OnShakeButtonClicked()
     {
-        GameEvents.OnUndoPowerupEvent?.Invoke();
+        GameEvents.OnShakePowerupEvent?.Invoke();
     }
     private void OnMagnetButtonClicked()
     {
-        GameEvents.OnUndoPowerupEvent?.Invoke();
+        GameEvents.OnMagnetPowerupEvent?.Invoke();
     }
     private void OnHintButtonClicked()
     {
-        GameEvents.OnUndoPowerupEvent?.Invoke();
+        GameEvents.OnHintPowerupEvent?.Invoke();
     }
 }

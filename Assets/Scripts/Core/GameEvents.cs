@@ -22,7 +22,7 @@ public static class GameEvents
     public static Action OnLevelRestartEvent;
 
     public static Action OnUndoPowerupEvent;
-    public static Action<Transform> OnUndoAddItemEvent;
+    public static Action<string> OnUndoAddItemEvent;
 
     public static Action OnHintPowerupEvent;
     public static Action<string> OnHintSlotsItemAvailableEvent; //fired by slotmanager to tell what item can be picked up

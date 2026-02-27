@@ -79,13 +79,6 @@ public class SlotView : MonoBehaviour
         icon.transform.DOKill();
         _backgroundImage.rectTransform.DOKill();        // transform.DOKill();
         _backgroundImage.rectTransform.localPosition = _originalSlotPos;
-        // 2. Snap back to original location instantly
-        // transform.localPosition = _originalSlotPos;
-
-        /* // --- TWEEN VERSION ---
-        // If you want it to slide back up smoothly instead of snapping:
-        */
-        // transform.DOLocalMove(_originalSlotPos, 0.2f).SetEase(Ease.OutCubic);
     }
     private int debugFontSize = 38; // adjustable font size
 
