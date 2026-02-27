@@ -7,7 +7,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 {
     private List<ItemView> _activeItemViews = new List<ItemView>();
     private List<ItemView> _activeViews = new List<ItemView>();
-
+    private List<PowerUpButton> _activeButtons = new List<PowerUpButton>();
 
     public GameMenuBaseState_Main(GameMenuController controller) : base(controller) { }
 
@@ -16,11 +16,6 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         base.Enter();
         View.StartCoroutine(StartGame());
         View.PauseButton.onClick.AddListener(OnPauseButtonClicked);
-        View.UndoButton.onClick.AddListener(OnUndoButtonClicked);
-        View.ShakeButton.onClick.AddListener(OnShakeButtonClicked);
-        View.HintButton.onClick.AddListener(OnHintButtonClicked);
-        View.MagnetButton.onClick.AddListener(OnMagnetButtonClicked);
-        // GameEvents.OnGameOverEvent += HandleGameOver;
         GameEvents.OnMatchStartedEvent += HandleMatchStarted;
         GameEvents.OnShowMatchResultEvent += HandleMatchResult;
     }
@@ -30,21 +25,13 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         base.Exit();
 
         GameEvents.OnMatchStartedEvent -= HandleMatchStarted;
-        // GameEvents.OnGameOverEvent -= HandleGameOver;
         GameEvents.OnShowMatchResultEvent -= HandleMatchResult;
         View.PauseButton.onClick.RemoveListener(OnPauseButtonClicked);
-        View.UndoButton.onClick.RemoveListener(OnUndoButtonClicked);
-        View.ShakeButton.onClick.RemoveListener(OnShakeButtonClicked);
-        View.HintButton.onClick.RemoveListener(OnHintButtonClicked);
-        View.MagnetButton.onClick.RemoveListener(OnMagnetButtonClicked);
+        Cleanup();
     }
 
     private void HandleMatchStarted(LevelData levelData)
     {
-        // Cleanup old
-        foreach (var v in _activeViews) if (v) GameObject.Destroy(v.gameObject);
-        _activeViews.Clear();
-
         // Create new
         foreach (var spawn in levelData.itemsToSpawn)
         {
@@ -61,6 +48,35 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
             _activeViews.Add(view);
         }
+        SetupPowerUps();
+    }
+
+
+    public void SetupPowerUps()
+    {
+        // Create a button for every type defined in the Enum
+        foreach (PowerUpType type in Enum.GetValues(typeof(PowerUpType)))
+        {
+            PowerUpButton btn = GameObject.Instantiate(View.PowerUpPrefab, View.PowerUpContainer);
+
+            // Fetch the specific sprite for this type from our SO database
+            Sprite icon = View.PowerUpVisualDatabase != null ? View.PowerUpVisualDatabase.GetIcon(type) : null;
+            int amount = GameManager.Instance.SaveData.Inventory.GetPowerUpCount(type);
+            btn.Initialize(type, amount, icon);
+            _activeButtons.Add(btn);
+        }
+    }
+
+    private void Cleanup()
+    {
+        // Clear old powerup Button
+        foreach (var child in _activeButtons) if (child != null) GameObject.Destroy(child.gameObject);
+        _activeButtons.Clear();
+
+        // Cleanup old itemviews
+        foreach (var v in _activeViews) if (v) GameObject.Destroy(v.gameObject);
+        _activeViews.Clear();
+
     }
 
     private void CheckWin()
@@ -92,20 +108,5 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         Controller.StartGame();
     }
 
-    private void OnUndoButtonClicked()
-    {
-        GameEvents.OnUndoPowerupEvent?.Invoke();
-    }
-    private void OnShakeButtonClicked()
-    {
-        GameEvents.OnShakePowerupEvent?.Invoke();
-    }
-    private void OnMagnetButtonClicked()
-    {
-        GameEvents.OnMagnetPowerupEvent?.Invoke();
-    }
-    private void OnHintButtonClicked()
-    {
-        GameEvents.OnHintPowerupEvent?.Invoke();
-    }
+
 }

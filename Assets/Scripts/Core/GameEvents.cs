@@ -18,7 +18,7 @@ public static class GameEvents
     public static Action OnItemsCollectedEvent;
     public static Action<bool, float> OnShowMatchResultEvent; // match status, match rate
 
-    public static Action OnLevelCompleteEvent;
+    public static Action<bool> OnLevelCompleteEvent; //isComplete
     public static Action OnLevelRestartEvent;
 
     public static Action OnUndoPowerupEvent;
@@ -29,5 +29,9 @@ public static class GameEvents
 
     public static Action OnShakePowerupEvent; //shake and shuffle the items 
     public static Action OnMagnetPowerupEvent; // auto pickup collectable items
+    public static Action<PowerUpType, int> OnPowerUpAmountChangeEvent; // increment/decrment amount by value 
+    public static Action<PowerUpType> OnPowerUpSuccessEvent; // increment/decrment amount by value 
+
+
 
 }

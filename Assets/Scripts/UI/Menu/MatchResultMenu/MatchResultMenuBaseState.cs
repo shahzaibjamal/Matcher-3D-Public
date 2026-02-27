@@ -12,7 +12,7 @@ public class MatchResultMenuBaseState : MenuBaseState<MatchResultMenuController,
 
     public override void Enter()
     {
-        View.GoldRewardView.SetInitialHudAmount(978);
+        View.GoldRewardView.SetInitialHudAmount(GameManager.Instance.SaveData.Inventory.Gold);
         ShowMatchResultAnimation();
     }
 
@@ -90,7 +90,7 @@ public class MatchResultMenuBaseState : MenuBaseState<MatchResultMenuController,
 
     protected virtual void OnMenuOpenAnimationComplete()
     {
-
+        // implemented by inherited state classes
     }
 
 }

@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
         GameEvents.OnGameQuitEvent += Cleanup;
         GameEvents.OnGameOverEvent += TriggerGameOver;
         GameEvents.OnLevelRestartEvent += RestartLevel;
+        GameEvents.OnPowerUpAmountChangeEvent += HandlePowerUpAmountChange;
 
         _slotManager = new SlotManager(SLOT_COUNT);
 
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour
             new MainMenuData()
         );
     }
+
 
     #region Game Lifecycle Functions
 
@@ -89,7 +91,8 @@ public class GameManager : MonoBehaviour
         {
             // 3. Spawn the world spawner
             _activeSpawner = Instantiate(_spawnerPrefab);
-            _activeSpawner.SpawnLevel("level_01", (itemData, sourceTransform) =>
+            LevelData levelData = LevelManager.Instance.GetCurrentProgressLevel();
+            _activeSpawner.SpawnLevel(levelData, (itemData, sourceTransform) =>
             {
                 _slotManager.AddItem(itemData, sourceTransform);
             });
@@ -100,10 +103,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Manager: Game Over!" + (won ? " You won " : " You lost"));
         SaveGame();
 
-        // Cleanup spawner if necessary
-
-
-
         float score = 0;
         if (won)
         {
@@ -111,15 +110,9 @@ public class GameManager : MonoBehaviour
             int currentTotalCount = _activeSpawner.CurrentTotalRemaining;
             int initialCollectableItems = _activeSpawner.InitialCollectableItems;
             int currentCollectablesRemaining = _activeSpawner.CurrentCollectablesRemaining;
-            // Debug.Log("InitialTotalItems " + initialTotalCount);
-            // Debug.Log("CurrentTotalRemaining " + currentTotalCount);
-            // Debug.Log("InitialCollectableItems " + initialCollectableItems);
-            // Debug.Log("CurrentCollectablesRemaining " + currentCollectablesRemaining);
             score = CalculateScore(currentTotalCount - currentCollectablesRemaining, initialTotalCount - initialCollectableItems, initialCollectableItems);
         }
         GameEvents.OnShowMatchResultEvent?.Invoke(won, score);
-
-        // Cleanup();
     }
 
     private float CalculateScore(float currentJunk, float totalJunk, int initialCollectableItems)
@@ -158,6 +151,12 @@ public class GameManager : MonoBehaviour
         Debug.Log($"[SCORE] Actual: {timeTaken:F1}s | Target: {targetTime}s | Acc: {accuracy:F2} | Final: {finalScore:F2}");
 
         return finalScore;
+    }
+
+    private void HandlePowerUpAmountChange(PowerUpType powerUpType, int amount)
+    {
+        SaveData.Inventory.AddPowerUp(powerUpType, amount);
+        SaveGame();
     }
 
     public void Cleanup()

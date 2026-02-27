@@ -1,0 +1,16 @@
+{
+    "CurrentLevelUID": "Level_01",
+    "TotalCoins": 0,
+    "IsMusicMuted": false,
+    "Inventory": {
+        "Gold": 500,
+        "Stars": 0,
+        "PowerUps": {
+            "Magnet": 3,
+            "Shake": 3,
+            "Hint": 5,
+            "Undo": 10
+        }
+    },
+    "LevelHistory": []
+}

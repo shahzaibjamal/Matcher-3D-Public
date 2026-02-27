@@ -104,4 +104,14 @@ public class Scheduler : MonoBehaviour
         yield return new WaitForSeconds(delay);
         action?.Invoke();
     }
+    public Coroutine ExecuteAfterDelay<T>(float delay, Action<T> action, T arg)
+    {
+        return StartCoroutine(DelayedActionRoutine(delay, () => action(arg)));
+    }
+
+    public Coroutine ExecuteAfterDelay<T1, T2>(float delay, Action<T1, T2> action, T1 arg1, T2 arg2)
+    {
+        return StartCoroutine(DelayedActionRoutine(delay, () => action(arg1, arg2)));
+    }
+
 }

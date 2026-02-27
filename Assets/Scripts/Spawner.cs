@@ -47,6 +47,7 @@ public partial class Spawner : MonoBehaviour
         // We listen to this to clear history of items that are officially matched/destroyed
         GameEvents.OnRequestMatchResolveEvent += HandleMatchResolved;
         GameEvents.OnHintPowerupEvent += HandleHintPowerUp;
+        GameEvents.OnMagnetPowerupEvent += HandleMagnetPowerUp;
 
     }
 
@@ -55,6 +56,7 @@ public partial class Spawner : MonoBehaviour
         GameEvents.OnUndoPowerupEvent -= HandleUndoRequest;
         GameEvents.OnShakePowerupEvent -= ShakeArea;
         GameEvents.OnHintPowerupEvent -= HandleHintPowerUp;
+        GameEvents.OnMagnetPowerupEvent -= HandleMagnetPowerUp;
         GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolved;
     }
 
@@ -64,7 +66,7 @@ public partial class Spawner : MonoBehaviour
     }
 
     #region Level Lifecycle
-    public void SpawnLevel(string levelUID, Action<ItemData, Transform> onItemClicked)
+    public void SpawnLevel(LevelData levelData, Action<ItemData, Transform> onItemClicked)
     {
         _onItemClicked = onItemClicked;
 
@@ -72,7 +74,7 @@ public partial class Spawner : MonoBehaviour
         GenerateBounds();
 
         // 2. Prepare Data
-        _currentLevelData = Metadata.Instance.levelDatabase.GetLevelByUID(levelUID);
+        _currentLevelData = levelData;
         if (_currentLevelData == null) return;
 
         InitializeLevelStats();
@@ -159,6 +161,7 @@ public partial class Spawner : MonoBehaviour
         Vector3 trayWorldPos = MainCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2, 100, 5));
         GameEvents.OnUndoAddItemEvent?.Invoke(dataToRestore.UID);
         SpawnFromTray(dataToRestore, trayWorldPos);
+        GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Undo);
     }
 
     private void SpawnFromTray(ItemData item, Vector3 startPos)
@@ -209,66 +212,142 @@ public partial class Spawner : MonoBehaviour
         }
     }
 
+
     private void HandleHintPowerUp()
     {
-        if (_undoHistory.Count == 0) return;
+        string targetUID = null;
 
-        // 1. Count frequencies in history
-        Dictionary<string, int> counts = new Dictionary<string, int>();
+        // 1. Calculate frequencies in tray for logic
+        Dictionary<string, int> historyCounts = new Dictionary<string, int>();
         foreach (var item in _undoHistory)
         {
-            if (counts.ContainsKey(item.UID)) counts[item.UID]++;
-            else counts[item.UID] = 1;
+            if (historyCounts.ContainsKey(item.UID)) historyCounts[item.UID]++;
+            else historyCounts[item.UID] = 1;
         }
 
-        // 2. Determine Best Candidate with Goal Priority
-        string bestUID = null;
+        // 2. PRIORITY 1: Check Collectables that are already in UndoHistory (Goals in progress)
         int highestCount = 0;
-        bool bestIsGoal = false;
-
-        foreach (var pair in counts)
+        foreach (var goalUID in _collectableLeft.Keys)
         {
-            // Is this specific UID part of our collection goals?
-            bool isGoal = _currentLevelData.itemsToCollect.Any(goal => goal == pair.Key);
-
-            // Logic: 
-            // - If we find a goal and the current best isn't a goal, take it.
-            // - If both are goals (or both aren't), take the one with the higher count.
-            if (bestUID == null || (isGoal && !bestIsGoal) || (isGoal == bestIsGoal && pair.Value > highestCount))
+            if (historyCounts.TryGetValue(goalUID, out int countInTray))
             {
-                highestCount = pair.Value;
-                bestUID = pair.Key;
-                bestIsGoal = isGoal;
+                // We only care if it's not already a completed set in the tray (count % 3 != 0)
+                if (countInTray % 3 != 0 && countInTray > highestCount)
+                {
+                    highestCount = countInTray;
+                    targetUID = goalUID;
+                }
             }
         }
 
-        // 3. Danger Zone Safety (Dynamic check)
-        int trayCount = _undoHistory.Count;
-        int max = 7;
-
-        if (trayCount >= max - 1 && highestCount < 2) return;
-        if (trayCount == max - 2 && highestCount == 1) return;
-
-        // 4. Highlight Logic
-        if (bestUID != null)
+        // 3. PRIORITY 2: If no "Goal in Progress" found, check if ANY item in history is a candidate
+        if (string.IsNullOrEmpty(targetUID) && _undoHistory.Count > 0)
         {
-            HighlightItemsInField(bestUID);
+            // Pick the most recent item from history that isn't already finished
+            foreach (var item in _undoHistory)
+            {
+                if (historyCounts[item.UID] % 3 != 0)
+                {
+                    targetUID = item.UID;
+                    break;
+                }
+            }
+        }
+
+        // 4. PRIORITY 3: If history is empty, just hint the first goal
+        if (string.IsNullOrEmpty(targetUID) && _collectableLeft.Count > 0)
+        {
+            targetUID = _collectableLeft.Keys.First();
+        }
+
+        // 5. Execution
+        if (!string.IsNullOrEmpty(targetUID))
+        {
+            HighlightItemsInField(targetUID);
+            GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Hint);
         }
     }
 
     private void HighlightItemsInField(string uid)
     {
+        int count = 0;
+        float delay = 0.1f;
         foreach (var item in _itemClickables)
         {
             if (item != null && item.ItemData.UID == uid)
             {
-                item.Highlight(true);
-
-                // Auto-stop after 3 seconds
-                DOVirtual.DelayedCall(3f, () => item.Highlight(false));
+                float calculatedDelay = delay * count++;
+                Scheduler.Instance.ExecuteAfterDelay(calculatedDelay, () =>
+                {
+                    item.Highlight(true);
+                    // Auto-stop after 3 seconds. all at once
+                    DOVirtual.DelayedCall(3f - calculatedDelay, () => item.Highlight(false));
+                });
             }
         }
     }
+
+    private void HandleMagnetPowerUp()
+    {
+        float delay = 0.4f;
+        // 1. Priority: Check items in _collectableLeft and see if they are already in _undoHistory
+        foreach (var key in _collectableLeft.Keys.ToList())
+        {
+            // If this item type is already partially collected (in the tray/undo history)
+            int currentlyInTray = _undoHistory.Count(i => i.UID == key);
+
+            // If it's 1 or 2, we have a partial match that needs fulfilling
+            if (currentlyInTray > 0)
+            {
+                int neededToMatch = 3 - (currentlyInTray % 3);
+
+                for (int i = 0; i < neededToMatch; i++)
+                {
+                    Scheduler.Instance.ExecuteAfterDelay(delay * i, () => TrySelectSpecificItem(key));
+                }
+                GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Magnet);
+
+                // Once we fulfill the priority match, we consider the magnet's main job done for this trigger
+                return;
+            }
+        }
+
+        // 2. Fallback: If no partial matches found, grab the first available items from the collection list 3 times
+        if (_collectableLeft == null || _collectableLeft.Count == 0)
+        {
+            return;
+        }
+
+        string firstUid = _collectableLeft.Keys.First();
+        for (int i = 0; i < 3; i++)
+        {
+            Scheduler.Instance.ExecuteAfterDelay(delay * i, () => TrySelectSpecificItem(firstUid));
+        }
+
+        GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Magnet);
+    }
+    private bool TrySelectSpecificItem(string uid)
+    {
+        var targetItem = _itemClickables.Find(c => c != null && c.ItemData.UID == uid);
+        if (targetItem != null)
+        {
+            ProcessItemSelection(targetItem);
+            return true;
+        }
+        return false;
+    }
+
+    private void ProcessItemSelection(ClickableItem item)
+    {
+        if (item == null) return;
+
+        // Fire external event for UI/GameManager
+        _onItemClicked?.Invoke(item.ItemData, item.transform);
+
+        // Call internal handler to update Dictionaries/Lists
+        HandleInternalItemClicked(item.ItemData, item.transform);
+    }
+
     private Vector3 CalculateRandomSpawnPos()
     {
         float x = UnityEngine.Random.Range(-_spawnXMax + 0.5f, _spawnXMax - 0.5f);
@@ -372,6 +451,8 @@ public partial class Spawner : MonoBehaviour
                 rb.AddTorque(UnityEngine.Random.insideUnitSphere * 5, ForceMode.Impulse);
             }
         }
+        GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Shake);
+
     }
 
     void Update()
@@ -397,16 +478,8 @@ public partial class Spawner : MonoBehaviour
 
         // 2. Find the target
         string targetUID = _collectableLeft.Keys.First();
-        var targetItem = _itemClickables.Find(c => c != null && c.ItemData.UID == targetUID);
-
-        if (targetItem != null)
-        {
-            // 3. Fire the external event (e.g., for the UI/GameManager)
-            _onItemClicked?.Invoke(targetItem.ItemData, targetItem.transform);
-
-            // 4. MUST call the internal handler to update the Dictionary and List
-            HandleInternalItemClicked(targetItem.ItemData, targetItem.transform);
-        }
+        TrySelectSpecificItem(targetUID);
     }
+
     #endregion
 }
