@@ -55,7 +55,7 @@ public partial class Spawner : MonoBehaviour
         GameEvents.OnUndoPowerupEvent -= HandleUndoRequest;
         GameEvents.OnShakePowerupEvent -= ShakeArea;
         GameEvents.OnHintPowerupEvent -= HandleHintPowerUp;
-        // GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolved;
+        GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolved;
     }
 
     void Awake()
@@ -207,8 +207,6 @@ public partial class Spawner : MonoBehaviour
                 _undoHistory.Pop();
             }
         }
-
-        onComplete?.Invoke();
     }
 
     private void HandleHintPowerUp()
