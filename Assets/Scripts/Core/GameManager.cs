@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = -1; // -1 means "unlimited"
 
         MainMenuController.OnStartButtonClicked += StartGame;
+        Debug.Log("Game Manager: start method called... ");
+
         GameEvents.OnGameInitializedEvent += SpawnGameSystems;
         GameEvents.OnGameQuitEvent += Cleanup;
         GameEvents.OnGameOverEvent += TriggerGameOver;

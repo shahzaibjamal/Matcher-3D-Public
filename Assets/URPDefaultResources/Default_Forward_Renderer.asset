@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-599776278101177661
+--- !u!114 &-7719539192354937873
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: RenderObjects
+  m_Name: Hint Outline
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.RenderObjects
   m_Active: 1
   settings:
-    passTag: RenderObjects
+    passTag: Hint Outline
     Event: 300
     filterSettings:
       RenderQueueType: 0
@@ -22,19 +22,19 @@ MonoBehaviour:
         serializedVersion: 2
         m_Bits: 64
       PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: bad5a66ad3ba4564a9c73d95f19e9f1a, type: 2}
+    overrideMaterial: {fileID: 2100000, guid: 1ae0d813e4b16cb4d8993fd542a3c5de, type: 2}
     overrideMaterialPassIndex: 0
     overrideShader: {fileID: 0}
     overrideShaderPassIndex: 0
     overrideMode: 1
     overrideDepthState: 1
-    depthCompareFunction: 5
-    enableWrite: 0
+    depthCompareFunction: 8
+    enableWrite: 1
     stencilSettings:
       overrideStencilState: 1
-      stencilReference: 1
-      stencilCompareFunction: 8
-      passOperation: 2
+      stencilReference: 2
+      stencilCompareFunction: 6
+      passOperation: 0
       failOperation: 0
       zFailOperation: 0
     cameraSettings:
@@ -67,9 +67,9 @@ MonoBehaviour:
     probeSamplingDebugTexture: {fileID: 0}
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
-  - {fileID: -599776278101177661}
-  - {fileID: 5911157182326955766}
-  m_RendererFeatureMap: c3ca121fa72aadf7f6de188023a60852
+  - {fileID: 4655085794925675030}
+  - {fileID: -7719539192354937873}
+  m_RendererFeatureMap: 160283e5dd2f9a40ef63fa2101b0de94
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
---- !u!114 &5911157182326955766
+--- !u!114 &4655085794925675030
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,11 +108,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: RenderObjects
+  m_Name: Hintmask
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.RenderObjects
   m_Active: 1
   settings:
-    passTag: RenderObjects
+    passTag: Hintmask
     Event: 300
     filterSettings:
       RenderQueueType: 0
@@ -124,15 +124,15 @@ MonoBehaviour:
     overrideMaterialPassIndex: 0
     overrideShader: {fileID: 0}
     overrideShaderPassIndex: 0
-    overrideMode: 1
+    overrideMode: 0
     overrideDepthState: 1
-    depthCompareFunction: 4
+    depthCompareFunction: 8
     enableWrite: 1
     stencilSettings:
       overrideStencilState: 1
-      stencilReference: 1
-      stencilCompareFunction: 6
-      passOperation: 0
+      stencilReference: 2
+      stencilCompareFunction: 8
+      passOperation: 2
       failOperation: 0
       zFailOperation: 0
     cameraSettings:

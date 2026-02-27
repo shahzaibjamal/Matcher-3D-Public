@@ -57,7 +57,7 @@ public class ClickableItem : MonoBehaviour, IClickable
         if (isHinted)
         {
             // Add the Scale Pulse (Motion is key to catching the eye)
-            transform.DOScale(Vector3.one * 1.2f, 0.5f)
+            transform.DOScale(Vector3.one * 1.05f, 0.5f)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine)
                 .SetId("HintLoop");
