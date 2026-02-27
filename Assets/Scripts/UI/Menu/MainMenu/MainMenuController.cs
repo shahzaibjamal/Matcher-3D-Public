@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class MainMenuController : MenuController<MainMenuView, MainMenuData>
 {
@@ -23,6 +24,7 @@ public class MainMenuController : MenuController<MainMenuView, MainMenuData>
 
     public void StartButtonClicked()
     {
+        Debug.LogError("StartButton Clicked");
         OnStartButtonClicked?.Invoke();
     }
 }
