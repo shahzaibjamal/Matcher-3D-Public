@@ -27,3 +27,18 @@ MonoBehaviour:
     itemsToCollect:
     - cog_1
     - heart
+  - levelUID: level_02
+    levelName: Level 2
+    itemsToSpawn:
+    - itemUID: cog_1
+      count: 9
+    - itemUID: heart
+      count: 6
+    - itemUID: beer
+      count: 12
+    - itemUID: potion_1
+      count: 9
+    itemsToCollect:
+    - cog_1
+    - heart
+    - potion_1

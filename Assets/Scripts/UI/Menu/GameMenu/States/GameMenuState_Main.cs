@@ -18,6 +18,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         View.PauseButton.onClick.AddListener(OnPauseButtonClicked);
         GameEvents.OnMatchStartedEvent += HandleMatchStarted;
         GameEvents.OnShowMatchResultEvent += HandleMatchResult;
+        GameEvents.OnCleanSweepTrayEvent += HandleCleanSweep;
     }
 
     public override void Exit()
@@ -26,6 +27,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
         GameEvents.OnMatchStartedEvent -= HandleMatchStarted;
         GameEvents.OnShowMatchResultEvent -= HandleMatchResult;
+        GameEvents.OnCleanSweepTrayEvent -= HandleCleanSweep;
         View.PauseButton.onClick.RemoveListener(OnPauseButtonClicked);
         Cleanup();
     }
@@ -99,6 +101,13 @@ public class GameMenuBaseState_Main : GameMenuBaseState
             MatchRate = matchRate
         });
     }
+
+    private void HandleCleanSweep()
+    {
+        View.BroomSweeper.PlayBroomSweep();
+    }
+
+
     private void OnPauseButtonClicked() =>
         MenuManager.Instance.OpenMenu<PauseMenuView, PauseMenuController, PauseMenuData>(Menus.Type.Pause);
 

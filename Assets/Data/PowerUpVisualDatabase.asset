@@ -22,6 +22,6 @@ MonoBehaviour:
   - Type: 2
     Icon: {fileID: -1960903238, guid: 4ae2ccf01a85b364da21386682eb8574, type: 3}
     Color: {r: 1, g: 1, b: 1, a: 0}
-  - Type: 0
-    Icon: {fileID: 1360988570, guid: 64e2a715fedc40044ab58dc513d5f070, type: 3}
+  - Type: 3
+    Icon: {fileID: -1035832753, guid: 4ae2ccf01a85b364da21386682eb8574, type: 3}
     Color: {r: 0.31764707, g: 0.3803922, b: 0.9960785, a: 1}

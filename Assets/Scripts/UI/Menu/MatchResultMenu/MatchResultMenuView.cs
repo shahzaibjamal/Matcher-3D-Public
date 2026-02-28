@@ -20,4 +20,5 @@ public class MatchResultMenuView : MenuView
 
     public TMP_Text LevelNumber;
     public GoldRewardView GoldRewardView;
+    public GoldMainView GoldMainView;
 }

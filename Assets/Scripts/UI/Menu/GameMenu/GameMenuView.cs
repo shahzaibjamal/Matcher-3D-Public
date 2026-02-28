@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,12 +10,8 @@ public class GameMenuView : MenuView
     public TrayView TrayView;
 
     public Button PauseButton;
-
-    // public Button UndoButton;
-    // public Button ShakeButton;
-    // public Button HintButton;
-    // public Button MagnetButton;
-
+    public TMP_Text LevelId;
+    public GoldMainView GoldMainView;
     public PowerUpButton PowerUpPrefab;
 
     private List<PowerUpButton> _activeButtons = new List<PowerUpButton>();
@@ -23,5 +20,7 @@ public class GameMenuView : MenuView
 
     [Header("Data Configuration")]
     public PowerUpVisualDatabase PowerUpVisualDatabase;
+
+    public BroomSweeper BroomSweeper;
 
 }

@@ -46,13 +46,12 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = -1; // -1 means "unlimited"
 
         MainMenuController.OnStartButtonClicked += StartGame;
-        Debug.Log("Game Manager: start method called... ");
-
         GameEvents.OnGameInitializedEvent += SpawnGameSystems;
         GameEvents.OnGameQuitEvent += Cleanup;
         GameEvents.OnGameOverEvent += TriggerGameOver;
         GameEvents.OnLevelRestartEvent += RestartLevel;
         GameEvents.OnPowerUpAmountChangeEvent += HandlePowerUpAmountChange;
+        GameEvents.OnGoldUpdatedEvent += OnGoldUpdate;
 
         _slotManager = new SlotManager(SLOT_COUNT);
 
@@ -64,6 +63,22 @@ public class GameManager : MonoBehaviour
     }
 
 
+    void OnDestroy()
+    {
+        MainMenuController.OnStartButtonClicked -= StartGame;
+        GameEvents.OnGameInitializedEvent -= SpawnGameSystems;
+        GameEvents.OnGameQuitEvent -= Cleanup;
+        GameEvents.OnGameOverEvent -= TriggerGameOver;
+        GameEvents.OnLevelRestartEvent -= RestartLevel;
+        GameEvents.OnPowerUpAmountChangeEvent -= HandlePowerUpAmountChange;
+        GameEvents.OnGoldUpdatedEvent -= OnGoldUpdate;
+
+    }
+
+    private void OnGoldUpdate(int amount)
+    {
+        SaveGame();
+    }
     #region Game Lifecycle Functions
 
 

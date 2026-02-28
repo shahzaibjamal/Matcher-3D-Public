@@ -71,7 +71,9 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
             .SetEase(Ease.Linear)      // Constant speed (essential for loops)
             .SetLoops(-1, LoopType.Incremental); // -1 means infinite    
 
-        View.GoldRewardView.ShowReward(Data.GoldAmount, delay, null);
+        int total = Data.GoldAmount + GameManager.Instance.SaveData.Inventory.Gold;
+        View.GoldRewardView.ShowReward(Data.GoldAmount, total, delay);
+        GameManager.Instance.SaveData.Inventory.TryUpdateGoldAmount(Data.GoldAmount);
         View.TextAnimation.PlayReveal();
     }
 }

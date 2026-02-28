@@ -109,8 +109,12 @@ public class MenuManager : MonoBehaviour
         MenuSession top = _menuStack.Pop();
         Menus.MenuDisplayMode closedMode = top.View.DisplayMode;
 
-        top.Controller.OnExit();
-        top.View.Destroy();
+        // Call OnExit with a callback to perform the cleanup
+        top.View.OnExit(() =>
+        {
+            top.Controller.OnExit();
+            top.View.Destroy();
+        });
 
         // 4. Restore previous menu ONLY if the one we just closed was a ScreenReplace
         if (_menuStack.Count > 0 && closedMode == Menus.MenuDisplayMode.ScreenReplace)

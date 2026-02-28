@@ -12,7 +12,7 @@ public class MatchResultMenuBaseState : MenuBaseState<MatchResultMenuController,
 
     public override void Enter()
     {
-        View.GoldRewardView.SetInitialHudAmount(GameManager.Instance.SaveData.Inventory.Gold);
+        View.GoldMainView.Initialize(GameManager.Instance.SaveData.Inventory.Gold);
         ShowMatchResultAnimation();
     }
 

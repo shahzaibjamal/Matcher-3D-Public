@@ -12,6 +12,12 @@ public class MatchResultMenuBaseState_Lose : MatchResultMenuBaseState
         View.GoldMulitplierButton.gameObject.SetActive(false);
         View.Status.gameObject.SetActive(false);
         View.Result.text = LocaleManager.Localize(LocalizationKeys.result_lose);
+
+        Scheduler.Instance.ExecuteAfterDelay(3.2f, () =>
+        {
+            MenuManager.Instance.GoBack();
+            GameEvents.OnCleanSweepTrayEvent?.Invoke();
+        });
     }
 
     public override void Exit()

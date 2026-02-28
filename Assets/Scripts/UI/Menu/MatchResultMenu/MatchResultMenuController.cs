@@ -44,6 +44,12 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
 
     void OnGoldMultiplierButtonClicked()
     {
-        SetState(new MatchResultMenuBaseState_Win(this));
+
+        // show video ad 
+        // add 3x goldamount
+        // close menu
+        // SetState(new MatchResultMenuBaseState_Win(this));
+        MenuManager.Instance.GoBack();
+        GameEvents.OnCleanSweepTrayEvent?.Invoke();
     }
 }

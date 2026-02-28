@@ -16,8 +16,8 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StartButton.onClick.AddListener(OnStartButtonClicked);
         View.DebugButton.onClick.AddListener(OnDebugButtonClicked);
         View.SettingsButton.onClick.AddListener(OnSettingsButtonClicked);
-        // StartIdleAnimation();
         StartPlayButtonAnimation();
+        View.GoldMainView.Initialize(GameManager.Instance.SaveData.Inventory.Gold);
     }
 
     private Sequence _idleSequence;

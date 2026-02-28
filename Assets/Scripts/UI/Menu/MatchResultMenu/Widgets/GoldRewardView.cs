@@ -6,88 +6,65 @@ using System;
 
 public class GoldRewardView : MonoBehaviour
 {
-    [Header("HUD (Always Visible)")]
-    public TMP_Text HudGoldText;
-    public Image HudGoldIcon;
-    private int _currentHudAmount = 0;
+    [Header("Target HUD")]
+    public GoldMainView TargetHUD;
 
-    [Header("Reward Elements (The Pop-ups)")]
+    [Header("Reward UI Elements")]
+    public RectTransform RewardContainer; // Parent of text and icon
     public TMP_Text RewardAmountText;
     public Image RewardIcon;
 
-    [Header("Settings")]
+    [Header("Animation Settings")]
     public float PopDuration = 0.5f;
-    public float CountDuration = 1.0f;
-    public float FlyToHudDuration = 0.6f;
+    public float FlyDuration = 0.7f;
+    public Ease FlyEase = Ease.InBack;
 
-    public void ShowReward(int rewardAmount, float delay, Action onComplete = null)
+    private Vector3 _startPosition;
+
+    private void Awake()
     {
-        // 1. Reset Reward Elements
-        RewardAmountText.gameObject.SetActive(true);
-        RewardIcon.gameObject.SetActive(true);
+        _startPosition = RewardContainer.position;
+        RewardContainer.gameObject.SetActive(false);
+    }
 
-        RewardAmountText.transform.localScale = Vector3.zero;
-        RewardIcon.transform.localScale = Vector3.zero;
+    /// <summary>
+    /// Pops a reward amount on screen, then flies it to the HUD.
+    /// </summary>
+    /// <param name="rewardAmount">The amount to show in the popup (+100)</param>
+    /// <param name="newTotal">The final total the HUD should reach after the flight</param>
+    public void ShowReward(int rewardAmount, int newTotal, float initialDelay = 0f, Action onComplete = null)
+    {
+        // Setup
+        RewardContainer.position = _startPosition;
+        RewardContainer.localScale = Vector3.zero;
         RewardAmountText.text = $"+{rewardAmount}";
-
-        // Store original positions to reset them later
-        Vector3 originalTextPos = RewardAmountText.transform.position;
-        Vector3 originalIconPos = RewardIcon.transform.position;
+        RewardContainer.gameObject.SetActive(true);
 
         Sequence seq = DOTween.Sequence();
 
-        // STEP A: Pop the Reward Elements in
-        seq.SetDelay(delay);
-        seq.Append(RewardIcon.transform.DOScale(1.2f, PopDuration).SetEase(Ease.OutBack));
-        seq.Join(RewardAmountText.transform.DOScale(1.0f, PopDuration).SetEase(Ease.OutBack));
+        // 1. Initial Pop In
+        seq.AppendInterval(initialDelay);
+        seq.Append(RewardContainer.DOScale(1.2f, PopDuration).SetEase(Ease.OutBack));
 
-        // STEP B: Brief pause to let the player see the amount
-        seq.AppendInterval(0.5f);
+        // 2. Hover for a moment
+        seq.AppendInterval(0.3f);
 
-        // STEP C: Fly to HUD
-        // We move them toward the HUD's world position
-        seq.Append(RewardIcon.transform.DOMove(HudGoldIcon.transform.position, FlyToHudDuration).SetEase(Ease.InBack));
-        seq.Join(RewardAmountText.transform.DOMove(HudGoldText.transform.position, FlyToHudDuration).SetEase(Ease.InBack));
+        // 3. Fly to HUD
+        // We use GetTargetPosition() from the HUD to find where the icon is currently
+        seq.Append(RewardContainer.DOMove(TargetHUD.GetTargetPosition(), FlyDuration).SetEase(FlyEase));
 
-        // Shrink them as they approach the HUD
-        seq.Join(RewardIcon.transform.DOScale(0.5f, FlyToHudDuration));
-        seq.Join(RewardAmountText.transform.DOScale(0.5f, FlyToHudDuration));
+        // Shrink slightly as it enters the HUD
+        seq.Join(RewardContainer.DOScale(0.6f, FlyDuration).SetEase(Ease.InQuad));
 
-        // STEP D: Impact & Update HUD
+        // 4. On Arrival
         seq.OnComplete(() =>
         {
-            // Hide the reward clones
-            RewardIcon.gameObject.SetActive(false);
-            RewardAmountText.gameObject.SetActive(false);
+            RewardContainer.gameObject.SetActive(false);
 
-            // Reset their positions for the next time ShowReward is called
-            RewardIcon.transform.position = originalIconPos;
-            RewardAmountText.transform.position = originalTextPos;
-
-            // HUD Juice: Punch the HUD icon when the gold "hits" it
-            HudGoldIcon.transform.DOPunchScale(Vector3.one * 0.3f, 0.2f);
-
-            // Animate the HUD total increasing
-            int startAmount = _currentHudAmount;
-            _currentHudAmount += rewardAmount;
-
-            DOTween.To(() => startAmount, x =>
-            {
-                startAmount = x;
-                HudGoldText.text = startAmount.ToString("N0");
-            }, _currentHudAmount, 0.5f).SetEase(Ease.OutQuad);
+            // Trigger the HUD's internal juice and count animation
+            TargetHUD.PlayCollectAnimation(newTotal);
 
             onComplete?.Invoke();
         });
-    }
-
-    // Call this at Start or after loading Save Data
-    public void SetInitialHudAmount(int amount)
-    {
-        _currentHudAmount = amount;
-        HudGoldText.text = amount.ToString("N0");
-        RewardAmountText.gameObject.SetActive(false);
-        RewardIcon.gameObject.SetActive(false);
-
     }
 }

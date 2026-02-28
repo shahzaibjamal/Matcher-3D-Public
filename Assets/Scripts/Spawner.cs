@@ -48,6 +48,7 @@ public partial class Spawner : MonoBehaviour
         GameEvents.OnRequestMatchResolveEvent += HandleMatchResolved;
         GameEvents.OnHintPowerupEvent += HandleHintPowerUp;
         GameEvents.OnMagnetPowerupEvent += HandleMagnetPowerUp;
+        GameEvents.OnCleanSweepTrayEvent += HandleCleanSweep;
 
     }
 
@@ -58,6 +59,17 @@ public partial class Spawner : MonoBehaviour
         GameEvents.OnHintPowerupEvent -= HandleHintPowerUp;
         GameEvents.OnMagnetPowerupEvent -= HandleMagnetPowerUp;
         GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolved;
+        GameEvents.OnCleanSweepTrayEvent -= HandleCleanSweep;
+    }
+
+
+    private void HandleCleanSweep()
+    {
+        if (_undoHistory.Count == 0) return;
+
+        GameEvents.OnUndoPowerupEvent?.Invoke();
+        // Schedule the NEXT undo only after this one is done
+        DOVirtual.DelayedCall(0.4f, () => HandleCleanSweep());
     }
 
     void Awake()
