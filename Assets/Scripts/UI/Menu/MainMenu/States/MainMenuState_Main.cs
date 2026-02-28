@@ -35,6 +35,8 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
         View.StoreShimmer.Play();
         View.RewardShimmer.Play();
+
+
     }
     public override void Exit()
     {
@@ -119,9 +121,9 @@ public class MainMenuBaseState_Main : MainMenuBaseState
 
         // Ease.OutCubic starts fast and spends most of the time "braking"
         spinSeq.Append(View.DailySpinButton.transform.DORotate(new Vector3(0, 0, totalRotation), 2.0f, RotateMode.FastBeyond360)
-               .SetEase(Ease.OutCubic))
+                .SetEase(Ease.OutCubic))
                .AppendInterval(3.0f) // Total 5 second cycle
-               .SetLoops(-1);
+                .SetLoops(-1);
     }
     private void StartShimmerAnimation(Transform target)
     {
@@ -130,6 +132,15 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnStartButtonClicked()
     {
+        // 
+        if (GameManager.Instance.CanLoadNextLevel())
+        {
+            MenuManager.Instance.OpenMenu<SettingsMenuView, SettingsMenuController, SettingsMenuData>(Menus.Type.Settings);
+            return;
+        }
+
+
+
         Controller.StartButtonClicked();
     }
     private void OnSettingsButtonClicked()

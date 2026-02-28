@@ -192,6 +192,10 @@ public class GameManager : MonoBehaviour
     }
 
 
+    public bool CanLoadNextLevel()
+    {
+        return LevelManager.Instance.HasMoreContent();
+    }
     #endregion
 
 }

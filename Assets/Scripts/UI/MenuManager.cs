@@ -249,4 +249,39 @@ public class MenuManager : MonoBehaviour
             }
         }
     }
+    public void ClearAll()
+    {
+        // We use a while loop to ensure we empty the stack completely
+        while (_menuStack.Count > 0)
+        {
+            MenuSession session = _menuStack.Pop();
+
+            // 1. Unsubscribe events and stop logic
+            if (session.Controller != null)
+            {
+                session.Controller.OnExit();
+            }
+
+            // 2. Remove the actual GameObjects from the Hierarchy
+            if (session.View != null)
+            {
+                session.View.Destroy();
+            }
+        }
+
+        // 3. Reset the Dimmer/Blocking layer
+        if (blockingLayer)
+        {
+            blockingLayer.SetActive(false);
+        }
+
+        Debug.Log("<color=red>MenuManager:</color> All menus cleared and controllers released.");
+    }
+
+    private void OnDestroy()
+    {
+        // Safety net: If the manager is destroyed, 
+        // force all active controllers to unhook their events.
+        ClearAll();
+    }
 }
