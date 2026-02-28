@@ -31,4 +31,8 @@ public abstract class MenuController<TView, TData> : IMenuController
     public abstract void OnPause();
 
     public abstract void OnResume();
+    public virtual void HandleBackInput()
+    {
+        MenuManager.Instance.GoBack();
+    }
 }

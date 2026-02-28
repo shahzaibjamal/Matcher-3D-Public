@@ -29,4 +29,13 @@ public class GameMenuController : MenuController<GameMenuView, GameMenuData>
         GameEvents.OnGameInitializedEvent?.Invoke();
         View.TrayView.Initialize(GameManager.SLOT_COUNT);
     }
+    public override void HandleBackInput()
+    {
+        OpenPauseMenu();
+    }
+
+    public void OpenPauseMenu()
+    {
+        MenuManager.Instance.OpenMenu<PauseMenuView, PauseMenuController, PauseMenuData>(Menus.Type.Pause);
+    }
 }

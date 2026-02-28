@@ -16,4 +16,9 @@ public class TempMenuController : MenuController<TempMenuView, TempMenuData>
     public override void OnResume()
     {
     }
+    
+    public override void HandleBackInput()
+    {
+        base.HandleBackInput();
+    }
 }

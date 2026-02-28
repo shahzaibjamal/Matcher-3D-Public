@@ -36,8 +36,8 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StoreShimmer.Play();
         View.RewardShimmer.Play();
 
-
     }
+
     public override void Exit()
     {
         View.StartButton.onClick.RemoveListener(OnStartButtonClicked);
@@ -48,6 +48,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.DailyRewardButton.onClick.RemoveListener(OnDailyRewardsButtonClicked);
         View.StoreButton.onClick.RemoveListener(OnStoreButtonClicked);
         GameEvents.OnGoldUpdatedEvent -= HandleGoldUpdate;
+
         base.Exit();
     }
 
@@ -138,8 +139,6 @@ public class MainMenuBaseState_Main : MainMenuBaseState
             MenuManager.Instance.OpenMenu<SettingsMenuView, SettingsMenuController, SettingsMenuData>(Menus.Type.Settings);
             return;
         }
-
-
 
         Controller.StartButtonClicked();
     }

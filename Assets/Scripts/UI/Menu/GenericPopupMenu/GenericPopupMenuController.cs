@@ -16,4 +16,7 @@ public class GenericPopupMenuController : MenuController<GenericPopupMenuView, G
     public override void OnResume()
     {
     }
+    public override void HandleBackInput()
+    {
+    }
 }

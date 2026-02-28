@@ -115,8 +115,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         View.BroomSweeper.PlayBroomSweep();
     }
 
-    private void OnPauseButtonClicked() =>
-        MenuManager.Instance.OpenMenu<PauseMenuView, PauseMenuController, PauseMenuData>(Menus.Type.Pause);
+    private void OnPauseButtonClicked() => Controller.OpenPauseMenu();
 
     IEnumerator StartGame()
     {

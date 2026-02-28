@@ -1,4 +1,5 @@
 using System;
+using TS.LocalizationSystem;
 using UnityEngine;
 
 public class MainMenuController : MenuController<MainMenuView, MainMenuData>
@@ -7,7 +8,6 @@ public class MainMenuController : MenuController<MainMenuView, MainMenuData>
     public override void OnEnter()
     {
         SetState(new MainMenuBaseState_Main(this));
-
     }
     public override void OnExit()
     {
@@ -22,8 +22,34 @@ public class MainMenuController : MenuController<MainMenuView, MainMenuData>
     {
     }
 
+    public override void HandleBackInput()
+    {
+        MenuManager.Instance.OpenMenu<GenericPopupMenuView, GenericPopupMenuController, GenericPopupMenuData>(
+            Menus.Type.GenericPopup,
+            new GenericPopupMenuData(
+                LocalizationKeys.exit,
+                LocalizationKeys.game_quit,
+                LocalizationKeys.confirm,
+                () => Application.Quit(),
+                LocalizationKeys.cancel
+            )
+        );
+    }
     public void StartButtonClicked()
     {
+        if (GameManager.Instance.CanLoadNextLevel())
+        {
+            MenuManager.Instance.OpenMenu<GenericPopupMenuView, GenericPopupMenuController, GenericPopupMenuData>(
+                        Menus.Type.GenericPopup,
+                        new GenericPopupMenuData(
+                            LocalizationKeys.exit,
+                            LocalizationKeys.levels_no_more,
+                            LocalizationKeys.confirm
+                        )
+                    );
+            return;
+        }
+
         MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
         {
             OnLoadingComplete = OnLoadingComplete

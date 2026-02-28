@@ -90,4 +90,9 @@ public class LoadingMenuController : MenuController<LoadingMenuView, LoadingMenu
     public override void OnResume()
     {
     }
+
+    public override void HandleBackInput()
+    {
+        // no back implemetation
+    }
 }

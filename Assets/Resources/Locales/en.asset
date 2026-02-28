@@ -28,6 +28,15 @@ MonoBehaviour:
   - status_amazing
   - result_win
   - result_lose
+  - levels_no_more
+  - game_quit
+  - game_quit_title
+  - privacy
+  - terms_condition
+  - submit
+  - confirm
+  - cancel
+  - exit
   _values:
   - Select language
   - Hey Guys
@@ -44,3 +53,12 @@ MonoBehaviour:
   - Amazing
   - You Won!
   - You Lost!
+  - There are no more levels. Check back again for more!!
+  - Would you like to quit game?
+  - Exit
+  - Privacy
+  - Terms & Condition
+  - Submit
+  - Confirm
+  - Cancel
+  - Exit

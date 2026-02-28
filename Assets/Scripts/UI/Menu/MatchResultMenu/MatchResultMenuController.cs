@@ -62,4 +62,8 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
         // MenuManager.Instance.GoBack();
         // GameEvents.OnCleanSweepTrayEvent?.Invoke();
     }
+    public override void HandleBackInput()
+    {
+
+    }
 }

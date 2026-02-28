@@ -284,4 +284,16 @@ public class MenuManager : MonoBehaviour
         // force all active controllers to unhook their events.
         ClearAll();
     }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (_menuStack.Count > 0)
+            {
+                // Ask the top-most menu to handle it
+                _menuStack.Peek().Controller.HandleBackInput();
+            }
+        }
+    }
 }

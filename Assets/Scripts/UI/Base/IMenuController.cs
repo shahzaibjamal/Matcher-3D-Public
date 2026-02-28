@@ -6,4 +6,5 @@ public interface IMenuController
     void OnExit();
     void OnPause();
     void OnResume();
+    void HandleBackInput();
 }

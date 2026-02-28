@@ -14,7 +14,8 @@ public static class Menus
         Pause = 9,
         Reward = 10,
         MatchResult = 11,
-        Loading = 12
+        Loading = 12,
+        GenericPopup = 13
 
     }
     public enum MenuDisplayMode

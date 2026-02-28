@@ -44,5 +44,23 @@ namespace TS.LocalizationSystem
         public const string result_win = "result_win";
         
         public const string result_lose = "result_lose";
+        
+        public const string levels_no_more = "levels_no_more";
+        
+        public const string game_quit = "game_quit";
+        
+        public const string game_quit_title = "game_quit_title";
+        
+        public const string privacy = "privacy";
+        
+        public const string terms_condition = "terms_condition";
+        
+        public const string submit = "submit";
+        
+        public const string confirm = "confirm";
+        
+        public const string cancel = "cancel";
+        
+        public const string exit = "exit";
     }
 }
