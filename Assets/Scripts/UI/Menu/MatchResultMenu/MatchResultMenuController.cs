@@ -58,9 +58,10 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
     }
     void OnGoldMultiplierButtonClicked()
     {
-        (CurrentState as MatchResultMenuBaseState).OnGoldMultiplierButtonClicked();
+        // (CurrentState as MatchResultMenuBaseState).OnGoldMultiplierButtonClicked();
 
 
+        MenuManager.Instance.OpenMenu<PauseMenuView, PauseMenuController, PauseMenuData>(Menus.Type.Pause);
 
         // MenuManager.Instance.GoBack();
         // GameEvents.OnCleanSweepTrayEvent?.Invoke();

@@ -13,6 +13,13 @@ public class GoldMainView : MonoBehaviour
     private int _displayedAmount = 0;
     private Tween _countTween;
 
+    public UIShimmerEffect UIShimmerEffect;
+
+    void Awake()
+    {
+        UIShimmerEffect.Play();
+    }
+
     public void UpdateAmount(int initialAmount)
     {
         _displayedAmount = initialAmount;

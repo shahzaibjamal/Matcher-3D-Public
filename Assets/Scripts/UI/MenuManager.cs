@@ -57,76 +57,110 @@ public class MenuManager : MonoBehaviour
         where TController : MenuController<TView, TData>, new()
         where TData : MenuData
     {
-        // 1. Get prefab from Registry instead of string path
         MenuRegistry.MenuEntry menuEntry = registry.GetMenuEntry(menuType);
+        if (menuEntry.prefab == null) return;
 
-        if (menuEntry.prefab != null)
+        // Use the Mode from the Registry for the NEW menu
+        Menus.MenuDisplayMode newMode = menuEntry.defaultMode;
+
+        // 1. SEARCH & SILENT UNWIND (Jump back logic)
+        MenuSession existingSession = _menuStack.FirstOrDefault(s => s.View is TView);
+        if (existingSession.View != null)
         {
-            MenuSession existingSession = _menuStack.FirstOrDefault(s => s.View is TView);
-
-            if (existingSession.View != null)
+            while (_menuStack.Peek().View != existingSession.View)
             {
-                // Pop until the existing menu is at the top
-                while (_menuStack.Peek().View != existingSession.View)
-                {
-                    GoBack();
-                }
-                return; // We are now back at the original instance
-            }
-            Menus.MenuDisplayMode displayMode = menuEntry.defaultMode;
-            // 2. Handle previous menu only if the NEW one is a ScreenReplace
-            if (_menuStack.Count > 0 && displayMode == Menus.MenuDisplayMode.ScreenReplace)
-            {
-                var topMenu = _menuStack.Peek();
-                topMenu.View.SetVisible(false);
-                topMenu.Controller.OnPause();
+                var session = _menuStack.Pop();
+                session.Controller.OnExit();
+                session.View.Destroy();
             }
 
-            // 3. Determine correct layer parent
-            RectTransform parentLayer = GetLayer(displayMode);
-
-            GameObject menuObject = Instantiate(menuEntry.prefab, parentLayer);
-            if (menuObject != null && menuObject.TryGetComponent<TView>(out TView menuView))
-            {
-                // Assign the display mode to the view so GoBack knows how to handle it
-                menuView.DisplayMode = displayMode;
-
-                TController controller = new TController();
-                controller.Bind(menuView, tData);
-                controller.OnEnter();
-
-                _menuStack.Push(new MenuSession { View = menuView, Controller = controller });
-            }
-
+            existingSession.View.SetVisible(true);
+            existingSession.Controller.OnResume();
             UpdateBlockingLayer();
+            return;
         }
+
+        // 2. SMART HIDE PREVIOUS
+        if (_menuStack.Count > 0)
+        {
+            var topSession = _menuStack.Peek();
+
+            // We check the DisplayMode stored on the existing View
+            Menus.MenuDisplayMode currentTopMode = topSession.View.DisplayMode;
+
+            // CRITICAL FIX: Ensure we compare the incoming mode and the current top mode
+            bool shouldHidePrevious =
+                newMode == Menus.MenuDisplayMode.ScreenReplace ||
+                (newMode == Menus.MenuDisplayMode.Popup && currentTopMode == Menus.MenuDisplayMode.Popup) ||
+                (newMode == Menus.MenuDisplayMode.Overlay && currentTopMode == Menus.MenuDisplayMode.Overlay);
+
+            if (shouldHidePrevious)
+            {
+                topSession.View.SetVisible(false);
+                topSession.Controller.OnPause();
+            }
+        }
+
+        // 3. INSTANTIATE & PUSH
+        RectTransform parentLayer = GetLayer(newMode);
+        GameObject menuObject = Instantiate(menuEntry.prefab, parentLayer);
+
+        if (menuObject != null && menuObject.TryGetComponent<TView>(out TView menuView))
+        {
+            // IMPORTANT: Assign this IMMEDIATELY so the NEXT OpenMenu call can read it
+            menuView.DisplayMode = newMode;
+
+            TController controller = new TController();
+            controller.Bind(menuView, tData);
+
+            // Push to stack
+            _menuStack.Push(new MenuSession { View = menuView, Controller = controller });
+
+            // Call Enter last
+            controller.OnEnter();
+        }
+
+        UpdateBlockingLayer();
     }
 
     public void GoBack()
     {
         if (_menuStack.Count == 0) return;
 
-        MenuSession top = _menuStack.Pop();
-        Menus.MenuDisplayMode closedMode = top.View.DisplayMode;
+        // 1. POP THE CURRENT TOP
+        MenuSession closingSession = _menuStack.Pop();
+        Menus.MenuDisplayMode closingMode = closingSession.View.DisplayMode;
 
-        // Call OnExit with a callback to perform the cleanup
-        top.View.OnExit(() =>
+        // Trigger the animated exit
+        closingSession.View.OnExit(() =>
         {
-            top.Controller.OnExit();
-            top.View.Destroy();
+            closingSession.Controller.OnExit();
+            closingSession.View.Destroy();
         });
 
-        // 4. Restore previous menu ONLY if the one we just closed was a ScreenReplace
-        if (_menuStack.Count > 0 && closedMode == Menus.MenuDisplayMode.ScreenReplace)
+        // 2. SMART RESTORE PREVIOUS
+        if (_menuStack.Count > 0)
         {
-            var previousMenu = _menuStack.Peek();
-            previousMenu.View.SetVisible(true);
-            previousMenu.Controller.OnResume();
+            var previousSession = _menuStack.Peek();
+            Menus.MenuDisplayMode previousMode = previousSession.View.DisplayMode;
+
+            // Restore if:
+            // - We closed a Screen (which always hid the one below)
+            // - We closed a Popup and the one below is a Popup (which was hidden by the top popup)
+            bool shouldRestorePrevious =
+                closingMode == Menus.MenuDisplayMode.ScreenReplace ||
+                (closingMode == Menus.MenuDisplayMode.Popup && previousMode == Menus.MenuDisplayMode.Popup) ||
+            (closingMode == Menus.MenuDisplayMode.Overlay && previousMode == Menus.MenuDisplayMode.Overlay);
+
+            if (shouldRestorePrevious)
+            {
+                previousSession.View.SetVisible(true);
+                previousSession.Controller.OnResume();
+            }
         }
 
         UpdateBlockingLayer();
     }
-
     private RectTransform GetLayer(Menus.MenuDisplayMode mode)
     {
         return mode switch
@@ -153,7 +187,6 @@ public class MenuManager : MonoBehaviour
         // 1. Should we dim? 
         // Usually, we dim for Popups and specific Overlays (like FTUE)
         bool shouldDim = (mode == Menus.MenuDisplayMode.Popup || mode == Menus.MenuDisplayMode.Overlay);
-
         //        blockingLayer.SetActive(shouldDim);
 
         Image dimImage = blockingLayer.GetComponent<Image>();

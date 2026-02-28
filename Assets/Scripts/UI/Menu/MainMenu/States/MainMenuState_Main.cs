@@ -1,11 +1,12 @@
 
+using System.Threading;
 using DG.Tweening;
 using TS.LocalizationSystem;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuBaseState_Main : MainMenuBaseState
 {
-    private Sequence _idleSequence;
 
     private Sequence _playButtonSequence;
 
@@ -20,16 +21,30 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StartButton.onClick.AddListener(OnStartButtonClicked);
         View.DebugButton.onClick.AddListener(OnDebugButtonClicked);
         View.SettingsButton.onClick.AddListener(OnSettingsButtonClicked);
+        View.GiftButton.onClick.AddListener(OnGiftButtonClicked);
+        View.DailySpinButton.onClick.AddListener(OnDailySpinButtonClicked);
+        View.DailyRewardButton.onClick.AddListener(OnDailyRewardsButtonClicked);
+        View.StoreButton.onClick.AddListener(OnStoreButtonClicked);
         GameEvents.OnGoldUpdatedEvent += HandleGoldUpdate;
 
         StartPlayButtonAnimation();
+        StartGiftAnimation();
+        StartSpinAnimation();
+        StartShimmerAnimation(View.DailyRewardButton.transform);
+        StartShimmerAnimation(View.StoreButton.transform);
         View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
+        View.StoreShimmer.Play();
+        View.RewardShimmer.Play();
     }
     public override void Exit()
     {
         View.StartButton.onClick.RemoveListener(OnStartButtonClicked);
         View.DebugButton.onClick.RemoveListener(OnDebugButtonClicked);
         View.SettingsButton.onClick.RemoveListener(OnSettingsButtonClicked);
+        View.GiftButton.onClick.RemoveListener(OnGiftButtonClicked);
+        View.DailySpinButton.onClick.RemoveListener(OnDailySpinButtonClicked);
+        View.DailyRewardButton.onClick.RemoveListener(OnDailyRewardsButtonClicked);
+        View.StoreButton.onClick.RemoveListener(OnStoreButtonClicked);
         GameEvents.OnGoldUpdatedEvent -= HandleGoldUpdate;
         base.Exit();
     }
@@ -59,37 +74,60 @@ public class MainMenuBaseState_Main : MainMenuBaseState
 
         _playButtonSequence.SetLoops(-1, LoopType.Restart);
     }
-    public void StartIdleAnimation()
+
+    private void StartGiftAnimation()
     {
-        _idleSequence?.Kill();
+        Transform t = View.GiftButton.transform;
 
-        Transform btn = View.StartButton.transform;
-        btn.localScale = Vector3.one;
+        // 1. Reset and Cleanup
+        t.DOKill();
+        t.localScale = Vector3.one;
 
-        _idleSequence = DOTween.Sequence();
+        Sequence giftSeq = DOTween.Sequence();
 
-        // 1. THE LONG WAIT (The "Slow" part of the InCirc curve)
-        // We stay at scale 1 for 2.2 seconds of the 3-second loop
-        _idleSequence.AppendInterval(2.2f);
+        // 2. IDLE "BREATHING" (The squishy bubble pulse)
+        // This runs before the jump to make it look alive
+        giftSeq.Append(t.DOScale(new Vector3(1.1f, 0.92f, 1f), 0.8f).SetEase(Ease.InOutSine))
+               .Append(t.DOScale(new Vector3(0.95f, 1.08f, 1f), 0.8f).SetEase(Ease.InOutSine));
 
-        // 2. THE ANTICIPATION (Starting to accelerate)
-        // A quick, sharp stretch upwards
-        _idleSequence.Append(btn.DOScale(new Vector3(0.7f, 1.4f, 1f), 0.3f).SetEase(Ease.InCirc));
+        // 3. THE JUMP (Stretch while rising)
+        giftSeq.Append(t.DOLocalMoveY(20f, 0.45f).SetRelative().SetEase(Ease.OutQuad))
+               .Join(t.DOScale(new Vector3(0.85f, 1.2f, 1f), 0.45f).SetEase(Ease.OutQuad));
 
-        // 3. THE "POP" (The sharp peak of the curve)
-        // Rapidly slam into the squish
-        _idleSequence.Append(btn.DOScale(new Vector3(1.3f, 0.5f, 1f), 0.1f).SetEase(Ease.OutQuad));
+        // 4. THE FALL (Start flattening for impact)
+        giftSeq.Append(t.DOLocalMoveY(-20f, 0.35f).SetRelative().SetEase(Ease.InQuad))
+               .Join(t.DOScale(new Vector3(1.2f, 0.85f, 1f), 0.35f).SetEase(Ease.InQuad));
+        giftSeq.Append(t.DOScale(Vector3.one, 0.15f).SetEase(Ease.InQuad));
+        // 5. THE BUBBLE IMPACT (The magic "Boing")
+        // DOPunchScale makes it wobble/vibrate like jelly
+        // Parameters: (Strength, Duration, Vibrato, Elasticity)
+        giftSeq.AppendCallback(() =>
+        {
+            t.DOPunchScale(new Vector3(0.5f, -0.5f, 0f), 1.2f, 5, 1f);
+        });
 
-        // 4. THE SETTLE (The "Slow" ending/recovery)
-        // Jiggly bounce back to rest
-        _idleSequence.Append(btn.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutElastic, 0.5f, 0.5f));
-
-        // Loop the whole thing
-        _idleSequence.SetLoops(-1, LoopType.Restart);
-        // _idleSequence.Insert(1.2f, View.StartButton.transform.DOPunchPosition(Vector3.up * 20f, 0.4f, 2, 0.5f));
+        // 6. DELAY & LOOP
+        giftSeq.AppendInterval(3.0f); // Wait for the wobble to settle
+        giftSeq.SetLoops(-1);
     }
 
+    private void StartSpinAnimation()
+    {
+        float totalRotation = -2880f;
 
+        Sequence spinSeq = DOTween.Sequence();
+
+        // Ease.OutCubic starts fast and spends most of the time "braking"
+        spinSeq.Append(View.DailySpinButton.transform.DORotate(new Vector3(0, 0, totalRotation), 2.0f, RotateMode.FastBeyond360)
+               .SetEase(Ease.OutCubic))
+               .AppendInterval(3.0f) // Total 5 second cycle
+               .SetLoops(-1);
+    }
+    private void StartShimmerAnimation(Transform target)
+    {
+        // Subtle pulse for Store/Reward
+        target.DOScale(1.1f, 1f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+    }
     private void OnStartButtonClicked()
     {
         Controller.StartButtonClicked();
@@ -98,15 +136,22 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     {
         MenuManager.Instance.OpenMenu<SettingsMenuView, SettingsMenuController, SettingsMenuData>(Menus.Type.Settings);
     }
+
+    private void OnDailyRewardsButtonClicked()
+    {
+    }
+    private void OnDailySpinButtonClicked()
+    {
+    }
+    private void OnStoreButtonClicked()
+    {
+    }
+    private void OnGiftButtonClicked()
+    {
+    }
     private void OnDebugButtonClicked()
     {
-        // MenuManager.Instance.OpenMenu<MatchResultMenuView, MatchResultMenuController, MatchResultMenuData>(Menus.Type.MatchResult, new MatchResultMenuData
-        // {
-        //     IsWin = true,
-        //     GoldAmount = 27,
-        //     Level = 1,
-        //     MatchRate = 0.9f
-        // });
+
         MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug);
     }
 }

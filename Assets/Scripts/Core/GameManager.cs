@@ -86,13 +86,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Game Manager: Starting Game...");
 
-        // 2. Notify any listeners (Menus, Sound, etc.)
         OnGameStarted?.Invoke();
         Cleanup();
-
-        // 3. Example: Close Main Menu and Open Game UI
-        // MenuManager.Instance.CloseMenu(Menus.Type.Main);
-        // MenuManager.Instance.OpenMenu<GameUI>(...);
     }
 
     private void SpawnGameSystems()

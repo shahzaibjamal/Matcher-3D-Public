@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class GameMenuBaseState_Main : GameMenuBaseState
 {
-    private List<ItemView> _activeItemViews = new List<ItemView>();
     private List<ItemView> _activeViews = new List<ItemView>();
     private List<PowerUpButton> _activeButtons = new List<PowerUpButton>();
     private LevelData _currentLevelData = null;
@@ -23,6 +22,8 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         GameEvents.OnCleanSweepTrayEvent += HandleCleanSweep;
 
         View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
+        Debug.LogError("GameMenu : OnterCalled called ");
+
     }
 
     public override void Exit()
@@ -34,6 +35,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         GameEvents.OnCleanSweepTrayEvent -= HandleCleanSweep;
         View.PauseButton.onClick.RemoveListener(OnPauseButtonClicked);
         Cleanup();
+        Debug.LogError("GameMenu : OnExit called ");
     }
 
     private void HandleMatchStarted(LevelData levelData)
