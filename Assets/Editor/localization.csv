@@ -23,3 +23,6 @@ submit,Submit,Enviar,Enviar
 confirm,Confirm,Confirmar,Confirmar
 cancel,Cancel,Cancelar,Cancelar
 exit,Exit,Saída,Saída
+spin_wheel,Lucky Wheel,Roda da Sorte,Roda da Sorte
+spin_wheel_instructions,Spin the wheel!,Gire a roda!,¡Gire a roda!
+spin,Spin,Rodar,Rodar

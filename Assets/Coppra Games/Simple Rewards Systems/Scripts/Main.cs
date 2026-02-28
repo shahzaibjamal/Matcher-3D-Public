@@ -141,10 +141,10 @@ namespace CoppraGames
             {
                 SpinWheelWindow.gameObject.SetActive(isTrue);
 
-                if (isTrue)
-                    SpinWheelWindow.Init();
-                else
-                    ShowMainMenu(true);
+                // if (isTrue)
+                //     SpinWheelWindow.Init();
+                // else
+                //     ShowMainMenu(true);
             }
         }
 

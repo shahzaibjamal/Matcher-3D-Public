@@ -37,6 +37,9 @@ MonoBehaviour:
   - confirm
   - cancel
   - exit
+  - spin_wheel
+  - spin_wheel_instructions
+  - spin
   _values:
   - Select language
   - Hey Guys
@@ -62,3 +65,6 @@ MonoBehaviour:
   - Confirm
   - Cancel
   - Exit
+  - Lucky Wheel
+  - Spin the wheel!
+  - Spin

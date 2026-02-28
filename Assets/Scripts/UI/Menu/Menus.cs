@@ -15,7 +15,11 @@ public static class Menus
         Reward = 10,
         MatchResult = 11,
         Loading = 12,
-        GenericPopup = 13
+        GenericPopup = 13,
+
+        DailyReward = 14,
+
+        SpinWheel = 15
 
     }
     public enum MenuDisplayMode

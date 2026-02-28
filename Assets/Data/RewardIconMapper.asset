@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88fdc4d30bc52364da6726c40eb955bc, type: 3}
+  m_Name: RewardIconMapper
+  m_EditorClassIdentifier: Assembly-CSharp::RewardIconMapper
+  mappings:
+  - type: 1
+    icon: {fileID: 21300000, guid: 3c8f00c7cc7104e279600ab7aa1a52e9, type: 3}
+  - type: 2
+    icon: {fileID: -7338417401194041014, guid: 39e0242329775814891ef673e48ae932, type: 3}
+  - type: 3
+    icon: {fileID: -1960903238, guid: 4ae2ccf01a85b364da21386682eb8574, type: 3}
+  - type: 4
+    icon: {fileID: -368517288, guid: 64e2a715fedc40044ab58dc513d5f070, type: 3}
+  - type: 5
+    icon: {fileID: -1035832753, guid: 4ae2ccf01a85b364da21386682eb8574, type: 3}

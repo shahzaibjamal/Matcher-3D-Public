@@ -152,6 +152,8 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnDailySpinButtonClicked()
     {
+        MenuManager.Instance.OpenMenu<SpinWheelMenuView, SpinWheelMenuController, SpinWheelMenuData>(Menus.Type.SpinWheel);
+
     }
     private void OnStoreButtonClicked()
     {
@@ -161,7 +163,6 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnDebugButtonClicked()
     {
-
         MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug);
     }
 }

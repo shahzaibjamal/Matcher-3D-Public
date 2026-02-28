@@ -62,5 +62,11 @@ namespace TS.LocalizationSystem
         public const string cancel = "cancel";
         
         public const string exit = "exit";
+        
+        public const string spin_wheel = "spin_wheel";
+        
+        public const string spin_wheel_instructions = "spin_wheel_instructions";
+        
+        public const string spin = "spin";
     }
 }

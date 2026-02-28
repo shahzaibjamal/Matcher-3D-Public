@@ -37,6 +37,9 @@ MonoBehaviour:
   - confirm
   - cancel
   - exit
+  - spin_wheel
+  - spin_wheel_instructions
+  - spin
   _values:
   - Elija idioma
   - Hola
@@ -62,3 +65,6 @@ MonoBehaviour:
   - Confirmar
   - Cancelar
   - "Sa\xEDda"
+  - Roda da Sorte
+  - "\xA1Gire a roda!"
+  - Rodar
