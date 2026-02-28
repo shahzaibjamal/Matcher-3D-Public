@@ -44,7 +44,7 @@ public class TrayView : MonoBehaviour
         GameEvents.OnUndoPowerupEvent -= OnUndoRequest;
     }
 
-    private void OnUndoRequest()
+    private void OnUndoRequest(bool _)
     {
         for (int i = _slots.Length - 1; i >= 0; i--)
         {
@@ -54,7 +54,6 @@ public class TrayView : MonoBehaviour
                 break;
             }
         }
-
     }
 
     // Wrapper methods to bridge the Event to the Coroutine

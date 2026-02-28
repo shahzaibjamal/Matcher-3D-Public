@@ -18,10 +18,10 @@ public static class GameEvents
     public static Action OnItemsCollectedEvent;
     public static Action<bool, float> OnShowMatchResultEvent; // match status, match rate
 
-    public static Action<bool> OnLevelCompleteEvent; //isComplete
+    public static Action<bool, string, int, int> OnLevelCompleteEvent; //isComplete
     public static Action OnLevelRestartEvent;
 
-    public static Action OnUndoPowerupEvent;
+    public static Action<bool> OnUndoPowerupEvent; // undo powerup also handy for sweeping clear the tray. so bool param tells if this an undo operation or undo powerup
     public static Action<string> OnUndoAddItemEvent;
 
     public static Action OnHintPowerupEvent;

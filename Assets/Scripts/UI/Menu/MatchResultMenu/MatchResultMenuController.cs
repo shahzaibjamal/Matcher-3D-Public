@@ -39,17 +39,30 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
 
     void OnContinueButtonClicked()
     {
-        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Settings);
+        (CurrentState as MatchResultMenuBaseState).OnContinueButtonClicked();
+
     }
 
+    public void GoToMainMenu()
+    {
+        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+        {
+            OnLoadingComplete = OnLoadingComplete
+        });
+        GameEvents.OnLevelCompleteEvent?.Invoke(Data.IsWin, Data.LevelData.levelUID, Data.Score, Data.Score);
+    }
+
+    private void OnLoadingComplete()
+    {
+        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Settings);
+    }
     void OnGoldMultiplierButtonClicked()
     {
+        (CurrentState as MatchResultMenuBaseState).OnGoldMultiplierButtonClicked();
 
-        // show video ad 
-        // add 3x goldamount
-        // close menu
-        // SetState(new MatchResultMenuBaseState_Win(this));
-        MenuManager.Instance.GoBack();
-        GameEvents.OnCleanSweepTrayEvent?.Invoke();
+
+
+        // MenuManager.Instance.GoBack();
+        // GameEvents.OnCleanSweepTrayEvent?.Invoke();
     }
 }

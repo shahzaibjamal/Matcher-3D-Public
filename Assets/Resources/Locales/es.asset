@@ -29,7 +29,7 @@ MonoBehaviour:
   - result_win
   - result_lose
   _values:
-  - Elija idioma
+  - Elija el idioma
   - Hola
   - Saluda
   - Jugar
@@ -38,7 +38,7 @@ MonoBehaviour:
   - "M\xFAsica"
   - En pausa
   - Continuar
-  - Nivel {}
+  - Nivel {0}
   - Perfecto
   - Bomba
   - "Incre\xEDble"

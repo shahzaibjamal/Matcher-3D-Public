@@ -64,7 +64,7 @@ public class PowerUpButton : MonoBehaviour
                 GameEvents.OnHintPowerupEvent?.Invoke();
                 break;
             case PowerUpType.Undo:
-                GameEvents.OnUndoPowerupEvent?.Invoke();
+                GameEvents.OnUndoPowerupEvent?.Invoke(true);
                 break;
         }
 

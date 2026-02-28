@@ -33,7 +33,7 @@ public class SlotManager
         _allGoalsReached = true;
         Debug.LogError("OnItemsCollected received - _allGoalsReached");
     }
-    private void OnUndoRequest()
+    private void OnUndoRequest(bool _)
     {
         for (int i = _slots.Length - 1; i >= 0; i--)
         {

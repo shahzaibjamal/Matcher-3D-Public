@@ -38,7 +38,7 @@ MonoBehaviour:
   - Music
   - Paused
   - Continue
-  - Level {}
+  - Level {0}
   - Perfect
   - Good
   - Amazing

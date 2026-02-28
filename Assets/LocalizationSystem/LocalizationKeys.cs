@@ -10,39 +10,39 @@
 
 namespace TS.LocalizationSystem
 {
-
-
+    
+    
     public class LocalizationKeys
     {
-
+        
         public const string LABEL_LANGUAGE = "LABEL_LANGUAGE";
-
+        
         public const string LABEL_HELLO = "LABEL_HELLO";
-
+        
         public const string BUTTON_HELLO = "BUTTON_HELLO";
-
+        
         public const string start_game = "start_game";
-
+        
         public const string settings = "settings";
-
+        
         public const string sound = "sound";
-
+        
         public const string music = "music";
-
+        
         public const string title_paused = "title_paused";
-
+        
         public const string @continue = "continue";
-
+        
         public const string title_level = "title_level";
-
+        
         public const string status_perfect = "status_perfect";
-
+        
         public const string status_good = "status_good";
-
+        
         public const string status_amazing = "status_amazing";
-
+        
         public const string result_win = "result_win";
-
+        
         public const string result_lose = "result_lose";
     }
 }

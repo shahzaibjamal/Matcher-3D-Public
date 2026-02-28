@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     private Spawner _activeSpawner;
     private SlotManager _slotManager;
 
-    const int SLOT_COUNT = 7;
+    public const int SLOT_COUNT = 7;
     public GameSaveData SaveData { get; private set; }
 
     // Events for other systems to subscribe to
@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
         GameEvents.OnLevelRestartEvent += RestartLevel;
         GameEvents.OnPowerUpAmountChangeEvent += HandlePowerUpAmountChange;
         GameEvents.OnGoldUpdatedEvent += OnGoldUpdate;
+        GameEvents.OnLevelCompleteEvent += HandleLevelComplete;
 
         _slotManager = new SlotManager(SLOT_COUNT);
 
@@ -61,8 +62,6 @@ public class GameManager : MonoBehaviour
             new MainMenuData()
         );
     }
-
-
     void OnDestroy()
     {
         MainMenuController.OnStartButtonClicked -= StartGame;
@@ -72,6 +71,7 @@ public class GameManager : MonoBehaviour
         GameEvents.OnLevelRestartEvent -= RestartLevel;
         GameEvents.OnPowerUpAmountChangeEvent -= HandlePowerUpAmountChange;
         GameEvents.OnGoldUpdatedEvent -= OnGoldUpdate;
+        GameEvents.OnLevelCompleteEvent -= HandleLevelComplete;
 
     }
 
@@ -88,12 +88,7 @@ public class GameManager : MonoBehaviour
 
         // 2. Notify any listeners (Menus, Sound, etc.)
         OnGameStarted?.Invoke();
-        MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(
-            Menus.Type.Game,
-            new GameMenuData(_slotManager, SLOT_COUNT)
-        );
         Cleanup();
-        _levelStartTime = Time.time;
 
         // 3. Example: Close Main Menu and Open Game UI
         // MenuManager.Instance.CloseMenu(Menus.Type.Main);
@@ -111,12 +106,12 @@ public class GameManager : MonoBehaviour
             {
                 _slotManager.AddItem(itemData, sourceTransform);
             });
+            _levelStartTime = Time.time;
         }
     }
     public void TriggerGameOver(bool won)
     {
         Debug.Log("Game Manager: Game Over!" + (won ? " You won " : " You lost"));
-        SaveGame();
 
         float score = 0;
         if (won)
@@ -194,6 +189,14 @@ public class GameManager : MonoBehaviour
         Cleanup();
         SpawnGameSystems();
     }
+    private void HandleLevelComplete(bool isComplete, string levelUid, int score, int stars)
+    {
+        LevelManager.Instance.MarkLevelComplete(levelUid, Time.time - _levelStartTime, score, stars);
+        Cleanup();
+        SaveGame();
+    }
+
+
     #endregion
 
 }

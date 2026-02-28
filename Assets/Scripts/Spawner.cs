@@ -42,7 +42,7 @@ public partial class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnUndoPowerupEvent += HandleUndoRequest;
+        GameEvents.OnUndoPowerupEvent += HandleUndoPowerUp;
         GameEvents.OnShakePowerupEvent += ShakeArea;
         // We listen to this to clear history of items that are officially matched/destroyed
         GameEvents.OnRequestMatchResolveEvent += HandleMatchResolved;
@@ -54,7 +54,7 @@ public partial class Spawner : MonoBehaviour
 
     private void OnDisable()
     {
-        GameEvents.OnUndoPowerupEvent -= HandleUndoRequest;
+        GameEvents.OnUndoPowerupEvent -= HandleUndoPowerUp;
         GameEvents.OnShakePowerupEvent -= ShakeArea;
         GameEvents.OnHintPowerupEvent -= HandleHintPowerUp;
         GameEvents.OnMagnetPowerupEvent -= HandleMagnetPowerUp;
@@ -67,7 +67,7 @@ public partial class Spawner : MonoBehaviour
     {
         if (_undoHistory.Count == 0) return;
 
-        GameEvents.OnUndoPowerupEvent?.Invoke();
+        GameEvents.OnUndoPowerupEvent?.Invoke(false);
         // Schedule the NEXT undo only after this one is done
         DOVirtual.DelayedCall(0.4f, () => HandleCleanSweep());
     }
@@ -155,24 +155,59 @@ public partial class Spawner : MonoBehaviour
                 _collectableLeft.Remove(data.UID);
         }
     }
-    private void HandleUndoRequest()
+    private readonly int _maxTrayCount = 7;
+
+    // 1. CALL THIS FOR THE BUTTON/POWERUP
+    private void HandleUndoPowerUp(bool powerUpUsed)
     {
         if (_undoHistory.Count == 0) return;
 
+        RestoreAndSpawnItem();
+        if (powerUpUsed)
+        {
+            // Only triggered when used as a manual PowerUp
+            GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Undo);
+        }
+    }
+
+    // 2. CALL THIS FOR THE SWEEP (OR INSIDE THE POWERUP ABOVE)
+    private void RestoreAndSpawnItem()
+    {
+        if (_undoHistory.Count == 0) return;
+
+        // Pop and Update Dictionary
         ItemData dataToRestore = _undoHistory.Pop();
 
-        // 1. Re-increment Dictionary
         if (_collectableLeft.ContainsKey(dataToRestore.UID))
             _collectableLeft[dataToRestore.UID]++;
         else
             _collectableLeft.Add(dataToRestore.UID, 1);
 
-        // 2. Specialized Spawn Logic
-        // We assume 'trayPosition' is where the item was just removed from in the UI
-        // For now, we'll use a position slightly above the center of the tray
-        Vector3 trayWorldPos = MainCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2, 100, 5));
+        // Calculate Screen X (0 to 6 based on current stack count)
+        // We use the count BEFORE we popped, or the index in the 7-slot tray
+        float segment = Screen.width / (_maxTrayCount + 1);
+        float screenX = (_undoHistory.Count + 1) * segment;
+
+        // Position and Spawn
+        Vector3 trayWorldPos = MainCamera.ScreenToWorldPoint(new Vector3(screenX, 100, 5));
+
         GameEvents.OnUndoAddItemEvent?.Invoke(dataToRestore.UID);
         SpawnFromTray(dataToRestore, trayWorldPos);
+    }
+    private ItemData RestoreUndoState()
+    {
+        ItemData data = _undoHistory.Pop();
+
+        if (_collectableLeft.ContainsKey(data.UID))
+            _collectableLeft[data.UID]++;
+        else
+            _collectableLeft.Add(data.UID, 1);
+
+        return data;
+    }
+
+    private void TriggerUndoSuccess()
+    {
         GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Undo);
     }
 

@@ -13,4 +13,7 @@ public class LevelData
     public List<LevelItemEntry> itemsToSpawn;
     [Header("Items to Collect")]
     public List<string> itemsToCollect;
+
+    public int LevelNumber;
+    public int GoldAmount;
 }

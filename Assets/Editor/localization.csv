@@ -1,5 +1,5 @@
 Key,en,pt,es
-LABEL_LANGUAGE,Select language,Escolher idioma,Elija idioma
+LABEL_LANGUAGE,Select language,Escolher idioma,Elija el idioma
 LABEL_HELLO,Hey Guys,Olá Pessoal,Hola, chicos
 BUTTON_HELLO,Say hello,Dizer olá,Saluda
 start_game,Play,Jogar,Jugar
@@ -8,7 +8,7 @@ sound,Sound,Som,Algunos
 music,Music,Música,Música
 title_paused,Paused,Em pausa,En pausa
 continue,Continue,Continuar,Continuar
-title_level,Level {},Nível {},Nivel {}
+title_level,Level {0},Nível {0},Nivel {0}
 status_perfect,Perfect,Perfeito,Perfecto
 status_good,Good,Bom,Bomba
 status_amazing,Amazing,Incrível,Increíble

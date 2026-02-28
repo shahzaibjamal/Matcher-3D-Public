@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TS.LocalizationSystem;
 using UnityEngine;
 
 public class GameMenuBaseState_Main : GameMenuBaseState
@@ -8,6 +9,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     private List<ItemView> _activeItemViews = new List<ItemView>();
     private List<ItemView> _activeViews = new List<ItemView>();
     private List<PowerUpButton> _activeButtons = new List<PowerUpButton>();
+    private LevelData _currentLevelData = null;
 
     public GameMenuBaseState_Main(GameMenuController controller) : base(controller) { }
 
@@ -19,6 +21,8 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         GameEvents.OnMatchStartedEvent += HandleMatchStarted;
         GameEvents.OnShowMatchResultEvent += HandleMatchResult;
         GameEvents.OnCleanSweepTrayEvent += HandleCleanSweep;
+
+        View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
     }
 
     public override void Exit()
@@ -34,6 +38,8 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
     private void HandleMatchStarted(LevelData levelData)
     {
+        _currentLevelData = levelData;
+        View.LevelId.text = string.Format(LocaleManager.Localize(LocalizationKeys.title_level), levelData.LevelNumber);
         // Create new
         foreach (var spawn in levelData.itemsToSpawn)
         {
@@ -79,25 +85,25 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         foreach (var v in _activeViews) if (v) GameObject.Destroy(v.gameObject);
         _activeViews.Clear();
 
+        _currentLevelData = null;
     }
 
     private void CheckWin()
     {
         if (_activeViews.Count == 0)
         {
-            Debug.LogError("GameMenuBaseState_Main: OnItemsCollectedEvent fired");
+            // Debug.LogError("GameMenuBaseState_Main: OnItemsCollectedEvent fired");
             GameEvents.OnItemsCollectedEvent?.Invoke();
             GameEvents.OnGameOverEvent?.Invoke(true);
         }
     }
     private void HandleMatchResult(bool win, float matchRate)
     {
-        Debug.LogError(" GameMenuBaseState_Main: HandleMatchResult");
+        // Debug.LogError(" GameMenuBaseState_Main: HandleMatchResult");
         MenuManager.Instance.OpenMenu<MatchResultMenuView, MatchResultMenuController, MatchResultMenuData>(Menus.Type.MatchResult, new MatchResultMenuData
         {
             IsWin = win,
-            GoldAmount = 27,
-            Level = 1,
+            LevelData = _currentLevelData,
             MatchRate = matchRate
         });
     }
@@ -107,7 +113,6 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         View.BroomSweeper.PlayBroomSweep();
     }
 
-
     private void OnPauseButtonClicked() =>
         MenuManager.Instance.OpenMenu<PauseMenuView, PauseMenuController, PauseMenuData>(Menus.Type.Pause);
 
@@ -116,6 +121,4 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         yield return null;
         Controller.StartGame();
     }
-
-
 }

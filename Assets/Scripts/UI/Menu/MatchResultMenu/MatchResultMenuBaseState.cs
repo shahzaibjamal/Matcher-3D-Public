@@ -12,7 +12,7 @@ public class MatchResultMenuBaseState : MenuBaseState<MatchResultMenuController,
 
     public override void Enter()
     {
-        View.GoldMainView.Initialize(GameManager.Instance.SaveData.Inventory.Gold);
+        View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
         ShowMatchResultAnimation();
     }
 
@@ -89,6 +89,14 @@ public class MatchResultMenuBaseState : MenuBaseState<MatchResultMenuController,
     }
 
     protected virtual void OnMenuOpenAnimationComplete()
+    {
+        // implemented by inherited state classes
+    }
+    public virtual void OnContinueButtonClicked()
+    {
+        // implemented by inherited state classes
+    }
+    public virtual void OnGoldMultiplierButtonClicked()
     {
         // implemented by inherited state classes
     }

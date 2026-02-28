@@ -1,5 +1,7 @@
+using System;
 using DG.Tweening;
 using TS.LocalizationSystem;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
@@ -12,7 +14,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     {
         base.Enter();
 
-        if (Data.Level > 10 || true)
+        if (Data.LevelData.LevelNumber > 10 || true)
             View.GoldMulitplierButton.gameObject.SetActive(true);
         View.Result.text = LocaleManager.Localize(LocalizationKeys.result_win);
         View.Status.gameObject.SetActive(true);
@@ -41,10 +43,11 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     {
         base.OnMenuOpenAnimationComplete();
         int score = Data.MatchRate > 0.9f ? 3 : Data.MatchRate > 0.7f ? 2 : 1;
+        Data.Score = score;
         AnimateAllStars(score);
     }
 
-    public void AnimateAllStars(int score)
+    private void AnimateAllStars(int score)
     {
         float delay = 0f;
         for (int i = 0; i < View.StarViews.Length; i++)
@@ -71,9 +74,39 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
             .SetEase(Ease.Linear)      // Constant speed (essential for loops)
             .SetLoops(-1, LoopType.Incremental); // -1 means infinite    
 
-        int total = Data.GoldAmount + GameManager.Instance.SaveData.Inventory.Gold;
-        View.GoldRewardView.ShowReward(Data.GoldAmount, total, delay);
-        GameManager.Instance.SaveData.Inventory.TryUpdateGoldAmount(Data.GoldAmount);
         View.TextAnimation.PlayReveal();
+    }
+
+    private void PlayGoldAnimation(int goldAmount, int totalAmount, float delay, Action onComplete = null)
+    {
+        View.GoldRewardView.ShowReward(goldAmount, totalAmount, delay, onComplete);
+        GameManager.Instance.SaveData.Inventory.TryUpdateGoldAmount(goldAmount);
+    }
+
+    public override void OnContinueButtonClicked()
+    {
+        base.OnContinueButtonClicked();
+        int total = Data.LevelData.GoldAmount + GameManager.Instance.SaveData.Inventory.Gold;
+
+        PlayGoldAnimation(Data.LevelData.GoldAmount, total, 0f, OnGoldAnimationCompleted);
+
+    }
+
+    public override void OnGoldMultiplierButtonClicked()
+    {
+        base.OnGoldMultiplierButtonClicked();
+
+
+        // show video ad 
+        // And then callback and continue
+        // Add ad multipler constant
+        int total = 3 * Data.LevelData.GoldAmount + GameManager.Instance.SaveData.Inventory.Gold;
+
+        PlayGoldAnimation(3 * Data.LevelData.GoldAmount, total, 0f, OnGoldAnimationCompleted);
+    }
+
+    private void OnGoldAnimationCompleted()
+    {
+        Scheduler.Instance.ExecuteAfterDelay(1.5f, Controller.GoToMainMenu);
     }
 }

@@ -13,7 +13,7 @@ public class GoldMainView : MonoBehaviour
     private int _displayedAmount = 0;
     private Tween _countTween;
 
-    public void Initialize(int initialAmount)
+    public void UpdateAmount(int initialAmount)
     {
         _displayedAmount = initialAmount;
         GoldText.text = initialAmount.ToString("N0");

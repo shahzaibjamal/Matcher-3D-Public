@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class MainMenuBaseState_Main : MainMenuBaseState
 {
+    private Sequence _idleSequence;
+
+    private Sequence _playButtonSequence;
+
     public MainMenuBaseState_Main(MainMenuController controller) : base(controller)
     {
     }
@@ -16,13 +20,24 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StartButton.onClick.AddListener(OnStartButtonClicked);
         View.DebugButton.onClick.AddListener(OnDebugButtonClicked);
         View.SettingsButton.onClick.AddListener(OnSettingsButtonClicked);
+        GameEvents.OnGoldUpdatedEvent += HandleGoldUpdate;
+
         StartPlayButtonAnimation();
-        View.GoldMainView.Initialize(GameManager.Instance.SaveData.Inventory.Gold);
+        View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
+    }
+    public override void Exit()
+    {
+        View.StartButton.onClick.RemoveListener(OnStartButtonClicked);
+        View.DebugButton.onClick.RemoveListener(OnDebugButtonClicked);
+        View.SettingsButton.onClick.RemoveListener(OnSettingsButtonClicked);
+        GameEvents.OnGoldUpdatedEvent -= HandleGoldUpdate;
+        base.Exit();
     }
 
-    private Sequence _idleSequence;
-
-    private Sequence _playButtonSequence;
+    private void HandleGoldUpdate(int amount)
+    {
+        View.GoldMainView.UpdateAmount(amount);
+    }
 
     public void StartPlayButtonAnimation()
     {
@@ -73,13 +88,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         _idleSequence.SetLoops(-1, LoopType.Restart);
         // _idleSequence.Insert(1.2f, View.StartButton.transform.DOPunchPosition(Vector3.up * 20f, 0.4f, 2, 0.5f));
     }
-    public override void Exit()
-    {
-        View.StartButton.onClick.RemoveListener(OnStartButtonClicked);
-        View.DebugButton.onClick.RemoveListener(OnDebugButtonClicked);
-        View.SettingsButton.onClick.RemoveListener(OnSettingsButtonClicked);
-        base.Exit();
-    }
+
 
     private void OnStartButtonClicked()
     {

@@ -13,7 +13,8 @@ public static class Menus
         Debug = 8,
         Pause = 9,
         Reward = 10,
-        MatchResult = 11
+        MatchResult = 11,
+        Loading = 12
 
     }
     public enum MenuDisplayMode

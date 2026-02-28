@@ -10,7 +10,7 @@ public class GoogleSheetCSVDownloader
     private const string url = "https://script.google.com/macros/s/AKfycby4DumcMK00QJCTCiuNybLa6oe4sCft8Xcfr_SG-Qdns0cF-8j3dxJAMJ_tDi3dAbgD0Q/exec"; // Google Apps Script URL
     private const string savePath = "Assets/Editor/localization.csv";
 
-    [MenuItem("Tools/Download Google Sheet CSV")]
+    [MenuItem("Tools/Download Localization")]
     private static void DownloadCSV()
     {
         EditorCoroutineUtility.StartCoroutineOwnerless(FetchCSV());

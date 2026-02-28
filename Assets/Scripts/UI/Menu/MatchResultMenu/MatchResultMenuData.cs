@@ -1,8 +1,8 @@
 public class MatchResultMenuData : MenuData
 {
     public bool IsWin;
-    public int GoldAmount;
-    public int Level;
-
+    public LevelData LevelData;
     public float MatchRate;
+
+    public int Score;
 }
