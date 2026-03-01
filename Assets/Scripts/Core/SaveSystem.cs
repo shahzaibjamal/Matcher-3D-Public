@@ -1,7 +1,9 @@
 using Newtonsoft.Json;
 using System.IO;
 using UnityEngine;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public static class SaveSystem
 {
     private static string SavePath => Path.Combine(Application.persistentDataPath, "gamedata.json");
@@ -73,4 +75,47 @@ public static class SaveSystem
     {
         if (File.Exists(SavePath)) File.Delete(SavePath);
     }
+
+#if UNITY_EDITOR
+    [MenuItem("Tools/Save Data/Clear All Save Data")]
+    public static void ClearAllSaveData()
+    {
+        // 1. Clear PlayerPrefs
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+
+        // 2. Clear Persistent Data Path (JSON/Binary files)
+        string path = Application.persistentDataPath;
+
+        if (Directory.Exists(path))
+        {
+            DirectoryInfo di = new DirectoryInfo(path);
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
+
+            Debug.Log($"<color=green><b>Success:</b></color> All files cleared from {path}");
+        }
+
+        // 3. Clear Editor-specific cache if necessary
+        Caching.ClearCache();
+
+        EditorUtility.DisplayDialog("Save Data", "All Save Data and PlayerPrefs have been cleared.", "OK");
+    }
+
+    /// <summary>
+    /// Opens the folder where save data is stored for manual inspection.
+    /// </summary>
+    [MenuItem("Tools/Save Data/Open Save Folder")]
+    public static void OpenSaveFolder()
+    {
+        EditorUtility.RevealInFinder(Application.persistentDataPath);
+    }
+#endif
 }

@@ -11,32 +11,34 @@ public class ClickableItem : MonoBehaviour, IClickable
     public Rigidbody Rigidbody;
     public Action<ItemData, Transform> OnItemClicked;
 
-    void OnMouseDown()
+    private int _hintLayer = -1;
+    private int _defaultLayer = -1;
+    [Header("Settings")]
+    public float liftAmount = 0.2f;
+    public float animationSpeed = 0.15f;
+
+    private Vector3 _originalLocalPos;
+    private bool _isInitialized = false;
+
+    void Awake()
     {
-        if (GameManager.Instance.UseRaycast)
-        {
-            return;
-        }
-
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            return; // Stop here, the click was on UI
-        }
-
-        HandleLogic();
+        _hintLayer = LayerMask.NameToLayer("Hint");
+        _defaultLayer = LayerMask.NameToLayer("Default");
     }
 
     void OnDestroy()
     {
         OnItemClicked = null;
     }
+    private void EnsureInit()
+    {
+        if (_isInitialized) return;
+        _originalLocalPos = transform.localPosition;
+        _isInitialized = true;
+    }
 
     public void OnHandleClick(RaycastHit hitInfo)
     {
-        if (!GameManager.Instance.UseRaycast)
-        {
-            return;
-        }
         HandleLogic();
     }
 
@@ -44,12 +46,15 @@ public class ClickableItem : MonoBehaviour, IClickable
     {
         if (ItemData == null) return;
 
+        // Apply to parent and all children recursively
+        SetLayerRecursive(gameObject, _defaultLayer);
+
         OnItemClicked?.Invoke(ItemData, transform);
     }
 
     public void Highlight(bool isHinted)
     {
-        int targetLayer = isHinted ? LayerMask.NameToLayer("Hint") : LayerMask.NameToLayer("Default");
+        int targetLayer = isHinted ? _hintLayer : _defaultLayer;
 
         // Apply to parent and all children recursively
         SetLayerRecursive(gameObject, targetLayer);
@@ -78,4 +83,23 @@ public class ClickableItem : MonoBehaviour, IClickable
             SetLayerRecursive(child.gameObject, newLayer);
         }
     }
+    public void OnPointerDown(RaycastHit hitInfo)
+    {
+        EnsureInit();
+        Highlight(true);
+
+        // Kill any existing "Drop" animation before starting "Lift"
+        transform.DOKill();
+        transform.DOLocalMove(_originalLocalPos + Vector3.up * liftAmount, 0.1f).SetEase(Ease.OutCubic);
+    }
+
+    public void OnPointerUp()
+    {
+        Highlight(false);
+
+        // Smoothly return home
+        transform.DOKill();
+        transform.DOLocalMove(_originalLocalPos, 0.15f).SetEase(Ease.OutQuad);
+    }
+
 }

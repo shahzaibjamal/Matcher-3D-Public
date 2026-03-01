@@ -2,14 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public struct PowerUpVisualMapping
-{
-    public PowerUpType Type;
-    public Sprite Icon;
-
-    public Color Color;
-}
 
 // You would create this as a separate file, but here is the structure:
 [CreateAssetMenu(fileName = "PowerUpVisualDatabase", menuName = "Game/PowerUp Database")]
@@ -23,3 +15,12 @@ public class PowerUpVisualDatabase : ScriptableObject
         return mapping.Icon;
     }
 }
+
+[Serializable]
+public class PowerUpVisualMapping // Changed from struct to class
+{
+    public PowerUpType Type;
+    public Sprite Icon;
+    public Color Color;
+}
+

@@ -10,7 +10,6 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
         View.RestartButton.onClick.AddListener(OnRestartButtonClicked);
         View.BGButton.onClick.AddListener(OnResumeButtonClicked);
         View.HomeButton.onClick.AddListener(OnHomeButtonClicked);
-        View.CloseButton.onClick.AddListener(OnResumeButtonClicked);
         View.SettingsButton.onClick.AddListener(OnSettingsButtonClicked);
 
         UIAnimations.ToonIn(View.GetComponent<CanvasGroup>(), View.Root, null);
@@ -20,7 +19,6 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
         View.ResumeButton.onClick.RemoveListener(OnResumeButtonClicked);
         View.RestartButton.onClick.RemoveListener(OnRestartButtonClicked);
         View.HomeButton.onClick.RemoveListener(OnHomeButtonClicked);
-        View.CloseButton.onClick.RemoveListener(OnResumeButtonClicked);
         View.BGButton.onClick.RemoveListener(OnResumeButtonClicked);
         View.SettingsButton.onClick.RemoveListener(OnSettingsButtonClicked);
         base.OnExit();
