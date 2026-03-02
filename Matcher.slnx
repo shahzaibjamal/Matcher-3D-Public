@@ -3,10 +3,12 @@
   <Project Path="UnityEngine.Advertisements.Editor.csproj" />
   <Project Path="Unity.PlasticSCM.Editor.csproj" />
   <Project Path="Unity.Services.Core.Internal.csproj" />
+  <Project Path="Unity.ScriptableBuildPipeline.Editor.csproj" />
   <Project Path="Unity.Mathematics.csproj" />
   <Project Path="Unity.Timeline.Editor.csproj" />
   <Project Path="Unity.Collections.csproj" />
   <Project Path="UnityEngine.Advertisements.csproj" />
+  <Project Path="Unity.Addressables.Editor.csproj" />
   <Project Path="UnityEngine.Purchasing.Stores.csproj" />
   <Project Path="Unity.VisualScripting.Core.Editor.csproj" />
   <Project Path="Unity.PerformanceTesting.Editor.csproj" />
@@ -17,6 +19,7 @@
   <Project Path="Unity.VisualStudio.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.Searcher.Editor.csproj" />
+  <Project Path="Unity.ResourceManager.csproj" />
   <Project Path="Unity.VisualScripting.Core.csproj" />
   <Project Path="Unity.AI.Navigation.Editor.ConversionSystem.csproj" />
   <Project Path="Unity.VisualScripting.State.Editor.csproj" />
@@ -25,6 +28,7 @@
   <Project Path="Unity.TestTools.CodeCoverage.Editor.csproj" />
   <Project Path="Unity.Burst.CodeGen.csproj" />
   <Project Path="Unity.Services.Core.csproj" />
+  <Project Path="Unity.Addressables.DocExampleCode.Editor.Tests.csproj" />
   <Project Path="Unity.VisualScripting.Flow.csproj" />
   <Project Path="Unity.PerformanceTesting.csproj" />
   <Project Path="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.csproj" />
@@ -50,6 +54,7 @@
   <Project Path="Unity.AI.Navigation.csproj" />
   <Project Path="Unity.Collections.CodeGen.csproj" />
   <Project Path="Unity.Services.Core.Telemetry.csproj" />
+  <Project Path="Unity.Addressables.csproj" />
   <Project Path="Unity.Services.Core.Components.csproj" />
   <Project Path="Unity.Mathematics.Editor.csproj" />
   <Project Path="Unity.VisualScripting.SettingsProvider.Editor.csproj" />
@@ -59,6 +64,7 @@
   <Project Path="Unity.Settings.Editor.csproj" />
   <Project Path="UnityEditor.XR.LegacyInputHelpers.csproj" />
   <Project Path="Unity.VisualScripting.Shared.Editor.csproj" />
+  <Project Path="Unity.Profiling.Core.csproj" />
   <Project Path="Unity.Services.Core.Device.csproj" />
   <Project Path="Unity.Services.Core.Analytics.csproj" />
   <Project Path="Unity.EditorCoroutines.Editor.csproj" />
@@ -75,6 +81,7 @@
   <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Unity.Services.Core.Networking.csproj" />
   <Project Path="Unity.VisualScripting.DocCodeExamples.csproj" />
+  <Project Path="Unity.ScriptableBuildPipeline.csproj" />
   <Project Path="Unity.PlasticSCM.Editor.Entities.csproj" />
   <Project Path="Analytics.csproj" />
   <Project Path="UnityEditor.SpatialTracking.csproj" />

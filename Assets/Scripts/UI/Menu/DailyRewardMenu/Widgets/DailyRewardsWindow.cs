@@ -63,6 +63,7 @@ public class DailyRewardsWindow : MonoBehaviour
         return (DateTime.Now - signTime).Days + 1; // +1 if Day 1 starts immediately
     }
 
+#if UNITY_EDITOR
     [MenuItem("Tools/Simulate Next Day")]
     private static void SimulateNextDay()
     {
@@ -71,4 +72,5 @@ public class DailyRewardsWindow : MonoBehaviour
 
         Debug.Log($"Simulated next day. New SignUpDate: {saveData.SignUpDate}");
     }
+#endif
 }

@@ -37,7 +37,7 @@ public class MainMenuController : MenuController<MainMenuView, MainMenuData>
     }
     public void StartButtonClicked()
     {
-        if (!GameManager.Instance.CanLoadNextLevel())
+        if (GameManager.Instance.CanLoadNextLevel())
         {
             MenuManager.Instance.OpenMenu<GenericPopupMenuView, GenericPopupMenuController, GenericPopupMenuData>(
                         Menus.Type.GenericPopup,

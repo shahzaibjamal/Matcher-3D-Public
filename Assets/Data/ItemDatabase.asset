@@ -17,19 +17,23 @@ MonoBehaviour:
     itemName: Cog 1
     prefab: {fileID: 6721454954599402670, guid: 6a8fcd966223f4240a5a8a0cc03aa3b0, type: 3}
     uiSprite: {fileID: 21300000, guid: 57fb9e3f62d538649a880cfbcd8155d2, type: 3}
+    prefabName: cog1
     UniqueId: 715b9f87-f902-44ea-881e-bca47266ed7c
   - uid: heart
     itemName: Heart
     prefab: {fileID: 6214208447556539794, guid: e0e9449f84012d2428859176cd2d0b06, type: 3}
     uiSprite: {fileID: 21300000, guid: 7568e6ef0c236c64e8c3977ad6f4c093, type: 3}
+    prefabName: heart
     UniqueId: a56046c3-01d2-4a1f-bbc5-4002957321cb
   - uid: beer
     itemName: Beer
     prefab: {fileID: 1014010837996452403, guid: 31da8749afad8b94f8020ce2fe4e78c1, type: 3}
     uiSprite: {fileID: 21300000, guid: 2066c7a6edfc0194eaeb5e63e4aa2c70, type: 3}
+    prefabName: beer
     UniqueId: 64d59a61-3aed-45ad-a758-7735b79e7a8c
   - uid: potion_1
     itemName: Potion 1
     prefab: {fileID: 4370934783627981791, guid: 75e4b502f6a4f764a81d0ffc96d4ab5b, type: 3}
     uiSprite: {fileID: 21300000, guid: fe5b33de0212707499f3d8c7835213e1, type: 3}
+    prefabName: Potion1
     UniqueId: 64d59a61-3aed-45ad-a758-7735b79e7a8c

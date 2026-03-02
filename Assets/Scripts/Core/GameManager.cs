@@ -106,12 +106,18 @@ public class GameManager : MonoBehaviour
     {
         if (_activeSpawner == null && _spawnerPrefab != null)
         {
-            _activeSpawner = Instantiate(_spawnerPrefab);
-            _activeSpawner.SpawnLevel(levelData, (itemData, sourceTransform) =>
+            // _activeSpawner = Instantiate(_spawnerPrefab);
+            PrefabManager.Instance.InstantiatePrefab("Spawner", (spawner) =>
             {
-                _slotManager.AddItem(itemData, sourceTransform);
+                if (spawner.TryGetComponent<Spawner>(out _activeSpawner))
+                {
+                    _activeSpawner.SpawnLevel(levelData, (itemData, sourceTransform) =>
+                    {
+                        _slotManager.AddItem(itemData, sourceTransform);
+                    });
+                    _levelStartTime = Time.time;
+                }
             });
-            _levelStartTime = Time.time;
         }
     }
 

@@ -10,11 +10,13 @@ public class ItemData
     [Header("References")]
     [SerializeField] private GameObject prefab; // 3D prefab reference
     [SerializeField] private Sprite uiSprite;   // UI icon
+    [SerializeField] private string prefabName; // 3D prefab reference
 
     // Properties for safe access
     public string UID => uid;
     public string ItemName => itemName;
     public GameObject Prefab => prefab;
+    public string PrefabName => prefabName;
     public Sprite UISprite => uiSprite;
 
     public string UniqueId;

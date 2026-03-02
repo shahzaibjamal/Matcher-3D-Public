@@ -61,17 +61,6 @@ public partial class Spawner : MonoBehaviour
         GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolved;
         GameEvents.OnCleanSweepTrayEvent -= HandleCleanSweep;
     }
-
-
-    private void HandleCleanSweep()
-    {
-        if (_undoHistory.Count == 0) return;
-
-        GameEvents.OnUndoPowerupEvent?.Invoke(false);
-        // Schedule the NEXT undo only after this one is done
-        DOVirtual.DelayedCall(0.4f, () => HandleCleanSweep());
-    }
-
     void Awake()
     {
         Physics.gravity = new Vector3(0, -4.0f, 0);
@@ -126,15 +115,17 @@ public partial class Spawner : MonoBehaviour
         Vector3 spawnPos = CalculateRandomSpawnPos();
         Quaternion randomRot = UnityEngine.Random.rotation;
 
-        GameObject go = Instantiate(item.Prefab, spawnPos, randomRot, Parent);
-
-        if (go.TryGetComponent<ClickableItem>(out var clickable))
+        // GameObject go = Instantiate(item.Prefab, spawnPos, randomRot, Parent);
+        PrefabManager.Instance.InstantiatePrefab(item.PrefabName, spawnPos, randomRot, Parent, (go) =>
         {
-            _itemClickables.Add(clickable);
-            clickable.ItemData = item;
-            clickable.OnItemClicked = _onItemClicked;
-            clickable.OnItemClicked += HandleInternalItemClicked;
-        }
+            if (go.TryGetComponent<ClickableItem>(out var clickable))
+            {
+                _itemClickables.Add(clickable);
+                clickable.ItemData = item;
+                clickable.OnItemClicked = _onItemClicked;
+                clickable.OnItemClicked += HandleInternalItemClicked;
+            }
+        });
     }
 
     #endregion
@@ -155,9 +146,18 @@ public partial class Spawner : MonoBehaviour
                 _collectableLeft.Remove(data.UID);
         }
     }
-    private readonly int _maxTrayCount = 7;
 
     // 1. CALL THIS FOR THE BUTTON/POWERUP
+
+    private void HandleCleanSweep()
+    {
+        if (_undoHistory.Count == 0) return;
+
+        GameEvents.OnUndoPowerupEvent?.Invoke(false);
+        // Schedule the NEXT undo only after this one is done
+        DOVirtual.DelayedCall(0.4f, () => HandleCleanSweep());
+    }
+
     private void HandleUndoPowerUp(bool powerUpUsed)
     {
         if (_undoHistory.Count == 0) return;
@@ -185,7 +185,7 @@ public partial class Spawner : MonoBehaviour
 
         // Calculate Screen X (0 to 6 based on current stack count)
         // We use the count BEFORE we popped, or the index in the 7-slot tray
-        float segment = Screen.width / (_maxTrayCount + 1);
+        float segment = Screen.width / (GameManager.SLOT_COUNT + 1);
         float screenX = (_undoHistory.Count + 1) * segment;
 
         // Position and Spawn
@@ -194,54 +194,57 @@ public partial class Spawner : MonoBehaviour
         GameEvents.OnUndoAddItemEvent?.Invoke(dataToRestore.UID);
         SpawnFromTray(dataToRestore, trayWorldPos);
     }
-    private ItemData RestoreUndoState()
-    {
-        ItemData data = _undoHistory.Pop();
+    // private ItemData RestoreUndoState()
+    // {
+    //     ItemData data = _undoHistory.Pop();
 
-        if (_collectableLeft.ContainsKey(data.UID))
-            _collectableLeft[data.UID]++;
-        else
-            _collectableLeft.Add(data.UID, 1);
+    //     if (_collectableLeft.ContainsKey(data.UID))
+    //         _collectableLeft[data.UID]++;
+    //     else
+    //         _collectableLeft.Add(data.UID, 1);
 
-        return data;
-    }
+    //     return data;
+    // }
 
-    private void TriggerUndoSuccess()
-    {
-        GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Undo);
-    }
+    // private void TriggerUndoSuccess()
+    // {
+    //     GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Undo);
+    // }
 
     private void SpawnFromTray(ItemData item, Vector3 startPos)
     {
         // 1. Instantiate at the Tray's location
-        GameObject go = Instantiate(item.Prefab, startPos, UnityEngine.Random.rotation, Parent);
+        // GameObject go = Instantiate(item.Prefab, startPos, UnityEngine.Random.rotation, Parent);
 
-        // 2. Setup Clickable Logic
-        if (go.TryGetComponent<ClickableItem>(out var clickable))
+        PrefabManager.Instance.InstantiatePrefab(item.PrefabName, startPos, UnityEngine.Random.rotation, Parent, (go) =>
         {
-            _itemClickables.Add(clickable);
-            clickable.ItemData = item;
-            clickable.OnItemClicked = _onItemClicked;
-            clickable.OnItemClicked += HandleInternalItemClicked;
-
-            // 3. The "Throw" Physics
-            if (go.TryGetComponent<Rigidbody>(out var rb))
+            // 2. Setup Clickable Logic
+            if (go.TryGetComponent<ClickableItem>(out var clickable))
             {
-                rb.isKinematic = false;
+                _itemClickables.Add(clickable);
+                clickable.ItemData = item;
+                clickable.OnItemClicked = _onItemClicked;
+                clickable.OnItemClicked += HandleInternalItemClicked;
 
-                // Calculate direction to the center of the spawn area
-                Vector3 targetCenter = Parent.position + new Vector3(0, 1f, 0);
-                Vector3 throwDirection = (targetCenter - startPos).normalized;
-
-                // Apply an arc force (Forward + Up)
-                // rb.AddForce((throwDirection + Vector3.up) * 12f, ForceMode.Impulse);
-                // rb.AddTorque(UnityEngine.Random.insideUnitSphere * 20f, ForceMode.Impulse);
-                go.transform.DOJump(CalculateRandomSpawnPos(), 0.5f, 1, 0.5f).OnComplete(() =>
+                // 3. The "Throw" Physics
+                if (go.TryGetComponent<Rigidbody>(out var rb))
                 {
-                    if (go.TryGetComponent<Rigidbody>(out var rb)) rb.isKinematic = false;
-                });
+                    rb.isKinematic = false;
+
+                    // Calculate direction to the center of the spawn area
+                    Vector3 targetCenter = Parent.position + new Vector3(0, 1f, 0);
+                    Vector3 throwDirection = (targetCenter - startPos).normalized;
+
+                    // Apply an arc force (Forward + Up)
+                    // rb.AddForce((throwDirection + Vector3.up) * 12f, ForceMode.Impulse);
+                    // rb.AddTorque(UnityEngine.Random.insideUnitSphere * 20f, ForceMode.Impulse);
+                    go.transform.DOJump(CalculateRandomSpawnPos(), 0.5f, 1, 0.5f).OnComplete(() =>
+                    {
+                        if (go.TryGetComponent<Rigidbody>(out var rb)) rb.isKinematic = false;
+                    });
+                }
             }
-        }
+        });
     }
     private void HandleMatchResolved(int firstItemIndex, ItemData[] items, Action onComplete)
     {
