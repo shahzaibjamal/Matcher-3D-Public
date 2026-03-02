@@ -13,7 +13,7 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
     {
         View.LoadButton.onClick.AddListener(OnLoadButtonClicked);
         View.SaveButton.onClick.AddListener(() => GameManager.Instance.UseRaycast = !GameManager.Instance.UseRaycast);
-        View.LevelUidInput.onSubmit.AddListener((input) => { OnLoadButtonClicked(); });
+        View.LevelIdInput.onSubmit.AddListener((input) => { OnLoadButtonClicked(); });
         View.BackButton.onClick.AddListener(() =>
         {
             MenuManager.Instance.GoBack();
@@ -33,23 +33,23 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
 
     public void LoadLevel()
     {
-        string uid = View.LevelUidInput.text;
-        _currentLevel = View.LevelDatabase.GetLevelByUID(uid);
+        string id = View.LevelIdInput.text;
+        _currentLevel = DataManager.Instance.GetLevelByID(id);
 
         foreach (Transform child in View.ItemsParent)
             GameObject.Destroy(child.gameObject);
 
         if (_currentLevel == null)
         {
-            Debug.LogWarning("No level found with UID: " + uid);
+            Debug.LogWarning("No level found with ID: " + id);
             return;
         }
 
-        foreach (var entry in _currentLevel.itemsToSpawn)
+        foreach (var entry in _currentLevel.ItemsToSpawn)
         {
-            CreateDebugItemRow(entry.itemUID, entry.count, (val) =>
+            CreateDebugItemRow(entry.Id, entry.Count, (val) =>
             {
-                entry.count = (int)val;
+                entry.Count = (int)val;
             });
         }
     }
@@ -70,14 +70,14 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
 
     }
 
-    private DebugItemRow CreateDebugItemRow(string uid, float initialValue, System.Action<float> onValueChanged)
+    private DebugItemRow CreateDebugItemRow(string id, float initialValue, System.Action<float> onValueChanged)
     {
         GameObject row = GameObject.Instantiate(View.ItemRowPrefab, View.ItemsParent);
         var debugItemRow = row.GetComponent<DebugItemRow>();
 
         if (debugItemRow != null)
         {
-            debugItemRow.Uid.text = uid;
+            debugItemRow.Id.text = id;
             debugItemRow.Quantity.text = initialValue.ToString();
 
             // Clear existing listeners to avoid double-firing

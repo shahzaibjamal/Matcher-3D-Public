@@ -2,9 +2,11 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class MapTheme
+public class MapThemeData
 {
-    public string themeName;
-    public Sprite backgroundSprite;
-    public Color fogColor; // The color the fog should turn into for this map
+    public string Id;
+    public string ThemeName;
+    public string BackgroundSpriteName;
+    public string FogColorHex; // The color the fog should turn into for this map
+    public int StartLevel; // The level number where this theme begins
 }

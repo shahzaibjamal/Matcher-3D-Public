@@ -132,7 +132,11 @@ public class TrayView : MonoBehaviour
 
         // 2. Setup Ghost
         Image ghost = Instantiate(ghostIconPrefab, transform.parent);
-        ghost.sprite = data.UISprite;
+        AssetLoader.Instance.LoadIcon(data.IconName, (sprite) =>
+        {
+            ghost.sprite = sprite;
+        });
+
         ghost.transform.position = fromSlot.transform.position;
 
         // 3. Preparation: The target slot should know it's getting this data
@@ -156,7 +160,7 @@ public class TrayView : MonoBehaviour
         // 5. Finalize Reveal
         // We check UniqueId because the item might have been matched/cleared 
         // while the Coroutine was yielding during the jumps.
-        if (_slots[targetIdx].CurrentItem?.UniqueId == data.UniqueId)
+        if (_slots[targetIdx].CurrentItem?.UId == data.UId)
         {
             _slots[targetIdx].RevealIcon();
         }
@@ -172,7 +176,10 @@ public class TrayView : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             ghosts[i] = Instantiate(ghostIconPrefab, transform.parent);
-            ghosts[i].sprite = data[i].UISprite;
+            AssetLoader.Instance.LoadIcon(data[i].IconName, (sprite) =>
+            {
+                ghosts[i].sprite = sprite;
+            });
             ghosts[i].transform.position = _slots[startIdx + i].transform.position;
             _slots[startIdx + i].Clear();
         }

@@ -28,7 +28,11 @@ public class SlotView : MonoBehaviour
         CurrentItem = itemData;
         if (itemData != null)
         {
-            icon.sprite = itemData.UISprite;
+            AssetLoader.Instance.LoadIcon(itemData.IconName, (sprite) =>
+            {
+                icon.sprite = sprite;
+            });
+
         }
         // Keep it hidden; the TrayView will call RevealIcon after the animation lands
         icon.enabled = false;
@@ -40,7 +44,10 @@ public class SlotView : MonoBehaviour
 
         icon.transform.DOKill(); // Stop any pending match-scales
         icon.enabled = true;
-        icon.sprite = CurrentItem.UISprite;
+        AssetLoader.Instance.LoadIcon(CurrentItem.IconName, (sprite) =>
+        {
+            icon.sprite = sprite;
+        });
 
         // Ensure we are at full scale and visible
         icon.transform.localScale = Vector3.one;
@@ -92,11 +99,11 @@ public class SlotView : MonoBehaviour
             normal = { textColor = Color.red }
         };
 
-        string truncatedUniqueId = CurrentItem.UniqueId.Length > 7
-            ? CurrentItem.UniqueId.Substring(0, 7)
-            : CurrentItem.UniqueId;
+        string truncatedUniqueId = CurrentItem.UId.Length > 7
+            ? CurrentItem.UId.Substring(0, 7)
+            : CurrentItem.UId;
 
-        string text = $"{truncatedUniqueId} \n {CurrentItem.UID}";
+        string text = $"{truncatedUniqueId} \n {CurrentItem.Id}";
 
         float startY = Screen.height - debugFontSize * 3; // anchor near bottom
         float xSpacing = 220f;                            // horizontal spacing

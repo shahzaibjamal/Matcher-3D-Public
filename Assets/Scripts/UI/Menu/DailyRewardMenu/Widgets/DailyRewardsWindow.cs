@@ -49,7 +49,7 @@ public class DailyRewardsWindow : MonoBehaviour
             saveData.ClaimedDailyRewards.Add(data.Day);
 
             // Fire external callback
-            _onRewardClaimedCallback?.Invoke(data);
+            // _onRewardClaimedCallback?.Invoke(data);
 
             // Refresh the whole UI to show the new 'Claimed' states
             RefreshUI();

@@ -1,24 +1,13 @@
-using UnityEngine;
+using System;
+using Newtonsoft.Json;
 
-[System.Serializable]
+[Serializable]
 public class ItemData
 {
-    [Header("Identification")]
-    [SerializeField] private string uid;       // Unique identifier
-    [SerializeField] private string itemName;  // Display name
-
-    [Header("References")]
-    [SerializeField] private GameObject prefab; // 3D prefab reference
-    [SerializeField] private Sprite uiSprite;   // UI icon
-    [SerializeField] private string prefabName; // 3D prefab reference
-
-    // Properties for safe access
-    public string UID => uid;
-    public string ItemName => itemName;
-    public GameObject Prefab => prefab;
-    public string PrefabName => prefabName;
-    public Sprite UISprite => uiSprite;
-
-    public string UniqueId;
-
+    [JsonIgnore]
+    public string UId;
+    public string Id;
+    public string Name;
+    public string PrefabName;
+    public string IconName;
 }

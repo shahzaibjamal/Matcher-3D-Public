@@ -7,14 +7,14 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance { get; private set; }
 
-    [Header("Configuration")]
-    [SerializeField] private LevelDatabase levelDatabase;
-
     private GameSaveData _saveData;
+
+    // Theme data can still be set in the inspector
+    public List<MapThemeData> MapThemes;
 
     private void Awake()
     {
-        if (Instance != null) { Destroy(gameObject); return; }
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
@@ -24,61 +24,59 @@ public class LevelManager : MonoBehaviour
         _saveData = data;
     }
 
-    public List<MapTheme> mapThemes;
     // --- Retrieval Logic ---
 
     /// <summary>
-    /// Gets the LevelData for the furthest reached level.
-    /// Logic: If the current bookmarked level is finished AND a next level exists in the DB, 
-    /// it automatically returns the new level (handling content updates).
+    /// Gets the LevelData for the furthest reached level based on metadata JSON.
     /// </summary>
     public LevelData GetCurrentProgressLevel()
     {
-        // 1. If brand new game, return first level
-        if (string.IsNullOrEmpty(_saveData.CurrentLevelUID))
+        // 1. If brand new game, return the first level in the metadata
+        if (string.IsNullOrEmpty(_saveData.CurrentLevelID))
         {
-            return levelDatabase.levels.FirstOrDefault();
+            return DataManager.Instance.Metadata.Levels.FirstOrDefault();
         }
 
-        // 2. Find the bookmarked level
-        var currentLevel = levelDatabase.levels.FirstOrDefault(l => l.levelUID == _saveData.CurrentLevelUID);
+        // 2. Find the bookmarked level from our DataManager dictionary
+        var currentLevel = DataManager.Instance.GetLevelByID(_saveData.CurrentLevelID);
 
-        // 3. Check if this bookmarked level is already completed
-        var progress = _saveData.LevelHistory.Find(p => p.LevelUID == _saveData.CurrentLevelUID);
+        // 3. Check if this bookmarked level is already completed in SaveData
+        var progress = _saveData.LevelHistory.Find(p => p.LevelUID == _saveData.CurrentLevelID);
         bool isCompleted = progress != null && progress.IsCompleted;
 
         if (isCompleted)
         {
-            // If completed, check if there's a new level after it (Content Update check)
-            var nextLevel = GetNextLevelInDatabase(_saveData.CurrentLevelUID);
+            // Check if there's a next level after this one in the JSON
+            var nextLevel = GetNextLevelInDatabase(_saveData.CurrentLevelID);
             if (nextLevel != null)
             {
-                // Move bookmark forward automatically for the GameManager to load
-                _saveData.CurrentLevelUID = nextLevel.levelUID;
+                _saveData.CurrentLevelID = nextLevel.Id;
                 return nextLevel;
             }
         }
 
-        // 4. Return the bookmark (either the current unfinished level or the last finished level)
-        return currentLevel ?? levelDatabase.levels.FirstOrDefault();
+        // 4. Return bookmark, or fallback to level 1 if something went wrong
+        return currentLevel ?? DataManager.Instance.Metadata.Levels.FirstOrDefault();
     }
 
     public List<LevelDisplayData> GetLevelSelectData()
     {
         var displayList = new List<LevelDisplayData>();
+        var allLevels = DataManager.Instance.Metadata.Levels;
 
-        for (int i = 0; i < levelDatabase.levels.Count; i++)
+        for (int i = 0; i < allLevels.Count; i++)
         {
-            var level = levelDatabase.levels[i];
-            var progress = _saveData.LevelHistory.Find(p => p.LevelUID == level.levelUID);
+            var level = allLevels[i];
+            var progress = _saveData.LevelHistory.Find(p => p.LevelUID == level.Id);
 
             bool isFirstLevel = (i == 0);
-            bool hasProgress = (progress != null && progress.IsCompleted);
+            bool isCompleted = (progress != null && progress.IsCompleted);
             bool prevLevelCompleted = false;
 
             if (i > 0)
             {
-                var prevProgress = _saveData.LevelHistory.Find(p => p.LevelUID == levelDatabase.levels[i - 1].levelUID);
+                var prevId = allLevels[i - 1].Id;
+                var prevProgress = _saveData.LevelHistory.Find(p => p.LevelUID == prevId);
                 prevLevelCompleted = (prevProgress != null && prevProgress.IsCompleted);
             }
 
@@ -86,7 +84,8 @@ public class LevelManager : MonoBehaviour
             {
                 StaticData = level,
                 ProgressData = progress,
-                IsUnlocked = isFirstLevel || hasProgress || prevLevelCompleted
+                // Unlocked if: it's level 1, or you've already finished it, or the previous one is done
+                IsUnlocked = isFirstLevel || isCompleted || prevLevelCompleted
             });
         }
 
@@ -97,7 +96,6 @@ public class LevelManager : MonoBehaviour
     {
         List<LevelDisplayData> allData = GetLevelSelectData();
 
-        // FIX: If index is negative or beyond total levels, return empty list instead of crashing
         if (startIndex < 0 || startIndex >= allData.Count) return new List<LevelDisplayData>();
 
         int actualCount = Mathf.Min(count, allData.Count - startIndex);
@@ -105,75 +103,73 @@ public class LevelManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Called by the LevelNode button. Returns the static data for a specific UID.
+    /// Simple wrapper to get static data from the DataManager.
     /// </summary>
-    public LevelData GetLevelByUID(string uid)
+    public LevelData GetLevelByID(string id)
     {
-        return levelDatabase.levels.FirstOrDefault(l => l.levelUID == uid);
+        return DataManager.Instance.GetLevelByID(id);
     }
+
     // --- Persistence & Game State ---
 
-    public void MarkLevelComplete(string uid, float timeTaken, int score, int stars)
+    public void MarkLevelComplete(string id, float timeTaken, int score, int stars)
     {
-        var progress = _saveData.LevelHistory.Find(p => p.LevelUID == uid);
+        var progress = _saveData.LevelHistory.Find(p => p.LevelUID == id);
         if (progress == null)
         {
-            progress = new LevelProgress { LevelUID = uid };
+            progress = new LevelProgress { LevelUID = id };
             _saveData.LevelHistory.Add(progress);
         }
 
         progress.IsCompleted = true;
         progress.LastPlayed = DateTime.Now;
 
+        // Update high scores/stars
         if (timeTaken < progress.BestTime || progress.BestTime <= 0) progress.BestTime = timeTaken;
         if (score > progress.HighScore) progress.HighScore = score;
         if (stars > progress.StarRating) progress.StarRating = stars;
 
-        // SMART PROGRESSION: Only move the bookmark if there is actually a next level.
-        // If not, the bookmark stays on the current level.
-        if (string.IsNullOrEmpty(_saveData.CurrentLevelUID) || uid == _saveData.CurrentLevelUID)
+        // Progression: Move bookmark if we are finishing the current furthest level
+        if (string.IsNullOrEmpty(_saveData.CurrentLevelID) || id == _saveData.CurrentLevelID)
         {
-            var nextLevel = GetNextLevelInDatabase(uid);
+            var nextLevel = GetNextLevelInDatabase(id);
             if (nextLevel != null)
             {
-                _saveData.CurrentLevelUID = nextLevel.levelUID;
+                _saveData.CurrentLevelID = nextLevel.Id;
             }
             else
             {
-                // Bookmark stays here. In the next app launch, GetCurrentProgressLevel 
-                // will check the DB again to see if new levels were added in an update.
-                Debug.Log("Current content finished. Bookmark saved at: " + uid);
+                Debug.Log("No more levels found in metadata. Bookmark remains at: " + id);
             }
         }
 
         SaveSystem.Save(_saveData);
     }
 
-    public LevelData GetNextLevelInDatabase(string currentUid)
+    /// <summary>
+    /// Finds the next level in the sequential list from Metadata.
+    /// </summary>
+    public LevelData GetNextLevelInDatabase(string currentId)
     {
-        int currentIndex = levelDatabase.levels.FindIndex(l => l.levelUID == currentUid);
-        if (currentIndex >= 0 && currentIndex < levelDatabase.levels.Count - 1)
+        var allLevels = DataManager.Instance.Metadata.Levels;
+        int currentIndex = allLevels.FindIndex(l => l.Id == currentId);
+
+        if (currentIndex >= 0 && currentIndex < allLevels.Count - 1)
         {
-            return levelDatabase.levels[currentIndex + 1];
+            return allLevels[currentIndex + 1];
         }
         return null;
     }
 
-    /// <summary>
-    /// Helper for UI to know if we should show a "Coming Soon" or "Credits" screen.
-    /// </summary>
     public bool HasMoreContent()
     {
-        return GetNextLevelInDatabase(_saveData.CurrentLevelUID) != null;
+        return GetNextLevelInDatabase(_saveData.CurrentLevelID) != null;
     }
 }
-/// <summary>
-/// Helper struct to pass data to the Level Select UI.
-/// </summary>
+
 public struct LevelDisplayData
 {
     public LevelData StaticData;
     public LevelProgress ProgressData;
     public bool IsUnlocked;
 }
-

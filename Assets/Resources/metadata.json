@@ -1,0 +1,2095 @@
+{
+  "Items": [
+    {
+      "Id": "cog_1",
+      "Name": "Cog",
+      "PrefabName": "cog1",
+      "IconName": "cog1_0000"
+    },
+    {
+      "Id": "heart",
+      "Name": "Heart",
+      "PrefabName": "heart",
+      "IconName": "heart0000"
+    },
+    {
+      "Id": "beer",
+      "Name": "Beer",
+      "PrefabName": "beer",
+      "IconName": "bear0000"
+    },
+    {
+      "Id": "potion_1",
+      "Name": "Potion",
+      "PrefabName": "potion1",
+      "IconName": "bottlePotionHealth0000"
+    }
+  ],
+  "Levels": [
+    {
+      "Id": "level_01",
+      "Number": 1,
+      "Name": "Level 01",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 3
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 3
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "heart"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Hint",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_02",
+      "Number": 2,
+      "Name": "Level 02",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_03",
+      "Number": 3,
+      "Name": "Level 03",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_04",
+      "Number": 4,
+      "Name": "Level 04",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_05",
+      "Number": 5,
+      "Name": "Level 05",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_06",
+      "Number": 6,
+      "Name": "Level 06",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_07",
+      "Number": 7,
+      "Name": "Level 07",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_08",
+      "Number": 8,
+      "Name": "Level 08",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_09",
+      "Number": 9,
+      "Name": "Level 09",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_10",
+      "Number": 10,
+      "Name": "Level 10",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_11",
+      "Number": 11,
+      "Name": "Level 11",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_12",
+      "Number": 12,
+      "Name": "Level 12",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_13",
+      "Number": 13,
+      "Name": "Level 13",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_14",
+      "Number": 14,
+      "Name": "Level 14",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_15",
+      "Number": 15,
+      "Name": "Level 15",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_16",
+      "Number": 16,
+      "Name": "Level 16",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_17",
+      "Number": 17,
+      "Name": "Level 17",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_18",
+      "Number": 18,
+      "Name": "Level 18",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_19",
+      "Number": 19,
+      "Name": "Level 19",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_20",
+      "Number": 20,
+      "Name": "Level 20",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_21",
+      "Number": 21,
+      "Name": "Level 21",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_22",
+      "Number": 22,
+      "Name": "Level 22",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_23",
+      "Number": 23,
+      "Name": "Level 23",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_24",
+      "Number": 24,
+      "Name": "Level 24",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_25",
+      "Number": 25,
+      "Name": "Level 25",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_26",
+      "Number": 26,
+      "Name": "Level 26",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_27",
+      "Number": 27,
+      "Name": "Level 27",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_28",
+      "Number": 28,
+      "Name": "Level 28",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_29",
+      "Number": 29,
+      "Name": "Level 29",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_30",
+      "Number": 30,
+      "Name": "Level 30",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_31",
+      "Number": 31,
+      "Name": "Level 31",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_32",
+      "Number": 32,
+      "Name": "Level 32",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_33",
+      "Number": 33,
+      "Name": "Level 33",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_34",
+      "Number": 34,
+      "Name": "Level 34",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_35",
+      "Number": 35,
+      "Name": "Level 35",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_36",
+      "Number": 36,
+      "Name": "Level 36",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_37",
+      "Number": 37,
+      "Name": "Level 37",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_38",
+      "Number": 38,
+      "Name": "Level 38",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_39",
+      "Number": 39,
+      "Name": "Level 39",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_40",
+      "Number": 40,
+      "Name": "Level 40",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_41",
+      "Number": 41,
+      "Name": "Level 41",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_42",
+      "Number": 42,
+      "Name": "Level 42",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_43",
+      "Number": 43,
+      "Name": "Level 43",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_44",
+      "Number": 44,
+      "Name": "Level 44",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_45",
+      "Number": 45,
+      "Name": "Level 45",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_46",
+      "Number": 46,
+      "Name": "Level 46",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_47",
+      "Number": 47,
+      "Name": "Level 47",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_48",
+      "Number": 48,
+      "Name": "Level 48",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_49",
+      "Number": 49,
+      "Name": "Level 49",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_50",
+      "Number": 50,
+      "Name": "Level 50",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_51",
+      "Number": 51,
+      "Name": "Level 51",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_52",
+      "Number": 52,
+      "Name": "Level 52",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_53",
+      "Number": 53,
+      "Name": "Level 53",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    },
+    {
+      "Id": "level_54",
+      "Number": 54,
+      "Name": "Level 54",
+      "ItemsToSpawn": [
+        {
+          "Id": "cog_1",
+          "Count": 3
+        },
+        {
+          "Id": "heart",
+          "Count": 9
+        },
+        {
+          "Id": "potion_1",
+          "Count": 3
+        },
+        {
+          "Id": "beer",
+          "Count": 6
+        }
+      ],
+      "ItemsToCollect": [
+        "cog_1",
+        "beer"
+      ],
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ]
+    }
+  ],
+  "DailyRewards": [
+    {
+      "Day": 1,
+      "RewardType": "Gold",
+      "Amount": 50
+    },
+    {
+      "Day": 2,
+      "RewardType": "Undo",
+      "Amount": 3
+    },
+    {
+      "Day": 3,
+      "RewardType": "Shake",
+      "Amount": 2
+    },
+    {
+      "Day": 4,
+      "RewardType": "Gold",
+      "Amount": 120
+    },
+    {
+      "Day": 5,
+      "RewardType": "Hint",
+      "Amount": 2
+    },
+    {
+      "Day": 6,
+      "RewardType": "Undo",
+      "Amount": 5
+    },
+    {
+      "Day": 7,
+      "RewardType": "Magnet",
+      "Amount": 3
+    }
+  ],
+  "MapThemes": [
+    {
+      "Id": "jungle",
+      "ThemeName": "Jungle",
+      "BackgroundSpriteName": "jungle",
+      "FogColorHex": "#F3D86E",
+      "StartLevel": 1
+    },
+    {
+      "Id": "desert",
+      "ThemeName": "Desert",
+      "BackgroundSpriteName": "desert",
+      "FogColorHex": "#DD9646",
+      "StartLevel": 16
+    },
+    {
+      "Id": "barren",
+      "ThemeName": "barren",
+      "BackgroundSpriteName": "barren",
+      "FogColorHex": "#DD9646",
+      "StartLevel": 31
+    },
+    {
+      "Id": "winter",
+      "ThemeName": "Winter",
+      "BackgroundSpriteName": "winter",
+      "FogColorHex": "#DD9646",
+      "StartLevel": 46
+    }
+  ]
+}

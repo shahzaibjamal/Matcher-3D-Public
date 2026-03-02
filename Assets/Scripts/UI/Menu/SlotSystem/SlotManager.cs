@@ -65,7 +65,7 @@ public class SlotManager
         }
 
         int targetIdx = GetInsertionIndex(data);
-        data.UniqueId = Guid.NewGuid().ToString(); // Assigned IMMEDIATELY
+        data.UId = Guid.NewGuid().ToString(); // Assigned IMMEDIATELY
 
         if (targetIdx >= _slots.Length)
         {
@@ -175,7 +175,7 @@ public class SlotManager
     private int GetInsertionIndex(ItemData newItem)
     {
         for (int i = _slots.Length - 1; i >= 0; i--)
-            if (_slots[i]?.UID == newItem.UID) return i + 1;
+            if (_slots[i]?.Id == newItem.Id) return i + 1;
         for (int i = 0; i < _slots.Length; i++)
             if (_slots[i] == null) return i;
         return _slots.Length;
@@ -186,7 +186,7 @@ public class SlotManager
         for (int i = 0; i <= _slots.Length - 3; i++)
         {
             if (_slots[i] == null) continue;
-            if (_slots[i + 1]?.UID == _slots[i].UID && _slots[i + 2]?.UID == _slots[i].UID) return i;
+            if (_slots[i + 1]?.Id == _slots[i].Id && _slots[i + 2]?.Id == _slots[i].Id) return i;
         }
         return -1;
     }
@@ -212,11 +212,11 @@ public class SlotManager
                 var item = _slots[i];
                 if (item == null) continue;
 
-                string truncatedUniqueId = item.UniqueId.Length > 7
-                    ? item.UniqueId.Substring(0, 7)
-                    : item.UniqueId;
+                string truncatedUniqueId = item.UId.Length > 7
+                    ? item.UId.Substring(0, 7)
+                    : item.UId;
 
-                string text = $"{truncatedUniqueId} | {item.UID}";
+                string text = $"{truncatedUniqueId} | {item.Id}";
 
                 float x = 10f + (i * xSpacing);
                 GUI.Label(new Rect(x, startY, 200, 50), text, style);

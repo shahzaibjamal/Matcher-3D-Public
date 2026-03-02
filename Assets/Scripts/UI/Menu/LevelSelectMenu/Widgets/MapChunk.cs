@@ -13,17 +13,28 @@ public class MapChunk : MonoBehaviour
     [SerializeField] private Image bottomFog;
 
     // Call this when the chunk is "Recycled" to the top or bottom
-    public void Configure(List<LevelDisplayData> levelBatch, int startLevelIndex, GameObject prefab, Sprite bg, Color themeColor)
+    public void Configure(List<LevelDisplayData> levelBatch, int startLevelIndex, GameObject prefab, string bgName, string themeColor)
     {
         // Clear old nodes
         foreach (Transform child in transform)
         {
             if (child.GetComponent<LevelNode>()) Destroy(child.gameObject);
         }
+        Color fogColor;
+        if (ColorUtility.TryParseHtmlString(themeColor, out fogColor))
+        {
+            topFog.color = fogColor;
+            bottomFog.color = fogColor;
+        }
+        else
+        {
+            Debug.LogError("Invalid hex color string");
+        }
 
-        topFog.color = new Color(themeColor.r, themeColor.g, themeColor.b, 0.8f);
-        bottomFog.color = new Color(themeColor.r, themeColor.g, themeColor.b, 0.8f);
-        backgroundImage.sprite = bg;
+        AssetLoader.Instance.LoadIcon(bgName, (sprite) =>
+        {
+            backgroundImage.sprite = sprite;
+        });
 
         if (levelBatch.Count == 0) return;
 

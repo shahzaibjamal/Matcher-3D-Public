@@ -25,7 +25,7 @@ public partial class Spawner : MonoBehaviour
     public int InitialCollectableItems { get; private set; }
     public int CurrentTotalRemaining => _itemClickables.Count;
     public int CurrentCollectablesRemaining => _itemClickables.Count(c =>
-        _currentLevelData.itemsToCollect.Contains(c.ItemData.UID));
+        _currentLevelData.ItemsToCollect.Contains(c.ItemData.Id));
 
     public float LevelProgress => InitialCollectableItems > 0
         ? 1f - ((float)CurrentCollectablesRemaining / InitialCollectableItems)
@@ -74,6 +74,16 @@ public partial class Spawner : MonoBehaviour
         // 1. Prepare Environment
         GenerateBounds();
 
+        if (levelData != null)
+        {
+            Debug.LogError(levelData.Name);
+            if (levelData.ItemsToSpawn.Count > 0)
+            {
+                Debug.LogError(levelData.ItemsToSpawn[0].Id);
+
+            }
+
+        }
         // 2. Prepare Data
         _currentLevelData = levelData;
         if (_currentLevelData == null) return;
@@ -91,19 +101,19 @@ public partial class Spawner : MonoBehaviour
         _itemClickables.Clear();
 
         // Capture initial totals for progress tracking
-        InitialTotalItems = _currentLevelData.itemsToSpawn.Sum(x => x.count);
-        InitialCollectableItems = _currentLevelData.itemsToSpawn
-                .Where(entry => _currentLevelData.itemsToCollect.Contains(entry.itemUID))
-                .Sum(entry => entry.count);
+        InitialTotalItems = _currentLevelData.ItemsToSpawn.Sum(x => x.Count);
+        InitialCollectableItems = _currentLevelData.ItemsToSpawn
+                .Where(entry => _currentLevelData.ItemsToCollect.Contains(entry.Id))
+                .Sum(entry => entry.Count);
         PopulateCollectableLeft(_currentLevelData);
     }
 
     private void ExecuteSpawning()
     {
-        foreach (var entry in _currentLevelData.itemsToSpawn)
+        foreach (var entry in _currentLevelData.ItemsToSpawn)
         {
-            ItemData item = Metadata.Instance.itemDatabase.GetItemByUID(entry.itemUID);
-            for (int i = 0; i < entry.count; i++)
+            ItemData item = DataManager.Instance.GetItemByID(entry.Id);
+            for (int i = 0; i < entry.Count; i++)
             {
                 CreateItemInstance(item);
             }
@@ -115,8 +125,7 @@ public partial class Spawner : MonoBehaviour
         Vector3 spawnPos = CalculateRandomSpawnPos();
         Quaternion randomRot = UnityEngine.Random.rotation;
 
-        // GameObject go = Instantiate(item.Prefab, spawnPos, randomRot, Parent);
-        PrefabManager.Instance.InstantiatePrefab(item.PrefabName, spawnPos, randomRot, Parent, (go) =>
+        AssetLoader.Instance.InstantiatePrefab(item.PrefabName, spawnPos, randomRot, Parent, (go) =>
         {
             if (go.TryGetComponent<ClickableItem>(out var clickable))
             {
@@ -139,11 +148,11 @@ public partial class Spawner : MonoBehaviour
 
         _itemClickables.RemoveAll(c => c == null || c.transform == t);
 
-        if (_collectableLeft.ContainsKey(data.UID))
+        if (_collectableLeft.ContainsKey(data.Id))
         {
-            _collectableLeft[data.UID]--;
-            if (_collectableLeft[data.UID] <= 0)
-                _collectableLeft.Remove(data.UID);
+            _collectableLeft[data.Id]--;
+            if (_collectableLeft[data.Id] <= 0)
+                _collectableLeft.Remove(data.Id);
         }
     }
 
@@ -178,10 +187,10 @@ public partial class Spawner : MonoBehaviour
         // Pop and Update Dictionary
         ItemData dataToRestore = _undoHistory.Pop();
 
-        if (_collectableLeft.ContainsKey(dataToRestore.UID))
-            _collectableLeft[dataToRestore.UID]++;
+        if (_collectableLeft.ContainsKey(dataToRestore.Id))
+            _collectableLeft[dataToRestore.Id]++;
         else
-            _collectableLeft.Add(dataToRestore.UID, 1);
+            _collectableLeft.Add(dataToRestore.Id, 1);
 
         // Calculate Screen X (0 to 6 based on current stack count)
         // We use the count BEFORE we popped, or the index in the 7-slot tray
@@ -191,17 +200,17 @@ public partial class Spawner : MonoBehaviour
         // Position and Spawn
         Vector3 trayWorldPos = MainCamera.ScreenToWorldPoint(new Vector3(screenX, 100, 5));
 
-        GameEvents.OnUndoAddItemEvent?.Invoke(dataToRestore.UID);
+        GameEvents.OnUndoAddItemEvent?.Invoke(dataToRestore.Id);
         SpawnFromTray(dataToRestore, trayWorldPos);
     }
     // private ItemData RestoreUndoState()
     // {
     //     ItemData data = _undoHistory.Pop();
 
-    //     if (_collectableLeft.ContainsKey(data.UID))
-    //         _collectableLeft[data.UID]++;
+    //     if (_collectableLeft.ContainsKey(data.ID))
+    //         _collectableLeft[data.ID]++;
     //     else
-    //         _collectableLeft.Add(data.UID, 1);
+    //         _collectableLeft.Add(data.ID, 1);
 
     //     return data;
     // }
@@ -216,7 +225,7 @@ public partial class Spawner : MonoBehaviour
         // 1. Instantiate at the Tray's location
         // GameObject go = Instantiate(item.Prefab, startPos, UnityEngine.Random.rotation, Parent);
 
-        PrefabManager.Instance.InstantiatePrefab(item.PrefabName, startPos, UnityEngine.Random.rotation, Parent, (go) =>
+        AssetLoader.Instance.InstantiatePrefab(item.PrefabName, startPos, UnityEngine.Random.rotation, Parent, (go) =>
         {
             // 2. Setup Clickable Logic
             if (go.TryGetComponent<ClickableItem>(out var clickable))
@@ -265,66 +274,66 @@ public partial class Spawner : MonoBehaviour
 
     private void HandleHintPowerUp()
     {
-        string targetUID = null;
+        string targetID = null;
 
         // 1. Calculate frequencies in tray for logic
         Dictionary<string, int> historyCounts = new Dictionary<string, int>();
         foreach (var item in _undoHistory)
         {
-            if (historyCounts.ContainsKey(item.UID)) historyCounts[item.UID]++;
-            else historyCounts[item.UID] = 1;
+            if (historyCounts.ContainsKey(item.Id)) historyCounts[item.Id]++;
+            else historyCounts[item.Id] = 1;
         }
 
         // 2. PRIORITY 1: Check Collectables that are already in UndoHistory (Goals in progress)
         int highestCount = 0;
-        foreach (var goalUID in _collectableLeft.Keys)
+        foreach (var goalID in _collectableLeft.Keys)
         {
-            if (historyCounts.TryGetValue(goalUID, out int countInTray))
+            if (historyCounts.TryGetValue(goalID, out int countInTray))
             {
                 // We only care if it's not already a completed set in the tray (count % 3 != 0)
                 if (countInTray % 3 != 0 && countInTray > highestCount)
                 {
                     highestCount = countInTray;
-                    targetUID = goalUID;
+                    targetID = goalID;
                 }
             }
         }
 
         // 3. PRIORITY 2: If no "Goal in Progress" found, check if ANY item in history is a candidate
-        if (string.IsNullOrEmpty(targetUID) && _undoHistory.Count > 0)
+        if (string.IsNullOrEmpty(targetID) && _undoHistory.Count > 0)
         {
             // Pick the most recent item from history that isn't already finished
             foreach (var item in _undoHistory)
             {
-                if (historyCounts[item.UID] % 3 != 0)
+                if (historyCounts[item.Id] % 3 != 0)
                 {
-                    targetUID = item.UID;
+                    targetID = item.Id;
                     break;
                 }
             }
         }
 
         // 4. PRIORITY 3: If history is empty, just hint the first goal
-        if (string.IsNullOrEmpty(targetUID) && _collectableLeft.Count > 0)
+        if (string.IsNullOrEmpty(targetID) && _collectableLeft.Count > 0)
         {
-            targetUID = _collectableLeft.Keys.First();
+            targetID = _collectableLeft.Keys.First();
         }
 
         // 5. Execution
-        if (!string.IsNullOrEmpty(targetUID))
+        if (!string.IsNullOrEmpty(targetID))
         {
-            HighlightItemsInField(targetUID);
+            HighlightItemsInField(targetID);
             GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Hint);
         }
     }
 
-    private void HighlightItemsInField(string uid)
+    private void HighlightItemsInField(string ID)
     {
         int count = 0;
         float delay = 0.1f;
         foreach (var item in _itemClickables)
         {
-            if (item != null && item.ItemData.UID == uid)
+            if (item != null && item.ItemData.Id == ID)
             {
                 float calculatedDelay = delay * count++;
                 Scheduler.Instance.ExecuteAfterDelay(calculatedDelay, () =>
@@ -344,7 +353,7 @@ public partial class Spawner : MonoBehaviour
         foreach (var key in _collectableLeft.Keys.ToList())
         {
             // If this item type is already partially collected (in the tray/undo history)
-            int currentlyInTray = _undoHistory.Count(i => i.UID == key);
+            int currentlyInTray = _undoHistory.Count(i => i.Id == key);
 
             // If it's 1 or 2, we have a partial match that needs fulfilling
             if (currentlyInTray > 0)
@@ -368,17 +377,17 @@ public partial class Spawner : MonoBehaviour
             return;
         }
 
-        string firstUid = _collectableLeft.Keys.First();
+        string firstID = _collectableLeft.Keys.First();
         for (int i = 0; i < 3; i++)
         {
-            Scheduler.Instance.ExecuteAfterDelay(delay * i, () => TrySelectSpecificItem(firstUid));
+            Scheduler.Instance.ExecuteAfterDelay(delay * i, () => TrySelectSpecificItem(firstID));
         }
 
         GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Magnet);
     }
-    private bool TrySelectSpecificItem(string uid)
+    private bool TrySelectSpecificItem(string Id)
     {
-        var targetItem = _itemClickables.Find(c => c != null && c.ItemData.UID == uid);
+        var targetItem = _itemClickables.Find(c => c != null && c.ItemData.Id == Id);
         if (targetItem != null)
         {
             ProcessItemSelection(targetItem);
@@ -472,11 +481,11 @@ public partial class Spawner : MonoBehaviour
     private void PopulateCollectableLeft(LevelData levelData)
     {
         _collectableLeft = new Dictionary<string, int>();
-        foreach (var itemUID in levelData.itemsToCollect)
+        foreach (var itemID in levelData.ItemsToCollect)
         {
-            var spawnEntry = levelData.itemsToSpawn.Find(e => e.itemUID == itemUID);
+            var spawnEntry = levelData.ItemsToSpawn.Find(e => e.Id == itemID);
             if (spawnEntry != null)
-                _collectableLeft.Add(itemUID, spawnEntry.count);
+                _collectableLeft.Add(itemID, spawnEntry.Count);
         }
     }
 
@@ -527,8 +536,8 @@ public partial class Spawner : MonoBehaviour
         if (_collectableLeft == null || _collectableLeft.Count == 0) return;
 
         // 2. Find the target
-        string targetUID = _collectableLeft.Keys.First();
-        TrySelectSpecificItem(targetUID);
+        string targetID = _collectableLeft.Keys.First();
+        TrySelectSpecificItem(targetID);
     }
 
     #endregion

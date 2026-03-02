@@ -41,16 +41,16 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     private void HandleMatchStarted(LevelData levelData)
     {
         _currentLevelData = levelData;
-        View.LevelId.text = string.Format(LocaleManager.Localize(LocalizationKeys.title_level), levelData.LevelNumber);
+        View.LevelId.text = string.Format(LocaleManager.Localize(LocalizationKeys.title_level), levelData.Number);
         // Create new
-        foreach (var spawn in levelData.itemsToSpawn)
+        foreach (var spawn in levelData.ItemsToSpawn)
         {
-            if (!levelData.itemsToCollect.Contains(spawn.itemUID)) continue;
+            if (!levelData.ItemsToCollect.Contains(spawn.Id)) continue;
 
-            var data = Metadata.Instance.itemDatabase.GetItemByUID(spawn.itemUID);
+            var data = DataManager.Instance.GetItemByID(spawn.Id);
             var view = GameObject.Instantiate(View.ItemViewPrefab, View.ItemViewParent);
 
-            view.SetItem(data, spawn.count, () =>
+            view.SetItem(data, spawn.Count, () =>
             {
                 _activeViews.Remove(view);
                 CheckWin();

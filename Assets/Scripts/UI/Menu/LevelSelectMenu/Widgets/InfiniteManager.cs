@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,126 +6,150 @@ public class InfiniteMapManager : MonoBehaviour
 {
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private RectTransform content;
-    [SerializeField] private MapChunk[] chunks; // The 2 map objects you have
+    [SerializeField] private MapChunk[] chunks; // Assign 3 chunks
     [SerializeField] private GameObject nodePrefab;
     [SerializeField] private int nodesPerMap = 15;
 
-    private int _topChunkDataIndex = 0; // The level index the top-most map starts with
     private float _chunkHeight;
 
     void Start()
     {
+        // 1. Force Bottom Pivots for upward math
+        content.pivot = new Vector2(0.5f, 0f);
+        content.anchorMin = new Vector2(0.5f, 0f);
+        content.anchorMax = new Vector2(0.5f, 0f);
+        content.anchoredPosition = Vector2.zero;
+
         _chunkHeight = chunks[0].rectTransform.rect.height;
+
+        // 2. Initial Setup
         RefreshAllChunks();
+
+        // 3. Event-based movement (The jitter-killer)
+        scrollRect.onValueChanged.AddListener(OnScroll);
     }
+
     private void RefreshAllChunks()
     {
-        int totalLevels = LevelManager.Instance.GetLevelSelectData().Count;
-        float totalPages = Mathf.Ceil((float)totalLevels / nodesPerMap);
+        var allLevels = LevelManager.Instance.GetLevelSelectData();
+        float totalPages = Mathf.Ceil((float)allLevels.Count / nodesPerMap);
 
-        // Only allow the content to be big enough for the levels you HAVE
+        // Set content height
         content.sizeDelta = new Vector2(content.sizeDelta.x, totalPages * _chunkHeight);
 
-        // If levels fit on one map, we don't need the second chunk active
-        if (totalLevels <= nodesPerMap)
-        {
-            chunks[1].gameObject.SetActive(false);
-        }
-        // 3. Position the chunks so they are stacked, not overlapping
         for (int i = 0; i < chunks.Length; i++)
         {
-            // Chunk 0 stays at 0. Chunk 1 starts at _chunkHeight (e.g., 1920).
+            chunks[i].rectTransform.pivot = new Vector2(0.5f, 0f);
+            chunks[i].rectTransform.anchorMin = new Vector2(0.5f, 0f);
+            chunks[i].rectTransform.anchorMax = new Vector2(0.5f, 0f);
+
+            // Stack them UP: 0, Height, 2*Height
             chunks[i].rectTransform.anchoredPosition = new Vector2(0, i * _chunkHeight);
-
-            int startIndex = i * nodesPerMap;
-            var data = LevelManager.Instance.GetLevelBatch(startIndex, nodesPerMap);
-
-            if (data.Count > 0)
-            {
-
-                // Get theme based on the Page Number
-                var theme = Metadata.Instance.levelDatabase.GetThemeByMapIndex(startIndex);
-                chunks[i].gameObject.SetActive(true);
-                // Reusing your existing logic but passing null/current sprite for now
-                chunks[i].Configure(data, startIndex, nodePrefab, theme.backgroundSprite, theme.fogColor);
-            }
-            else
-            {
-                // If there's no data even for the second chunk, hide it
-                chunks[i].gameObject.SetActive(false);
-            }
+            UpdateChunkData(chunks[i]);
         }
     }
 
-    private void Update()
+    private void OnScroll(Vector2 scrollPos)
     {
-        float buffer = _chunkHeight * 0.1f; // 10% overlap safety
+        float contentY = content.anchoredPosition.y; // How far content has moved UP (negative)
+        float viewportHeight = scrollRect.viewport.rect.height;
 
         foreach (var chunk in chunks)
         {
-            float localY = content.anchoredPosition.y + chunk.rectTransform.anchoredPosition.y;
+            float chunkY = chunk.rectTransform.anchoredPosition.y; // Positive (0, 1920, etc)
+            float relativeBottom = chunkY + contentY;
 
-            // If scrolling UP: Move to TOP only when it is WELL below the screen
-            if (localY < -(_chunkHeight + buffer))
+            // If chunk is too far BELOW the viewport (fell off the bottom)
+            if (relativeBottom < -_chunkHeight)
             {
-                if (CanScrollFurther(chunk, true))
-                    RepositionChunk(chunk, true);
+                MoveChunk(chunk, true); // Move to Top
             }
-            // If scrolling DOWN: Move to BOTTOM only when it is WELL above the screen
-            else if (localY > (_chunkHeight + buffer))
+            // If chunk is too far ABOVE the viewport (went past the top)
+            else if (relativeBottom > viewportHeight + _chunkHeight)
             {
-                if (CanScrollFurther(chunk, false))
-                    RepositionChunk(chunk, false);
+                MoveChunk(chunk, false); // Move to Bottom
             }
         }
     }
 
-    private bool CanScrollFurther(MapChunk chunk, bool goingUp)
+    private void MoveChunk(MapChunk chunk, bool toTop)
     {
+        float moveDist = _chunkHeight * chunks.Length;
         float currentY = chunk.rectTransform.anchoredPosition.y;
-        if (goingUp)
+        float newY = toTop ? (currentY + moveDist) : (currentY - moveDist);
+
+        // Boundary checks
+        if (newY < 0 || newY >= content.sizeDelta.y) return;
+
+        // Snap to whole pixels to prevent sub-pixel "shimmering"
+        chunk.rectTransform.anchoredPosition = new Vector2(0, Mathf.Round(newY));
+        UpdateChunkData(chunk);
+    }
+
+    private void UpdateChunkData(MapChunk chunk)
+    {
+        int mapIndex = Mathf.RoundToInt(chunk.rectTransform.anchoredPosition.y / _chunkHeight);
+        int startIndex = mapIndex * nodesPerMap;
+
+        var data = LevelManager.Instance.GetLevelBatch(startIndex, nodesPerMap);
+
+        if (data != null && data.Count > 0)
         {
-            // Don't teleport up if we are already at the very top of the Content
-            return (currentY + (_chunkHeight * chunks.Length)) < content.sizeDelta.y;
+            chunk.gameObject.SetActive(true);
+            var theme = DataManager.Instance.GetThemeByLevelNumber(startIndex + 1);
+            chunk.Configure(data, startIndex, nodePrefab, theme.BackgroundSpriteName, theme.FogColorHex);
         }
         else
         {
-            // Don't teleport down if we are already at the bottom (0)
-            return currentY > 0;
+            chunk.gameObject.SetActive(false);
         }
     }
 
-    private void RepositionChunk(MapChunk chunk, bool toTop)
+    public void FocusOnLevel(int levelNumber)
     {
-        float moveAmount = _chunkHeight * chunks.Length;
-        float newY = chunk.rectTransform.anchoredPosition.y + (toTop ? moveAmount : -moveAmount);
+        // 1. Calculate which index this is in the data (0-based)
+        int levelIndex = levelNumber - 1;
+        if (levelIndex < 5) return;
+        // 2. Calculate the exact Y position
+        // Formula: (LevelIndex / TotalNodesPerChunk) * ChunkHeight
+        float targetY = (levelIndex / (float)nodesPerMap) * _chunkHeight;
 
-        // Set the position FIRST
-        chunk.rectTransform.anchoredPosition = new Vector2(0, newY);
+        // 3. Clamp targetY so we don't scroll past the very top/bottom of content
+        float maxScroll = content.sizeDelta.y - scrollRect.viewport.rect.height;
+        targetY = Mathf.Clamp(targetY, 0, maxScroll);
 
-        // Then calculate data based on that NEW position
-        int newStartIndex = CalculateNewIndex(chunk);
-        var data = LevelManager.Instance.GetLevelBatch(newStartIndex, nodesPerMap);
-
-        // chunk.Configure(data, newStartIndex, nodePrefab);
-
-        int mapIndex = Mathf.RoundToInt(chunk.rectTransform.anchoredPosition.y / _chunkHeight);
-
-        // Get theme based on the Page Number
-        var theme = Metadata.Instance.levelDatabase.GetThemeByMapIndex(mapIndex);
-
-        // Get the levels for this specific page
-        // int startIndex = mapIndex * nodesPerMap;
-        // var data = LevelManager.Instance.GetLevelBatch(startIndex, nodesPerMap);
-
-        chunk.Configure(data, newStartIndex, nodePrefab, theme.backgroundSprite, theme.fogColor);
+        float duration = 0.3f + Mathf.Log(levelIndex + 1, 5f);
+        duration = Mathf.Min(duration, 1.5f);
+        // 4. Start the smooth glide
+        StopAllCoroutines();
+        StartCoroutine(SmoothScroll(targetY, duration)); // 0.5 seconds duration
     }
-    private int CalculateNewIndex(MapChunk chunk)
-    {
-        // Now using positive Y because we are building UP
-        float yPos = chunk.rectTransform.anchoredPosition.y;
-        int mapSequenceIndex = Mathf.RoundToInt(yPos / _chunkHeight);
 
-        return mapSequenceIndex * nodesPerMap;
+    private IEnumerator SmoothScroll(float targetY, float duration)
+    {
+        float elapsed = 0;
+        Vector2 startPos = content.anchoredPosition;
+        Vector2 endPos = new Vector2(startPos.x, targetY); // Match your upward math
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            // Exponential "Quartic" Out easing: Starts fast, slows down at the end
+            t = 1f - Mathf.Pow(1f - t, 4);
+
+            content.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
+            yield return null;
+        }
+
+        content.anchoredPosition = endPos;
+
+        // IMPORTANT: Final snap check to ensure chunks are exactly where they should be
+        // after a high-speed travel
+        foreach (var chunk in chunks)
+        {
+            UpdateChunkData(chunk);
+        }
     }
 }

@@ -10,28 +10,38 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Items
+  m_Name: MapTheme
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Items
-  m_GUID: d820a54aeb7697740b81e485f9a90331
+  m_GroupName: MapTheme
+  m_GUID: b7ad74de9ad6ca64e89f4290d8de59f1
   m_SerializeEntries:
-  - m_GUID: 31da8749afad8b94f8020ce2fe4e78c1
-    m_Address: beer
+  - m_GUID: 4e67fa358af06c143aa1c99507ea027b
+    m_Address: map1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6a8fcd966223f4240a5a8a0cc03aa3b0
-    m_Address: cog1
+  - m_GUID: 5b23f78a899ba5a4c8f8e16bcc17d628
+    m_Address: map2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 75e4b502f6a4f764a81d0ffc96d4ab5b
-    m_Address: potion1
+  - m_GUID: 5e234f0d46a530340bb38078b7555d9b
+    m_Address: desert
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e0e9449f84012d2428859176cd2d0b06
-    m_Address: heart
+  - m_GUID: 5ece783d3fc2e83408b619a211e01af8
+    m_Address: barren
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a799073fa6fd30441938f0370d204755
+    m_Address: jungle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b024b2bf882966c4fa3c23d78a882eef
+    m_Address: winter
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -39,5 +49,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 454a8c7e7824f0a4ea69190d0c06420b, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 0686cc5435660bc47863bf47cc907b28, type: 2}
-    - {fileID: 11400000, guid: 06430bdbe033dca468cdeb1c72f643ed, type: 2}
+    - {fileID: 11400000, guid: cf5a6b689b9e5cb4f92a93c7b07aa6f9, type: 2}
+    - {fileID: 11400000, guid: c96e67ed1b96d904d9d8ae7288a30420, type: 2}

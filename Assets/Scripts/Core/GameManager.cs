@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevelByUid(string uid)
     {
-        LevelData levelData = LevelManager.Instance.GetLevelByUID(uid);
+        LevelData levelData = LevelManager.Instance.GetLevelByID(uid);
         LoadLevelSpawner(levelData);
     }
 
@@ -106,8 +106,7 @@ public class GameManager : MonoBehaviour
     {
         if (_activeSpawner == null && _spawnerPrefab != null)
         {
-            // _activeSpawner = Instantiate(_spawnerPrefab);
-            PrefabManager.Instance.InstantiatePrefab("Spawner", (spawner) =>
+            AssetLoader.Instance.InstantiatePrefab("Spawner", (spawner) =>
             {
                 if (spawner.TryGetComponent<Spawner>(out _activeSpawner))
                 {
@@ -201,9 +200,9 @@ public class GameManager : MonoBehaviour
         Cleanup();
         LoadCurrentLevel();
     }
-    private void HandleLevelComplete(bool isComplete, string levelUid, int score, int stars)
+    private void HandleLevelComplete(bool isComplete, string levelId, int score, int stars)
     {
-        LevelManager.Instance.MarkLevelComplete(levelUid, Time.time - _levelStartTime, score, stars);
+        LevelManager.Instance.MarkLevelComplete(levelId, Time.time - _levelStartTime, score, stars);
         Cleanup();
         SaveGame();
     }

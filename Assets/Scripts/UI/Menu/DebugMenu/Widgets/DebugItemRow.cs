@@ -3,6 +3,6 @@ using UnityEngine;
 
 public class DebugItemRow : MonoBehaviour
 {
-    public TMP_Text Uid;
+    public TMP_Text Id;
     public TMP_InputField Quantity;
 }

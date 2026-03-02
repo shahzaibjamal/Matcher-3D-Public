@@ -36,12 +36,16 @@ public class ItemView : MonoBehaviour
 
     private void UpdateUI()
     {
-        icon.sprite = ItemData.UISprite;
+        AssetLoader.Instance.LoadIcon(ItemData.IconName, (sprite) =>
+        {
+            icon.sprite = sprite;
+        });
+
         countText.text = CurrentCount.ToString();
     }
     private void HandleFlight(ItemData data, int target, Transform src, Action cb)
     {
-        if (data.UID != ItemData.UID) return;
+        if (data.Id != ItemData.Id) return;
 
         CurrentCount--;
         UpdateUI();
@@ -50,7 +54,7 @@ public class ItemView : MonoBehaviour
 
     private void HandleMatch(int idx, ItemData[] datas, Action cb)
     {
-        if (datas.Length == 0 || datas[0].UID != ItemData.UID) return;
+        if (datas.Length == 0 || datas[0].Id != ItemData.Id) return;
 
         // Visual feedback only on match
         PlayMatchShake();
@@ -68,9 +72,9 @@ public class ItemView : MonoBehaviour
             });
         }
     }
-    private void HandleUndo(string Uid)
+    private void HandleUndo(string id)
     {
-        if (ItemData == null || Uid != ItemData.UID) return;
+        if (ItemData == null || id != ItemData.Id) return;
 
         CurrentCount++;
         UpdateUI();

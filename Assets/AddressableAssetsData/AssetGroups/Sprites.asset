@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Items
+  m_Name: Sprites
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Items
-  m_GUID: d820a54aeb7697740b81e485f9a90331
+  m_GroupName: Sprites
+  m_GUID: 67f9ffec56481634ab3cadd6bca44d29
   m_SerializeEntries:
-  - m_GUID: 31da8749afad8b94f8020ce2fe4e78c1
-    m_Address: beer
+  - m_GUID: 2066c7a6edfc0194eaeb5e63e4aa2c70
+    m_Address: beer0000
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6a8fcd966223f4240a5a8a0cc03aa3b0
-    m_Address: cog1
+  - m_GUID: 57fb9e3f62d538649a880cfbcd8155d2
+    m_Address: cog1_0000
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 75e4b502f6a4f764a81d0ffc96d4ab5b
-    m_Address: potion1
+  - m_GUID: 7568e6ef0c236c64e8c3977ad6f4c093
+    m_Address: heart0000
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e0e9449f84012d2428859176cd2d0b06
-    m_Address: heart
+  - m_GUID: fe5b33de0212707499f3d8c7835213e1
+    m_Address: bottlePotionHealth0000
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -39,5 +39,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 454a8c7e7824f0a4ea69190d0c06420b, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 0686cc5435660bc47863bf47cc907b28, type: 2}
-    - {fileID: 11400000, guid: 06430bdbe033dca468cdeb1c72f643ed, type: 2}
+    - {fileID: 11400000, guid: 897b6e79b427e22479d78e063d14e50f, type: 2}
+    - {fileID: 11400000, guid: c8cdb8ab44d2041499b6acc6cffa8df3, type: 2}

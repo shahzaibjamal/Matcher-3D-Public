@@ -42,6 +42,6 @@ public class LevelNode : MonoBehaviour
     {
         // Tell the Game Manager to load this level
         MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game);
-        GameManager.Instance.LoadLevelByUid(_levelData.levelUID);
+        GameManager.Instance.LoadLevelByUid(_levelData.Id);
     }
 }

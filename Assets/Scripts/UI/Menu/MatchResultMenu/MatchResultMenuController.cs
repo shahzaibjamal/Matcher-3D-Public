@@ -50,7 +50,7 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
         {
             OnLoadingComplete = OnLoadingComplete
         });
-        GameEvents.OnLevelCompleteEvent?.Invoke(Data.IsWin, Data.LevelData.levelUID, Data.Score, Data.Score);
+        GameEvents.OnLevelCompleteEvent?.Invoke(Data.IsWin, Data.LevelData.Id, Data.Score, Data.Score);
     }
 
     private void OnLoadingComplete()

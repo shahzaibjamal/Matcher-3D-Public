@@ -3,9 +3,12 @@ public class LevelSelectMenuController : MenuController<LevelSelectMenuView, Lev
     public override void OnEnter()
     {
         SetState(new LevelSelectMenuBaseState_Main(this));
+        InitialFocus();
+        View.CloseButtn.onClick.AddListener(HandleBackInput);
     }
     public override void OnExit()
     {
+        View.CloseButtn.onClick.RemoveListener(HandleBackInput);
         base.OnExit();
     }
 
@@ -16,9 +19,14 @@ public class LevelSelectMenuController : MenuController<LevelSelectMenuView, Lev
     public override void OnResume()
     {
     }
-    
+
     public override void HandleBackInput()
     {
         base.HandleBackInput();
+    }
+    private void InitialFocus()
+    {
+        string currentLevel = GameManager.Instance.SaveData.CurrentLevelID;
+        Scheduler.Instance.ExecuteAfterDelay(0.3f, () => View.InfiniteMapManager.FocusOnLevel(DataManager.Instance.GetLevelByID(currentLevel).Number)); ;
     }
 }

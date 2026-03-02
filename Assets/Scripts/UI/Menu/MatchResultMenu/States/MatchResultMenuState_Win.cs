@@ -14,7 +14,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     {
         base.Enter();
 
-        if (Data.LevelData.LevelNumber > 10 || true)
+        if (Data.LevelData.Number > 10 || true)
             View.GoldMulitplierButton.gameObject.SetActive(true);
         View.Result.text = LocaleManager.Localize(LocalizationKeys.result_win);
         View.Status.gameObject.SetActive(true);
