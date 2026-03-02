@@ -30,7 +30,7 @@ public class SettingsMenuController : MenuController<SettingsMenuView, SettingsM
             // Add to dropdown
             options.Add(new TMPro.TMP_Dropdown.OptionData(locale.Name));
         }
-        Debug.LogError(options.Count);
+
         View.LocaleDropdown.AddOptions(options);
 
         // Hook selection event

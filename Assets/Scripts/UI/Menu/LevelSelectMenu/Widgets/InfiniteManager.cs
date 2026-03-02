@@ -1,103 +1,140 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InfiniteMapManager : MonoBehaviour
 {
-    [SerializeField] private ScrollRect scrollRect;
-    [SerializeField] private RectTransform content;
-    [SerializeField] private MapChunk[] chunks; // Assign 3 chunks
-    [SerializeField] private GameObject nodePrefab;
-    [SerializeField] private int nodesPerMap = 15;
+    [SerializeField] private ScrollRect _scrollRect;
+    [SerializeField] private RectTransform _content;
+    [SerializeField] private MapChunk[] _chunks;
+    [SerializeField] private GameObject _nodePrefab;
+    [SerializeField] private int _nodesPerMap = 15;
 
     private float _chunkHeight;
 
     void Start()
     {
-        // 1. Force Bottom Pivots for upward math
-        content.pivot = new Vector2(0.5f, 0f);
-        content.anchorMin = new Vector2(0.5f, 0f);
-        content.anchorMax = new Vector2(0.5f, 0f);
-        content.anchoredPosition = Vector2.zero;
+        // 1. Force stop movement to prevent "ghost" velocity jumps
+        _scrollRect.StopMovement();
 
-        _chunkHeight = chunks[0].rectTransform.rect.height;
+        _content.pivot = new Vector2(0.5f, 0f);
+        _content.anchorMin = new Vector2(0.5f, 0f);
+        _content.anchorMax = new Vector2(0.5f, 0f);
 
-        // 2. Initial Setup
+        _chunkHeight = _chunks[0].RectTransform.rect.height;
+
         RefreshAllChunks();
 
-        // 3. Event-based movement (The jitter-killer)
-        scrollRect.onValueChanged.AddListener(OnScroll);
+        _scrollRect.onValueChanged.AddListener(OnScroll);
+
+        int currentLevel = DataManager.Instance.GetLevelByID(GameManager.Instance.SaveData.CurrentLevelID).Number;
+        // 2. Use a slight delay to ensure UI layouts are calculated
+        StartCoroutine(DelayedFocus(currentLevel));
     }
 
+    private IEnumerator DelayedFocus(int level)
+    {
+        // Wait for the Canvas to finish its initial layout pass
+        yield return new WaitForEndOfFrame();
+        FocusOnLevel(level);
+    }
     private void RefreshAllChunks()
     {
-        var allLevels = LevelManager.Instance.GetLevelSelectData();
-        float totalPages = Mathf.Ceil((float)allLevels.Count / nodesPerMap);
+        int maxUnlocked = DataManager.Instance.GetLevelByID(GameManager.Instance.SaveData.CurrentLevelID).Number;
+        int playerStars = GameManager.Instance.SaveData.Inventory.Stars;
 
-        // Set content height
-        content.sizeDelta = new Vector2(content.sizeDelta.x, totalPages * _chunkHeight);
+        var nextTheme = DataManager.Instance.Metadata.MapThemes
+                        .FirstOrDefault(t => t.StarRequirement > playerStars);
 
-        for (int i = 0; i < chunks.Length; i++)
+        // Allow scrolling slightly into the locked theme
+        int limitLevel = (nextTheme != null) ? nextTheme.StartLevel + _nodesPerMap : maxUnlocked + _nodesPerMap;
+        float totalPages = Mathf.Ceil((float)limitLevel / _nodesPerMap);
+
+        // Ensure at least 3 pages exist so chunks have room to cycle
+        totalPages = Mathf.Max(totalPages, 3);
+
+        _content.sizeDelta = new Vector2(_content.sizeDelta.x, totalPages * _chunkHeight);
+
+        for (int i = 0; i < _chunks.Length; i++)
         {
-            chunks[i].rectTransform.pivot = new Vector2(0.5f, 0f);
-            chunks[i].rectTransform.anchorMin = new Vector2(0.5f, 0f);
-            chunks[i].rectTransform.anchorMax = new Vector2(0.5f, 0f);
+            // IMPORTANT: Force chunk pivots to match content
+            _chunks[i].RectTransform.pivot = new Vector2(0.5f, 0f);
+            _chunks[i].RectTransform.anchorMin = new Vector2(0.5f, 0f);
+            _chunks[i].RectTransform.anchorMax = new Vector2(0.5f, 0f);
 
-            // Stack them UP: 0, Height, 2*Height
-            chunks[i].rectTransform.anchoredPosition = new Vector2(0, i * _chunkHeight);
-            UpdateChunkData(chunks[i]);
+            // INITIAL STITCHING: 0, 1920, 3840...
+            _chunks[i].RectTransform.anchoredPosition = new Vector2(0, i * _chunkHeight);
+            UpdateChunkData(_chunks[i]);
         }
     }
 
     private void OnScroll(Vector2 scrollPos)
     {
-        float contentY = content.anchoredPosition.y; // How far content has moved UP (negative)
-        float viewportHeight = scrollRect.viewport.rect.height;
+        float contentY = _content.anchoredPosition.y;
+        float viewportHeight = _scrollRect.viewport.rect.height;
 
-        foreach (var chunk in chunks)
+        foreach (var chunk in _chunks)
         {
-            float chunkY = chunk.rectTransform.anchoredPosition.y; // Positive (0, 1920, etc)
+            float chunkY = chunk.RectTransform.anchoredPosition.y;
             float relativeBottom = chunkY + contentY;
 
-            // If chunk is too far BELOW the viewport (fell off the bottom)
+            // If chunk fell off the BOTTOM of the viewport
             if (relativeBottom < -_chunkHeight)
             {
-                MoveChunk(chunk, true); // Move to Top
+                if (CanScrollFurther(chunk, true))
+                    MoveChunk(chunk, true);
             }
-            // If chunk is too far ABOVE the viewport (went past the top)
+            // If chunk went past the TOP of the viewport
             else if (relativeBottom > viewportHeight + _chunkHeight)
             {
-                MoveChunk(chunk, false); // Move to Bottom
+                if (CanScrollFurther(chunk, false))
+                    MoveChunk(chunk, false);
             }
         }
     }
 
+    private bool CanScrollFurther(MapChunk chunk, bool toTop)
+    {
+        float currentY = chunk.RectTransform.anchoredPosition.y;
+        float moveDist = _chunkHeight * _chunks.Length;
+        float targetY = toTop ? currentY + moveDist : currentY - moveDist;
+
+        // Ensure the new position is within the calculated content bounds
+        return targetY >= 0 && targetY < _content.sizeDelta.y;
+    }
+
     private void MoveChunk(MapChunk chunk, bool toTop)
     {
-        float moveDist = _chunkHeight * chunks.Length;
-        float currentY = chunk.rectTransform.anchoredPosition.y;
+        float moveDist = _chunkHeight * _chunks.Length;
+        float currentY = chunk.RectTransform.anchoredPosition.y;
         float newY = toTop ? (currentY + moveDist) : (currentY - moveDist);
 
-        // Boundary checks
-        if (newY < 0 || newY >= content.sizeDelta.y) return;
-
-        // Snap to whole pixels to prevent sub-pixel "shimmering"
-        chunk.rectTransform.anchoredPosition = new Vector2(0, Mathf.Round(newY));
+        chunk.RectTransform.anchoredPosition = new Vector2(0, Mathf.Round(newY));
         UpdateChunkData(chunk);
     }
 
     private void UpdateChunkData(MapChunk chunk)
     {
-        int mapIndex = Mathf.RoundToInt(chunk.rectTransform.anchoredPosition.y / _chunkHeight);
-        int startIndex = mapIndex * nodesPerMap;
-
-        var data = LevelManager.Instance.GetLevelBatch(startIndex, nodesPerMap);
+        int startIndex = CalculateStartIndex(chunk);
+        var data = LevelManager.Instance.GetLevelBatch(startIndex, _nodesPerMap);
 
         if (data != null && data.Count > 0)
         {
             chunk.gameObject.SetActive(true);
-            var theme = DataManager.Instance.GetThemeByLevelNumber(startIndex + 1);
-            chunk.Configure(data, startIndex, nodePrefab, theme.BackgroundSpriteName, theme.FogColorHex);
+
+            // Get theme based on the first level of this specific chunk
+            int firstLevelNum = startIndex + 1;
+            var theme = DataManager.Instance.GetThemeByLevelNumber(firstLevelNum);
+
+            // Configure the chunk (Background, Fog, Nodes)
+            chunk.Configure(data, startIndex, _nodePrefab, theme.BackgroundSpriteName, theme.FogColorHex);
+
+            // Apply Stars Gate
+            int playerStars = GameManager.Instance.SaveData.Inventory.Stars;
+            bool isThemeLocked = playerStars < theme.StarRequirement;
+
+            chunk.ShowLockedOverlay(isThemeLocked, isThemeLocked ? $"x{theme.StarRequirement}" : "");
         }
         else
         {
@@ -105,51 +142,43 @@ public class InfiniteMapManager : MonoBehaviour
         }
     }
 
+    private int CalculateStartIndex(MapChunk chunk)
+    {
+        float yPos = chunk.RectTransform.anchoredPosition.y;
+        int mapIndex = Mathf.RoundToInt(yPos / _chunkHeight);
+        return mapIndex * _nodesPerMap;
+    }
+
     public void FocusOnLevel(int levelNumber)
     {
-        // 1. Calculate which index this is in the data (0-based)
-        int levelIndex = levelNumber - 1;
-        if (levelIndex < 5) return;
-        // 2. Calculate the exact Y position
-        // Formula: (LevelIndex / TotalNodesPerChunk) * ChunkHeight
-        float targetY = (levelIndex / (float)nodesPerMap) * _chunkHeight;
+        _scrollRect.StopMovement(); // 3. IMPORTANT: Clear any current scrolling
 
-        // 3. Clamp targetY so we don't scroll past the very top/bottom of content
-        float maxScroll = content.sizeDelta.y - scrollRect.viewport.rect.height;
+        int levelIndex = levelNumber - 1;
+        float targetY = (levelIndex / (float)_nodesPerMap) * _chunkHeight;
+        targetY -= (_scrollRect.viewport.rect.height / 2f);
+
+        float maxScroll = _content.sizeDelta.y - _scrollRect.viewport.rect.height;
         targetY = Mathf.Clamp(targetY, 0, maxScroll);
 
-        float duration = 0.3f + Mathf.Log(levelIndex + 1, 5f);
-        duration = Mathf.Min(duration, 1.5f);
-        // 4. Start the smooth glide
         StopAllCoroutines();
-        StartCoroutine(SmoothScroll(targetY, duration)); // 0.5 seconds duration
+        StartCoroutine(SmoothScroll(targetY, 1.0f));
     }
 
     private IEnumerator SmoothScroll(float targetY, float duration)
     {
         float elapsed = 0;
-        Vector2 startPos = content.anchoredPosition;
-        Vector2 endPos = new Vector2(startPos.x, targetY); // Match your upward math
+        Vector2 startPos = _content.anchoredPosition;
+        // In upward scrolling, we set content.y to a positive targetY to "pull" the top down
+        Vector2 endPos = new Vector2(startPos.x, targetY);
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-
-            // Exponential "Quartic" Out easing: Starts fast, slows down at the end
-            t = 1f - Mathf.Pow(1f - t, 4);
-
-            content.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
+            float t = 1f - Mathf.Pow(1f - (elapsed / duration), 4);
+            _content.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
             yield return null;
         }
 
-        content.anchoredPosition = endPos;
-
-        // IMPORTANT: Final snap check to ensure chunks are exactly where they should be
-        // after a high-speed travel
-        foreach (var chunk in chunks)
-        {
-            UpdateChunkData(chunk);
-        }
+        _content.anchoredPosition = endPos;
     }
 }

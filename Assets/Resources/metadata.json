@@ -16,7 +16,7 @@
       "Id": "beer",
       "Name": "Beer",
       "PrefabName": "beer",
-      "IconName": "bear0000"
+      "IconName": "beer0000"
     },
     {
       "Id": "potion_1",
@@ -2068,28 +2068,32 @@
       "ThemeName": "Jungle",
       "BackgroundSpriteName": "jungle",
       "FogColorHex": "#F3D86E",
-      "StartLevel": 1
+      "StartLevel": 1,
+      "StarRequirement": 0
     },
     {
       "Id": "desert",
       "ThemeName": "Desert",
       "BackgroundSpriteName": "desert",
       "FogColorHex": "#DD9646",
-      "StartLevel": 16
+      "StartLevel": 16,
+      "StarRequirement": 20
     },
     {
       "Id": "barren",
       "ThemeName": "barren",
       "BackgroundSpriteName": "barren",
       "FogColorHex": "#DD9646",
-      "StartLevel": 31
+      "StartLevel": 31,
+      "StarRequirement": 45
     },
     {
       "Id": "winter",
       "ThemeName": "Winter",
       "BackgroundSpriteName": "winter",
       "FogColorHex": "#DD9646",
-      "StartLevel": 46
+      "StartLevel": 46,
+      "StarRequirement": 72
     }
   ]
 }

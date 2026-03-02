@@ -11,52 +11,52 @@ public class SpinWheelMenuController : MenuController<SpinWheelMenuView, SpinWhe
         {
             new RewardData
             {
-                Amount = 300,
-                RewardType = RewardType.Gold
-            },
-            new RewardData
-            {
                 Amount = 1,
-                RewardType = RewardType.Magnet
+                RewardType = RewardType.Gold
             },
             new RewardData
             {
                 Amount = 2,
-                RewardType = RewardType.Undo
-            },
-            new RewardData
-            {
-                Amount = 1,
-                RewardType = RewardType.Hint
-            },
-            new RewardData
-            {
-                Amount = 1,
-                RewardType = RewardType.Shake
-            },
-            new RewardData
-            {
-                Amount = 1,
-                RewardType = RewardType.Magnet
-            },
-            new RewardData
-            {
-                Amount = 200,
                 RewardType = RewardType.Gold
             },
             new RewardData
             {
-                Amount = 1,
-                RewardType = RewardType.Shake
+                Amount = 3,
+                RewardType = RewardType.Gold
             },
             new RewardData
             {
-                Amount = 1,
-                RewardType = RewardType.Undo
+                Amount = 4,
+                RewardType = RewardType.Gold
             },
             new RewardData
             {
-                Amount = 100,
+                Amount = 5,
+                RewardType = RewardType.Gold
+            },
+            new RewardData
+            {
+                Amount = 6,
+                RewardType = RewardType.Gold
+            },
+            new RewardData
+            {
+                Amount = 7,
+                RewardType = RewardType.Gold
+            },
+            new RewardData
+            {
+                Amount = 8,
+                RewardType = RewardType.Gold
+            },
+            new RewardData
+            {
+                Amount = 9,
+                RewardType = RewardType.Gold
+            },
+            new RewardData
+            {
+                Amount = 10,
                 RewardType = RewardType.Gold
             }
         };

@@ -13,12 +13,15 @@ public class SpinWheelController : MonoBehaviour
     public int numberOfSlots = 10;
     [SerializeField] private float radiusOffset = 0.8f;
     [SerializeField] private GameObject rewardPrefab;
-    [SerializeField] private float startAngleOffset = 0f;
     [SerializeField] private RectTransform wheelContainer;
+
+    // ADJUST THIS in Inspector if Index 0 is not under the needle at Start
+    // Usually 0, 90, or -90
+    [SerializeField] private float visualOffset = 0f;
 
     [Header("Needle Animation")]
     [SerializeField] private RectTransform needleRect;
-    [SerializeField] private float needlePunchAngle = 45f;
+    [SerializeField] private float needlePunchAngle = 20f;
     [SerializeField] private float needleReturnSpeed = 5f;
 
     [Header("Animation")]
@@ -39,17 +42,15 @@ public class SpinWheelController : MonoBehaviour
     private float _currentRotationTime;
     private float _maxRotationTime;
 
-    // Needle Tracking
     private float _currentNeedleAngle;
     private float _lastTickAngle;
 
     private void Awake() => HideResult();
 
-
     public void Setup(List<RewardData> rewards)
     {
         _currentRewards = rewards;
-        foreach (var item in _spawnedComponents) Destroy(item.gameObject);
+        foreach (var item in _spawnedComponents) if (item != null) Destroy(item.gameObject);
         _spawnedComponents.Clear();
 
         float wheelRadius = wheelContainer.rect.width / 2f;
@@ -58,23 +59,17 @@ public class SpinWheelController : MonoBehaviour
 
         for (int i = 0; i < numberOfSlots; i++)
         {
-            // Apply the angle offset here
-            float angleDeg = (i * angleStep) + startAngleOffset;
-
-            // Convert to Radians (90 is top)
-            float angleRad = (90f - angleDeg) * Mathf.Deg2Rad;
-
             GameObject go = Instantiate(rewardPrefab, wheelContainer);
             RectTransform rt = go.GetComponent<RectTransform>();
 
-            // Cartesian position
-            rt.anchoredPosition = new Vector2(
-                Mathf.Cos(angleRad) * spawnRadius,
-                Mathf.Sin(angleRad) * spawnRadius
-            );
+            // POSITIONING: Strictly based on Rotation
+            // We rotate the container, move the item UP, then rotate back
+            rt.localPosition = Vector3.zero;
+            rt.localEulerAngles = new Vector3(0, 0, -(i * angleStep) - visualOffset);
+            rt.Translate(Vector3.up * spawnRadius, Space.Self);
 
-            // Rotate prefab to stay perpendicular to the center
-            rt.localEulerAngles = new Vector3(0, 0, -angleDeg);
+            // Keep the icon upright relative to the slice
+            rt.localEulerAngles = new Vector3(0, 0, -(i * angleStep) - visualOffset);
 
             var comp = go.GetComponent<SpinRewardView>();
             if (i < _currentRewards.Count)
@@ -84,6 +79,9 @@ public class SpinWheelController : MonoBehaviour
             }
             _spawnedComponents.Add(comp);
         }
+
+        // Ensure wheel starts at 0
+        wheelContainer.localEulerAngles = Vector3.zero;
     }
 
     public void TurnWheel()
@@ -94,18 +92,22 @@ public class SpinWheelController : MonoBehaviour
         _currentRotationTime = 0.0f;
         _maxRotationTime = Random.Range(4.0f, 6.0f);
 
-        // Reset needle tracking
         _startAngle = wheelContainer.localEulerAngles.z;
-        _lastTickAngle = _startAngle;
-
         _winningSlotIndex = Random.Range(0, Mathf.Min(numberOfSlots, _currentRewards.Count));
 
         float angleStep = 360f / numberOfSlots;
         int fullRotations = Random.Range(8, 12);
 
-        // We target the winning slot. 
-        // We must subtract the startAngleOffset so the specific slot lands at the pointer.
-        _endAngle = -(fullRotations * 360f + (_winningSlotIndex * angleStep) + startAngleOffset);
+        // TARGETING LOGIC:
+        // To bring Slot 'i' to the Top (0°):
+        // The wheel must be rotated to (i * angleStep)
+        // To land in the CENTER of that slot, we add (angleStep / 2)
+        float sectorCenter = (_winningSlotIndex * angleStep) + (angleStep / 2f);
+
+        // Subtract from a large multiple of 360 to ensure clockwise spin
+        _endAngle = _startAngle - (fullRotations * 360f) - sectorCenter;
+
+        _lastTickAngle = _startAngle;
     }
 
     void Update()
@@ -121,9 +123,8 @@ public class SpinWheelController : MonoBehaviour
         float currentZ = Mathf.Lerp(_startAngle, _endAngle, curveStep);
         wheelContainer.localEulerAngles = new Vector3(0, 0, currentZ);
 
-        // --- Needle Tick Logic ---
+        // Tick Logic: Based on distance moved
         float angleStep = 360f / numberOfSlots;
-        // float localizedAngle = Mathf.Abs(currentZ - startAngleOffset);
         if (Mathf.Abs(currentZ - _lastTickAngle) >= angleStep)
         {
             _currentNeedleAngle = needlePunchAngle;
@@ -134,6 +135,7 @@ public class SpinWheelController : MonoBehaviour
         if (t >= 1f)
         {
             _isStarted = false;
+            wheelContainer.localEulerAngles = new Vector3(0, 0, _endAngle);
             SettleWheel();
         }
     }
@@ -141,36 +143,25 @@ public class SpinWheelController : MonoBehaviour
     private void HandleNeedleReturn()
     {
         if (needleRect == null) return;
-
-        // Smoothly bring the needle back to 0
         _currentNeedleAngle = Mathf.Lerp(_currentNeedleAngle, 0f, Time.deltaTime * needleReturnSpeed);
         needleRect.localEulerAngles = new Vector3(0, 0, _currentNeedleAngle);
     }
 
-    public void OnTriggerNeedle()
-    {
-        // Play sound here: SoundManager.Instance.PlayTick();
-        Debug.Log("Tick!");
-    }
+    public void OnTriggerNeedle() => Debug.Log("Tick!");
 
-    // ... SettleWheel, ShowResult, etc. remain the same ...
     private void SettleWheel()
     {
         var winData = _currentRewards[_winningSlotIndex];
-
-        Debug.LogError("winData.Amount = " + winData.Amount + " Reward Type " + winData.RewardType);
         ShowResult(iconMapper.GetIcon(winData.RewardType), winData.Amount);
     }
 
     private void ShowResult(Sprite icon, int amount)
     {
-        if (resultPanel)
-        {
-            resultPanel.SetActive(true);
-            resultIcon.sprite = icon;
-            resultCount.text = "x" + amount;
-            StartCoroutine(DelayedHide());
-        }
+        if (resultPanel == null) return;
+        resultPanel.SetActive(true);
+        resultIcon.sprite = icon;
+        resultCount.text = "x" + amount;
+        StartCoroutine(DelayedHide());
     }
 
     private IEnumerator DelayedHide() { yield return new WaitForSeconds(3f); HideResult(); }

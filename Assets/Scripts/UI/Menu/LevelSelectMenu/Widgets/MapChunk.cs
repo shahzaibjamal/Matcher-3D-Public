@@ -1,16 +1,22 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MapChunk : MonoBehaviour
 {
-    public RectTransform rectTransform;
+    public RectTransform RectTransform;
     public MapPath path; // The waypoints for this specific map segment
     private List<LevelNode> _activeNodes = new List<LevelNode>();
     // Inside MapChunk.cs
-    [SerializeField] private Image backgroundImage;
-    [SerializeField] private Image topFog;
-    [SerializeField] private Image bottomFog;
+    [SerializeField] private Transform _nodeParent;
+    [SerializeField] private Image _backgroundImage;
+    [SerializeField] private Image _topFog;
+    [SerializeField] private Image _bottomFog;
+    [SerializeField] private GameObject _lockOverlay;
+    [SerializeField] private TMP_Text _starRequirementText;
+    [SerializeField] private CanvasGroup _canvasGroup;
+
 
     // Call this when the chunk is "Recycled" to the top or bottom
     public void Configure(List<LevelDisplayData> levelBatch, int startLevelIndex, GameObject prefab, string bgName, string themeColor)
@@ -23,8 +29,8 @@ public class MapChunk : MonoBehaviour
         Color fogColor;
         if (ColorUtility.TryParseHtmlString(themeColor, out fogColor))
         {
-            topFog.color = fogColor;
-            bottomFog.color = fogColor;
+            _topFog.color = fogColor;
+            _bottomFog.color = fogColor;
         }
         else
         {
@@ -33,7 +39,7 @@ public class MapChunk : MonoBehaviour
 
         AssetLoader.Instance.LoadIcon(bgName, (sprite) =>
         {
-            backgroundImage.sprite = sprite;
+            _backgroundImage.sprite = sprite;
         });
 
         if (levelBatch.Count == 0) return;
@@ -53,10 +59,17 @@ public class MapChunk : MonoBehaviour
             }
 
             Vector3 pos = path.GetPointOnPath(t);
-            GameObject go = Instantiate(prefab, transform);
+            GameObject go = Instantiate(prefab, _nodeParent);
             go.transform.position = pos;
 
             go.GetComponent<LevelNode>().Setup(levelBatch[i], startLevelIndex + i);
         }
+    }
+
+    public void ShowLockedOverlay(bool show, string text)
+    {
+        _lockOverlay.SetActive(show);
+        _starRequirementText.text = text;
+        // _canvasGroup.alpha = show ? 0.6f : 1.0f;
     }
 }
