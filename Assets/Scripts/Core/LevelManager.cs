@@ -24,6 +24,7 @@ public class LevelManager : MonoBehaviour
         _saveData = data;
     }
 
+    public List<MapTheme> mapThemes;
     // --- Retrieval Logic ---
 
     /// <summary>
@@ -92,6 +93,24 @@ public class LevelManager : MonoBehaviour
         return displayList;
     }
 
+    public List<LevelDisplayData> GetLevelBatch(int startIndex, int count)
+    {
+        List<LevelDisplayData> allData = GetLevelSelectData();
+
+        // FIX: If index is negative or beyond total levels, return empty list instead of crashing
+        if (startIndex < 0 || startIndex >= allData.Count) return new List<LevelDisplayData>();
+
+        int actualCount = Mathf.Min(count, allData.Count - startIndex);
+        return allData.GetRange(startIndex, actualCount);
+    }
+
+    /// <summary>
+    /// Called by the LevelNode button. Returns the static data for a specific UID.
+    /// </summary>
+    public LevelData GetLevelByUID(string uid)
+    {
+        return levelDatabase.levels.FirstOrDefault(l => l.levelUID == uid);
+    }
     // --- Persistence & Game State ---
 
     public void MarkLevelComplete(string uid, float timeTaken, int score, int stars)
@@ -157,3 +176,4 @@ public struct LevelDisplayData
     public LevelProgress ProgressData;
     public bool IsUnlocked;
 }
+

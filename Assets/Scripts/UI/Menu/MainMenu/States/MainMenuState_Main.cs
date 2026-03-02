@@ -36,6 +36,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StoreShimmer.Play();
         View.RewardShimmer.Play();
 
+        RewardManager.Instance.CheckAndShowNext();
     }
 
     public override void Exit()
@@ -133,13 +134,6 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnStartButtonClicked()
     {
-        // 
-        if (GameManager.Instance.CanLoadNextLevel())
-        {
-            MenuManager.Instance.OpenMenu<SettingsMenuView, SettingsMenuController, SettingsMenuData>(Menus.Type.Settings);
-            return;
-        }
-
         Controller.StartButtonClicked();
     }
     private void OnSettingsButtonClicked()
@@ -149,6 +143,8 @@ public class MainMenuBaseState_Main : MainMenuBaseState
 
     private void OnDailyRewardsButtonClicked()
     {
+        MenuManager.Instance.OpenMenu<DailyRewardMenuView, DailyRewardMenuController, DailyRewardMenuData>(Menus.Type.DailyReward);
+
     }
     private void OnDailySpinButtonClicked()
     {
@@ -157,6 +153,8 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnStoreButtonClicked()
     {
+        MenuManager.Instance.OpenMenu<LevelSelectMenuView, LevelSelectMenuController, LevelSelectMenuData>(Menus.Type.LevelSelect);
+
     }
     private void OnGiftButtonClicked()
     {

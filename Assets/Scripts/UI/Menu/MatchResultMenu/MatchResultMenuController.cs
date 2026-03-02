@@ -16,6 +16,7 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
         }
         View.ContinueButton.onClick.AddListener(OnContinueButtonClicked);
         View.GoldMulitplierButton.onClick.AddListener(OnGoldMultiplierButtonClicked);
+        RewardManager.Instance.AddRewardToQueue(Data.LevelData.Rewards);
     }
 
     public override void OnExit()

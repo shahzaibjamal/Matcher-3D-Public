@@ -19,7 +19,8 @@ public static class Menus
 
         DailyReward = 14,
 
-        SpinWheel = 15
+        SpinWheel = 15,
+        LevelSelect = 16,
 
     }
     public enum MenuDisplayMode

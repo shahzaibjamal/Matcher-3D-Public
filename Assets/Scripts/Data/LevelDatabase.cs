@@ -10,6 +10,10 @@ public class LevelDatabase : ScriptableObject
     public int goldPerLevel = 50;
     [Range(1f, 2f)] public float difficultyCurve = 1.1f;
 
+    [Header("World Themes")]
+    public List<MapTheme> mapThemes; // Add this here!
+
+
     public LevelData GetLevelByUID(string uid)
     {
         var level = levels.Find(l => l.levelUID == uid);
@@ -36,15 +40,20 @@ public class LevelDatabase : ScriptableObject
                 // 1. Sync Level Number
                 int currentLevel = i + 1;
                 levels[i].LevelNumber = currentLevel;
-
-                // 2. Calculate Gold Amount
-                // Formula: Base + (Level * Step) multiplied by a slight curve
-                float calculatedGold = (baseGold + (currentLevel * goldPerLevel)) * Mathf.Pow(currentLevel, difficultyCurve - 1);
-
-                // Round to nearest 10 for "clean" looking numbers (e.g., 150 instead of 153)
-                levels[i].GoldAmount = Mathf.RoundToInt(calculatedGold / 10f) * 10;
-
             }
         }
+    }
+
+    /// <summary>
+    /// Finds the theme for a specific level index.
+    /// </summary>
+    public MapTheme GetThemeByMapIndex(int mapIndex)
+    {
+        if (mapThemes == null || mapThemes.Count == 0) return null;
+
+        // Use modulo (%) so if you have 3 themes but 10 maps, 
+        // it loops: 0, 1, 2, 0, 1, 2...
+        int index = mapIndex % mapThemes.Count;
+        return mapThemes[index];
     }
 }

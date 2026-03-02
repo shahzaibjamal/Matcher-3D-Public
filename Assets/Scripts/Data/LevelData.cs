@@ -15,5 +15,6 @@ public class LevelData
     public List<string> itemsToCollect;
 
     public int LevelNumber;
-    public int GoldAmount;
+    public List<RewardData> Rewards;
+
 }

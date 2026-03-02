@@ -40,3 +40,12 @@ MonoBehaviour:
   - type: 15
     prefab: {fileID: 4993391057252310754, guid: ee0f45aa0df090a488b7f0d0bc3a48ae, type: 3}
     defaultMode: 3
+  - type: 16
+    prefab: {fileID: 9221140878223081627, guid: c4bead4b5eb660149bbba3a8af2ad1d9, type: 3}
+    defaultMode: 0
+  - type: 14
+    prefab: {fileID: 7466896220506087562, guid: f95a6a3223d16a34e95bc13724b799ec, type: 3}
+    defaultMode: 3
+  - type: 10
+    prefab: {fileID: 2815686497318947424, guid: ca5f179ef94b7b14ea8a19254b5b449c, type: 3}
+    defaultMode: 3

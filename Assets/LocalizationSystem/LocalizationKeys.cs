@@ -68,5 +68,11 @@ namespace TS.LocalizationSystem
         public const string spin_wheel_instructions = "spin_wheel_instructions";
         
         public const string spin = "spin";
+        
+        public const string day = "day";
+        
+        public const string reward_amount = "reward_amount";
+        
+        public const string daily_reward = "daily_reward";
     }
 }

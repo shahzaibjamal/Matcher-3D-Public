@@ -40,6 +40,9 @@ MonoBehaviour:
   - spin_wheel
   - spin_wheel_instructions
   - spin
+  - day
+  - reward_amount
+  - daily_reward
   _values:
   - Select language
   - Hey Guys
@@ -68,3 +71,6 @@ MonoBehaviour:
   - Lucky Wheel
   - Spin the wheel!
   - Spin
+  - Day
+  - x{0}
+  - Daily Rewards

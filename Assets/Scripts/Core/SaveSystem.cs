@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
 using System.IO;
 using UnityEngine;
+using System;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -60,7 +62,7 @@ public static class SaveSystem
         {
             data = new GameSaveData(); // Empty constructor with default values
         }
-
+        data.SignUpDate = DateTime.Now;
         // NEW: If we reached this point and there's no physical file (or it was broken), 
         // save the valid 'data' object immediately to "repair" the save path.
         if (!File.Exists(SavePath))

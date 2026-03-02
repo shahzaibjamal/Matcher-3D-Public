@@ -40,6 +40,9 @@ MonoBehaviour:
   - spin_wheel
   - spin_wheel_instructions
   - spin
+  - day
+  - reward_amount
+  - daily_reward
   _values:
   - Elija idioma
   - Hola
@@ -68,3 +71,6 @@ MonoBehaviour:
   - Roda da Sorte
   - "\xA1Gire a roda!"
   - Rodar
+  - "D\xEDa"
+  - x{0}
+  - "Recompensas di\xE1rias"

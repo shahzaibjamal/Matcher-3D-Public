@@ -86,9 +86,19 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     public override void OnContinueButtonClicked()
     {
         base.OnContinueButtonClicked();
-        int total = Data.LevelData.GoldAmount + GameManager.Instance.SaveData.Inventory.Gold;
 
-        PlayGoldAnimation(Data.LevelData.GoldAmount, total, 0f, OnGoldAnimationCompleted);
+        int goldAmount = 0;
+        foreach (var rewardData in Data.LevelData.Rewards)
+        {
+            if (rewardData.RewardType == RewardType.Gold)
+            {
+                goldAmount = rewardData.Amount;
+            }
+
+        }
+        int total = goldAmount + GameManager.Instance.SaveData.Inventory.Gold;
+
+        PlayGoldAnimation(goldAmount, total, 0f, OnGoldAnimationCompleted);
 
     }
 
@@ -96,13 +106,21 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     {
         base.OnGoldMultiplierButtonClicked();
 
-
         // show video ad 
         // And then callback and continue
         // Add ad multipler constant
-        int total = 3 * Data.LevelData.GoldAmount + GameManager.Instance.SaveData.Inventory.Gold;
+        int goldAmount = 0;
+        foreach (var rewardData in Data.LevelData.Rewards)
+        {
+            if (rewardData.RewardType == RewardType.Gold)
+            {
+                goldAmount = rewardData.Amount;
+            }
 
-        PlayGoldAnimation(3 * Data.LevelData.GoldAmount, total, 0f, OnGoldAnimationCompleted);
+        }
+        int total = 3 * goldAmount + GameManager.Instance.SaveData.Inventory.Gold;
+
+        PlayGoldAnimation(3 * goldAmount, total, 0f, OnGoldAnimationCompleted);
     }
 
     private void OnGoldAnimationCompleted()

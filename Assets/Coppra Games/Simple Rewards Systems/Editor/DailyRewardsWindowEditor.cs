@@ -17,7 +17,7 @@ namespace CoppraGames
             serializedObject.Update();
             if (GUILayout.Button("Apply"))
             {
-                myTarget.ApplyValues();
+                // myTarget.ApplyValues();
             }
         }
     }

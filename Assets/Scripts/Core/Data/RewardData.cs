@@ -1,10 +1,21 @@
-public enum RewardType { DailyLogin, Achievement, SpecialOffer, DailySpin }
-
 public class RewardData
 {
-    public string ID;
-    public RewardType Type;
-    public string Title;
+    public RewardType RewardType;
     public int Amount;
-    public bool IsClaimed;
+}
+
+[System.Serializable]
+public class DailyRewardData : RewardData
+{
+    public int Day;
+}
+public enum RewardType
+{
+    Gold = 1,
+    Magnet = 2,
+    Hint = 3,
+
+    Shake = 4,
+
+    Undo = 5
 }

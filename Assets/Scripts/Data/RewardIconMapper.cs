@@ -8,13 +8,13 @@ public class RewardIconMapper : ScriptableObject
     [System.Serializable]
     public struct RewardMapping
     {
-        public SpinRewardType type;
+        public RewardType type;
         public Sprite icon;
     }
 
     public List<RewardMapping> mappings;
 
-    public Sprite GetIcon(SpinRewardType type)
+    public Sprite GetIcon(RewardType type)
     {
         var mapping = mappings.FirstOrDefault(m => m.type == type);
         return mapping.icon != null ? mapping.icon : null;

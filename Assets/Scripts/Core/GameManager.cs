@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = -1; // -1 means "unlimited"
 
         MainMenuController.OnStartButtonClicked += StartGame;
-        GameEvents.OnGameInitializedEvent += SpawnGameSystems;
+        GameEvents.OnGameInitializedEvent += LoadCurrentLevel;
         GameEvents.OnGameQuitEvent += Cleanup;
         GameEvents.OnGameOverEvent += TriggerGameOver;
         GameEvents.OnLevelRestartEvent += RestartLevel;
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
     void OnDestroy()
     {
         MainMenuController.OnStartButtonClicked -= StartGame;
-        GameEvents.OnGameInitializedEvent -= SpawnGameSystems;
+        GameEvents.OnGameInitializedEvent -= LoadCurrentLevel;
         GameEvents.OnGameQuitEvent -= Cleanup;
         GameEvents.OnGameOverEvent -= TriggerGameOver;
         GameEvents.OnLevelRestartEvent -= RestartLevel;
@@ -90,13 +90,23 @@ public class GameManager : MonoBehaviour
         Cleanup();
     }
 
-    private void SpawnGameSystems()
+    private void LoadCurrentLevel()
+    {
+        LevelData levelData = LevelManager.Instance.GetCurrentProgressLevel();
+        LoadLevelSpawner(levelData);
+    }
+
+    public void LoadLevelByUid(string uid)
+    {
+        LevelData levelData = LevelManager.Instance.GetLevelByUID(uid);
+        LoadLevelSpawner(levelData);
+    }
+
+    private void LoadLevelSpawner(LevelData levelData)
     {
         if (_activeSpawner == null && _spawnerPrefab != null)
         {
-            // 3. Spawn the world spawner
             _activeSpawner = Instantiate(_spawnerPrefab);
-            LevelData levelData = LevelManager.Instance.GetCurrentProgressLevel();
             _activeSpawner.SpawnLevel(levelData, (itemData, sourceTransform) =>
             {
                 _slotManager.AddItem(itemData, sourceTransform);
@@ -104,6 +114,7 @@ public class GameManager : MonoBehaviour
             _levelStartTime = Time.time;
         }
     }
+
     public void TriggerGameOver(bool won)
     {
         Debug.Log("Game Manager: Game Over!" + (won ? " You won " : " You lost"));
@@ -123,7 +134,7 @@ public class GameManager : MonoBehaviour
     private float CalculateScore(float currentJunk, float totalJunk, int initialCollectableItems)
     {
         // 1. Dynamic Target Calculation
-        // We give 2 seconds per item, but clamp it between 30s and 90s.
+        // We give 1 seconds per item, but clamp it between 30s and 90s.
         // This creates a "Gold Standard" time for that specific level size.
         float avgTimePerItem = 1.0f;
         float targetTime = Mathf.Clamp(initialCollectableItems * avgTimePerItem, 30f, 90f);
@@ -182,7 +193,7 @@ public class GameManager : MonoBehaviour
     private void RestartLevel()
     {
         Cleanup();
-        SpawnGameSystems();
+        LoadCurrentLevel();
     }
     private void HandleLevelComplete(bool isComplete, string levelUid, int score, int stars)
     {

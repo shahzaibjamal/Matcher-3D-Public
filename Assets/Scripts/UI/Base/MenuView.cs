@@ -5,7 +5,7 @@ using System;
 public abstract class MenuView : MonoBehaviour, IMenuView
 {
 
-    [SerializeField] protected CanvasGroup canvasGroup; // Add this in inspector
+    public CanvasGroup canvasGroup; // Add this in inspector
     // Implementation of the interface property
     public Menus.MenuDisplayMode DisplayMode { get; set; }
 

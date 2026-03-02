@@ -26,3 +26,6 @@ exit,Exit,Saída,Saída
 spin_wheel,Lucky Wheel,Roda da Sorte,Roda da Sorte
 spin_wheel_instructions,Spin the wheel!,Gire a roda!,¡Gire a roda!
 spin,Spin,Rodar,Rodar
+day,Day {0},Dia {0},Día {0}
+reward_amount,x{0},x{0},x{0}
+daily_reward,Daily Rewards,Recompensas diárias,Recompensas diárias

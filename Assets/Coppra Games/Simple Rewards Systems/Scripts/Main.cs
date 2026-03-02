@@ -73,25 +73,25 @@ namespace CoppraGames
             {
                 DailyRewardsWindow.gameObject.SetActive(isTrue);
 
-                if (isTrue)
-                    DailyRewardsWindow.Init();
-                else
-                    ShowMainMenu(true);
+                // if (isTrue)
+                //     DailyRewardsWindow.Init();
+                // else
+                //     ShowMainMenu(true);
             }
         }
 
         public void OnClickResetDailyRewardsButton()
         {
             PlayerPrefs.DeleteAll();
-            DailyRewardsWindow.Init();
+            // DailyRewardsWindow.Init();
         }
 
         public void OnClickNextButton()
         {
-            int currentDay = DailyRewardsWindow.GetDaysSinceSignUp();
-            var signTime = DateTime.Now - new TimeSpan((currentDay + 1) * 24, 0, 0);
-            PlayerPrefs.SetString("sign_up_time", signTime.ToString());
-            DailyRewardsWindow.Init();
+            // int currentDay = DailyRewardsWindow.GetDaysSinceSignUp();
+            // var signTime = DateTime.Now - new TimeSpan((currentDay + 1) * 24, 0, 0);
+            // PlayerPrefs.SetString("sign_up_time", signTime.ToString());
+            // DailyRewardsWindow.Init();
         }
 
 

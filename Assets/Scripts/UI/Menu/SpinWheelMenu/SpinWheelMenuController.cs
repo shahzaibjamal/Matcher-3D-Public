@@ -7,57 +7,57 @@ public class SpinWheelMenuController : MenuController<SpinWheelMenuView, SpinWhe
         SetState(new SpinWheelMenuBaseState(this));
         View.SpinButton.onClick.AddListener(OnSpinwheelButtonClick);
 
-        var list = new List<SpinRewardData>
+        var list = new List<RewardData>
         {
-            new SpinRewardData
+            new RewardData
             {
                 Amount = 300,
-                SpinRewardType = SpinRewardType.Gold
+                RewardType = RewardType.Gold
             },
-            new SpinRewardData
+            new RewardData
             {
                 Amount = 1,
-                SpinRewardType = SpinRewardType.Magnet
+                RewardType = RewardType.Magnet
             },
-            new SpinRewardData
+            new RewardData
             {
                 Amount = 2,
-                SpinRewardType = SpinRewardType.Undo
+                RewardType = RewardType.Undo
             },
-            new SpinRewardData
+            new RewardData
             {
                 Amount = 1,
-                SpinRewardType = SpinRewardType.Hint
+                RewardType = RewardType.Hint
             },
-            new SpinRewardData
+            new RewardData
             {
                 Amount = 1,
-                SpinRewardType = SpinRewardType.Shake
+                RewardType = RewardType.Shake
             },
-            new SpinRewardData
+            new RewardData
             {
                 Amount = 1,
-                SpinRewardType = SpinRewardType.Magnet
+                RewardType = RewardType.Magnet
             },
-            new SpinRewardData
+            new RewardData
             {
                 Amount = 200,
-                SpinRewardType = SpinRewardType.Gold
+                RewardType = RewardType.Gold
             },
-            new SpinRewardData
+            new RewardData
             {
                 Amount = 1,
-                SpinRewardType = SpinRewardType.Shake
+                RewardType = RewardType.Shake
             },
-            new SpinRewardData
+            new RewardData
             {
                 Amount = 1,
-                SpinRewardType = SpinRewardType.Undo
+                RewardType = RewardType.Undo
             },
-            new SpinRewardData
+            new RewardData
             {
                 Amount = 100,
-                SpinRewardType = SpinRewardType.Gold
+                RewardType = RewardType.Gold
             }
         };
         View.SpinWheelController.Setup(list);

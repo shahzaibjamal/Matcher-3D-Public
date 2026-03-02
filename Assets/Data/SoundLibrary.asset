@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cedc9f5124a80439209954417ba54a, type: 3}
   m_Name: SoundLibrary
   m_EditorClassIdentifier: Assembly-CSharp::SoundLibrary
-  sfxList: []
+  sfxList:
+  - Name: 
+    Clip: {fileID: 0}
+    Volume: 0
+  - Name: 
+    Clip: {fileID: 0}
+    Volume: 1
+  - Name: 
+    Clip: {fileID: 0}
+    Volume: 1

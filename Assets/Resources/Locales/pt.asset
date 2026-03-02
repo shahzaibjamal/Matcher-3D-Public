@@ -40,6 +40,9 @@ MonoBehaviour:
   - spin_wheel
   - spin_wheel_instructions
   - spin
+  - day
+  - reward_amount
+  - daily_reward
   _values:
   - Escolher idioma
   - "Ol\xE1 Pessoal"
@@ -68,3 +71,6 @@ MonoBehaviour:
   - Roda da Sorte
   - Gire a roda!
   - Rodar
+  - Dia
+  - x{0}
+  - "Recompensas di\xE1rias"

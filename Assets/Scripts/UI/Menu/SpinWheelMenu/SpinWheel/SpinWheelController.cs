@@ -29,7 +29,7 @@ public class SpinWheelController : MonoBehaviour
     public Image resultIcon;
     public TextMeshProUGUI resultCount;
 
-    private List<SpinRewardData> _currentRewards;
+    private List<RewardData> _currentRewards;
     private List<SpinRewardView> _spawnedComponents = new List<SpinRewardView>();
 
     private bool _isStarted;
@@ -46,7 +46,7 @@ public class SpinWheelController : MonoBehaviour
     private void Awake() => HideResult();
 
 
-    public void Setup(List<SpinRewardData> rewards)
+    public void Setup(List<RewardData> rewards)
     {
         _currentRewards = rewards;
         foreach (var item in _spawnedComponents) Destroy(item.gameObject);
@@ -79,7 +79,7 @@ public class SpinWheelController : MonoBehaviour
             var comp = go.GetComponent<SpinRewardView>();
             if (i < _currentRewards.Count)
             {
-                Sprite icon = iconMapper.GetIcon(_currentRewards[i].SpinRewardType);
+                Sprite icon = iconMapper.GetIcon(_currentRewards[i].RewardType);
                 comp.SetData(icon, _currentRewards[i].Amount);
             }
             _spawnedComponents.Add(comp);
@@ -158,8 +158,8 @@ public class SpinWheelController : MonoBehaviour
     {
         var winData = _currentRewards[_winningSlotIndex];
 
-        Debug.LogError("winData.Amount = " + winData.Amount + " Reward Type " + winData.SpinRewardType);
-        ShowResult(iconMapper.GetIcon(winData.SpinRewardType), winData.Amount);
+        Debug.LogError("winData.Amount = " + winData.Amount + " Reward Type " + winData.RewardType);
+        ShowResult(iconMapper.GetIcon(winData.RewardType), winData.Amount);
     }
 
     private void ShowResult(Sprite icon, int amount)
