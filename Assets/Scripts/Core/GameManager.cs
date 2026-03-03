@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour
 
     // Events for other systems to subscribe to
     public static event Action OnGameStarted;
-    public float _levelStartTime;
-
+    private float _levelStartTime;
+    private string _currentLevelId;
     private void Awake()
     {
         if (Instance == null)
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         // Application.targetFrameRate = -1; // -1 means "unlimited"
 
         MainMenuController.OnStartButtonClicked += StartGame;
-        GameEvents.OnGameInitializedEvent += LoadCurrentLevel;
+        GameEvents.OnGameInitializedEvent += LoadLevelById;
         GameEvents.OnGameQuitEvent += Cleanup;
         GameEvents.OnGameOverEvent += TriggerGameOver;
         GameEvents.OnLevelRestartEvent += RestartLevel;
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
     void OnDestroy()
     {
         MainMenuController.OnStartButtonClicked -= StartGame;
-        GameEvents.OnGameInitializedEvent -= LoadCurrentLevel;
+        GameEvents.OnGameInitializedEvent -= LoadLevelById;
         GameEvents.OnGameQuitEvent -= Cleanup;
         GameEvents.OnGameOverEvent -= TriggerGameOver;
         GameEvents.OnLevelRestartEvent -= RestartLevel;
@@ -90,20 +90,25 @@ public class GameManager : MonoBehaviour
         Cleanup();
     }
 
-    private void LoadCurrentLevel()
+    public void LoadLevelById(string levelId = null)
     {
-        LevelData levelData = LevelManager.Instance.GetCurrentProgressLevel();
-        LoadLevelSpawner(levelData);
-    }
-
-    public void LoadLevelByUid(string uid)
-    {
-        LevelData levelData = LevelManager.Instance.GetLevelByID(uid);
+        _currentLevelId = levelId;
+        LevelData levelData;
+        if (levelId == null)
+        {
+            levelData = LevelManager.Instance.GetCurrentProgressLevel();
+        }
+        else
+        {
+            levelData = LevelManager.Instance.GetLevelByID(levelId);
+        }
         LoadLevelSpawner(levelData);
     }
 
     private void LoadLevelSpawner(LevelData levelData)
     {
+        Debug.LogError("LoadLevelSpawner");
+
         if (_activeSpawner == null && _spawnerPrefab != null)
         {
             AssetLoader.Instance.InstantiatePrefab("Spawner", (spawner) =>
@@ -200,7 +205,7 @@ public class GameManager : MonoBehaviour
     private void RestartLevel()
     {
         Cleanup();
-        LoadCurrentLevel();
+        LoadLevelById(_currentLevelId);
     }
     private void HandleLevelComplete(bool isComplete, string levelId, int score, int stars)
     {

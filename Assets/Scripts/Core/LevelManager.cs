@@ -149,20 +149,40 @@ public class LevelManager : MonoBehaviour
     /// <summary>
     /// Finds the next level in the sequential list from Metadata.
     /// </summary>
+
+
     public LevelData GetNextLevelInDatabase(string currentId)
     {
         var allLevels = DataManager.Instance.Metadata.Levels;
+
+        // Safety check: if there are no levels at all
+        if (allLevels == null || allLevels.Count == 0) return null;
+
+        // 1. If currentId is empty, the "next" level is technically the first level (Level 1)
+        if (string.IsNullOrEmpty(currentId))
+        {
+            return allLevels[0];
+        }
+
+        // 2. Otherwise, find the index of the specific ID
         int currentIndex = allLevels.FindIndex(l => l.Id == currentId);
 
         if (currentIndex >= 0 && currentIndex < allLevels.Count - 1)
         {
             return allLevels[currentIndex + 1];
         }
+
         return null;
     }
-
     public bool HasMoreContent()
     {
+        // 1. If the current ID is empty, we check if there are ANY levels in the database.
+        if (string.IsNullOrEmpty(_saveData.CurrentLevelID))
+        {
+            return DataManager.Instance.Metadata.Levels.Count > 0;
+        }
+
+        // 2. Otherwise, check if there is a level after the current one.
         return GetNextLevelInDatabase(_saveData.CurrentLevelID) != null;
     }
 }
