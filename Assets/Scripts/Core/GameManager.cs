@@ -42,8 +42,8 @@ public class GameManager : MonoBehaviour
         SaveData = SaveSystem.Load();
         LevelManager.Instance.Initialize(SaveData);
 
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = -1; // -1 means "unlimited"
+        // QualitySettings.vSyncCount = 0;
+        // Application.targetFrameRate = -1; // -1 means "unlimited"
 
         MainMenuController.OnStartButtonClicked += StartGame;
         GameEvents.OnGameInitializedEvent += LoadCurrentLevel;
@@ -138,42 +138,44 @@ public class GameManager : MonoBehaviour
 
     private float CalculateScore(float currentJunk, float totalJunk, int initialCollectableItems)
     {
-        // 1. Dynamic Target Calculation
-        // We give 1 seconds per item, but clamp it between 30s and 90s.
-        // This creates a "Gold Standard" time for that specific level size.
-        float avgTimePerItem = 1.0f;
-        float targetTime = Mathf.Clamp(initialCollectableItems * avgTimePerItem, 30f, 90f);
-        float maxTime = 180f; // 3 Minute Hard Cap
+        // 1. DYNAMIC TIME TARGETS
+        // Increased the time per item and the caps to give players more room to breathe.
+        float avgTimePerItem = 2.5f; // Was 1.0s
+        float targetTime = Mathf.Clamp(initialCollectableItems * avgTimePerItem, 45f, 120f);
+        float maxTime = 300f; // 5 Minute Hard Cap (Was 3)
         float timeTaken = Time.time - _levelStartTime;
 
-        // 2. Accuracy (The "Perfect Match" Factor)
-        // 1.0 = No junk clicked.
-        float accuracy = totalJunk > 0 ? currentJunk / totalJunk : 1.0f;
+        // 2. GENEROUS ACCURACY (Power Curve)
+        // Instead of a linear drop (Acc = current/total), we use a power function.
+        // Squaring the fraction makes high accuracy stay high for longer.
+        float accuracyRaw = totalJunk > 0 ? currentJunk / totalJunk : 1.0f;
+        float accuracy = Mathf.Pow(accuracyRaw, 0.5f); // Square Root curve: 80% junk left still gives ~90% score
 
-        // 3. Time Score (The "Speed" Factor)
+        // 3. GENEROUS TIME SCORE
         float timeScore = 1.0f;
 
         if (timeTaken > targetTime)
         {
-            // How far are we between the Target (1.0) and the Hard Cap (0.5)?
-            // If they hit 3 mins, they get 0.5.
-            float timeRemainingRatio = (timeTaken - targetTime) / (maxTime - targetTime);
-            timeScore = Mathf.Lerp(1.0f, 0.5f, timeRemainingRatio);
+            // Use a Cosine or SmoothStep lerp so the score drops slowly at first
+            float timeRatio = Mathf.InverseLerp(targetTime, maxTime, timeTaken);
+
+            // This ensures the drop-off isn't felt immediately after the targetTime
+            float smoothRatio = 1f - Mathf.Pow(timeRatio, 2);
+            timeScore = Mathf.Lerp(0.7f, 1.0f, smoothRatio); // Floor is now 0.7 instead of 0.5
         }
 
-        // Ensure timeScore doesn't drop below 0.5 even if they exceed 3 mins
-        timeScore = Mathf.Max(0.5f, timeScore);
+        // 4. WEIGHTED CALCULATION
+        // We weight Accuracy higher than Time. Players hate being punished for taking their time
+        // but feel rewarded for being precise.
+        float finalScore = (accuracy * 0.7f) + (timeScore * 0.3f);
 
-        // 4. Final Calculation
-        // Accuracy is the multiplier. 
-        // To get 0.9 (3 stars), you MUST be accurate AND fast.
-        float finalScore = accuracy * timeScore;
+        // Final safety clamp: 1.0 max, 0.6 min (The "Participant" trophy floor)
+        finalScore = Mathf.Clamp(finalScore, 0.6f, 1.0f);
 
-        Debug.Log($"[SCORE] Actual: {timeTaken:F1}s | Target: {targetTime}s | Acc: {accuracy:F2} | Final: {finalScore:F2}");
+        Debug.Log($"[SCORE] Time: {timeTaken:F1}s | Acc: {accuracy:F2} | WeightResult: {finalScore:F2}");
 
         return finalScore;
     }
-
     private void HandlePowerUpAmountChange(PowerUpType powerUpType, int amount)
     {
         SaveData.Inventory.AddPowerUp(powerUpType, amount);

@@ -41,33 +41,34 @@ public class InfiniteMapManager : MonoBehaviour
     }
     private void RefreshAllChunks()
     {
-        int maxUnlocked = DataManager.Instance.GetLevelByID(GameManager.Instance.SaveData.CurrentLevelID).Number;
+        int playerLevel = DataManager.Instance.GetLevelByID(GameManager.Instance.SaveData.CurrentLevelID).Number;
         int playerStars = GameManager.Instance.SaveData.Inventory.Stars;
 
-        var nextTheme = DataManager.Instance.Metadata.MapThemes
-                        .FirstOrDefault(t => t.StarRequirement > playerStars);
+        // 1. Determine the "Current Map Index" (0-based)
+        int currentMapIndex = (playerLevel - 1) / _nodesPerMap;
 
-        // Allow scrolling slightly into the locked theme
-        int limitLevel = (nextTheme != null) ? nextTheme.StartLevel + _nodesPerMap : maxUnlocked + _nodesPerMap;
-        float totalPages = Mathf.Ceil((float)limitLevel / _nodesPerMap);
+        // 2. Define the Limit: Current Map + 2 extra chunks
+        // This defines the maximum height the user can ever scroll to
+        // show upto peekNumber
+        int peekNumber = 1;
+        int maxMapIndexAllowed = currentMapIndex + peekNumber;
+        float totalPages = maxMapIndexAllowed + 1; // +1 because index 0 is page 1
 
-        // Ensure at least 3 pages exist so chunks have room to cycle
-        totalPages = Mathf.Max(totalPages, 3);
-
+        // Update Content Height
         _content.sizeDelta = new Vector2(_content.sizeDelta.x, totalPages * _chunkHeight);
 
+        // Initial Chunk Placement
         for (int i = 0; i < _chunks.Length; i++)
         {
-            // IMPORTANT: Force chunk pivots to match content
             _chunks[i].RectTransform.pivot = new Vector2(0.5f, 0f);
             _chunks[i].RectTransform.anchorMin = new Vector2(0.5f, 0f);
             _chunks[i].RectTransform.anchorMax = new Vector2(0.5f, 0f);
 
-            // INITIAL STITCHING: 0, 1920, 3840...
             _chunks[i].RectTransform.anchoredPosition = new Vector2(0, i * _chunkHeight);
             UpdateChunkData(_chunks[i]);
         }
     }
+
 
     private void OnScroll(Vector2 scrollPos)
     {

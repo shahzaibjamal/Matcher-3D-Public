@@ -104,8 +104,7 @@ public class SpinWheelController : MonoBehaviour
         // To land in the CENTER of that slot, we add (angleStep / 2)
         float sectorCenter = (_winningSlotIndex * angleStep) + (angleStep / 2f);
 
-        // Subtract from a large multiple of 360 to ensure clockwise spin
-        _endAngle = _startAngle - (fullRotations * 360f) - sectorCenter;
+        _endAngle = (fullRotations * 360f) + sectorCenter;
 
         _lastTickAngle = _startAngle;
     }
@@ -121,7 +120,7 @@ public class SpinWheelController : MonoBehaviour
         float curveStep = Curve.Evaluate(t);
 
         float currentZ = Mathf.Lerp(_startAngle, _endAngle, curveStep);
-        wheelContainer.localEulerAngles = new Vector3(0, 0, currentZ);
+        wheelContainer.eulerAngles = new Vector3(0, 0, currentZ);
 
         // Tick Logic: Based on distance moved
         float angleStep = 360f / numberOfSlots;
@@ -135,7 +134,7 @@ public class SpinWheelController : MonoBehaviour
         if (t >= 1f)
         {
             _isStarted = false;
-            wheelContainer.localEulerAngles = new Vector3(0, 0, _endAngle);
+            wheelContainer.eulerAngles = new Vector3(0, 0, _endAngle);
             SettleWheel();
         }
     }
@@ -144,7 +143,7 @@ public class SpinWheelController : MonoBehaviour
     {
         if (needleRect == null) return;
         _currentNeedleAngle = Mathf.Lerp(_currentNeedleAngle, 0f, Time.deltaTime * needleReturnSpeed);
-        needleRect.localEulerAngles = new Vector3(0, 0, _currentNeedleAngle);
+        needleRect.localEulerAngles = new Vector3(0, 0, -_currentNeedleAngle);
     }
 
     public void OnTriggerNeedle() => Debug.Log("Tick!");
