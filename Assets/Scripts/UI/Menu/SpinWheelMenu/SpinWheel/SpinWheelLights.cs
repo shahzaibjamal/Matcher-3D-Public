@@ -7,51 +7,53 @@ public class CircularUIAnimator : MonoBehaviour
     [SerializeField] private GameObject prefab;
     [SerializeField] private RectTransform container;
 
-    [Header("Set A: Alternating (Evens/Odds)")]
-    [SerializeField] private int countA = 10;
-    [SerializeField] private float radiusA = 200f;
+    [Header("Responsive Settings")]
+    // Use 0.0 to 1.0 (e.g., 0.4 means 40% of container width)
+    [Range(0, 1f)][SerializeField] private float radiusPercentA = 0.2f;
+    [Range(0, 1f)][SerializeField] private float radiusPercentB = 0.4f;
+
+    // Bring back the offsets for rotation
     [SerializeField] private float angleOffsetA = 0f;
+    [SerializeField] private float angleOffsetB = 0f;
+
+    [Header("Set A Settings")]
+    [SerializeField] private int countA = 10;
     [SerializeField] private float intervalA = 1.0f;
 
-    [Header("Set B: Cycling (N and N+5)")]
+    [Header("Set B Settings")]
     [SerializeField] private int countB = 10;
-    [SerializeField] private float radiusB = 350f;
-    [SerializeField] private float angleOffsetB = 0f;
     [SerializeField] private float intervalB = 0.5f;
     [SerializeField] private bool counterClockwiseB = false;
 
-    private List<GameObject> _itemsA = new List<GameObject>();
-    private List<GameObject> _itemsB = new List<GameObject>();
+    private List<RectTransform> _itemsA = new List<RectTransform>();
+    private List<RectTransform> _itemsB = new List<RectTransform>();
 
-    private float _timerA;
-    private float _timerB;
+    private float _timerA, _timerB;
     private bool _stateA;
     private int _currentIndexB;
 
     private void Start()
     {
-        SpawnSet(countA, radiusA, angleOffsetA, _itemsA);
-        SpawnSet(countB, radiusB, angleOffsetB, _itemsB);
+        // Set container anchors to Center/Middle to make math easier
+        container.pivot = new Vector2(0.5f, 0.5f);
+
+        SpawnSet(countA, _itemsA);
+        SpawnSet(countB, _itemsB);
+
+        // Initial position update
+        UpdatePositions();
     }
 
-    private void SpawnSet(int count, float radius, float offset, List<GameObject> list)
+    private void SpawnSet(int count, List<RectTransform> list)
     {
         for (int i = 0; i < count; i++)
         {
-            // Calculate angle: 90 is top, subtract degrees to go clockwise
-            float angleDeg = (i * (360f / count)) + offset;
-            float angleRad = (90f - angleDeg) * Mathf.Deg2Rad;
-
-            float x = Mathf.Cos(angleRad) * radius;
-            float y = Mathf.Sin(angleRad) * radius;
-
             GameObject item = Instantiate(prefab, container);
             RectTransform rt = item.GetComponent<RectTransform>();
 
-            rt.anchoredPosition = new Vector2(x, y);
-            rt.localEulerAngles = new Vector3(0, 0, -angleDeg); // Optional: face outward
-
-            list.Add(item);
+            // Force center anchors so position (0,0) is center of parent
+            rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+            list.Add(rt);
         }
     }
 
@@ -59,6 +61,37 @@ public class CircularUIAnimator : MonoBehaviour
     {
         HandleSetA();
         HandleSetB();
+
+        // Update positions every frame to handle screen resizing/rotation
+        UpdatePositions();
+    }
+
+    private void UpdatePositions()
+    {
+        float referenceSize = Mathf.Min(container.rect.width, container.rect.height) * 0.5f;
+
+        // Pass the offsets into the positioning logic
+        PositionList(_itemsA, referenceSize * radiusPercentA, angleOffsetA);
+        PositionList(_itemsB, referenceSize * radiusPercentB, angleOffsetB);
+    }
+    private void PositionList(List<RectTransform> list, float actualRadius, float offsetDeg)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            // Add the offsetDeg to the per-item angle calculation
+            float angleDeg = (i * (360f / list.Count)) + offsetDeg;
+
+            // 90 is the top of the circle in Unity UI space
+            float angleRad = (90f - angleDeg) * Mathf.Deg2Rad;
+
+            float x = Mathf.Cos(angleRad) * actualRadius;
+            float y = Mathf.Sin(angleRad) * actualRadius;
+
+            list[i].anchoredPosition = new Vector2(x, y);
+
+            // This keeps the "light" or "dot" facing inward/outward correctly
+            list[i].localEulerAngles = new Vector3(0, 0, -angleDeg);
+        }
     }
 
     private void HandleSetA()
@@ -68,63 +101,29 @@ public class CircularUIAnimator : MonoBehaviour
         {
             _timerA = 0;
             _stateA = !_stateA;
-
             for (int i = 0; i < _itemsA.Count; i++)
-            {
-                // Toggle evens on/off vs odds off/on
-                bool isEven = i % 2 == 0;
-                _itemsA[i].SetActive(isEven ? _stateA : !_stateA);
-            }
+                _itemsA[i].gameObject.SetActive((i % 2 == 0) ? _stateA : !_stateA);
         }
     }
 
-    // private void HandleSetB()
-    // {
-    //     _timerB += Time.deltaTime;
-    //     if (_timerB >= intervalB)
-    //     {
-    //         _timerB = 0;
-    //         _currentIndexB = (_currentIndexB + 1) % _itemsB.Count;
-
-    //         int oppositeIndex = (_currentIndexB + 5) % _itemsB.Count;
-
-    //         for (int i = 0; i < _itemsB.Count; i++)
-    //         {
-    //             // Only N and N+5 are active
-    //             bool shouldBeActive = (i == _currentIndexB || i == oppositeIndex);
-    //             _itemsB[i].SetActive(shouldBeActive);
-    //         }
-    //     }
-    // }
     private void HandleSetB()
     {
         _timerB += Time.deltaTime;
         if (_timerB >= intervalB)
         {
             _timerB = 0;
-
-            // Calculate next index based on direction
             if (counterClockwiseB)
             {
-                _currentIndexB--;
-                // Wrap around: if below 0, jump to the last index (e.g., 9)
-                if (_currentIndexB < 0) _currentIndexB = _itemsB.Count - 1;
+                _currentIndexB = (_currentIndexB <= 0) ? _itemsB.Count - 1 : _currentIndexB - 1;
             }
             else
             {
-                // Standard clockwise increment with modulo wrap
                 _currentIndexB = (_currentIndexB + 1) % _itemsB.Count;
             }
 
-            // Calculate the opposite index (e.g., N + 5)
             int oppositeIndex = (_currentIndexB + (countB / 2)) % _itemsB.Count;
-
-            // Apply SetActive
             for (int i = 0; i < _itemsB.Count; i++)
-            {
-                bool isActive = (i == _currentIndexB || i == oppositeIndex);
-                _itemsB[i].SetActive(isActive);
-            }
+                _itemsB[i].gameObject.SetActive(i == _currentIndexB || i == oppositeIndex);
         }
     }
 }
