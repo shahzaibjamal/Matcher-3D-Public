@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using DG.Tweening;
+using TS.LocalizationSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +19,8 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
         }
         View.ContinueButton.onClick.AddListener(OnContinueButtonClicked);
         View.GoldMulitplierButton.onClick.AddListener(OnGoldMultiplierButtonClicked);
-        RewardManager.Instance.AddRewardToQueue(Data.LevelData.Rewards);
+        View.TitleLevelNumber.text = String.Format(LocaleManager.Localize(LocalizationKeys.title_level), Data.LevelData.Number);
+        UpdateRewardManager();
     }
 
     public override void OnExit()
@@ -41,7 +45,14 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
     void OnContinueButtonClicked()
     {
         (CurrentState as MatchResultMenuBaseState).OnContinueButtonClicked();
+    }
 
+    private void UpdateRewardManager()
+    {
+        var filteredRewards = Data.LevelData.Rewards
+            .Where(r => r.RewardType != RewardType.Gold)
+            .ToList();
+        RewardManager.Instance.AddRewardToQueue(filteredRewards);
     }
 
     public void GoToMainMenu()
@@ -55,7 +66,8 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
 
     private void OnLoadingComplete()
     {
-        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Settings);
+        // MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Settings);
+        MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game, new GameMenuData());
     }
     void OnGoldMultiplierButtonClicked()
     {

@@ -25,4 +25,5 @@ public class GameSaveData
     public List<int> ClaimedDailyRewards = new List<int>();
 
     public DateTime SignUpDate;
+    public List<RewardData> SavedPendingRewards = new List<RewardData>();
 }

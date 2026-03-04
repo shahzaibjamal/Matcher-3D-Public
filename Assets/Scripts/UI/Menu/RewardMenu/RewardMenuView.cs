@@ -10,4 +10,5 @@ public class RewardMenuView : MenuView
     public TMP_Text AmountText;
 
     public RewardIconMapper RewardIconMapper;
+    public Transform GodRaysTransform;
 }

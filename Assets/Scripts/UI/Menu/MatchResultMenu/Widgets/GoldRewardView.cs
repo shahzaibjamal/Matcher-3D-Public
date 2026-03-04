@@ -40,36 +40,33 @@ public class GoldRewardView : MonoBehaviour
     /// <param name="newTotal">The final total the HUD should reach after the flight</param>
     public void ShowReward(int rewardAmount, int newTotal, float initialDelay = 0f, Action onComplete = null)
     {
-        // Setup
-        RewardContainer.position = _startPosition;
-        RewardContainer.localScale = Vector3.zero;
-        RewardAmountText.text = $"+{rewardAmount}";
+        // 1. Reset
+        // RewardContainer.localScale = Vector3.zero;
+        // Set local position to zero (the center of the GoldRewardView)
+        RewardContainer.localPosition = Vector3.zero;
         RewardContainer.gameObject.SetActive(true);
+
+        // 2. Calculate the local vector from the container to the HUD
+        // InverseTransformPoint converts the HUD's world position into a local position 
+        // relative to the GoldRewardView's space.
+        Vector3 worldTarget = TargetHUD.GetTargetPosition();
+        Vector3 localTarget = RewardContainer.parent.InverseTransformPoint(worldTarget);
 
         Sequence seq = DOTween.Sequence();
 
-        // 1. Initial Pop In
         seq.AppendInterval(initialDelay);
         seq.Append(RewardContainer.DOScale(1.2f, PopDuration).SetEase(Ease.OutBack));
-
-        // 2. Hover for a moment
         seq.AppendInterval(0.3f);
 
-        // 3. Fly to HUD
-        // We use GetTargetPosition() from the HUD to find where the icon is currently
-        seq.Append(RewardContainer.DOMove(TargetHUD.GetTargetPosition(), FlyDuration).SetEase(FlyEase));
+        // 3. USE DOLocalMove
+        // This ignores the world-space "tug of war" and moves relative to the parent
+        seq.Append(RewardContainer.DOLocalMove(localTarget, FlyDuration).SetEase(FlyEase));
+        seq.Join(RewardContainer.DOScale(0.5f, FlyDuration).SetEase(Ease.InQuad));
 
-        // Shrink slightly as it enters the HUD
-        seq.Join(RewardContainer.DOScale(0.6f, FlyDuration).SetEase(Ease.InQuad));
-
-        // 4. On Arrival
         seq.OnComplete(() =>
         {
             RewardContainer.gameObject.SetActive(false);
-
-            // Trigger the HUD's internal juice and count animation
             TargetHUD.PlayCollectAnimation(newTotal);
-
             onComplete?.Invoke();
         });
     }

@@ -84,8 +84,8 @@ public class ItemView : MonoBehaviour
     {
         transform.DOKill(true);
         // Refresh effect: Slight scale jump + a gentle shake
-        transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0), 0.3f, 10, 1f);
-        transform.DOShakeRotation(0.3f, new Vector3(0, 0, 10f));
+        transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0), 0.3f, 10, 1f).SetId("ItemView: MatchShake Scale"); ;
+        transform.DOShakeRotation(0.3f, new Vector3(0, 0, 10f)).SetId("ItemView: MatchShake Rotation"); ;
     }
 
     public void PlayCompletionAnimation(Action onComplete)
@@ -93,7 +93,7 @@ public class ItemView : MonoBehaviour
         transform.DOKill(true);
         // Moves up, scales down with InOutElastic
         Sequence seq = DOTween.Sequence();
-
+        seq.SetId("ItemView: Completion");
         seq.Append(transform.DOMoveY(transform.position.y + 100f, 0.6f).SetEase(Ease.InOutElastic));
         seq.Join(transform.DOScale(Vector3.zero, 0.6f).SetEase(Ease.InOutElastic));
 

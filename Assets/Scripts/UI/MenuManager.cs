@@ -60,48 +60,69 @@ public class MenuManager : MonoBehaviour
         MenuRegistry.MenuEntry menuEntry = registry.GetMenuEntry(menuType);
         if (menuEntry.prefab == null) return;
 
-        // Use the Mode from the Registry for the NEW menu
         Menus.MenuDisplayMode newMode = menuEntry.defaultMode;
 
-        // 1. SEARCH & SILENT UNWIND (Jump back logic)
-        MenuSession existingSession = _menuStack.FirstOrDefault(s => s.View is TView);
-        if (existingSession.View != null)
+        // 1. ONE SCREEN ONLY RULE
+        // 1. ONE SCREEN ONLY / CLEAN SLATE RULE
+        if (newMode == Menus.MenuDisplayMode.ScreenReplace)
         {
-            while (_menuStack.Peek().View != existingSession.View)
+            // Unwind the stack completely until we've removed the previous screen
+            // and all popups currently sitting on top of it.
+            while (_menuStack.Count > 0)
             {
+                var top = _menuStack.Peek();
+
+                // Peek at the mode. If we found the previous screen, 
+                // we'll destroy it and stop. If we find popups, we destroy them and keep going.
+                bool isPreviousScreen = top.View.DisplayMode == Menus.MenuDisplayMode.ScreenReplace;
+
                 var session = _menuStack.Pop();
                 session.Controller.OnExit();
                 session.View.Destroy();
-            }
 
-            existingSession.View.SetVisible(true);
-            existingSession.Controller.OnResume();
-            UpdateBlockingLayer();
-            return;
+                if (isPreviousScreen) break;
+            }
+        }
+        // 2. SEARCH & RESUME (Only for Popups/Overlays)
+        else
+        {
+            MenuSession existingSession = _menuStack.FirstOrDefault(s => s.View is TView);
+            if (existingSession.View != null)
+            {
+                while (_menuStack.Peek().View != existingSession.View)
+                {
+                    var session = _menuStack.Pop();
+                    session.Controller.OnExit();
+                    session.View.Destroy();
+                }
+
+                existingSession.View.SetVisible(true);
+                existingSession.Controller.OnResume();
+                UpdateBlockingLayer();
+                return;
+            }
         }
 
-        // 2. SMART HIDE PREVIOUS
+        // 3. SMART HIDE PREVIOUS
         if (_menuStack.Count > 0)
         {
             var topSession = _menuStack.Peek();
 
-            // We check the DisplayMode stored on the existing View
-            Menus.MenuDisplayMode currentTopMode = topSession.View.DisplayMode;
-
-            // CRITICAL FIX: Ensure we compare the incoming mode and the current top mode
-            bool shouldHidePrevious =
-                newMode == Menus.MenuDisplayMode.ScreenReplace ||
-                (newMode == Menus.MenuDisplayMode.Popup && currentTopMode == Menus.MenuDisplayMode.Popup) ||
-                (newMode == Menus.MenuDisplayMode.Overlay && currentTopMode == Menus.MenuDisplayMode.Overlay);
-
-            if (shouldHidePrevious)
+            // ONLY hide the previous menu if the NEW menu is a full screen
+            // Popups and Overlays should let the previous menu stay visible
+            if (newMode == Menus.MenuDisplayMode.ScreenReplace)
             {
                 topSession.View.SetVisible(false);
                 topSession.Controller.OnPause();
             }
+            else
+            {
+                // If it's a popup, we might still want to "Pause" logic 
+                // but keep the View visible
+                topSession.Controller.OnPause();
+            }
         }
-
-        // 3. INSTANTIATE & PUSH
+        // 4. INSTANTIATE & PUSH
         RectTransform parentLayer = GetLayer(newMode);
         GameObject menuObject = Instantiate(menuEntry.prefab, parentLayer);
 

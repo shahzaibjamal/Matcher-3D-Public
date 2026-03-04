@@ -1,4 +1,5 @@
 using TMPro;
+using TS.LocalizationSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,6 @@ public class RewardView : MonoBehaviour
     public void Initialize(Sprite rewardIconSpreite, int amount)
     {
         _rewardIcon.sprite = rewardIconSpreite;
-        _rewardAmount.text = amount.ToString();
+        _rewardAmount.text = string.Format(LocaleManager.Localize(LocalizationKeys.reward_amount), amount);
     }
 }

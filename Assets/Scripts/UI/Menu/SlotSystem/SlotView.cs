@@ -54,13 +54,13 @@ public class SlotView : MonoBehaviour
         icon.canvasRenderer.SetAlpha(1f);
 
         // Add the landing juice
-        icon.transform.DOPunchScale(Vector3.one * 0.2f, 0.2f);
+        icon.transform.DOPunchScale(Vector3.one * 0.2f, 0.2f).SetId("SlotView: Reveal Punch"); ;
 
         if (impact)
         {
             RectTransform rect = _backgroundImage.rectTransform;
             Sequence impactSeq = DOTween.Sequence();
-
+            impactSeq.SetId("SlotView: Impact");
             // 1. The Slam: Move down quickly with a heavy ease
             impactSeq.Append(rect.DOLocalMoveY(_originalSlotPos.y - 10f, 0.1f)
                 .SetEase(Ease.InQuad));

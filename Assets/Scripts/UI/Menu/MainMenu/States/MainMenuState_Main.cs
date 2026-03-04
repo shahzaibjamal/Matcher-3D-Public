@@ -1,15 +1,13 @@
 
-using System.Threading;
 using DG.Tweening;
-using TS.LocalizationSystem;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MainMenuBaseState_Main : MainMenuBaseState
 {
 
     private Sequence _playButtonSequence;
-
+    private Sequence _giftSeq;
+    private Sequence _spinSeq;
     public MainMenuBaseState_Main(MainMenuController controller) : base(controller)
     {
     }
@@ -36,7 +34,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StoreShimmer.Play();
         View.RewardShimmer.Play();
 
-        RewardManager.Instance.CheckAndShowNext();
+        Scheduler.Instance.ExecuteAfterDelay(0.5f, () => RewardManager.Instance.CheckAndShowNext());
     }
 
     public override void Exit()
@@ -50,6 +48,16 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StoreButton.onClick.RemoveListener(OnStoreButtonClicked);
         GameEvents.OnGoldUpdatedEvent -= HandleGoldUpdate;
 
+
+        _playButtonSequence?.Kill();
+        View.GiftButton.transform.DOKill();
+        View.DailySpinButton.transform.DOKill();
+        View.DailyRewardButton.transform.DOKill();
+        View.StoreButton.transform.DOKill();
+        _giftSeq?.Kill();
+        _spinSeq?.Kill();
+        View.RewardShimmer.Stop();
+        View.StoreShimmer.Stop();
         base.Exit();
     }
 
@@ -87,42 +95,42 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         t.DOKill();
         t.localScale = Vector3.one;
 
-        Sequence giftSeq = DOTween.Sequence();
+        _giftSeq = DOTween.Sequence();
 
         // 2. IDLE "BREATHING" (The squishy bubble pulse)
         // This runs before the jump to make it look alive
-        giftSeq.Append(t.DOScale(new Vector3(1.1f, 0.92f, 1f), 0.8f).SetEase(Ease.InOutSine))
+        _giftSeq.Append(t.DOScale(new Vector3(1.1f, 0.92f, 1f), 0.8f).SetEase(Ease.InOutSine))
                .Append(t.DOScale(new Vector3(0.95f, 1.08f, 1f), 0.8f).SetEase(Ease.InOutSine));
 
         // 3. THE JUMP (Stretch while rising)
-        giftSeq.Append(t.DOLocalMoveY(20f, 0.45f).SetRelative().SetEase(Ease.OutQuad))
+        _giftSeq.Append(t.DOLocalMoveY(20f, 0.45f).SetRelative().SetEase(Ease.OutQuad))
                .Join(t.DOScale(new Vector3(0.85f, 1.2f, 1f), 0.45f).SetEase(Ease.OutQuad));
 
         // 4. THE FALL (Start flattening for impact)
-        giftSeq.Append(t.DOLocalMoveY(-20f, 0.35f).SetRelative().SetEase(Ease.InQuad))
+        _giftSeq.Append(t.DOLocalMoveY(-20f, 0.35f).SetRelative().SetEase(Ease.InQuad))
                .Join(t.DOScale(new Vector3(1.2f, 0.85f, 1f), 0.35f).SetEase(Ease.InQuad));
-        giftSeq.Append(t.DOScale(Vector3.one, 0.15f).SetEase(Ease.InQuad));
+        _giftSeq.Append(t.DOScale(Vector3.one, 0.15f).SetEase(Ease.InQuad));
         // 5. THE BUBBLE IMPACT (The magic "Boing")
         // DOPunchScale makes it wobble/vibrate like jelly
         // Parameters: (Strength, Duration, Vibrato, Elasticity)
-        giftSeq.AppendCallback(() =>
+        _giftSeq.AppendCallback(() =>
         {
             t.DOPunchScale(new Vector3(0.5f, -0.5f, 0f), 1.2f, 5, 1f);
         });
 
         // 6. DELAY & LOOP
-        giftSeq.AppendInterval(3.0f); // Wait for the wobble to settle
-        giftSeq.SetLoops(-1);
+        _giftSeq.AppendInterval(3.0f); // Wait for the wobble to settle
+        _giftSeq.SetLoops(-1);
     }
 
     private void StartSpinAnimation()
     {
         float totalRotation = -2880f;
 
-        Sequence spinSeq = DOTween.Sequence();
+        _spinSeq = DOTween.Sequence();
 
         // Ease.OutCubic starts fast and spends most of the time "braking"
-        spinSeq.Append(View.DailySpinButton.transform.DORotate(new Vector3(0, 0, totalRotation), 2.0f, RotateMode.FastBeyond360)
+        _spinSeq.Append(View.DailySpinButton.transform.DORotate(new Vector3(0, 0, totalRotation), 2.0f, RotateMode.FastBeyond360)
                 .SetEase(Ease.OutCubic))
                .AppendInterval(3.0f) // Total 5 second cycle
                 .SetLoops(-1);
@@ -161,7 +169,6 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnDebugButtonClicked()
     {
-        // MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug);
         MenuManager.Instance.OpenMenu<MatchResultMenuView, MatchResultMenuController, MatchResultMenuData>(Menus.Type.MatchResult, new MatchResultMenuData
         {
             IsWin = true,

@@ -9,6 +9,7 @@ public class MatchResultMenuView : MenuView
     public Button GoldMulitplierButton;
     public GameObject GodRays;
 
+    public TMP_Text TitleLevelNumber;
     public TMP_Text Result;
     public TMP_Text Status;
 

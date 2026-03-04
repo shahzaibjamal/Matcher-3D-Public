@@ -31,7 +31,7 @@ public class BroomSweeper : MonoBehaviour
 
         // 3. Create Sequence
         _activeSequence = DOTween.Sequence();
-
+        _activeSequence.SetId("BroomSweeper");
         // Start the "To and Fro" dusting (Independent loop)
         _broom.DOLocalRotate(new Vector3(0, 0, _tiltMax), _dustingSpeed)
             .SetEase(Ease.InOutSine)

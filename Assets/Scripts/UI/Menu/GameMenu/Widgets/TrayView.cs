@@ -94,6 +94,7 @@ public class TrayView : MonoBehaviour
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, targetSlot.transform.position);
         Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 8f));
         Sequence flightSeq = DOTween.Sequence();
+        flightSeq.SetId("TrayView: item Flight");
         flightSeq.Append(source.DOMove(source.position + Vector3.up * 2f, gameData.FlightUpDuration).SetEase(Ease.OutQuad));
         flightSeq.Join(source.DORotate(Vector3.zero, gameData.FlightUpDuration, RotateMode.FastBeyond360));
         flightSeq.Join(source.DOScale(source.localScale * 1.2f, gameData.FlightUpDuration));
@@ -153,7 +154,7 @@ public class TrayView : MonoBehaviour
 
             // Jump to the NEXT neighbor slot
             yield return ghost.transform.DOJump(_slots[currentIdx].transform.position, 40f, 1, gameData.LeapDuration)
-                .SetEase(Ease.OutQuad)
+                .SetEase(Ease.OutQuad).SetId("TrayView: ghost Leap Jump")
                 .WaitForCompletion();
         }
 
@@ -189,7 +190,7 @@ public class TrayView : MonoBehaviour
         Vector3 centerSlotPos = _slots[startIdx + 1].transform.position + up;
 
         Sequence mainSeq = DOTween.Sequence();
-
+        mainSeq.SetId("TrayView: Matched Ghost");
         // --- STAGE 1: Lift all three slightly ---
         foreach (var g in ghosts)
         {
