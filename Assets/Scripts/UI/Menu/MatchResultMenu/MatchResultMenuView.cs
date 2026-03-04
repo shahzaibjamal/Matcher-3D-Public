@@ -16,9 +16,13 @@ public class MatchResultMenuView : MenuView
     public StarView[] StarViews; // Assign your 3 stars here
 
     public float StarsApearDelay = 0.3f;
-    public int StarCount = 3;
 
     public TMP_Text LevelNumber;
     public GoldRewardView GoldRewardView;
     public GoldMainView GoldMainView;
+    public RewardView RewardView;
+
+    public RewardIconMapper RewardIconMapper;
+
+    public CanvasGroup RewardsCanvasGroup;
 }

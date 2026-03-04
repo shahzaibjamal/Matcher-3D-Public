@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using TS.LocalizationSystem;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
@@ -26,7 +26,6 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         else if (Data.MatchRate > 0.70f)
         {
             View.Status.text = LocaleManager.Localize(LocalizationKeys.status_amazing);
-
         }
         else
         {
@@ -50,9 +49,10 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     private void AnimateAllStars(int score)
     {
         float delay = 0f;
+        float starsAppearDelay = 0.3f;
         for (int i = 0; i < View.StarViews.Length; i++)
         {
-            delay = i * View.StarsApearDelay;
+            delay = i * starsAppearDelay; // stars appear delay
             if (i < score)
             {
                 // Stagger by 0.3 seconds each: 0.0s, 0.3s, 0.6s
@@ -75,6 +75,8 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
             .SetLoops(-1, LoopType.Incremental); // -1 means infinite    
 
         View.TextAnimation.PlayReveal();
+
+        Scheduler.Instance.ExecuteAfterDelay(1.0f + delay, DisplayRewards);
     }
 
     private void PlayGoldAnimation(int goldAmount, int totalAmount, float delay, Action onComplete = null)
@@ -86,20 +88,58 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     public override void OnContinueButtonClicked()
     {
         base.OnContinueButtonClicked();
-
+        // 5. Animation Sequence
         int goldAmount = 0;
         foreach (var rewardData in Data.LevelData.Rewards)
         {
             if (rewardData.RewardType == RewardType.Gold)
             {
-                goldAmount = rewardData.Amount;
+                goldAmount += rewardData.Amount;
             }
 
         }
-        int total = goldAmount + GameManager.Instance.SaveData.Inventory.Gold;
+        int totalGold = goldAmount + GameManager.Instance.SaveData.Inventory.Gold;
+        PlayGoldAnimation(goldAmount, totalGold, 0f, OnGoldAnimationCompleted);
+    }
 
-        PlayGoldAnimation(goldAmount, total, 0f, OnGoldAnimationCompleted);
+    public void DisplayRewards()
+    {
+        // 1. Reset Visuals
+        View.RewardsCanvasGroup.alpha = 0f;
+        View.RewardsCanvasGroup.transform.localScale = Vector3.one * 0.7f;
+        View.RewardsCanvasGroup.gameObject.SetActive(true);
 
+        int goldAmount = 0;
+        RewardData nonGoldReward = null;
+
+        // 2. Identify Rewards from Data
+        foreach (var rewardData in Data.LevelData.Rewards)
+        {
+            if (rewardData.RewardType == RewardType.Gold)
+                goldAmount += rewardData.Amount;
+            else
+                nonGoldReward = rewardData;
+        }
+
+        // 3. Update Gold View
+        bool hasGold = goldAmount > 0;
+        View.GoldRewardView.gameObject.SetActive(hasGold);
+        if (hasGold) View.GoldRewardView.Initialize(goldAmount);
+
+        // 4. Update Single "Other" Reward View
+        bool hasOther = nonGoldReward != null;
+        View.RewardView.gameObject.SetActive(hasOther);
+        if (hasOther)
+        {
+            Sprite icon = View.RewardIconMapper.GetIcon(nonGoldReward.RewardType);
+            View.RewardView.Initialize(icon, nonGoldReward.Amount);
+        }
+
+        // 5. Entrance Animation (Pop and Fade)
+        Sequence seq = DOTween.Sequence();
+        seq.Append(View.RewardsCanvasGroup.DOFade(1f, 0.3f));
+        seq.Join(View.RewardsCanvasGroup.transform.DOScale(1.1f, 0.4f).SetEase(Ease.OutBack));
+        seq.Append(View.RewardsCanvasGroup.transform.DOScale(1f, 0.15f));
     }
 
     public override void OnGoldMultiplierButtonClicked()

@@ -2028,38 +2028,70 @@
   "DailyRewards": [
     {
       "Day": 1,
-      "RewardType": "Gold",
-      "Amount": 50
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 50
+        }
+      ]
     },
     {
       "Day": 2,
-      "RewardType": "Undo",
-      "Amount": 3
+      "Rewards": [
+        {
+          "RewardType": "Undo",
+          "Amount": 3
+        }
+      ]
     },
     {
       "Day": 3,
-      "RewardType": "Shake",
-      "Amount": 2
+      "Rewards": [
+        {
+          "RewardType": "Shake",
+          "Amount": 2
+        }
+      ]
     },
     {
       "Day": 4,
-      "RewardType": "Gold",
-      "Amount": 120
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 120
+        }
+      ]
     },
     {
       "Day": 5,
-      "RewardType": "Hint",
-      "Amount": 2
+      "Rewards": [
+        {
+          "RewardType": "Hint",
+          "Amount": 2
+        }
+      ]
     },
     {
       "Day": 6,
-      "RewardType": "Undo",
-      "Amount": 5
+      "Rewards": [
+        {
+          "RewardType": "Undo",
+          "Amount": 5
+        }
+      ]
     },
     {
       "Day": 7,
-      "RewardType": "Magnet",
-      "Amount": 3
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 300
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 3
+        }
+      ]
     }
   ],
   "MapThemes": [

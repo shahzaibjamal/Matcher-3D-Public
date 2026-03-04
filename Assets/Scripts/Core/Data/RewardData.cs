@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -14,9 +15,8 @@ public class RewardData
 public class DailyRewardData
 {
     public int Day;
-    [JsonConverter(typeof(StringEnumConverter))]
-    public RewardType RewardType;
-    public int Amount;
+    // Changed from single RewardType/Amount to a List
+    public List<RewardData> Rewards;
 }
 public enum RewardType
 {

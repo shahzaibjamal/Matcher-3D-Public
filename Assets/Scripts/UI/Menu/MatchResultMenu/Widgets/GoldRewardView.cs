@@ -27,6 +27,12 @@ public class GoldRewardView : MonoBehaviour
         RewardContainer.gameObject.SetActive(false);
     }
 
+    public void Initialize(int rewardAmount)
+    {
+        RewardAmountText.text = $"+{rewardAmount}";
+        RewardContainer.gameObject.SetActive(true);
+    }
+
     /// <summary>
     /// Pops a reward amount on screen, then flies it to the HUD.
     /// </summary>

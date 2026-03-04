@@ -16,7 +16,7 @@ public class DataManager : MonoBehaviour
     // Fast lookup caches
     private Dictionary<string, ItemData> _itemCache = new Dictionary<string, ItemData>();
     private Dictionary<string, LevelData> _levelCache = new Dictionary<string, LevelData>();
-
+    private Dictionary<int, DailyRewardData> _dailyRewardCache = new Dictionary<int, DailyRewardData>();
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -55,8 +55,10 @@ public class DataManager : MonoBehaviour
 
     private void InitializeCaches()
     {
-        _itemCache = Metadata.Items.ToDictionary(item => item.Id);
-        _levelCache = Metadata.Levels.ToDictionary(lvl => lvl.Id);
+        // Adding a null check just in case, though your initialization handles it
+        _itemCache = Metadata.Items?.ToDictionary(item => item.Id) ?? new Dictionary<string, ItemData>();
+        _levelCache = Metadata.Levels?.ToDictionary(lvl => lvl.Id) ?? new Dictionary<string, LevelData>();
+        _dailyRewardCache = Metadata.DailyRewards?.ToDictionary(d => d.Day) ?? new Dictionary<int, DailyRewardData>();
     }
 
     // --- Helper Functions ---
@@ -86,7 +88,8 @@ public class DataManager : MonoBehaviour
     /// <summary> Returns all rewards for a specific day </summary>
     public DailyRewardData GetDailyReward(int day)
     {
-        return Metadata.DailyRewards.FirstOrDefault(d => d.Day == day);
+        if (_dailyRewardCache.TryGetValue(day, out var data)) return data;
+        return null;
     }
 
     public LevelData GetDefaultLevel()

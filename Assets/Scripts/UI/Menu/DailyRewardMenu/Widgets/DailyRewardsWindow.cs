@@ -26,17 +26,25 @@ public class DailyRewardsWindow : MonoBehaviour
 
         for (int i = 0; i < _rewardViews.Length; i++)
         {
-            if (i >= _currentRewards.Count) break;
+            // 1. Hide views that don't have data (e.g. if you have 7 UI slots but only 5 days of data)
+            if (i >= _currentRewards.Count)
+            {
+                _rewardViews[i].gameObject.SetActive(false);
+                continue;
+            }
 
+            _rewardViews[i].gameObject.SetActive(true);
             DailyRewardData data = _currentRewards[i];
+
+            // 2. Determine status
             bool claimed = saveData.ClaimedDailyRewards.Contains(data.Day);
-            bool ready = daysSinceSignUp >= data.Day;
 
-            // Resolve sprite here from the SO
-            Sprite rewardIcon = _iconMapper.GetIcon(data.RewardType);
+            // Ready if the day has passed AND it hasn't been claimed yet
+            bool ready = daysSinceSignUp >= data.Day && !claimed;
 
-            // Pass the sprite directly to the view
-            _rewardViews[i].Setup(data, rewardIcon, claimed, ready, OnItemClicked);
+            // 3. Pass the IconMapper (SO) and data to the view
+            // The View will now loop through data.Rewards and use _iconMapper to find sprites
+            _rewardViews[i].Setup(data, _iconMapper, claimed, ready, OnItemClicked);
         }
     }
 

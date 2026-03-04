@@ -101,7 +101,6 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     }
     private void HandleMatchResult(bool win, float matchRate)
     {
-        // Debug.LogError(" GameMenuBaseState_Main: HandleMatchResult");
         MenuManager.Instance.OpenMenu<MatchResultMenuView, MatchResultMenuController, MatchResultMenuData>(Menus.Type.MatchResult, new MatchResultMenuData
         {
             IsWin = win,
