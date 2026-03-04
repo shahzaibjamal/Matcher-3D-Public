@@ -11,4 +11,5 @@ public class RewardMenuView : MenuView
 
     public RewardIconMapper RewardIconMapper;
     public Transform GodRaysTransform;
+    public ParticleSystem ConfettiParticles;
 }

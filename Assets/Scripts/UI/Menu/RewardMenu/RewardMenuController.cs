@@ -32,6 +32,7 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
     {
         View.IconImage.sprite = View.RewardIconMapper.GetIcon(data.RewardType);
         View.AmountText.text = string.Format(LocaleManager.Localize(LocalizationKeys.reward_amount), data.Amount);
+
         // --- 1. Reset States ---
         View.canvasGroup.alpha = 0;
         View.RewardContainer.localScale = Vector3.zero;
@@ -67,6 +68,8 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
 
             // Add a gentle float to the reward
             View.RewardContainer.DOLocalMoveY(20f, 2f).SetRelative().SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+
+            View.ConfettiParticles.Play();
         });
 
         // E. Punch the amount text so the player notices HOW MUCH they got

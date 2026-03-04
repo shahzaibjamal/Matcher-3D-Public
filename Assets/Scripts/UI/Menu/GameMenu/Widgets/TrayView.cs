@@ -32,7 +32,6 @@ public class TrayView : MonoBehaviour
         // USE NAMED METHODS HERE
         GameEvents.OnRequestSteppedLeapEvent += HandleSteppedLeapRequest;
         GameEvents.OnRequestMatchResolveEvent += HandleMatchResolveRequest;
-        GameEvents.OnUndoPowerupEvent += OnUndoRequest;
     }
 
     private void OnDisable()
@@ -41,19 +40,6 @@ public class TrayView : MonoBehaviour
         // NOW THESE WILL ACTUALLY UNSUBSCRIBE
         GameEvents.OnRequestSteppedLeapEvent -= HandleSteppedLeapRequest;
         GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolveRequest;
-        GameEvents.OnUndoPowerupEvent -= OnUndoRequest;
-    }
-
-    private void OnUndoRequest(bool _)
-    {
-        for (int i = _slots.Length - 1; i >= 0; i--)
-        {
-            if (_slots[i].CurrentItem != null)
-            {
-                _slots[i].Clear();
-                break;
-            }
-        }
     }
 
     // Wrapper methods to bridge the Event to the Coroutine

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public partial class Spawner : MonoBehaviour
@@ -49,7 +50,6 @@ public partial class Spawner : MonoBehaviour
         GameEvents.OnHintPowerupEvent += HandleHintPowerUp;
         GameEvents.OnMagnetPowerupEvent += HandleMagnetPowerUp;
         GameEvents.OnCleanSweepTrayEvent += HandleCleanSweep;
-
     }
 
     private void OnDisable()
@@ -74,16 +74,6 @@ public partial class Spawner : MonoBehaviour
         // 1. Prepare Environment
         GenerateBounds();
 
-        if (levelData != null)
-        {
-            Debug.LogError(levelData.Name);
-            if (levelData.ItemsToSpawn.Count > 0)
-            {
-                Debug.LogError(levelData.ItemsToSpawn[0].Id);
-
-            }
-
-        }
         // 2. Prepare Data
         _currentLevelData = levelData;
         if (_currentLevelData == null) return;
@@ -130,7 +120,7 @@ public partial class Spawner : MonoBehaviour
             if (go.TryGetComponent<ClickableItem>(out var clickable))
             {
                 _itemClickables.Add(clickable);
-                clickable.ItemData = item;
+                clickable.ItemData = item.CreateCopy();
                 clickable.OnItemClicked = _onItemClicked;
                 clickable.OnItemClicked += HandleInternalItemClicked;
             }
@@ -162,6 +152,7 @@ public partial class Spawner : MonoBehaviour
     {
         if (_undoHistory.Count == 0) return;
 
+        Debug.LogError("HandleCleansweep");
         GameEvents.OnUndoPowerupEvent?.Invoke(false);
         // Schedule the NEXT undo only after this one is done
         DOVirtual.DelayedCall(0.4f, () => HandleCleanSweep());
@@ -203,22 +194,6 @@ public partial class Spawner : MonoBehaviour
         GameEvents.OnUndoAddItemEvent?.Invoke(dataToRestore.Id);
         SpawnFromTray(dataToRestore, trayWorldPos);
     }
-    // private ItemData RestoreUndoState()
-    // {
-    //     ItemData data = _undoHistory.Pop();
-
-    //     if (_collectableLeft.ContainsKey(data.ID))
-    //         _collectableLeft[data.ID]++;
-    //     else
-    //         _collectableLeft.Add(data.ID, 1);
-
-    //     return data;
-    // }
-
-    // private void TriggerUndoSuccess()
-    // {
-    //     GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Undo);
-    // }
 
     private void SpawnFromTray(ItemData item, Vector3 startPos)
     {

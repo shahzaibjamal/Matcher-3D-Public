@@ -72,7 +72,8 @@ public class GameManager : MonoBehaviour
         GameEvents.OnPowerUpAmountChangeEvent -= HandlePowerUpAmountChange;
         GameEvents.OnGoldUpdatedEvent -= OnGoldUpdate;
         GameEvents.OnLevelCompleteEvent -= HandleLevelComplete;
-
+        _slotManager.Cleanup();
+        _slotManager = null;
     }
 
     private void OnGoldUpdate(int amount)

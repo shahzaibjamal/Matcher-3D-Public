@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class SlotManager
 {
     private readonly ItemData[] _slots;
+    private Stack<string> _undoStack = new Stack<string>(); // Stores UIds
     private bool _isProcessingMatches;
     private bool _allGoalsReached;
     public SlotManager(int size)
@@ -15,17 +17,23 @@ public class SlotManager
 
     public void Reset()
     {
+        Cleanup();
+        Scheduler.Instance.SubscribeGUI(OnGUI);
+        GameEvents.OnItemsCollectedEvent += OnItemsCollected;
+        GameEvents.OnUndoPowerupEvent += OnUndoRequest;
+    }
+
+    public void Cleanup()
+    {
         for (int i = 0; i < _slots.Length; i++)
         {
             _slots[i] = null;
         }
         Scheduler.Instance.UnsubscribeGUI(OnGUI);
-        Scheduler.Instance.SubscribeGUI(OnGUI);
         GameEvents.OnItemsCollectedEvent -= OnItemsCollected;
-        GameEvents.OnItemsCollectedEvent += OnItemsCollected;
         GameEvents.OnUndoPowerupEvent -= OnUndoRequest;
-        GameEvents.OnUndoPowerupEvent += OnUndoRequest;
         _allGoalsReached = false;
+        _undoStack.Clear();
     }
 
     private void OnItemsCollected()
@@ -33,27 +41,46 @@ public class SlotManager
         _allGoalsReached = true;
         Debug.LogError("OnItemsCollected received - _allGoalsReached");
     }
-    private void OnUndoRequest(bool _)
+
+    public async void OnUndoRequest(bool _)
     {
-        for (int i = _slots.Length - 1; i >= 0; i--)
-        {
-            if (_slots[i] != null)
-            {
-                _slots[i] = null;
-                break;
-            }
-        }
+        await UndoLastAction();
     }
-    private void OnHintPowerup()
+    public async Task UndoLastAction()
     {
-        for (int i = 0; i < _slots.Length - 1; i++)
+        if (_undoStack.Count == 0) return;
+
+        // 1. Get the UId of the last item the player clicked
+        string lastUId = _undoStack.Pop();
+
+        // 2. Find where that item is CURRENTLY sitting
+        int currentIdx = -1;
+        for (int i = 0; i < _slots.Length; i++)
         {
-            if (_slots[i] != null)
+            if (_slots[i]?.UId == lastUId)
             {
-                _slots[i] = null;
+                currentIdx = i;
                 break;
             }
         }
+
+        if (currentIdx == -1) return; // Item was likely already matched
+
+        // 3. Visual: Return item to world
+        _slots[currentIdx] = null;
+
+        List<Task> compactTasks = new List<Task>();
+        for (int i = currentIdx; i < _slots.Length - 1; i++)
+        {
+            if (_slots[i + 1] != null)
+            {
+                _slots[i] = _slots[i + 1];
+                _slots[i + 1] = null;
+                compactTasks.Add(ExecuteSteppedLeap(_slots[i], i + 1, i));
+            }
+        }
+
+        await Task.WhenAll(compactTasks);
     }
 
     public async void AddItem(ItemData data, Transform source)
@@ -65,7 +92,6 @@ public class SlotManager
         }
 
         int targetIdx = GetInsertionIndex(data);
-        data.UId = Guid.NewGuid().ToString(); // Assigned IMMEDIATELY
 
         if (targetIdx >= _slots.Length)
         {
@@ -78,6 +104,8 @@ public class SlotManager
             }
             return;
         }
+
+        _undoStack.Push(data.UId);
 
         // 1. Shift logic (Right to Left)
         for (int i = _slots.Length - 1; i > targetIdx; i--)
@@ -149,6 +177,10 @@ public class SlotManager
                 }
             }
             await Task.WhenAll(compactTasks);
+
+            var matchedUIds = matchedData.Select(m => m.UId).ToList();
+            _undoStack = new Stack<string>(_undoStack.Where(id => !matchedUIds.Contains(id)).Reverse());
+
             matchIdx = FindMatch();
         }
     }
