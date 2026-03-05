@@ -15,32 +15,27 @@ MonoBehaviour:
   m_GroupName: MapTheme
   m_GUID: b7ad74de9ad6ca64e89f4290d8de59f1
   m_SerializeEntries:
-  - m_GUID: 4e67fa358af06c143aa1c99507ea027b
-    m_Address: map1
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5b23f78a899ba5a4c8f8e16bcc17d628
-    m_Address: map2
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5e234f0d46a530340bb38078b7555d9b
-    m_Address: desert
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5ece783d3fc2e83408b619a211e01af8
-    m_Address: barren
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a799073fa6fd30441938f0370d204755
+  - m_GUID: 5e948c8922f37b9429fde30b9f251d2a
     m_Address: jungle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b024b2bf882966c4fa3c23d78a882eef
+  - m_GUID: 9104153b5c5c76848ad425e138a5dac1
+    m_Address: cosmic
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ecac201f2f7c28d4bb84b33fed6e2415
+    m_Address: lava
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f512411522b05e7448bc1a378ce576e6
+    m_Address: desert
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe1c3b6e92bb1484aba416dac0434b8f
     m_Address: winter
     m_ReadOnly: 0
     m_SerializedLabels: []

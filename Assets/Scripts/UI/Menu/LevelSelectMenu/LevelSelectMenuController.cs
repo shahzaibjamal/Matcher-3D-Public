@@ -22,7 +22,7 @@ public class LevelSelectMenuController : MenuController<LevelSelectMenuView, Lev
 
     public override void HandleBackInput()
     {
-        base.HandleBackInput();
+        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main);
     }
     private void InitialFocus()
     {

@@ -1,5 +1,5 @@
 Key,en,pt,es
-LABEL_LANGUAGE,Select language,Escolher idioma,Elija idioma
+LABEL_LANGUAGE,Select language,Escolher idioma,Elija el idioma
 LABEL_HELLO,Hey Guys,Olá Pessoal,Hola, chicos
 BUTTON_HELLO,Say hello,Dizer olá,Saluda
 start_game,Play,Jogar,Jugar
@@ -12,7 +12,7 @@ title_level,Level {0},Nível {0},Nivel {0}
 status_perfect,Perfect,Perfeito,Perfecto
 status_good,Good,Bom,Bomba
 status_amazing,Amazing,Incrível,Increíble
-result_win,You Won!,Você venceu!,Você venceu!
+result_win,Level Complete,Nível concluído,Nível concluído
 result_lose,You Lost!,Você perdeu!,Você perdeu!
 levels_no_more,There are no more levels. Check back again for more!!,Não há mais níveis. Volte mais tarde para conferir os próximos!,Não há mais níveis. ¡Volte mais tarde para conferir los próximos!
 game_quit,Would you like to quit game?,Deseja sair do jogo?,Deseja sair do jogo?
@@ -29,3 +29,5 @@ spin,Spin,Rodar,Rodar
 day,Day {0},Dia {0},Día {0}
 reward_amount,x{0},x{0},x{0}
 daily_reward,Daily Rewards,Recompensas diárias,Recompensas diárias
+rewards,Rewards,Recompensas,Recompensas
+tap_to_coontinue,Tap To Continue...,Toque para continuar...,Toque para continuar...

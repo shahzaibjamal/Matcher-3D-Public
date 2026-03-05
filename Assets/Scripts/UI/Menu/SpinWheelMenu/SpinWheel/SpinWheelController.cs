@@ -53,8 +53,6 @@ public class SpinWheelController : MonoBehaviour
         foreach (var item in _spawnedComponents) if (item != null) Destroy(item.gameObject);
         _spawnedComponents.Clear();
 
-        float wheelRadius = wheelContainer.rect.width / 2f;
-        float spawnRadius = wheelRadius * radiusOffset;
         float angleStep = 360f / numberOfSlots;
 
         for (int i = 0; i < numberOfSlots; i++)
@@ -62,14 +60,28 @@ public class SpinWheelController : MonoBehaviour
             GameObject go = Instantiate(rewardPrefab, wheelContainer);
             RectTransform rt = go.GetComponent<RectTransform>();
 
-            // POSITIONING: Strictly based on Rotation
-            // We rotate the container, move the item UP, then rotate back
+            // 1. Reset Anchors to Center
+            rt.anchorMin = new Vector2(0.5f, 0.5f);
+            rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
             rt.localPosition = Vector3.zero;
-            rt.localEulerAngles = new Vector3(0, 0, -(i * angleStep) - visualOffset);
-            rt.Translate(Vector3.up * spawnRadius, Space.Self);
 
-            // Keep the icon upright relative to the slice
-            rt.localEulerAngles = new Vector3(0, 0, -(i * angleStep) - visualOffset);
+            // 2. Rotate to the correct slice direction
+            // visualOffset helps align slot 0 with your needle
+            float targetRotation = -(i * angleStep) - visualOffset;
+            rt.localEulerAngles = new Vector3(0, 0, targetRotation);
+
+            // 3. RESPONSIVE RADIUS: 
+            // Instead of Translate (Pixels), we use anchoredPosition.
+            // We multiply the container's size by our radiusOffset (0.0 to 1.0)
+            // This ensures that even if the wheel shrinks for a small phone, the icons stay inside.
+            float responsiveRadius = (wheelContainer.rect.width / 2f) * radiusOffset;
+            rt.anchoredPosition = rt.up * responsiveRadius;
+
+            // 4. Counter-Rotate the Icon
+            // If you want icons to stay "Upright" relative to the world, use 0.
+            // If you want them "Upright" relative to the slice, keep them at targetRotation.
+            // rt.localEulerAngles = Vector3.zero; // Uncomment if icons should be world-upright
 
             var comp = go.GetComponent<SpinRewardView>();
             if (i < _currentRewards.Count)
@@ -80,10 +92,8 @@ public class SpinWheelController : MonoBehaviour
             _spawnedComponents.Add(comp);
         }
 
-        // Ensure wheel starts at 0
         wheelContainer.localEulerAngles = Vector3.zero;
     }
-
     public void TurnWheel()
     {
         if (_isStarted || _currentRewards == null || _currentRewards.Count == 0) return;

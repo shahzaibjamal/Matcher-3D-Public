@@ -2112,20 +2112,28 @@
       "StarRequirement": 20
     },
     {
-      "Id": "barren",
-      "ThemeName": "barren",
-      "BackgroundSpriteName": "barren",
+      "Id": "cosmic",
+      "ThemeName": "Cosmic",
+      "BackgroundSpriteName": "cosmic",
       "FogColorHex": "#DD9646",
       "StartLevel": 31,
       "StarRequirement": 45
+    },
+    {
+      "Id": "lava",
+      "ThemeName": "Lava",
+      "BackgroundSpriteName": "lava",
+      "FogColorHex": "#DD9646",
+      "StartLevel": 46,
+      "StarRequirement": 72
     },
     {
       "Id": "winter",
       "ThemeName": "Winter",
       "BackgroundSpriteName": "winter",
       "FogColorHex": "#DD9646",
-      "StartLevel": 46,
-      "StarRequirement": 72
+      "StartLevel": 61,
+      "StarRequirement": 101
     }
   ]
 }

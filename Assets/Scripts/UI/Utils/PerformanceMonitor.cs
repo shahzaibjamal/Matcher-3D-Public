@@ -15,13 +15,13 @@ public class PerformanceMonitor : MonoBehaviour
     [SerializeField] private int graphHeight = 60;
     [SerializeField] private Color lineColor = Color.green;
     [SerializeField] private int smoothingWindow = 5; // Higher = smoother graph
-
+    [SerializeField] private CanvasGroup monitorCanvasGroup;
     private float _minFps = Mathf.Infinity;
     private float _maxFps = 0f;
     private float _accumulatedDeltaTime;
     private int _frameCount;
     private StringBuilder _sb = new StringBuilder();
-
+    private bool _isVisible = true;
     private Texture2D _graphTexture;
     private Color[] _blankPixels;
     private float[] _fpsHistory;
@@ -44,6 +44,10 @@ public class PerformanceMonitor : MonoBehaviour
         for (int i = 0; i < _blankPixels.Length; i++) _blankPixels[i] = new Color(0, 0, 0, 0.4f);
 
         _fpsHistory = new float[graphWidth];
+        for (int i = 0; i < graphWidth; i++)
+        {
+            _fpsHistory[i] = 60f; // Start at a "clean" 60fps line
+        }
     }
 
     void Update()
@@ -51,9 +55,13 @@ public class PerformanceMonitor : MonoBehaviour
         _accumulatedDeltaTime += Time.unscaledDeltaTime;
         _frameCount++;
 
-        if (_accumulatedDeltaTime > 0.1f) // Faster internal update for smoother graph line
+        if (_accumulatedDeltaTime > 0.05f) // High frequency for smooth data
         {
             float currentFps = _frameCount / _accumulatedDeltaTime;
+
+            // 1. ALWAYS track data (cheap)
+            _fpsHistory[_historyIndex] = currentFps;
+            _historyIndex = (_historyIndex + 1) % graphWidth;
 
             if (Time.timeSinceLevelLoad > 2f)
             {
@@ -61,20 +69,25 @@ public class PerformanceMonitor : MonoBehaviour
                 if (currentFps > _maxFps) _maxFps = currentFps;
             }
 
-            // Smoothing via Moving Average
-            float smoothedFps = GetMovingAverage(currentFps);
-            UpdateGraph(smoothedFps);
+            // 2. ONLY render the texture if the panel is active (expensive)
+            if (_isVisible)
+            {
+                UpdateGraph(GetMovingAverage(currentFps));
 
-            // Text only updates at the user-defined interval
+                // Text updates slightly slower to stay readable
+                if (_accumulatedDeltaTime > updateInterval)
+                {
+                    UpdateDisplay(currentFps, (_accumulatedDeltaTime / _frameCount) * 1000f);
+                }
+            }
+
             if (_accumulatedDeltaTime > updateInterval)
             {
-                UpdateDisplay(currentFps, (_accumulatedDeltaTime / _frameCount) * 1000f);
                 _accumulatedDeltaTime = 0;
                 _frameCount = 0;
             }
         }
     }
-
     private float GetMovingAverage(float newFps)
     {
         _fpsHistory[_historyIndex] = newFps;
@@ -98,14 +111,22 @@ public class PerformanceMonitor : MonoBehaviour
             int idx1 = (_historyIndex + x) % graphWidth;
             int idx2 = (_historyIndex + x + 1) % graphWidth;
 
-            // Map FPS (0-80) to graph height
-            float y1 = Mathf.InverseLerp(0, 80, _fpsHistory[idx1]) * graphHeight;
-            float y2 = Mathf.InverseLerp(0, 80, _fpsHistory[idx2]) * graphHeight;
+            // Using -10 to 90 provides a vertical margin
+            float y1 = Mathf.InverseLerp(-10, 90, _fpsHistory[idx1]) * graphHeight;
+            float y2 = Mathf.InverseLerp(-10, 90, _fpsHistory[idx2]) * graphHeight;
 
             DrawLine((int)x, (int)y1, (int)x + 1, (int)y2, lineColor);
         }
-
         _graphTexture.Apply();
+    }
+
+    private void DrawHorizontalLine(int y, Color col)
+    {
+        if (y < 0 || y >= graphHeight) return;
+        for (int x = 0; x < graphWidth; x++)
+        {
+            _graphTexture.SetPixel(x, y, col);
+        }
     }
 
     // Basic line drawing algorithm
@@ -127,6 +148,15 @@ public class PerformanceMonitor : MonoBehaviour
             x += xInc;
             y += yInc;
         }
+        for (int i = 0; i <= step; i++)
+        {
+            _graphTexture.SetPixel((int)x, (int)y, col);
+            // Add this line for a "Toon" double-thick line:
+            _graphTexture.SetPixel((int)x, (int)y + 1, col);
+
+            x += xInc;
+            y += yInc;
+        }
     }
 
 
@@ -143,5 +173,10 @@ public class PerformanceMonitor : MonoBehaviour
         statsText.text = _sb.ToString();
     }
 
-
+    public void ToggleVisibility()
+    {
+        _isVisible = !_isVisible;
+        monitorCanvasGroup.alpha = _isVisible ? 1f : 0f;
+        monitorCanvasGroup.blocksRaycasts = _isVisible;
+    }
 }
