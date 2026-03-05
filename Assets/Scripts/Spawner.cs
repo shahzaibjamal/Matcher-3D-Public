@@ -384,9 +384,14 @@ public partial class Spawner : MonoBehaviour
 
     private Vector3 CalculateRandomSpawnPos()
     {
-        float x = UnityEngine.Random.Range(-_spawnXMax + 0.5f, _spawnXMax - 0.5f);
-        float z = UnityEngine.Random.Range(-_spawnZMax + 0.5f, _spawnZMax - 0.5f);
-        float y = VerticalOffset + UnityEngine.Random.Range(0f, 1.0f);
+        float padding = 0.5f; // Keep items away from the wall edge
+
+        // Use the calculated max bounds
+        float x = UnityEngine.Random.Range(-_spawnXMax + padding, _spawnXMax - padding);
+        float z = UnityEngine.Random.Range(-_spawnZMax + padding, _spawnZMax - padding);
+
+        // Fixed Y to ensure they drop into the scene
+        float y = VerticalOffset + UnityEngine.Random.Range(0f, 2.0f);
 
         return Parent.position + new Vector3(x, y, z);
     }
@@ -397,10 +402,16 @@ public partial class Spawner : MonoBehaviour
 
     public void GenerateBounds()
     {
-        float distanceToCamera = Math.Abs(MainCamera.transform.position.y - Parent.position.y);
+        // 1. Calculate the distance between camera and the spawn plane
+        float distanceToCamera = Mathf.Abs(MainCamera.transform.position.y - Parent.position.y);
+
+        // 2. Calculate the FULL Frustum height and width at that specific distance
+        // Using Vertical FOV: height = 2 * d * tan(fov/2)
         float frustumHeight = 2.0f * distanceToCamera * Mathf.Tan(MainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
         float frustumWidth = frustumHeight * MainCamera.aspect;
 
+        // 3. Apply the Percentages as a "Scale" for the play area
+        // WidthPercent = 0.9f means the walls will be at 90% of the screen width
         _spawnXMax = (frustumWidth * WidthPercent) / 2f;
         _spawnZMax = (frustumHeight * HeightPercent) / 2f;
 
@@ -416,11 +427,31 @@ public partial class Spawner : MonoBehaviour
         container.transform.SetParent(Parent);
         container.transform.localPosition = Vector3.zero;
 
-        // Spawn Walls
-        SpawnWall("Wall_Left", new Vector3(-_spawnXMax, WallHeight / 2, 0), new Vector3(0.1f, WallHeight, _spawnZMax * 2), container.transform);
-        SpawnWall("Wall_Right", new Vector3(_spawnXMax, WallHeight / 2, 0), new Vector3(0.1f, WallHeight, _spawnZMax * 2), container.transform);
-        SpawnWall("Wall_Top", new Vector3(0, WallHeight / 2, _spawnZMax), new Vector3(_spawnXMax * 2, WallHeight, 0.1f), container.transform);
-        SpawnWall("Wall_Bottom", new Vector3(0, WallHeight / 2, -_spawnZMax), new Vector3(_spawnXMax * 2, WallHeight, 0.1f), container.transform);
+        float thickness = 1.0f;
+
+        // Wall_Left: Positioned so the INNER face is at -_spawnXMax
+        SpawnWall("Wall_Left",
+            new Vector3(-_spawnXMax - (thickness / 2), WallHeight / 2, 0),
+            new Vector3(thickness, WallHeight, _spawnZMax * 2 + (thickness * 2)),
+            container.transform);
+
+        // Wall_Right: INNER face at _spawnXMax
+        SpawnWall("Wall_Right",
+            new Vector3(_spawnXMax + (thickness / 2), WallHeight / 2, 0),
+            new Vector3(thickness, WallHeight, _spawnZMax * 2 + (thickness * 2)),
+            container.transform);
+
+        // Wall_Top
+        SpawnWall("Wall_Top",
+            new Vector3(0, WallHeight / 2, _spawnZMax + (thickness / 2)),
+            new Vector3(_spawnXMax * 2, WallHeight, thickness),
+            container.transform);
+
+        // Wall_Bottom
+        SpawnWall("Wall_Bottom",
+            new Vector3(0, WallHeight / 2, -_spawnZMax - (thickness / 2)),
+            new Vector3(_spawnXMax * 2, WallHeight, thickness),
+            container.transform);
     }
 
     private void SpawnWall(string wallName, Vector3 localPos, Vector3 size, Transform parent)

@@ -55,10 +55,10 @@ public class SlotView : MonoBehaviour
 
         // Add the landing juice
         icon.transform.DOPunchScale(Vector3.one * 0.2f, 0.2f).SetId("SlotView: Reveal Punch"); ;
+        RectTransform rect = _backgroundImage.rectTransform;
 
         if (impact)
         {
-            RectTransform rect = _backgroundImage.rectTransform;
             Sequence impactSeq = DOTween.Sequence();
             impactSeq.SetId("SlotView: Impact");
             // 1. The Slam: Move down quickly with a heavy ease
@@ -76,6 +76,11 @@ public class SlotView : MonoBehaviour
                     Clear();
                 }
             });
+        }
+        else
+        {
+            // item on it still causing weight 
+            _backgroundImage.rectTransform.localPosition = _originalSlotPos + new Vector3(0, -10f, 0);
         }
     }
     public void Clear()

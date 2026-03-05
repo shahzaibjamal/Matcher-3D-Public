@@ -150,7 +150,7 @@ public class TrayView : MonoBehaviour
         // while the Coroutine was yielding during the jumps.
         if (_slots[targetIdx].CurrentItem?.UId == data.UId)
         {
-            _slots[targetIdx].RevealIcon();
+            _slots[targetIdx].RevealIcon(true);
         }
 
         Destroy(ghost.gameObject);

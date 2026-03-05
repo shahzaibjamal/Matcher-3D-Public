@@ -135,7 +135,9 @@ public class PerformanceMonitor : MonoBehaviour
         _sb.Clear();
         _sb.Append("FPS: ").Append(fps.ToString("F1"))
            .Append(" (").Append(ms.ToString("F1")).AppendLine("ms)")
-           .Append("<color=#FF5555>MIN: ").Append(_minFps == Mathf.Infinity ? "0" : _minFps.ToString("F1")).Append("</color> | ")
+           .Append("<color=#FF5555>MIN: ").Append(_minFps == Mathf.Infinity ? "0" : _minFps.ToString("F1")).Append("</color>  ")
+           // Changed " | " to " / " or just extra spaces below:
+           .Append("<color=#AAAAAA>/</color> ")
            .Append("<color=#55FF55>MAX: ").Append(_maxFps.ToString("F1")).Append("</color>");
 
         statsText.text = _sb.ToString();
