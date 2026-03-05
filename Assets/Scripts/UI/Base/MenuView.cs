@@ -37,7 +37,7 @@ public abstract class MenuView : MonoBehaviour, IMenuView
     // Logic for animations when the menu closes
     public virtual void OnExit(Action onComplete)
     {
-        if (DisplayMode == Menus.MenuDisplayMode.Popup)
+        if (DisplayMode == Menus.MenuDisplayMode.Popup || DisplayMode == Menus.MenuDisplayMode.Overlay)
         {
             // Chain Scale and Fade, then trigger callback
             transform.DOScale(0f, 0.2f).SetEase(Ease.InBack);

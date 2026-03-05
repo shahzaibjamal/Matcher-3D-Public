@@ -1,3 +1,6 @@
+using System;
+using Unity.VisualScripting;
+
 public abstract class MenuController<TView, TData> : IMenuController
     where TView : IMenuView
     where TData : MenuData
@@ -33,6 +36,20 @@ public abstract class MenuController<TView, TData> : IMenuController
     public abstract void OnResume();
     public virtual void HandleBackInput()
     {
-        MenuManager.Instance.GoBack();
+        // 1. Generic behavior for temporary UI
+        if (View.DisplayMode == Menus.MenuDisplayMode.Overlay ||
+            View.DisplayMode == Menus.MenuDisplayMode.Popup)
+        {
+            MenuManager.Instance.GoBack();
+            return;
+        }
+
+        // 2. Defensive check for ScreenReplace
+        // If we reach this point, it means a full-screen menu was open 
+        // and it didn't override this method to say where to go next.
+        throw new System.NotImplementedException(
+            $"Menu {View.GetType().Name} uses ScreenReplace but does not override HandleBackInput. " +
+            "You must explicitly define which menu or state to transition to here."
+        );
     }
 }
