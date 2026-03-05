@@ -43,4 +43,39 @@ public class Inventory
         else
             PowerUps[type] = amount;
     }
+    public void AddRewards(List<RewardData> rewards)
+    {
+        if (rewards == null) return;
+
+        foreach (var reward in rewards)
+        {
+            if (reward.RewardType == RewardType.Gold)
+            {
+                // We use the existing logic to update gold
+                TryUpdateGoldAmount(reward.Amount);
+            }
+            else
+            {
+                // Convert RewardType to PowerUpType
+                PowerUpType pType = ConvertToPowerUpType(reward.RewardType);
+
+                // If the reward is actually a powerup (not None), add it
+                AddPowerUp(pType, reward.Amount);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Helper to map RewardType enum to PowerUpType enum.
+    /// </summary>
+    private PowerUpType ConvertToPowerUpType(RewardType rewardType)
+    {
+        return rewardType switch
+        {
+            RewardType.Hint => PowerUpType.Hint,
+            RewardType.Magnet => PowerUpType.Magnet,
+            RewardType.Shake => PowerUpType.Shake,
+            RewardType.Undo => PowerUpType.Undo,
+        };
+    }
 }

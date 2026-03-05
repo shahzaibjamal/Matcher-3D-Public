@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RewardMenuController : MenuController<RewardMenuView, RewardMenuData>
 {
+    private Sequence _sequence;
     public override void OnEnter()
     {
         SetState(new RewardMenuBaseState_Main(this));
@@ -15,6 +16,11 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
     {
         View.RewardContainer.DOKill();
         View.FullscreenButton.onClick.RemoveListener(OnClickClaim);
+        _sequence?.Kill();
+        View.RewardContainer.DOKill();
+        View.GodRaysTransform.DOKill();
+        View.AmountText.transform.DOKill();
+
         base.OnExit();
     }
 
@@ -49,17 +55,17 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
         View.FullscreenButton.interactable = false;
 
         // --- 2. The Sequence ---
-        Sequence s = DOTween.Sequence().SetUpdate(true);
+        _sequence = DOTween.Sequence().SetUpdate(true);
 
-        s.Append(View.canvasGroup.DOFade(1, 0.3f));
+        _sequence.Append(View.canvasGroup.DOFade(1, 0.3f));
 
         // Join the God Rays entrance
-        s.Join(View.GodRaysTransform.DOScale(1.2f, 0.6f).SetEase(Ease.OutBack));
+        _sequence.Join(View.GodRaysTransform.DOScale(1.2f, 0.6f).SetEase(Ease.OutBack));
 
         // C. The Icon "Pop"
-        s.Append(View.RewardContainer.DOScale(1.1f, 0.4f).SetEase(Ease.OutBack));
+        _sequence.Append(View.RewardContainer.DOScale(1.1f, 0.4f).SetEase(Ease.OutBack));
         // D. The "Impact" Moment & Looping Logic
-        s.AppendCallback(() =>
+        _sequence.AppendCallback(() =>
         {
             View.FullscreenButton.interactable = true;
             View.RewardContainer.DOKill();
@@ -88,7 +94,7 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
                 .SetUpdate(true);
         });
 
-        s.Append(View.AmountText.transform.DOPunchScale(Vector3.one * 0.25f, 0.5f, 8, 1));
+        _sequence.Append(View.AmountText.transform.DOPunchScale(Vector3.one * 0.25f, 0.5f, 8, 1));
     }
     public void OnClickClaim() // Linked to a full-screen button
     {

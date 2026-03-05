@@ -9,10 +9,10 @@ public class DailyRewardsWindow : MonoBehaviour
 {
     [SerializeField] private DailyRewardView[] _rewardViews;
     [SerializeField] private RewardIconMapper _iconMapper; // Reference to your SO
-    private Action<RewardData> _onRewardClaimedCallback;
+    private Action<List<RewardData>> _onRewardClaimedCallback;
     private List<DailyRewardData> _currentRewards;
 
-    public void Initialize(List<DailyRewardData> inputRewards, Action<RewardData> claimCallback)
+    public void Initialize(List<DailyRewardData> inputRewards, Action<List<RewardData>> claimCallback)
     {
         _currentRewards = inputRewards;
         _onRewardClaimedCallback = claimCallback;
@@ -57,7 +57,7 @@ public class DailyRewardsWindow : MonoBehaviour
             saveData.ClaimedDailyRewards.Add(data.Day);
 
             // Fire external callback
-            // _onRewardClaimedCallback?.Invoke(data);
+            _onRewardClaimedCallback?.Invoke(data.Rewards);
 
             // Refresh the whole UI to show the new 'Claimed' states
             RefreshUI();

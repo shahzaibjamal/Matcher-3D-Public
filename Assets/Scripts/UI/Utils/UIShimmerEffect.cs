@@ -36,7 +36,7 @@ public class UIShimmerEffect : MonoBehaviour
         // Calculate travel distance based on parent width
         // We add a buffer so it starts and ends completely out of view
         float width = _parentRect.rect.width;
-        float offset = width * 1.5f;
+        float offset = width * 2.0f;
 
         float startX = -offset;
         float endX = offset;

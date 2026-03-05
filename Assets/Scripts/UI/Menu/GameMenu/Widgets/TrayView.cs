@@ -11,6 +11,7 @@ public class TrayView : MonoBehaviour
     [SerializeField] private Transform slotParent;
     [SerializeField] private Image ghostIconPrefab;
     [SerializeField] private GameData gameData;
+    [SerializeField] private ParticleSystem PoofParticle;
 
     private SlotView[] _slots;
 
@@ -197,6 +198,8 @@ public class TrayView : MonoBehaviour
         {
             transform.DOPunchPosition(Vector3.down * 15f, 0.3f, 15, 0.5f);
             // ParticleManager.Instance.Play("MergePoof", centerSlotPos);
+            PoofParticle.transform.position = ghosts[1].transform.position;
+            PoofParticle.Play();
         });
 
         yield return mainSeq.WaitForCompletion();

@@ -30,6 +30,7 @@
   <Project Path="Unity.Addressables.DocExampleCode.Editor.Tests.csproj" />
   <Project Path="Unity.Services.Core.csproj" />
   <Project Path="Unity.VisualScripting.Flow.csproj" />
+  <Project Path="ToonyColorsPro.Demo.Editor.csproj" />
   <Project Path="Unity.PerformanceTesting.csproj" />
   <Project Path="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.csproj" />
   <Project Path="UnityEditor.Purchasing.csproj" />
@@ -42,6 +43,7 @@
   <Project Path="Unity.AI.Navigation.Updater.csproj" />
   <Project Path="UnityEngine.Purchasing.Codeless.csproj" />
   <Project Path="Unity.Performance.Profile-Analyzer.Editor.csproj" />
+  <Project Path="CFXRRuntime.csproj" />
   <Project Path="Unity.Analytics.DataPrivacy.csproj" />
   <Project Path="Unity.AI.Navigation.Editor.csproj" />
   <Project Path="UnityEngine.Advertisements.DevX.Editor.csproj" />
@@ -61,6 +63,7 @@
   <Project Path="Purchasing.Common.csproj" />
   <Project Path="Unity.VSCode.Editor.csproj" />
   <Project Path="Unity.Services.Core.Threading.csproj" />
+  <Project Path="CFXREditor.csproj" />
   <Project Path="Unity.Settings.Editor.csproj" />
   <Project Path="UnityEditor.XR.LegacyInputHelpers.csproj" />
   <Project Path="Unity.VisualScripting.Shared.Editor.csproj" />
@@ -72,6 +75,8 @@
   <Project Path="UnityEngine.Purchasing.AppleCore.csproj" />
   <Project Path="UnityEngine.Purchasing.SecurityStub.csproj" />
   <Project Path="Unity.CollabProxy.Editor.csproj" />
+  <Project Path="KinoBloom.Runtime.csproj" />
+  <Project Path="CFXRDemo.csproj" />
   <Project Path="IAPResolver.csproj" />
   <Project Path="UnityEngine.Purchasing.WinRTStub.csproj" />
   <Project Path="UnityEngine.SpatialTracking.csproj" />
@@ -79,6 +84,7 @@
   <Project Path="UnityEngine.Purchasing.WinRTCore.csproj" />
   <Project Path="UnityEngine.XR.LegacyInputHelpers.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="CFXR.WelcomeScreen.csproj" />
   <Project Path="Unity.Services.Core.Networking.csproj" />
   <Project Path="Unity.VisualScripting.DocCodeExamples.csproj" />
   <Project Path="Unity.ScriptableBuildPipeline.csproj" />

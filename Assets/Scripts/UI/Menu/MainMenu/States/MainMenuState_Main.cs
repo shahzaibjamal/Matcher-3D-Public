@@ -49,17 +49,25 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         GameEvents.OnGoldUpdatedEvent -= HandleGoldUpdate;
 
 
+        // 1. Kill Sequences
         _playButtonSequence?.Kill();
+        _giftSeq?.Kill();
+        _spinSeq?.Kill();
+
+        // 2. Kill all tweens on the specific Transforms (Cleans up Shimmers and anonymous tweens)
+        View.StartButton.transform.DOKill();
         View.GiftButton.transform.DOKill();
         View.DailySpinButton.transform.DOKill();
         View.DailyRewardButton.transform.DOKill();
         View.StoreButton.transform.DOKill();
-        _giftSeq?.Kill();
-        _spinSeq?.Kill();
-        View.RewardShimmer.Stop();
-        View.StoreShimmer.Stop();
+
+        // Reset scales/rotations to default so they don't look "stuck"
+        View.StartButton.transform.localScale = Vector3.one;
+        View.GiftButton.transform.localScale = Vector3.one;
+        View.DailySpinButton.transform.localRotation = Quaternion.identity;
         base.Exit();
     }
+
 
     private void HandleGoldUpdate(int amount)
     {
