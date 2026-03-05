@@ -43,8 +43,10 @@ MonoBehaviour:
   - day
   - reward_amount
   - daily_reward
+  - rewards
+  - tap_to_continue
   _values:
-  - Elija idioma
+  - Elija el idioma
   - Hola
   - Saluda
   - Jugar
@@ -57,7 +59,7 @@ MonoBehaviour:
   - Perfecto
   - Bomba
   - "Incre\xEDble"
-  - "Voc\xEA venceu!"
+  - "N\xEDvel conclu\xEDdo"
   - "Voc\xEA perdeu!"
   - "N\xE3o h\xE1 mais n\xEDveis. \xA1Volte mais tarde para conferir los pr\xF3ximos!"
   - Deseja sair do jogo?
@@ -71,6 +73,8 @@ MonoBehaviour:
   - Roda da Sorte
   - "\xA1Gire a roda!"
   - Rodar
-  - "D\xEDa"
+  - "D\xEDa {0}"
   - x{0}
   - "Recompensas di\xE1rias"
+  - Recompensas
+  - Toque para continuar...

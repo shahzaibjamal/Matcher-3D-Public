@@ -74,5 +74,9 @@ namespace TS.LocalizationSystem
         public const string reward_amount = "reward_amount";
         
         public const string daily_reward = "daily_reward";
+        
+        public const string rewards = "rewards";
+        
+        public const string tap_to_continue = "tap_to_continue";
     }
 }

@@ -35,6 +35,8 @@ public partial class Spawner : MonoBehaviour
     // --- Private State ---
     private float _spawnXMax;
     private float _spawnZMax;
+    private float _levelVerticalOffset = 0;
+
     private List<ClickableItem> _itemClickables = new();
     private Action<ItemData, Transform> _onItemClicked;
     private LevelData _currentLevelData;
@@ -198,8 +200,6 @@ public partial class Spawner : MonoBehaviour
     private void SpawnFromTray(ItemData item, Vector3 startPos)
     {
         // 1. Instantiate at the Tray's location
-        // GameObject go = Instantiate(item.Prefab, startPos, UnityEngine.Random.rotation, Parent);
-
         AssetLoader.Instance.InstantiatePrefab(item.PrefabName, startPos, UnityEngine.Random.rotation, Parent, (go) =>
         {
             // 2. Setup Clickable Logic
@@ -399,21 +399,35 @@ public partial class Spawner : MonoBehaviour
     #endregion
 
     #region Bounds & Walls
-
     public void GenerateBounds()
     {
-        // 1. Calculate the distance between camera and the spawn plane
+        // 1. Calculate the distance and the RAW Full Frustum
         float distanceToCamera = Mathf.Abs(MainCamera.transform.position.y - Parent.position.y);
+        float fullFrustumHeight = 2.0f * distanceToCamera * Mathf.Tan(MainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+        float frustumWidth = fullFrustumHeight * MainCamera.aspect;
 
-        // 2. Calculate the FULL Frustum height and width at that specific distance
-        // Using Vertical FOV: height = 2 * d * tan(fov/2)
-        float frustumHeight = 2.0f * distanceToCamera * Mathf.Tan(MainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
-        float frustumWidth = frustumHeight * MainCamera.aspect;
+        // 2. Calculate the World-Space Height of the Top Notch (Unsafe Area)
+        float pixelTopGap = Screen.height - Screen.safeArea.yMax;
+        float topGapPercentage = pixelTopGap / Screen.height;
+        float worldTopGap = fullFrustumHeight * topGapPercentage;
 
-        // 3. Apply the Percentages as a "Scale" for the play area
-        // WidthPercent = 0.9f means the walls will be at 90% of the screen width
+        // 3. Define the "Available" Height (Everything below the notch)
+        float availableHeight = fullFrustumHeight - worldTopGap;
+
+        // 4. Apply HeightPercent to the AVAILABLE space
+        // This ensures the 0.9f (or whatever %) stays within the safe zone
+        float usableHeight = availableHeight * HeightPercent;
+        _spawnZMax = usableHeight / 2f;
+
+        // 5. Apply WidthPercent (Standard)
         _spawnXMax = (frustumWidth * WidthPercent) / 2f;
-        _spawnZMax = (frustumHeight * HeightPercent) / 2f;
+
+        // 6. Calculate the Center Offset
+        // We shift the container down to account for the Notch
+        // PLUS we shift it down slightly more to center the "HeightPercent" 
+        // area within the safe zone.
+        float centerOfSafeZone = (fullFrustumHeight / 2f) - worldTopGap - (availableHeight / 2f);
+        _levelVerticalOffset = centerOfSafeZone;
 
         RefreshContainer();
     }
@@ -425,35 +439,37 @@ public partial class Spawner : MonoBehaviour
 
         GameObject container = new GameObject("LevelContainer");
         container.transform.SetParent(Parent);
-        container.transform.localPosition = Vector3.zero;
+
+        // Position the container at the calculated offset
+        container.transform.localPosition = new Vector3(0, 0, _levelVerticalOffset);
 
         float thickness = 1.0f;
 
-        // Wall_Left: Positioned so the INNER face is at -_spawnXMax
+        // Walls are now placed relative to the Container's offset center
+        // Wall_Left
         SpawnWall("Wall_Left",
             new Vector3(-_spawnXMax - (thickness / 2), WallHeight / 2, 0),
-            new Vector3(thickness, WallHeight, _spawnZMax * 2 + (thickness * 2)),
+            new Vector3(thickness, WallHeight, _spawnZMax * 2),
             container.transform);
 
-        // Wall_Right: INNER face at _spawnXMax
+        // Wall_Right
         SpawnWall("Wall_Right",
             new Vector3(_spawnXMax + (thickness / 2), WallHeight / 2, 0),
-            new Vector3(thickness, WallHeight, _spawnZMax * 2 + (thickness * 2)),
+            new Vector3(thickness, WallHeight, _spawnZMax * 2),
             container.transform);
 
-        // Wall_Top
+        // Wall_Top (Respects Notch + HeightPercent)
         SpawnWall("Wall_Top",
             new Vector3(0, WallHeight / 2, _spawnZMax + (thickness / 2)),
-            new Vector3(_spawnXMax * 2, WallHeight, thickness),
+            new Vector3(_spawnXMax * 2 + (thickness * 2), WallHeight, thickness),
             container.transform);
 
         // Wall_Bottom
         SpawnWall("Wall_Bottom",
             new Vector3(0, WallHeight / 2, -_spawnZMax - (thickness / 2)),
-            new Vector3(_spawnXMax * 2, WallHeight, thickness),
+            new Vector3(_spawnXMax * 2 + (thickness * 2), WallHeight, thickness),
             container.transform);
     }
-
     private void SpawnWall(string wallName, Vector3 localPos, Vector3 size, Transform parent)
     {
         GameObject wall = new GameObject(wallName);

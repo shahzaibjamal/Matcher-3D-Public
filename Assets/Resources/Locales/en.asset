@@ -43,6 +43,8 @@ MonoBehaviour:
   - day
   - reward_amount
   - daily_reward
+  - rewards
+  - tap_to_continue
   _values:
   - Select language
   - Hey Guys
@@ -57,7 +59,7 @@ MonoBehaviour:
   - Perfect
   - Good
   - Amazing
-  - You Won!
+  - Level Complete
   - You Lost!
   - There are no more levels. Check back again for more!!
   - Would you like to quit game?
@@ -71,6 +73,8 @@ MonoBehaviour:
   - Lucky Wheel
   - Spin the wheel!
   - Spin
-  - Day
+  - Day {0}
   - x{0}
   - Daily Rewards
+  - Rewards
+  - Tap To Continue...
