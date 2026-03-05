@@ -208,7 +208,6 @@ public class MenuManager : MonoBehaviour
         // 1. Should we dim? 
         // Usually, we dim for Popups and specific Overlays (like FTUE)
         bool shouldDim = (mode == Menus.MenuDisplayMode.Popup || mode == Menus.MenuDisplayMode.Overlay);
-        //        blockingLayer.SetActive(shouldDim);
 
         Image dimImage = blockingLayer.GetComponent<Image>();
 
@@ -218,7 +217,7 @@ public class MenuManager : MonoBehaviour
             if (!blockingLayer.activeSelf)
             {
                 blockingLayer.SetActive(true);
-                dimImage.DOFade(0.7f, 0.3f).From(0); // Fade from transparent to 70% black
+                dimImage.DOFade(0.8f, 0.3f).From(0); // Fade from transparent to 70% black
             }
         }
         else
