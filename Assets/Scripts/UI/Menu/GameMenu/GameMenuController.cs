@@ -1,10 +1,5 @@
-using System;
-using UnityEngine;
-
 public class GameMenuController : MenuController<GameMenuView, GameMenuData>
 {
-
-    public static event Action OnGameStarted;
 
     public override void OnEnter()
     {

@@ -77,6 +77,12 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         View.TextAnimation.PlayReveal();
 
         Scheduler.Instance.ExecuteAfterDelay(1.0f + delay, DisplayRewards);
+        Scheduler.Instance.ExecuteAfterDelay(1.3f + delay, () =>
+        {
+            View.ConfettiLeft.Play();
+            View.ConfettiRight.Play();
+        });
+
     }
 
     private void PlayGoldAnimation(int goldAmount, int totalAmount, float delay, Action onComplete = null)

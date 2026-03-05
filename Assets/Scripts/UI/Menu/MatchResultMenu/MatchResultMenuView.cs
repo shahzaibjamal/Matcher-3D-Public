@@ -26,4 +26,6 @@ public class MatchResultMenuView : MenuView
     public RewardIconMapper RewardIconMapper;
 
     public CanvasGroup RewardsCanvasGroup;
+    public ParticleSystem ConfettiRight;
+    public ParticleSystem ConfettiLeft;
 }

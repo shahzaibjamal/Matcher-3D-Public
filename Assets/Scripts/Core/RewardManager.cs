@@ -14,12 +14,16 @@ public class RewardManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            LoadFromSave();
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    public void Init()
+    {
+        LoadFromSave();
     }
 
     private void LoadFromSave()

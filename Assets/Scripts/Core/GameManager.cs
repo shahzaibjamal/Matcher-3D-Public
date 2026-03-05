@@ -40,10 +40,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SaveData = SaveSystem.Load();
+        RewardManager.Instance.Init();
         LevelManager.Instance.Initialize(SaveData);
-
-        // QualitySettings.vSyncCount = 0;
-        // Application.targetFrameRate = -1; // -1 means "unlimited"
 
         MainMenuController.OnStartButtonClicked += StartGame;
         GameEvents.OnGameInitializedEvent += LoadLevelById;
