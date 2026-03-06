@@ -11,4 +11,5 @@ public class DebugMenuView : MenuView
     public Button LoadButton;
     public Button SaveButton;
     public Button BackButton;
+    public Button PowerUpButton;
 }

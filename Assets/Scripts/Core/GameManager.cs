@@ -6,8 +6,6 @@ public class GameManager : MonoBehaviour
 {
     // Singleton Instance
 
-    public bool UseRaycast;    //remove this
-
     public static GameManager Instance { get; private set; }
 
     [Header("Prefabs & References")]

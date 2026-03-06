@@ -503,29 +503,58 @@ public partial class Spawner : MonoBehaviour
         }
     }
 
+    public ParticleSystem shakeParticle;
+
     public void ShakeArea()
     {
         if (_itemClickables.Count == 0) return;
 
-        foreach (var item in _itemClickables)
+        // --- Define Local Variables ---
+        int shakesRemaining = 3;
+        float shakeInterval = 0.7f;
+        float shakeRadius = 6.0f;
+        float shakePower = 0.5f;
+        float upwardModifier = 0.2f;
+
+        void TriggerSingleRumble()
         {
-            if (item == null) continue;
+            if (shakesRemaining <= 0) return;
 
-            if (item.TryGetComponent<Rigidbody>(out var rb))
+            // 1. Target a DENSE spot by picking a random active item
+            // We filter out nulls to ensure the item hasn't been matched/destroyed
+            var activeItems = _itemClickables.FindAll(i => i != null);
+            if (activeItems.Count == 0) return;
+
+            int randomIndex = UnityEngine.Random.Range(0, activeItems.Count);
+            Vector3 itemPos = activeItems[randomIndex].transform.position;
+
+            // Offset the Y slightly downward so the force pushes UP and OUT
+            Vector3 epicenter = new Vector3(itemPos.x, itemPos.y - 0.5f, itemPos.z);
+
+            // 2. Physics check for items in range
+            Collider[] hitColliders = Physics.OverlapSphere(epicenter, shakeRadius);
+
+            foreach (var hit in hitColliders)
             {
-                // Apply a burst: Random horizontal + strong upward
-                Vector3 force = new Vector3(
-                    UnityEngine.Random.Range(-1f, 1f),
-                    UnityEngine.Random.Range(0f, 1f),
-                    UnityEngine.Random.Range(-1f, 1f)
-                );
-
-                rb.AddForce(force, ForceMode.Impulse);
-                rb.AddTorque(UnityEngine.Random.insideUnitSphere * 5, ForceMode.Impulse);
+                if (hit.TryGetComponent<Rigidbody>(out var rb))
+                {
+                    rb.AddExplosionForce(shakePower, epicenter, shakeRadius, upwardModifier, ForceMode.Impulse);
+                    rb.AddTorque(UnityEngine.Random.insideUnitSphere * shakePower, ForceMode.Impulse);
+                }
+            }
+            float particleOffset = 5.5f;
+            shakeParticle.transform.position = new Vector3(epicenter.x, 0, epicenter.z);
+            shakeParticle.Play();
+            // 3. Schedule the next
+            shakesRemaining--;
+            if (shakesRemaining > 0)
+            {
+                Scheduler.Instance.ExecuteAfterDelay(shakeInterval, TriggerSingleRumble);
             }
         }
-        GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Shake);
 
+        TriggerSingleRumble();
+        GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Shake);
     }
 
     void Update()
