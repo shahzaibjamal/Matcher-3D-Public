@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -8,11 +9,11 @@ public class ItemView : MonoBehaviour
 {
     [SerializeField] private Image icon;
     [SerializeField] private TMP_Text countText;
+    [SerializeField] private ParticleSystem _particleSystem;
 
     public int CurrentCount { get; private set; }
     public ItemData ItemData { get; private set; }
     private Action _onFinished;
-
     public void SetItem(ItemData data, int count, Action onFinished)
     {
         ItemData = data;
@@ -94,9 +95,72 @@ public class ItemView : MonoBehaviour
         // Moves up, scales down with InOutElastic
         Sequence seq = DOTween.Sequence();
         seq.SetId("ItemView: Completion");
+        seq.SetDelay(_particleSystem.main.duration);
         seq.Append(transform.DOMoveY(transform.position.y + 100f, 0.6f).SetEase(Ease.InOutElastic));
         seq.Join(transform.DOScale(Vector3.zero, 0.6f).SetEase(Ease.InOutElastic));
 
-        seq.OnComplete(() => onComplete?.Invoke());
+        var color = GetMostAbundantColor(icon.sprite);
+
+        // 2. Get the module FROM the instance (this is what the error asks for)
+        var mainModule = _particleSystem.main;
+
+        // 3. Create the new gradient and assign it back
+        // Setting it this way replaces the entire startColor struct correctly
+        mainModule.startColor = new ParticleSystem.MinMaxGradient(Color.white, color);
+        _particleSystem.Play();
+
+        seq.OnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
+    }
+
+    public Color32 GetMostAbundantColor(Sprite sprite)
+    {
+        // 1. Get the pixel data from the sprite's texture area
+        // Note: Texture must be set to 'Read/Write Enabled' in Import Settings
+        Texture2D tex = sprite.texture;
+        Rect rect = sprite.rect;
+        Color32[] pixels = tex.GetPixels32();
+
+        Dictionary<Color32, int> colorCounts = new Dictionary<Color32, int>();
+
+        int startX = (int)rect.x;
+        int startY = (int)rect.y;
+        int width = (int)rect.width;
+        int height = (int)rect.height;
+
+        // 2. Iterate through the sprite's specific pixels within the larger texture
+        for (int y = startY; y < startY + height; y++)
+        {
+            for (int x = startX; x < startX + width; x++)
+            {
+                // Map 2D coordinates to the 1D array
+                Color32 pixel = pixels[y * tex.width + x];
+
+                // Skip fully transparent pixels
+                if (pixel.a == 0) continue;
+
+                if (colorCounts.ContainsKey(pixel))
+                    colorCounts[pixel]++;
+                else
+                    colorCounts[pixel] = 1;
+            }
+        }
+
+        // 3. Find the entry with the highest count
+        Color32 mostAbundant = new Color32(0, 0, 0, 255);
+        int maxCount = -1;
+
+        foreach (var kvp in colorCounts)
+        {
+            if (kvp.Value > maxCount)
+            {
+                maxCount = kvp.Value;
+                mostAbundant = kvp.Key;
+            }
+        }
+
+        return mostAbundant;
     }
 }
