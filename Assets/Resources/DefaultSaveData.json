@@ -1,7 +1,8 @@
 {
 	  "CurrentLevelID": "level_01",
-    "TotalCoins": 0,
-    "IsMusicMuted": false,
+  "IsMusicMuted": true,
+  "IsSoundMuted": true,
+  "IsVibrateEnabled": true,
     "Inventory": {
         "Gold": 500,
         "Stars": 0,

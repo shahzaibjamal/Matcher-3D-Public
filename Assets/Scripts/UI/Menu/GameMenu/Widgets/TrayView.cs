@@ -10,8 +10,10 @@ public class TrayView : MonoBehaviour
     [SerializeField] private SlotView slotPrefab;
     [SerializeField] private Transform slotParent;
     [SerializeField] private Image ghostIconPrefab;
-    [SerializeField] private GameData gameData;
     [SerializeField] private ParticleSystem PoofParticle;
+    [SerializeField] private float _flightUpDuration = 0.5f;
+    [SerializeField] private float _flightToTrayDuration = 0.5f;
+    [SerializeField] private float _leapDuration = 0.5f;
 
     private SlotView[] _slots;
 
@@ -95,14 +97,14 @@ public class TrayView : MonoBehaviour
         Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 8f));
         Sequence flightSeq = DOTween.Sequence();
         flightSeq.SetId("TrayView: item Flight");
-        flightSeq.Append(source.DOMove(source.position + Vector3.up * 2f, gameData.FlightUpDuration).SetEase(Ease.OutQuad));
-        flightSeq.Join(source.DORotate(Vector3.zero, gameData.FlightUpDuration, RotateMode.FastBeyond360));
-        flightSeq.Join(source.DOScale(source.localScale * 1.2f, gameData.FlightUpDuration));
+        flightSeq.Append(source.DOMove(source.position + Vector3.up * 2f, _flightUpDuration).SetEase(Ease.OutQuad));
+        flightSeq.Join(source.DORotate(Vector3.zero, _flightUpDuration, RotateMode.FastBeyond360));
+        flightSeq.Join(source.DOScale(source.localScale * 1.2f, _flightUpDuration));
 
         // This triggers HandleLeap for existing items and OnNewItemReserved for the new one
         // STAGE B: The Toss (Move to UI Slot)
-        flightSeq.Append(source.DOMove(worldTarget, gameData.FlightToTrayDuration).SetEase(Ease.InBack));
-        flightSeq.Join(source.DOScale(Vector3.one * 0.3f, gameData.FlightToTrayDuration)); // Shrink to fit UI
+        flightSeq.Append(source.DOMove(worldTarget, _flightToTrayDuration).SetEase(Ease.InBack));
+        flightSeq.Join(source.DOScale(Vector3.one * 0.3f, _flightToTrayDuration)); // Shrink to fit UI
         flightSeq.OnComplete(() =>
         {
             // Double check slot still holds this data (in case of rapid shifts)
@@ -153,7 +155,7 @@ public class TrayView : MonoBehaviour
             currentIdx += direction;
 
             // Jump to the NEXT neighbor slot
-            yield return ghost.transform.DOJump(_slots[currentIdx].transform.position, 40f, 1, gameData.LeapDuration)
+            yield return ghost.transform.DOJump(_slots[currentIdx].transform.position, 40f, 1, _leapDuration)
                 .SetEase(Ease.OutQuad).SetId("TrayView: ghost Leap Jump")
                 .WaitForCompletion();
         }

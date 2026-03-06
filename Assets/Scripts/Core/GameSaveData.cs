@@ -22,6 +22,8 @@ public class GameSaveData
     // Global player stats
     public int TotalCoins;
     public bool IsMusicMuted;
+    public bool IsSoundMuted;
+    public bool IsVibrateEnabled;
     public List<int> ClaimedDailyRewards = new List<int>();
 
     public DateTime SignUpDate;

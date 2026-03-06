@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
         SaveData = SaveSystem.Load();
         RewardManager.Instance.Init();
         LevelManager.Instance.Initialize(SaveData);
+        SoundController.instance.Init(SaveData.IsMusicMuted, SaveData.IsSoundMuted);
 
         MainMenuController.OnStartButtonClicked += StartGame;
         GameEvents.OnGameInitializedEvent += LoadLevelById;
