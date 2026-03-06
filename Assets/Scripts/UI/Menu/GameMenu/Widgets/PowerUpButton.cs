@@ -78,7 +78,22 @@ public class PowerUpButton : MonoBehaviour
             // 1. Deduct via delta logic
             GameEvents.OnPowerUpAmountChangeEvent?.Invoke(_type, -1);
             RefreshUI();
+            switch (_type)
+            {
+                case PowerUpType.Magnet:
+                    SoundController.instance.PlaySoundEffect("magnet");
+                    break;
+                case PowerUpType.Shake:
+                    break;
+                case PowerUpType.Hint:
+                    SoundController.instance.PlaySoundEffect("hint");
+                    break;
+                case PowerUpType.Undo:
+                    SoundController.instance.PlaySoundEffect("undo");
+                    break;
+            }
         }
+
     }
 
 }

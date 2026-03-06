@@ -78,6 +78,7 @@ public class TrayView : MonoBehaviour
             });
             return;
         }
+        SoundController.instance.PlaySoundEffect("pick");
 
         if (source == null) return;
         if (source.TryGetComponent<ClickableItem>(out var clickableItem))
@@ -212,6 +213,8 @@ public class TrayView : MonoBehaviour
             // ParticleManager.Instance.Play("MergePoof", centerSlotPos);
             PoofParticle.transform.position = ghosts[1].transform.position;
             PoofParticle.Play();
+            SoundController.instance.PlaySoundEffect("poof");
+
         });
 
         yield return mainSeq.WaitForCompletion();

@@ -13,12 +13,45 @@ MonoBehaviour:
   m_Name: SoundLibrary
   m_EditorClassIdentifier: Assembly-CSharp::SoundLibrary
   sfxList:
-  - Name: 
-    Clip: {fileID: 0}
-    Volume: 0
-  - Name: 
-    Clip: {fileID: 0}
+  - Name: bg
+    Clip: {fileID: 8300000, guid: aa294cfeb8da18348b7c28d8aa96be05, type: 3}
+    Volume: 0.362
+  - Name: game_bg
+    Clip: {fileID: 8300000, guid: ef81660f7436c4d42985bec7f0050c47, type: 3}
+    Volume: 0.156
+  - Name: shake
+    Clip: {fileID: 8300000, guid: 7e26c9daf4c32483b9c2790e662d3f1b, type: 3}
     Volume: 1
-  - Name: 
-    Clip: {fileID: 0}
+  - Name: pick
+    Clip: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
+    Volume: 0.144
+  - Name: item_complete
+    Clip: {fileID: 8300000, guid: 79180f511d89441b9aa23ccae1992fe0, type: 3}
     Volume: 1
+  - Name: undo
+    Clip: {fileID: 8300000, guid: 84e427d6b66ab4066b6a4dcd0ce819ee, type: 3}
+    Volume: 1
+  - Name: hint
+    Clip: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
+    Volume: 1
+  - Name: magnet
+    Clip: {fileID: 8300000, guid: 38a17a92b9d9748c6a1e67972041b833, type: 3}
+    Volume: 1
+  - Name: btn
+    Clip: {fileID: 8300000, guid: 32d4b1811dda14a6cb9e059ee8ad17d2, type: 3}
+    Volume: 1
+  - Name: poof
+    Clip: {fileID: 8300000, guid: b81ed8fcd7fc22347931a3a547c45bf7, type: 3}
+    Volume: 0.97
+  - Name: confetti
+    Clip: {fileID: 8300000, guid: fff830840a5a6bc4fb33f95e85adf32f, type: 3}
+    Volume: 0.257
+  - Name: level_complete
+    Clip: {fileID: 8300000, guid: f6dd6437448e79c4f9fa2ca111fb023f, type: 3}
+    Volume: 0.617
+  - Name: star
+    Clip: {fileID: 8300000, guid: 515feadb02d2c2040964978c3ca52644, type: 3}
+    Volume: 0.338
+  - Name: broom
+    Clip: {fileID: 8300000, guid: 6d40f7ae8df6ff946ba4252cfcbc8b42, type: 3}
+    Volume: 0.338

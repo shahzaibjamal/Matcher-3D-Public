@@ -63,8 +63,8 @@ public class StarView : MonoBehaviour
             // Slight overshoot punch to make it feel "settled"
             _icon.transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.2f, 10, 1f);
 
+            // SoundController.instance.PlaySoundEffect("star");
             // Optional: Trigger haptic feedback or sound effect here
-            // AudioSource.PlayClipAtPoint(stompSFX, Camera.main.transform.position);
         });
     }
 }

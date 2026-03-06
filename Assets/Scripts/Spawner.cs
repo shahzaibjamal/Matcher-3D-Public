@@ -329,6 +329,11 @@ public partial class Spawner : MonoBehaviour
 
                 for (int i = 0; i < neededToMatch; i++)
                 {
+                    var targetItem = _itemClickables.Find(c => c != null && c.ItemData.Id == key);
+                    if (targetItem != null)
+                    {
+                        targetItem.Highlight(true);
+                    }
                     Scheduler.Instance.ExecuteAfterDelay(delay * i, () => TrySelectSpecificItem(key));
                 }
                 GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Magnet);
@@ -347,6 +352,11 @@ public partial class Spawner : MonoBehaviour
         string firstID = _collectableLeft.Keys.First();
         for (int i = 0; i < 3; i++)
         {
+            var targetItem = _itemClickables.Find(c => c != null && c.ItemData.Id == firstID);
+            if (targetItem != null)
+            {
+                targetItem.Highlight(true);
+            }
             Scheduler.Instance.ExecuteAfterDelay(delay * i, () => TrySelectSpecificItem(firstID));
         }
 
@@ -542,9 +552,10 @@ public partial class Spawner : MonoBehaviour
                     rb.AddTorque(UnityEngine.Random.insideUnitSphere * shakePower, ForceMode.Impulse);
                 }
             }
-            float particleOffset = 5.5f;
+
             shakeParticle.transform.position = new Vector3(epicenter.x, 0, epicenter.z);
             shakeParticle.Play();
+            SoundController.instance.PlaySoundEffect("shake");
             // 3. Schedule the next
             shakesRemaining--;
             if (shakesRemaining > 0)

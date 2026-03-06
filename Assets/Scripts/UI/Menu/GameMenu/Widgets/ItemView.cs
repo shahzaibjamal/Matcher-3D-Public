@@ -66,6 +66,7 @@ public class ItemView : MonoBehaviour
             PlayCompletionAnimation(() =>
             {
                 _onFinished?.Invoke(); // Tells State "I'm gone!"
+                SoundController.instance.PlaySoundEffect("item_complete");
                 Destroy(gameObject);
             });
         }
@@ -80,7 +81,6 @@ public class ItemView : MonoBehaviour
     }
     public void PlayMatchShake()
     {
-        Debug.LogError("Play Shake");
         transform.DOKill(true);
         // Refresh effect: Slight scale jump + a gentle shake
         transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0), 0.3f, 10, 1f).SetId("ItemView: MatchShake Scale"); ;

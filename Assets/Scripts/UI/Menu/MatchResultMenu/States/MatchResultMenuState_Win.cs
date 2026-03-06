@@ -48,6 +48,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
 
     private void AnimateAllStars(int score)
     {
+        SoundController.instance.PlaySoundEffect("level_complete");
         float delay = 0f;
         float starsAppearDelay = 0.3f;
         for (int i = 0; i < View.StarViews.Length; i++)
@@ -81,6 +82,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         {
             View.ConfettiLeft.Play();
             View.ConfettiRight.Play();
+            // SoundController.instance.PlaySoundEffect("confetti");
         });
 
     }

@@ -8,6 +8,7 @@ public class MainMenuController : MenuController<MainMenuView, MainMenuData>
     public override void OnEnter()
     {
         SetState(new MainMenuBaseState_Main(this));
+        SoundController.instance.PlayBGM("bg", 1.0f);
     }
     public override void OnExit()
     {
