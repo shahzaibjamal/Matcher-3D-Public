@@ -6,6 +6,7 @@ public class SlotView : MonoBehaviour
 {
     [SerializeField] private Image icon;
     [SerializeField] private Image _backgroundImage;
+    [SerializeField] private ParticleSystem _particlesPoof;
 
     public ItemData CurrentItem { get; private set; }
     public bool IsImageEnabled => icon.enabled;
@@ -91,6 +92,11 @@ public class SlotView : MonoBehaviour
         icon.transform.DOKill();
         _backgroundImage.rectTransform.DOKill();        // transform.DOKill();
         _backgroundImage.rectTransform.localPosition = _originalSlotPos;
+    }
+
+    public void PlayPoof()
+    {
+        _particlesPoof.Play();
     }
     private int debugFontSize = 38; // adjustable font size
 

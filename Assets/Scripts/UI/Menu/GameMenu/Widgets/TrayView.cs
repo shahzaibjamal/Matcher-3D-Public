@@ -59,7 +59,6 @@ public class TrayView : MonoBehaviour
 
     private void HandleItemAddedToSlot(ItemData data, int targetIdx, Transform source, bool isAdded, Action onComplete)
     {
-        // SAFETY CHECK: Line 46 fix
         if (_slots == null || targetIdx < 0 || targetIdx >= _slots.Length)
         {
             Debug.LogError($"[TrayView] Target index {targetIdx} is out of bounds or _slots is null!");
@@ -70,8 +69,13 @@ public class TrayView : MonoBehaviour
         {
             // removed via undo or cleansweep
             // add tween for removing and the call onCompelte
-            onComplete?.Invoke();
             _slots[targetIdx].Clear();
+            _slots[targetIdx].PlayPoof();
+
+            Scheduler.Instance.ExecuteAfterDelay(0.2f, () =>
+            {
+                onComplete?.Invoke();
+            });
             return;
         }
 

@@ -1482,7 +1482,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dbe62e438f5a904cb6afbf9ea0babfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  UseRaycast: 0
   _spawnerPrefab: {fileID: 4800637359553514980, guid: 71f0be95533c31c48887e42ea6ea5dfd, type: 3}
 --- !u!4 &1821133244
 Transform:
@@ -1901,6 +1900,10 @@ MonoBehaviour:
   lineColor: {r: 0, g: 1, b: 0, a: 1}
   smoothingWindow: 5
   monitorCanvasGroup: {fileID: 1906762028}
+  targetFrameRate: 60
+  vSyncCount: 1
+  maxDepenetrationVelocity: 0.25
+  customGravity: {x: 0, y: -4, z: 0}
 --- !u!222 &2002200420
 CanvasRenderer:
   m_ObjectHideFlags: 0
