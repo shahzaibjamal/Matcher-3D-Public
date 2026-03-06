@@ -29,7 +29,7 @@ public class TrayView : MonoBehaviour
     }
     private void OnEnable()
     {
-        GameEvents.OnRequestFlightEvent += HandleFlight;
+        GameEvents.OnItemAddedToSlotEvent += HandleItemAddedToSlot;
         // USE NAMED METHODS HERE
         GameEvents.OnRequestSteppedLeapEvent += HandleSteppedLeapRequest;
         GameEvents.OnRequestMatchResolveEvent += HandleMatchResolveRequest;
@@ -37,7 +37,7 @@ public class TrayView : MonoBehaviour
 
     private void OnDisable()
     {
-        GameEvents.OnRequestFlightEvent -= HandleFlight;
+        GameEvents.OnItemAddedToSlotEvent -= HandleItemAddedToSlot;
         // NOW THESE WILL ACTUALLY UNSUBSCRIBE
         GameEvents.OnRequestSteppedLeapEvent -= HandleSteppedLeapRequest;
         GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolveRequest;
@@ -57,13 +57,21 @@ public class TrayView : MonoBehaviour
         StartCoroutine(MatchGhostSequence(idx, data, cb));
     }
 
-    private void HandleFlight(ItemData data, int targetIdx, Transform source, Action onComplete)
+    private void HandleItemAddedToSlot(ItemData data, int targetIdx, Transform source, bool isAdded, Action onComplete)
     {
         // SAFETY CHECK: Line 46 fix
         if (_slots == null || targetIdx < 0 || targetIdx >= _slots.Length)
         {
             Debug.LogError($"[TrayView] Target index {targetIdx} is out of bounds or _slots is null!");
             onComplete?.Invoke();
+            return;
+        }
+        if (!isAdded)
+        {
+            // removed via undo or cleansweep
+            // add tween for removing and the call onCompelte
+            onComplete?.Invoke();
+            _slots[targetIdx].Clear();
             return;
         }
 

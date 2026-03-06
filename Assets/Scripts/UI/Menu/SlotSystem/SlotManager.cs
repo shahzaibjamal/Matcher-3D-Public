@@ -21,6 +21,7 @@ public class SlotManager
         Scheduler.Instance.SubscribeGUI(OnGUI);
         GameEvents.OnItemsCollectedEvent += OnItemsCollected;
         GameEvents.OnUndoPowerupEvent += OnUndoRequest;
+        GameEvents.OnCleanSweepTrayEvent += OnCleanSweepTray;
     }
 
     public void Cleanup()
@@ -32,7 +33,31 @@ public class SlotManager
         Scheduler.Instance.UnsubscribeGUI(OnGUI);
         GameEvents.OnItemsCollectedEvent -= OnItemsCollected;
         GameEvents.OnUndoPowerupEvent -= OnUndoRequest;
+        GameEvents.OnCleanSweepTrayEvent -= OnCleanSweepTray;
+
         _allGoalsReached = false;
+        _undoStack.Clear();
+    }
+    private async void OnCleanSweepTray()
+    {
+        // Iterate backwards through the tray
+        for (int i = _slots.Length - 1; i >= 0; i--)
+        {
+            if (_slots[i] != null)
+            {
+                // 1. Get the reference to the item in the slot
+                var itemInSlot = _slots[i];
+
+                await ExecuteFlight(_slots[i], i, null, false);
+
+                // 4. Null the slot data
+                _slots[i] = null;
+
+                // 5. Optional: Small delay for a nice sequential 'pop' out of the tray
+                await Task.Delay(300);
+            }
+        }
+
         _undoStack.Clear();
     }
 
@@ -67,6 +92,7 @@ public class SlotManager
         if (currentIdx == -1) return; // Item was likely already matched
 
         // 3. Visual: Return item to world
+        await ExecuteFlight(_slots[currentIdx], currentIdx, null, false);
         _slots[currentIdx] = null;
 
         List<Task> compactTasks = new List<Task>();
@@ -124,7 +150,7 @@ public class SlotManager
         _slots[targetIdx] = data;
 
         // 2. Flight
-        await ExecuteFlight(data, targetIdx, source);
+        await ExecuteFlight(data, targetIdx, source, true);
 
         if (!_isProcessingMatches)
         {
@@ -185,10 +211,10 @@ public class SlotManager
         }
     }
 
-    private Task ExecuteFlight(ItemData d, int idx, Transform s)
+    private Task ExecuteFlight(ItemData d, int idx, Transform s, bool isAdded)
     {
         var tcs = new TaskCompletionSource<bool>();
-        GameEvents.OnRequestFlightEvent?.Invoke(d, idx, s, () => tcs.TrySetResult(true));
+        GameEvents.OnItemAddedToSlotEvent?.Invoke(d, idx, s, isAdded, () => tcs.TrySetResult(true));
         return tcs.Task;
     }
     private Task ExecuteSteppedLeap(ItemData d, int from, int to)

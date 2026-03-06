@@ -70,19 +70,19 @@
       "ItemsToSpawn": [
         {
           "Id": "cog_1",
-          "Count": 3
+          "Count": 21
         },
         {
           "Id": "heart",
-          "Count": 9
+          "Count": 21
         },
         {
           "Id": "potion_1",
-          "Count": 3
+          "Count": 21
         },
         {
           "Id": "beer",
-          "Count": 6
+          "Count": 21
         }
       ],
       "ItemsToCollect": [

@@ -63,10 +63,6 @@ public partial class Spawner : MonoBehaviour
         GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolved;
         GameEvents.OnCleanSweepTrayEvent -= HandleCleanSweep;
     }
-    void Awake()
-    {
-        Physics.gravity = new Vector3(0, -4.0f, 0);
-    }
 
     #region Level Lifecycle
     public void SpawnLevel(LevelData levelData, Action<ItemData, Transform> onItemClicked)
@@ -128,7 +124,6 @@ public partial class Spawner : MonoBehaviour
             }
         });
     }
-
     #endregion
 
     #region Internal Logic
@@ -153,12 +148,9 @@ public partial class Spawner : MonoBehaviour
     private void HandleCleanSweep()
     {
         if (_undoHistory.Count == 0) return;
-
-        Debug.LogError("HandleCleansweep");
-        GameEvents.OnUndoPowerupEvent?.Invoke(false);
-        // Schedule the NEXT undo only after this one is done
-        DOVirtual.DelayedCall(0.4f, () => HandleCleanSweep());
+        _undoHistory.Clear();
     }
+
 
     private void HandleUndoPowerUp(bool powerUpUsed)
     {

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Text;
 using TMPro;
+using System;
 
 public class PerformanceMonitor : MonoBehaviour
 {
@@ -27,17 +28,45 @@ public class PerformanceMonitor : MonoBehaviour
     private float[] _fpsHistory;
     private int _historyIndex;
 
+    [Header("Performance")]
+    [Range(30, 120)]
+    [SerializeField] private int targetFrameRate = 60;
+
+    [Tooltip("0 = Don't Sync, 1 = 60fps, 2 = 30fps")]
+    [Range(0, 2)]
+    [SerializeField] private int vSyncCount = 1;
+
+    [Header("Physics Stability")]
+    [Tooltip("Lower values prevent 'explosions' when items overlap on spawn.")]
+    [SerializeField] private float maxDepenetrationVelocity = 0.25f;
+
+    [Tooltip("Default is -9.81. Lower values make items feel floatier.")]
+    [SerializeField] private Vector3 customGravity = new Vector3(0, -4.0f, 0);
+
     void Awake()
     {
-        Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = targetFrameRate;
+        QualitySettings.vSyncCount = vSyncCount;
+
+        // Apply Global Physics Settings
+        Physics.defaultMaxDepenetrationVelocity = maxDepenetrationVelocity;
+        Physics.gravity = customGravity;
         InitGraph();
     }
-
+    private void OnValidate()
+    {
+        if (Application.isPlaying)
+        {
+            Physics.defaultMaxDepenetrationVelocity = maxDepenetrationVelocity;
+            Physics.gravity = customGravity;
+        }
+    }
     private void InitGraph()
     {
-        _graphTexture = new Texture2D(graphWidth, graphHeight, TextureFormat.RGBA32, false);
-        _graphTexture.filterMode = FilterMode.Bilinear; // Bilinear helps smoothen the line visually
+        _graphTexture = new Texture2D(graphWidth, graphHeight, TextureFormat.RGBA32, false)
+        {
+            filterMode = FilterMode.Bilinear // Bilinear helps smoothen the line visually
+        };
         graphImage.texture = _graphTexture;
 
         _blankPixels = new Color[graphWidth * graphHeight];

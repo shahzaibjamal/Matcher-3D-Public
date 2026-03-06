@@ -5,7 +5,7 @@ using UnityEngine;
 public static class GameEvents
 {
     // For new items entering the tray
-    public static Action<ItemData, int, Transform, Action> OnRequestFlightEvent;
+    public static Action<ItemData, int, Transform, bool, Action> OnItemAddedToSlotEvent;
     // For items shifting left/right
     public static Action<ItemData, int, int, Action> OnRequestSteppedLeapEvent;    // For the match-3 merge
     public static Action<int, ItemData[], Action> OnRequestMatchResolveEvent;
@@ -23,6 +23,7 @@ public static class GameEvents
 
     public static Action<bool> OnUndoPowerupEvent; // undo powerup also handy for sweeping clear the tray. so bool param tells if this an undo operation or undo powerup
     public static Action<string> OnUndoAddItemEvent;
+    // public static Action<string> OnCleanSweepItemEvent; //gameeover - cleanup
 
     public static Action OnHintPowerupEvent;
     public static Action<string> OnHintSlotsItemAvailableEvent; //fired by slotmanager to tell what item can be picked up
