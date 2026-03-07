@@ -21,6 +21,7 @@ public static class Menus
 
         SpinWheel = 15,
         LevelSelect = 16,
+        MatchhLose = 17,
 
     }
     public enum MenuDisplayMode

@@ -101,12 +101,20 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     }
     private void HandleMatchResult(bool win, float matchRate)
     {
-        MenuManager.Instance.OpenMenu<MatchResultMenuView, MatchResultMenuController, MatchResultMenuData>(Menus.Type.MatchResult, new MatchResultMenuData
+        if (win)
         {
-            IsWin = win,
-            LevelData = _currentLevelData,
-            MatchRate = matchRate
-        });
+            MenuManager.Instance.OpenMenu<MatchResultMenuView, MatchResultMenuController, MatchResultMenuData>(Menus.Type.MatchResult, new MatchResultMenuData
+            {
+                IsWin = win,
+                LevelData = _currentLevelData,
+                MatchRate = matchRate
+            });
+
+        }
+        else
+        {
+            MenuManager.Instance.OpenMenu<MatchLoseMenuMenuView, MatchLoseMenuMenuController, MatchLoseMenuMenuData>(Menus.Type.MatchhLose);
+        }
     }
 
     private void HandleCleanSweep()

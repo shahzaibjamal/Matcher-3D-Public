@@ -1,9 +1,6 @@
 using System;
-using System.Linq;
-using DG.Tweening;
 using TS.LocalizationSystem;
-using UnityEngine;
-using UnityEngine.UI;
+
 
 public class MatchResultMenuController : MenuController<MatchResultMenuView, MatchResultMenuData>
 {
@@ -32,7 +29,6 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
         base.OnExit();
     }
 
-
     public override void OnPause()
     {
     }
@@ -45,8 +41,6 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
     {
         (CurrentState as MatchResultMenuBaseState).OnContinueButtonClicked();
     }
-
-
 
     public void GoToMainMenu()
     {
