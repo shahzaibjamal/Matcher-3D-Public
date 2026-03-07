@@ -20,7 +20,6 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
         View.ContinueButton.onClick.AddListener(OnContinueButtonClicked);
         View.GoldMulitplierButton.onClick.AddListener(OnGoldMultiplierButtonClicked);
         View.TitleLevelNumber.text = String.Format(LocaleManager.Localize(LocalizationKeys.title_level), Data.LevelData.Number);
-        UpdateRewardManager();
     }
 
     public override void OnExit()
@@ -47,13 +46,7 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
         (CurrentState as MatchResultMenuBaseState).OnContinueButtonClicked();
     }
 
-    private void UpdateRewardManager()
-    {
-        var filteredRewards = Data.LevelData.Rewards
-            .Where(r => r.RewardType != RewardType.Gold)
-            .ToList();
-        RewardManager.Instance.AddRewardToQueue(filteredRewards);
-    }
+
 
     public void GoToMainMenu()
     {

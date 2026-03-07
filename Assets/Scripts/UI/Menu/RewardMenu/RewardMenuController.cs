@@ -20,8 +20,8 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
         View.RewardContainer.DOKill();
         View.GodRaysTransform.DOKill();
         View.AmountText.transform.DOKill();
-
         base.OnExit();
+        Data.Callback?.Invoke();
     }
 
     public override void OnPause()
@@ -53,6 +53,7 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
         View.GodRaysTransform.localScale = Vector3.zero;
         View.GodRaysTransform.localRotation = Quaternion.identity;
         View.FullscreenButton.interactable = false;
+        SoundController.instance.PlaySoundEffect("reward");
 
         // --- 2. The Sequence ---
         _sequence = DOTween.Sequence().SetUpdate(true);
@@ -110,8 +111,5 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
     {
         // Close the menu through your MenuManager
         MenuManager.Instance.GoBack();
-
-        // Trigger the RewardManager to show the next one
-        Data.Callback?.Invoke();
     }
 }

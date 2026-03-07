@@ -4,152 +4,150 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Solo.MOST_IN_ONE
+
+// This is an optional example for all haptic feedback calls.
+// from any .cs file inside your project
+// call >>> MOST_HapticFeedback.Generate(HapticTypes type)
+// or MOST_HapticFeedback.GenerateWithCooldown(HapticTypes type, float cooldown)
+// or MOST_HapticFeedback.GeneratePattern(CustomHapticPattern CustomPattern);
+
+public class HapticsExample : MonoBehaviour
 {
-    // This is an optional example for all haptic feedback calls.
-    // from any .cs file inside your project
-    // call >>> MOST_HapticFeedback.Generate(HapticTypes type)
-    // or MOST_HapticFeedback.GenerateWithCooldown(HapticTypes type, float cooldown)
-    // or MOST_HapticFeedback.GeneratePattern(CustomHapticPattern CustomPattern);
+    public Toggle HapticToggle;
+    public Haptics.CustomHapticPattern CustomHapticPatternA;
+    public Haptics.CustomHapticPattern CustomHapticPatternB;
 
-    public class HapticsExample : MonoBehaviour
+    void Start()
     {
-        public Toggle HapticToggle;
-        public MOST_HapticFeedback.CustomHapticPattern CustomHapticPatternA;
-        public MOST_HapticFeedback.CustomHapticPattern CustomHapticPatternB;
+        HapticToggle.isOn = Haptics.HapticsEnabled;
+    }
 
-        void Start()
-        {
-            HapticToggle.isOn = MOST_HapticFeedback.HapticsEnabled;
-        }
+    public void GenerateBasicHaptic(Haptics.HapticTypes type)
+    {
+        Haptics.Generate(type);
+    }
 
-        public void GenerateBasicHaptic(MOST_HapticFeedback.HapticTypes type)
-        {
-            MOST_HapticFeedback.Generate(type);
-        }
+    public void GenerateBasicHapticWithCoolDown(Haptics.HapticTypes type, float cooldown)
+    {
+        Haptics.GenerateWithCooldown(type, cooldown);
+    }
 
-        public void GenerateBasicHapticWithCoolDown(MOST_HapticFeedback.HapticTypes type, float cooldown)
-        {
-            MOST_HapticFeedback.GenerateWithCooldown(type, cooldown);
-        }
+    public void GenerateCustomHapticA()
+    {
+        Haptics.GeneratePattern(CustomHapticPatternA);
+    }
 
-        public void GenerateCustomHapticA()
-        {
-            MOST_HapticFeedback.GeneratePattern(CustomHapticPatternA);
-        }
+    public void GenerateCustomHapticB()
+    {
+        Haptics.GeneratePattern(CustomHapticPatternB);
+    }
 
-        public void GenerateCustomHapticB()
-        {
-            MOST_HapticFeedback.GeneratePattern(CustomHapticPatternB);
-        }
+    public void HapticEnable(bool enable)
+    {
+        Haptics.HapticsEnabled = enable;
+    }
 
-        public void HapticEnable(bool enable)
-        {
-            MOST_HapticFeedback.HapticsEnabled = enable;
-        }
+    // __________________________________ Basic Haptics __________________________________
+    public void SelectionHaptic()
+    {
+        Haptics.Generate(Haptics.HapticTypes.Selection);
+    }
 
-        // __________________________________ Basic Haptics __________________________________
-        public void SelectionHaptic()
-        {
-            MOST_HapticFeedback.Generate(MOST_HapticFeedback.HapticTypes.Selection);
-        }
+    public void SuccessHaptic()
+    {
+        Haptics.Generate(Haptics.HapticTypes.Success);
+    }
 
-        public void SuccessHaptic()
-        {
-            MOST_HapticFeedback.Generate(MOST_HapticFeedback.HapticTypes.Success);
-        }
+    public void WarningHaptic()
+    {
+        Haptics.Generate(Haptics.HapticTypes.Warning);
+    }
 
-        public void WarningHaptic()
-        {
-            MOST_HapticFeedback.Generate(MOST_HapticFeedback.HapticTypes.Warning);
-        }
+    public void FailureHaptic()
+    {
+        Haptics.Generate(Haptics.HapticTypes.Failure);
+    }
 
-        public void FailureHaptic()
-        {
-            MOST_HapticFeedback.Generate(MOST_HapticFeedback.HapticTypes.Failure);
-        }
+    public void LightImpactHaptic()
+    {
+        Haptics.Generate(Haptics.HapticTypes.LightImpact);
+    }
 
-        public void LightImpactHaptic()
-        {
-            MOST_HapticFeedback.Generate(MOST_HapticFeedback.HapticTypes.LightImpact);
-        }
+    public void MediumImpactHaptic()
+    {
+        Haptics.Generate(Haptics.HapticTypes.MediumImpact);
+    }
 
-        public void MediumImpactHaptic()
-        {
-            MOST_HapticFeedback.Generate(MOST_HapticFeedback.HapticTypes.MediumImpact);
-        }
+    public void HeavyImpactHaptic()
+    {
+        Haptics.Generate(Haptics.HapticTypes.HeavyImpact);
+    }
 
-        public void HeavyImpactHaptic()
-        {
-            MOST_HapticFeedback.Generate(MOST_HapticFeedback.HapticTypes.HeavyImpact);
-        }
+    public void RigidImpactHaptic()
+    {
+        Haptics.Generate(Haptics.HapticTypes.RigidImpact);
+    }
 
-        public void RigidImpactHaptic()
-        {
-            MOST_HapticFeedback.Generate(MOST_HapticFeedback.HapticTypes.RigidImpact);
-        }
+    public void SoftImpactHaptic()
+    {
+        Haptics.Generate(Haptics.HapticTypes.SoftImpact);
+    }
 
-        public void SoftImpactHaptic()
-        {
-            MOST_HapticFeedback.Generate(MOST_HapticFeedback.HapticTypes.SoftImpact);
-        }
+    // __________________________________ Basic Haptics with Cooldown __________________________________ 
+    public void SelectionHapticWithCooldown(float cooldown)
+    {
+        Haptics.GenerateWithCooldown(Haptics.HapticTypes.Selection, cooldown);
+    }
 
-        // __________________________________ Basic Haptics with Cooldown __________________________________ 
-        public void SelectionHapticWithCooldown(float cooldown)
-        {
-            MOST_HapticFeedback.GenerateWithCooldown(MOST_HapticFeedback.HapticTypes.Selection, cooldown);
-        }
+    public void SuccessHapticWithCooldown(float cooldown)
+    {
+        Haptics.GenerateWithCooldown(Haptics.HapticTypes.Success, cooldown);
+    }
 
-        public void SuccessHapticWithCooldown(float cooldown)
-        {
-            MOST_HapticFeedback.GenerateWithCooldown(MOST_HapticFeedback.HapticTypes.Success, cooldown);
-        }
+    public void WarningHapticWithCooldown(float cooldown)
+    {
+        Haptics.GenerateWithCooldown(Haptics.HapticTypes.Warning, cooldown);
+    }
 
-        public void WarningHapticWithCooldown(float cooldown)
-        {
-            MOST_HapticFeedback.GenerateWithCooldown(MOST_HapticFeedback.HapticTypes.Warning, cooldown);
-        }
+    public void FailureHapticWithCooldown(float cooldown)
+    {
+        Haptics.GenerateWithCooldown(Haptics.HapticTypes.Failure, cooldown);
+    }
 
-        public void FailureHapticWithCooldown(float cooldown)
-        {
-            MOST_HapticFeedback.GenerateWithCooldown(MOST_HapticFeedback.HapticTypes.Failure, cooldown);
-        }
+    public void LightImpactHapticWithCooldown(float cooldown)
+    {
+        Haptics.GenerateWithCooldown(Haptics.HapticTypes.LightImpact, cooldown);
+    }
 
-        public void LightImpactHapticWithCooldown(float cooldown)
-        {
-            MOST_HapticFeedback.GenerateWithCooldown(MOST_HapticFeedback.HapticTypes.LightImpact, cooldown);
-        }
+    public void MediumImpactHapticWithCooldown(float cooldown)
+    {
+        Haptics.GenerateWithCooldown(Haptics.HapticTypes.MediumImpact, cooldown);
+    }
 
-        public void MediumImpactHapticWithCooldown(float cooldown)
-        {
-            MOST_HapticFeedback.GenerateWithCooldown(MOST_HapticFeedback.HapticTypes.MediumImpact, cooldown);
-        }
+    public void HeavyImpactHapticWithCooldown(float cooldown)
+    {
+        Haptics.GenerateWithCooldown(Haptics.HapticTypes.HeavyImpact, cooldown);
+    }
 
-        public void HeavyImpactHapticWithCooldown(float cooldown)
-        {
-            MOST_HapticFeedback.GenerateWithCooldown(MOST_HapticFeedback.HapticTypes.HeavyImpact, cooldown);
-        }
+    public void RigidImpactHapticWithCooldown(float cooldown)
+    {
+        Haptics.GenerateWithCooldown(Haptics.HapticTypes.RigidImpact, cooldown);
+    }
 
-        public void RigidImpactHapticWithCooldown(float cooldown)
-        {
-            MOST_HapticFeedback.GenerateWithCooldown(MOST_HapticFeedback.HapticTypes.RigidImpact, cooldown);
-        }
+    public void SoftImpactHapticWithCooldown(float cooldown)
+    {
+        Haptics.GenerateWithCooldown(Haptics.HapticTypes.SoftImpact, cooldown);
+    }
 
-        public void SoftImpactHapticWithCooldown(float cooldown)
-        {
-            MOST_HapticFeedback.GenerateWithCooldown(MOST_HapticFeedback.HapticTypes.SoftImpact, cooldown);
-        }
+    // ___________________ Enable / Disable Haptic Feedback ___________________  
+    public void ToggleHaptics(bool enabled)
+    {
+        Haptics.HapticsEnabled = enabled;
+    }
 
-        // ___________________ Enable / Disable Haptic Feedback ___________________  
-        public void ToggleHaptics(bool enabled)
-        {
-            MOST_HapticFeedback.HapticsEnabled = enabled;
-        }
-
-        // Opem URL
-        public void OpenURL()
-        {
-            Application.OpenURL("https://assetstore.unity.com/packages/slug/295013");
-        }
+    // Opem URL
+    public void OpenURL()
+    {
+        Application.OpenURL("https://assetstore.unity.com/packages/slug/295013");
     }
 }

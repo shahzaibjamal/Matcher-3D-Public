@@ -1,8 +1,9 @@
 {
-	  "CurrentLevelID": "level_01",
-  "IsMusicMuted": true,
-  "IsSoundMuted": true,
-  "IsVibrateEnabled": true,
+    "CurrentLevelID": "level_01",
+    "IsMusicMuted": true,
+    "IsSoundMuted": true,
+    "languageName": "English",
+    "IsVibrateEnabled": true,
     "Inventory": {
         "Gold": 500,
         "Stars": 0,
@@ -13,5 +14,6 @@
             "Undo": 10
         }
     },
-    "LevelHistory": []
+    "LevelHistory": [
+    ]
 }

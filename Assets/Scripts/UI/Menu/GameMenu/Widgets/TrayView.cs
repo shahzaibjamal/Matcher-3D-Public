@@ -58,6 +58,9 @@ public class TrayView : MonoBehaviour
         if (this == null) return;
         StartCoroutine(MatchGhostSequence(idx, data, cb));
     }
+    [SerializeField] private float _arcZOffset = 1f;     // arc height in z
+    [SerializeField] private float _forwardYOffset = 1f; // push forward toward camera (+y)
+    [SerializeField] private float _xExaggeration = 2f;  // exaggeration toward slot in x
 
     private void HandleItemAddedToSlot(ItemData data, int targetIdx, Transform source, bool isAdded, Action onComplete)
     {
@@ -92,37 +95,46 @@ public class TrayView : MonoBehaviour
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, targetSlot.transform.position);
         Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 8f));
 
-        // 2. Create the "Mid-Air" Control Point
-        // This is the peak of the arc. We move it toward the center of the screen and UP (Y)
-        Vector3 midPoint = Vector3.Lerp(startPos, worldTarget, 0.5f);
-        midPoint.y += 2f; // High altitude for the "pop" toward camera
-        midPoint.z += 5f;  // Subtle shift to make the curve "round"
+        // 2. Create projectile arc control points (axis swapped, 4 points)
+        Vector3 midPoint25 = Vector3.Lerp(startPos, worldTarget, 0.25f);
+        Vector3 midPoint75 = Vector3.Lerp(startPos, worldTarget, 0.75f);
 
-        Vector3[] path = new Vector3[] { startPos, midPoint, worldTarget };
+        // Arc height in z
+        midPoint25.z += _arcZOffset;
+        midPoint75.z += _arcZOffset;
 
-        // 3. The Sequence
+        // Forward push in y (constant)
+        float forwardY = Mathf.Max(startPos.y, worldTarget.y) + _forwardYOffset;
+        midPoint25.y = forwardY;
+        midPoint75.y = forwardY;
+        worldTarget.y = forwardY;
+
+        // Exaggerate curve toward slot in x
+        float xDir = Mathf.Sign(worldTarget.x - startPos.x); // direction toward slot
+        midPoint25.x += xDir * _xExaggeration;
+        midPoint75.x += xDir * _xExaggeration;
+
+        // Build path with 4 points
+        Vector3[] path = new Vector3[] { startPos, midPoint25, midPoint75, worldTarget };
+
+        // 3. Sequence
         Sequence flightSeq = DOTween.Sequence();
 
-        // RESET ROTATION: Just a clean snap to zero
-        source.DORotate(Vector3.zero, _flightToTrayDuration, RotateMode.Fast);
+        // Reset rotation cleanly
+        source.DORotate(Vector3.zero, 0.3f, RotateMode.Fast);
 
-        // THE MOVE: Follow the Bezier Path
-        flightSeq.Append(source.DOPath(path, _flightToTrayDuration, PathType.CatmullRom)
-                .SetEase(Ease.OutQuad)); // OutQuad makes it feel "thrown"
+        // Projectile-style move along arc, ignoring rotation
+        flightSeq.Append(source.DOPath(path, _flightToTrayDuration, PathType.CatmullRom, PathMode.Ignore)
+                .SetEase(Ease.Linear)
+                .SetOptions(false)); // prevents orientation snapping
 
-        // THE SCALE (The Waterfall Effect)
-        // Scale UP as it nears the camera (midpoint), then scale small for the UI slot
-        flightSeq.Join(source.DOScale(Vector3.one * 2.5f, _flightToTrayDuration * 0.4f).SetEase(Ease.OutCubic));
+        // Scale effects
+        flightSeq.Join(source.DOScale(Vector3.one * 1.5f, _flightToTrayDuration * 0.4f).SetEase(Ease.OutCubic));
         flightSeq.Insert(_flightToTrayDuration * 0.5f, source.DOScale(Vector3.one * 0.3f, _flightToTrayDuration * 0.5f).SetEase(Ease.InSine));
-
-        // SQUASH ON IMPACT: Purely visual juice
         flightSeq.Insert(_flightToTrayDuration * 0.9f, source.DOScaleY(0.1f, 0.1f));
-
-
 
         flightSeq.OnComplete(() =>
         {
-            // UI Feedback
             targetSlot.transform.DOPunchScale(Vector3.one * 0.2f, 0.2f);
 
             if (targetSlot.CurrentItem == data)

@@ -33,6 +33,7 @@ public class LanguageView : MonoBehaviour
     private void OnClick()
     {
         _onLanguageSelect?.Invoke(Name);
+        SoundController.instance.PlaySoundEffect("menu_click");
     }
 
     public void SetSelected(bool isSelected)

@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 using TS.LocalizationSystem;
-using Solo.MOST_IN_ONE;
 
 public class GameManager : MonoBehaviour
 {
@@ -219,13 +218,13 @@ public class GameManager : MonoBehaviour
         return LevelManager.Instance.HasMoreContent();
     }
 
-    public void Vibrate()
+    public void Vibrate(Haptics.HapticTypes type = Haptics.HapticTypes.LightImpact)
     {
 
         if (SaveData.IsVibrateEnabled)
         {
 #if UNITY_ANDROID || UNITY_IOS
-            MOST_HapticFeedback.Generate(MOST_HapticFeedback.HapticTypes.LightImpact);
+            Haptics.Generate(type);
 
             // Handheld.Vibrate();
 #elif UNITY_EDITOR

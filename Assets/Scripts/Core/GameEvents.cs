@@ -32,6 +32,7 @@ public static class GameEvents
     public static Action OnMagnetPowerupEvent; // auto pickup collectable items
     public static Action<PowerUpType, int> OnPowerUpAmountChangeEvent; // increment/decrment amount by value 
     public static Action<PowerUpType> OnPowerUpSuccessEvent; // power up executed successfully
+    public static Action<bool> OnPowerUpEnableEvent; // power up executed successfully
     public static Action OnCleanSweepTrayEvent; // clean the tray
 
     public static Action<int> OnGoldUpdatedEvent; // Gold amount update. update views 

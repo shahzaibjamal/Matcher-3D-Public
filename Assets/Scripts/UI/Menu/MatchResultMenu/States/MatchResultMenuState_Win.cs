@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using TS.LocalizationSystem;
 using UnityEngine;
@@ -44,7 +45,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         int score = Data.MatchRate > 0.9f ? 3 : Data.MatchRate > 0.7f ? 2 : 1;
         Data.Score = score;
         SoundController.instance.PlaySoundEffect("level_complete");
-        GameManager.Instance.Vibrate();
+        GameManager.Instance.Vibrate(Haptics.HapticTypes.Success);
         AnimateAllStars(score);
     }
 
@@ -85,7 +86,6 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
             View.ConfettiRight.Play();
             SoundController.instance.PlaySoundEffect("confetti");
         });
-
     }
 
     private void PlayGoldAnimation(int goldAmount, int totalAmount, float delay, Action onComplete = null)
@@ -174,6 +174,15 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
 
     private void OnGoldAnimationCompleted()
     {
+        UpdateRewardManager();
         Scheduler.Instance.ExecuteAfterDelay(1.5f, Controller.GoToMainMenu);
+    }
+
+    private void UpdateRewardManager()
+    {
+        var filteredRewards = Data.LevelData.Rewards
+            .Where(r => r.RewardType != RewardType.Gold)
+            .ToList();
+        RewardManager.Instance.AddRewardToQueue(filteredRewards);
     }
 }

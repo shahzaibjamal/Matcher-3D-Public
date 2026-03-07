@@ -12,6 +12,7 @@ public class SettingsMenuBaseState_Terms : SettingsMenuBaseState
         View.TermsContainer.gameObject.SetActive(true);
         View.CloseButton.gameObject.SetActive(true);
         View.TitleText.text = LocaleManager.Localize(LocalizationKeys.terms_condition);
+        SoundController.instance.PlaySoundEffect("menu_click");
     }
 
     public override void Exit()

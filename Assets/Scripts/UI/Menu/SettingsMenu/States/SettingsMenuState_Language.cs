@@ -19,6 +19,7 @@ public class SettingsMenuBaseState_Language : SettingsMenuBaseState
         View.CloseButton.gameObject.SetActive(true);
         View.TitleText.text = LocaleManager.Localize(LocalizationKeys.language);
         PopulateLanguages();
+        SoundController.instance.PlaySoundEffect("menu_click");
     }
 
     public override void Exit()

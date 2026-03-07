@@ -45,6 +45,7 @@ public partial class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
+        GameEvents.OnItemAddedToSlotEvent += HandleInternalItemClicked;
         GameEvents.OnUndoPowerupEvent += HandleUndoPowerUp;
         GameEvents.OnShakePowerupEvent += ShakeArea;
         // We listen to this to clear history of items that are officially matched/destroyed
@@ -56,6 +57,7 @@ public partial class Spawner : MonoBehaviour
 
     private void OnDisable()
     {
+        GameEvents.OnItemAddedToSlotEvent += HandleInternalItemClicked;
         GameEvents.OnUndoPowerupEvent -= HandleUndoPowerUp;
         GameEvents.OnShakePowerupEvent -= ShakeArea;
         GameEvents.OnHintPowerupEvent -= HandleHintPowerUp;
@@ -120,7 +122,7 @@ public partial class Spawner : MonoBehaviour
                 _itemClickables.Add(clickable);
                 clickable.ItemData = item.CreateCopy();
                 clickable.OnItemClicked = _onItemClicked;
-                clickable.OnItemClicked += HandleInternalItemClicked;
+                // clickable.OnItemClicked += HandleInternalItemClicked;
             }
         });
     }
@@ -128,18 +130,22 @@ public partial class Spawner : MonoBehaviour
 
     #region Internal Logic
 
-    private void HandleInternalItemClicked(ItemData data, Transform t)
+    private void HandleInternalItemClicked(ItemData data, int index, Transform t, bool isAdded, Action callback)
     {
-        // Record the data before the object is destroyed by your Tray logic
-        _undoHistory.Push(data);
-
-        _itemClickables.RemoveAll(c => c == null || c.transform == t);
-
-        if (_collectableLeft.ContainsKey(data.Id))
+        if (isAdded)
         {
-            _collectableLeft[data.Id]--;
-            if (_collectableLeft[data.Id] <= 0)
-                _collectableLeft.Remove(data.Id);
+            // Record the data before the object is destroyed by your Tray logic
+            _undoHistory.Push(data);
+
+            _itemClickables.RemoveAll(c => c == null || c.transform == t);
+
+            if (_collectableLeft.ContainsKey(data.Id))
+            {
+                _collectableLeft[data.Id]--;
+                if (_collectableLeft[data.Id] <= 0)
+                    _collectableLeft.Remove(data.Id);
+            }
+
         }
     }
 
@@ -147,8 +153,18 @@ public partial class Spawner : MonoBehaviour
 
     private void HandleCleanSweep()
     {
-        if (_undoHistory.Count == 0) return;
-        _undoHistory.Clear();
+        if (_undoHistory.Count == 0)
+        {
+            GameEvents.OnPowerUpEnableEvent?.Invoke(true);
+            return;
+        }
+
+        GameEvents.OnPowerUpEnableEvent?.Invoke(false);
+        Scheduler.Instance.ExecuteAfterDelay(0.35f, () =>
+        {
+            RestoreAndSpawnItem();
+            HandleCleanSweep();
+        });
     }
 
 
@@ -161,6 +177,7 @@ public partial class Spawner : MonoBehaviour
         {
             // Only triggered when used as a manual PowerUp
             GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Undo);
+            GameEvents.OnPowerUpEnableEvent?.Invoke(true);
         }
     }
 
@@ -200,7 +217,7 @@ public partial class Spawner : MonoBehaviour
                 _itemClickables.Add(clickable);
                 clickable.ItemData = item;
                 clickable.OnItemClicked = _onItemClicked;
-                clickable.OnItemClicked += HandleInternalItemClicked;
+                // clickable.OnItemClicked += HandleInternalItemClicked;
 
                 // 3. The "Throw" Physics
                 if (go.TryGetComponent<Rigidbody>(out var rb))
@@ -224,20 +241,16 @@ public partial class Spawner : MonoBehaviour
     }
     private void HandleMatchResolved(int firstItemIndex, ItemData[] items, Action onComplete)
     {
-        // In a stack, we can't easily remove items from the middle.
-        // However, since a match usually happens with the most recent clicks:
-        // We remove the last 3 items from the Undo History.
-
-        int itemsInMatch = 3;
-        for (int i = 0; i < itemsInMatch; i++)
+        if (_undoHistory.Count == 0 || items.Length == 0)
         {
-            if (_undoHistory.Count > 0)
-            {
-                _undoHistory.Pop();
-            }
+            return;
         }
-    }
 
+        string targetId = items[0].Id;
+        var filtered = _undoHistory.Where(item => item.Id != targetId).ToList();
+
+        _undoHistory = new Stack<ItemData>(filtered.Reverse<ItemData>());
+    }
 
     private void HandleHintPowerUp()
     {
@@ -315,65 +328,60 @@ public partial class Spawner : MonoBehaviour
 
     private void HandleMagnetPowerUp()
     {
-        float delay = 0.4f;
-        // 1. Priority: Check items in _collectableLeft and see if they are already in _undoHistory
-        foreach (var key in _collectableLeft.Keys.ToList())
-        {
-            // If this item type is already partially collected (in the tray/undo history)
-            int currentlyInTray = _undoHistory.Count(i => i.Id == key);
+        if (_collectableLeft == null || _collectableLeft.Count == 0) return;
 
-            // If it's 1 or 2, we have a partial match that needs fulfilling
+        string targetId = string.Empty;
+        int amountToFetch = 3;
+
+        // 1. Determine Target: Priority search for partial matches in tray
+        foreach (var key in _collectableLeft.Keys)
+        {
+            int currentlyInTray = _undoHistory.Count(i => i.Id == key) % 3;
             if (currentlyInTray > 0)
             {
-                int neededToMatch = 3 - (currentlyInTray % 3);
-
-                // 1. Find all available items of this type that aren't already highlighted/selected
-                var remainingTargets = _itemClickables
-                    .Where(c => c != null && c.ItemData.Id == key) // Assuming you have an IsSelected flag
-                    .Take(neededToMatch)
-                    .ToList();
-
-                for (int i = 0; i < remainingTargets.Count; i++)
-                {
-                    var targetItem = remainingTargets[i];
-
-                    // 2. Highlight them immediately
-                    targetItem.Highlight(true);
-
-                    // 3. Schedule the selection
-                    // Use a local copy of the index for the closure to prevent 'i' being the max value
-                    int index = i;
-                    Scheduler.Instance.ExecuteAfterDelay(delay * index, () =>
-                    {
-                        ProcessItemSelection(targetItem);
-                    });
-                }
-                GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Magnet);
-
-                // Once we fulfill the priority match, we consider the magnet's main job done for this trigger
-                return;
+                targetId = key;
+                amountToFetch = 3 - currentlyInTray;
+                break;
             }
         }
 
-        // 2. Fallback: If no partial matches found, grab the first available items from the collection list 3 times
-        if (_collectableLeft == null || _collectableLeft.Count == 0)
+        // 2. Fallback: If no partials, just take the first item type available
+        if (string.IsNullOrEmpty(targetId))
         {
-            return;
+            targetId = _collectableLeft.Keys.First();
+            amountToFetch = 3;
         }
 
-        string firstID = _collectableLeft.Keys.First();
+        // 3. Execute the Magnet Action
+        ExecuteMagnetSelection(targetId, amountToFetch);
+    }
+
+    private void ExecuteMagnetSelection(string key, int count)
+    {
+        float delay = 0.4f;
         var targets = _itemClickables
-    .Where(c => c != null && c.ItemData.Id == firstID) // Assuming you have an IsSelected flag
-    .Take(3)
-    .ToList();
+            .Where(c => c != null && c.ItemData.Id == key)
+            .Take(count)
+            .ToList();
+
+        if (targets.Count == 0) return;
 
         for (int i = 0; i < targets.Count; i++)
         {
             var targetItem = targets[i];
+            int index = i; // Local copy for closure
+
             targetItem.Highlight(true);
-            Scheduler.Instance.ExecuteAfterDelay(delay * i, () =>
+
+            Scheduler.Instance.ExecuteAfterDelay(delay * index, () =>
             {
                 ProcessItemSelection(targetItem);
+
+                // If this is the last item of the sequence, re-enable UI
+                if (index == targets.Count - 1)
+                {
+                    GameEvents.OnPowerUpEnableEvent?.Invoke(true);
+                }
             });
         }
 
@@ -398,7 +406,7 @@ public partial class Spawner : MonoBehaviour
         _onItemClicked?.Invoke(item.ItemData, item.transform);
 
         // Call internal handler to update Dictionaries/Lists
-        HandleInternalItemClicked(item.ItemData, item.transform);
+        HandleInternalItemClicked(item.ItemData, -1, item.transform, true, null);
     }
 
     private Vector3 CalculateRandomSpawnPos()
@@ -578,6 +586,10 @@ public partial class Spawner : MonoBehaviour
             if (shakesRemaining > 0)
             {
                 Scheduler.Instance.ExecuteAfterDelay(shakeInterval, TriggerSingleRumble);
+            }
+            else
+            {
+                GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Shake);
             }
         }
 

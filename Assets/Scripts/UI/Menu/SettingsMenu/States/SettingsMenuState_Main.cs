@@ -15,8 +15,8 @@ public class SettingsMenuBaseState_Main : SettingsMenuBaseState
         View.soundToggle.OnValueChanged += OnSoundValueChanged;
         View.musicToggle.OnValueChanged += OnMusicValueChanged;
 
-        View.musicToggle.SetIsOn(GameManager.Instance.SaveData.IsVibrateEnabled, false);
-        View.soundToggle.SetIsOn(GameManager.Instance.SaveData.IsVibrateEnabled, false);
+        View.musicToggle.SetIsOn(GameManager.Instance.SaveData.IsMusicMuted, false);
+        View.soundToggle.SetIsOn(GameManager.Instance.SaveData.IsSoundMuted, false);
         View.vibrateToggle.SetIsOn(GameManager.Instance.SaveData.IsVibrateEnabled, false);
 
         View.PrivacyButton.onClick.AddListener(OnPrivacyButtonClicked);

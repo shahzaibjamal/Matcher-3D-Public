@@ -23,12 +23,14 @@ public class PowerUpButton : MonoBehaviour
         RefreshUI();
 
         GameEvents.OnPowerUpSuccessEvent += OnPowerUpSuccess;
+        GameEvents.OnPowerUpEnableEvent += OnPowerUpEnable;
     }
 
     void OnDestroy()
     {
         _button.onClick.RemoveListener(OnButtonClicked);
         GameEvents.OnPowerUpSuccessEvent -= OnPowerUpSuccess;
+        GameEvents.OnPowerUpEnableEvent -= OnPowerUpEnable;
     }
 
     public void RefreshUI()
@@ -72,8 +74,6 @@ public class PowerUpButton : MonoBehaviour
 
     private void OnPowerUpSuccess(PowerUpType type)
     {
-        _button.interactable = true;
-
         if (_type == type)
         {
             _amount--;
@@ -95,7 +95,9 @@ public class PowerUpButton : MonoBehaviour
                     break;
             }
         }
-
     }
-
+    private void OnPowerUpEnable(bool enable)
+    {
+        _button.interactable = enable;
+    }
 }
