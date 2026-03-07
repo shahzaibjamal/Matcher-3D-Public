@@ -109,7 +109,6 @@ public class GameMenuBaseState_Main : GameMenuBaseState
                 LevelData = _currentLevelData,
                 MatchRate = matchRate
             });
-
         }
         else
         {

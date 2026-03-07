@@ -62,6 +62,9 @@ public class TrayView : MonoBehaviour
     [SerializeField] private float _forwardYOffset = 1f; // push forward toward camera (+y)
     [SerializeField] private float _xExaggeration = 2f;  // exaggeration toward slot in x
 
+    [Range(0, 1)]
+    [SerializeField] private float percentage = 0.9f;  // exaggeration toward slot in x
+
     private void HandleItemAddedToSlot(ItemData data, int targetIdx, Transform source, bool isAdded, Action onComplete)
     {
         if (_slots == null || targetIdx < 0 || targetIdx >= _slots.Length)
@@ -94,6 +97,7 @@ public class TrayView : MonoBehaviour
         Vector3 startPos = source.position;
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, targetSlot.transform.position);
         Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 8f));
+        worldTarget = Vector3.Lerp(startPos, worldTarget, percentage);
 
         // 2. Create projectile arc control points (axis swapped, 4 points)
         Vector3 midPoint25 = Vector3.Lerp(startPos, worldTarget, 0.25f);

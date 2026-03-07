@@ -85,21 +85,24 @@ public class ClickableItem : MonoBehaviour, IClickable
     }
     public void OnPointerDown(RaycastHit hitInfo)
     {
+        if (Collider != null && !Collider.enabled) return;
         EnsureInit();
         Highlight(true);
 
         // Kill any existing "Drop" animation before starting "Lift"
         transform.DOKill();
-        transform.DOLocalMove(_originalLocalPos + Vector3.up * liftAmount, 0.1f).SetEase(Ease.OutCubic);
+        transform.DOLocalMove(_originalLocalPos + Vector3.up * liftAmount, 0.1f).SetEase(Ease.OutCubic).SetId("HoverTween"); ;
     }
 
     public void OnPointerUp()
     {
+        if (Collider != null && !Collider.enabled) return;
+
         Highlight(false);
 
         // Smoothly return home
         transform.DOKill();
-        transform.DOLocalMove(_originalLocalPos, 0.15f).SetEase(Ease.OutQuad);
+        transform.DOLocalMove(_originalLocalPos, 0.15f).SetEase(Ease.OutQuad).SetId("HoverTween"); ;
     }
 
 }
