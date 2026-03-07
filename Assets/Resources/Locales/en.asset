@@ -45,6 +45,8 @@ MonoBehaviour:
   - daily_reward
   - rewards
   - tap_to_continue
+  - vibrate
+  - language
   _values:
   - Select language
   - Hey Guys
@@ -78,3 +80,5 @@ MonoBehaviour:
   - Daily Rewards
   - Rewards
   - Tap To Continue...
+  - Vibrate
+  - Language

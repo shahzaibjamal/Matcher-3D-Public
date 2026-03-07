@@ -24,6 +24,7 @@ public class GameSaveData
     public bool IsMusicMuted;
     public bool IsSoundMuted;
     public bool IsVibrateEnabled;
+    public string languageName;
     public List<int> ClaimedDailyRewards = new List<int>();
 
     public DateTime SignUpDate;

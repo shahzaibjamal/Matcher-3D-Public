@@ -43,12 +43,13 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         base.OnMenuOpenAnimationComplete();
         int score = Data.MatchRate > 0.9f ? 3 : Data.MatchRate > 0.7f ? 2 : 1;
         Data.Score = score;
+        SoundController.instance.PlaySoundEffect("level_complete");
+        GameManager.Instance.Vibrate();
         AnimateAllStars(score);
     }
 
     private void AnimateAllStars(int score)
     {
-        SoundController.instance.PlaySoundEffect("level_complete");
         float delay = 0f;
         float starsAppearDelay = 0.3f;
         for (int i = 0; i < View.StarViews.Length; i++)
@@ -82,7 +83,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         {
             View.ConfettiLeft.Play();
             View.ConfettiRight.Play();
-            // SoundController.instance.PlaySoundEffect("confetti");
+            SoundController.instance.PlaySoundEffect("confetti");
         });
 
     }

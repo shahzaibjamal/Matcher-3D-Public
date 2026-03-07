@@ -327,14 +327,26 @@ public partial class Spawner : MonoBehaviour
             {
                 int neededToMatch = 3 - (currentlyInTray % 3);
 
-                for (int i = 0; i < neededToMatch; i++)
+                // 1. Find all available items of this type that aren't already highlighted/selected
+                var remainingTargets = _itemClickables
+                    .Where(c => c != null && c.ItemData.Id == key) // Assuming you have an IsSelected flag
+                    .Take(neededToMatch)
+                    .ToList();
+
+                for (int i = 0; i < remainingTargets.Count; i++)
                 {
-                    var targetItem = _itemClickables.Find(c => c != null && c.ItemData.Id == key);
-                    if (targetItem != null)
+                    var targetItem = remainingTargets[i];
+
+                    // 2. Highlight them immediately
+                    targetItem.Highlight(true);
+
+                    // 3. Schedule the selection
+                    // Use a local copy of the index for the closure to prevent 'i' being the max value
+                    int index = i;
+                    Scheduler.Instance.ExecuteAfterDelay(delay * index, () =>
                     {
-                        targetItem.Highlight(true);
-                    }
-                    Scheduler.Instance.ExecuteAfterDelay(delay * i, () => TrySelectSpecificItem(key));
+                        ProcessItemSelection(targetItem);
+                    });
                 }
                 GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Magnet);
 
@@ -350,14 +362,19 @@ public partial class Spawner : MonoBehaviour
         }
 
         string firstID = _collectableLeft.Keys.First();
-        for (int i = 0; i < 3; i++)
+        var targets = _itemClickables
+    .Where(c => c != null && c.ItemData.Id == firstID) // Assuming you have an IsSelected flag
+    .Take(3)
+    .ToList();
+
+        for (int i = 0; i < targets.Count; i++)
         {
-            var targetItem = _itemClickables.Find(c => c != null && c.ItemData.Id == firstID);
-            if (targetItem != null)
+            var targetItem = targets[i];
+            targetItem.Highlight(true);
+            Scheduler.Instance.ExecuteAfterDelay(delay * i, () =>
             {
-                targetItem.Highlight(true);
-            }
-            Scheduler.Instance.ExecuteAfterDelay(delay * i, () => TrySelectSpecificItem(firstID));
+                ProcessItemSelection(targetItem);
+            });
         }
 
         GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Magnet);

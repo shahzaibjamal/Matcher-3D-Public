@@ -73,6 +73,8 @@ public class SoundController : MonoBehaviour
     public void ToggleMusic(bool isEnabled)
     {
         _isMusicEnabled = isEnabled;
+        _bgmSourceA.DOKill();
+        _bgmSourceB.DOKill();
 
         if (!_isMusicEnabled)
         {

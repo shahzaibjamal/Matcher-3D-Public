@@ -67,11 +67,13 @@ public class PowerUpButton : MonoBehaviour
                 GameEvents.OnUndoPowerupEvent?.Invoke(true);
                 break;
         }
-
+        _button.interactable = false;
     }
 
     private void OnPowerUpSuccess(PowerUpType type)
     {
+        _button.interactable = true;
+
         if (_type == type)
         {
             _amount--;

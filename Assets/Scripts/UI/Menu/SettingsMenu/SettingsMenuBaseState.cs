@@ -8,6 +8,11 @@ public class SettingsMenuBaseState : MenuBaseState<SettingsMenuController, Setti
 
     public override void Enter()
     {
+        View.MainView.gameObject.SetActive(false);
+        View.LanguageContainer.gameObject.SetActive(false);
+        View.PrivacyContainer.gameObject.SetActive(false);
+        View.TermsContainer.gameObject.SetActive(false);
+        View.CloseButton.gameObject.SetActive(false);
     }
 
 

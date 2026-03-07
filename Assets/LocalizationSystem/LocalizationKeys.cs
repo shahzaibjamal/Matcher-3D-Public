@@ -78,5 +78,9 @@ namespace TS.LocalizationSystem
         public const string rewards = "rewards";
         
         public const string tap_to_continue = "tap_to_continue";
+        
+        public const string vibrate = "vibrate";
+        
+        public const string language = "language";
     }
 }

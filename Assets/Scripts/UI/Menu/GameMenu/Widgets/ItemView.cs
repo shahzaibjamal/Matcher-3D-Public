@@ -66,7 +66,6 @@ public class ItemView : MonoBehaviour
             PlayCompletionAnimation(() =>
             {
                 _onFinished?.Invoke(); // Tells State "I'm gone!"
-                SoundController.instance.PlaySoundEffect("item_complete");
                 Destroy(gameObject);
             });
         }
@@ -97,6 +96,11 @@ public class ItemView : MonoBehaviour
         seq.Append(transform.DOMoveY(transform.position.y + 100f, 0.6f).SetEase(Ease.InOutElastic));
         seq.Join(transform.DOScale(Vector3.zero, 0.6f).SetEase(Ease.InOutElastic));
 
+        Scheduler.Instance.ExecuteAfterDelay(0.45f, () =>
+        {
+            GameManager.Instance.Vibrate();
+            SoundController.instance.PlaySoundEffect("item_complete");
+        });
         _particleSystem.Play();
 
         seq.OnComplete(() =>

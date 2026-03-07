@@ -45,10 +45,12 @@ MonoBehaviour:
   - daily_reward
   - rewards
   - tap_to_continue
+  - vibrate
+  - language
   _values:
-  - Escolher idioma
-  - "Ol\xE1 Pessoal"
-  - "Dizer ol\xE1"
+  - Selecione o idioma
+  - Ei pessoal
+  - "Diga ol\xE1"
   - Jogar
   - "Configura\xE7\xF5es"
   - Som
@@ -78,3 +80,5 @@ MonoBehaviour:
   - "Recompensas di\xE1rias"
   - Recompensas
   - Toque para continuar...
+  - Vibrar
+  - Linguagem

@@ -73,13 +73,12 @@ public class SmartToggle : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             animTime = 0f;
             animStartX = handle.anchoredPosition.x;
             animTargetX = isOn ? maxX : minX;
+            OnValueChanged?.Invoke(isOn);
         }
         else
         {
             ApplyVisualInstant();
         }
-
-        OnValueChanged?.Invoke(isOn);
     }
 
     public void Toggle() => SetIsOn(!isOn, true);

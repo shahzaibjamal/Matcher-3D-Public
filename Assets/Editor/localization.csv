@@ -1,7 +1,7 @@
 Key,en,pt,es
-LABEL_LANGUAGE,Select language,Escolher idioma,Elija el idioma
-LABEL_HELLO,Hey Guys,Olá Pessoal,Hola, chicos
-BUTTON_HELLO,Say hello,Dizer olá,Saluda
+LABEL_LANGUAGE,Select language,Selecione o idioma,Selecione o idioma
+LABEL_HELLO,Hey Guys,Ei pessoal,Ei personal
+BUTTON_HELLO,Say hello,Diga olá,Diga olá
 start_game,Play,Jogar,Jugar
 settings,Settings,Configurações,Configuraciones
 sound,Sound,Som,Algunos
@@ -31,3 +31,5 @@ reward_amount,x{0},x{0},x{0}
 daily_reward,Daily Rewards,Recompensas diárias,Recompensas diárias
 rewards,Rewards,Recompensas,Recompensas
 tap_to_continue,Tap To Continue...,Toque para continuar...,Toque para continuar...
+vibrate,Vibrate,Vibrar,Vibrar
+language,Language,Linguagem,Lenguaje

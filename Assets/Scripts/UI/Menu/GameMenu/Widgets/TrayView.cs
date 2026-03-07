@@ -63,65 +63,74 @@ public class TrayView : MonoBehaviour
     {
         if (_slots == null || targetIdx < 0 || targetIdx >= _slots.Length)
         {
-            Debug.LogError($"[TrayView] Target index {targetIdx} is out of bounds or _slots is null!");
+            Debug.LogError($"[TrayView] Target index {targetIdx} is out of bounds!");
             onComplete?.Invoke();
             return;
         }
+
         if (!isAdded)
         {
-            // removed via undo or cleansweep
-            // add tween for removing and the call onCompelte
             _slots[targetIdx].Clear();
             _slots[targetIdx].PlayPoof();
-
-            Scheduler.Instance.ExecuteAfterDelay(0.2f, () =>
-            {
-                onComplete?.Invoke();
-            });
+            Scheduler.Instance.ExecuteAfterDelay(0.2f, () => onComplete?.Invoke());
             return;
         }
+
         SoundController.instance.PlaySoundEffect("pick");
 
-        if (source == null) return;
         if (source.TryGetComponent<ClickableItem>(out var clickableItem))
         {
-            clickableItem.Rigidbody.isKinematic = false;
+            clickableItem.Rigidbody.isKinematic = true;
             clickableItem.Collider.enabled = false;
         }
 
         SlotView targetSlot = _slots[targetIdx];
         targetSlot.SetItemDataOnly(data);
 
-        // Convert UI position to World Space for the 3D item to fly to
+        // 1. Setup Positions
+        Vector3 startPos = source.position;
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, targetSlot.transform.position);
         Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 8f));
-        Sequence flightSeq = DOTween.Sequence();
-        flightSeq.SetId("TrayView: item Flight");
-        flightSeq.Append(source.DOMove(source.position + Vector3.up * 2f, _flightUpDuration).SetEase(Ease.OutQuad));
-        flightSeq.Join(source.DORotate(Vector3.zero, _flightUpDuration, RotateMode.FastBeyond360));
-        flightSeq.Join(source.DOScale(source.localScale * 1.2f, _flightUpDuration));
 
-        // This triggers HandleLeap for existing items and OnNewItemReserved for the new one
-        // STAGE B: The Toss (Move to UI Slot)
-        flightSeq.Append(source.DOMove(worldTarget, _flightToTrayDuration).SetEase(Ease.InBack));
-        flightSeq.Join(source.DOScale(Vector3.one * 0.3f, _flightToTrayDuration)); // Shrink to fit UI
+        // 2. Create the "Mid-Air" Control Point
+        // This is the peak of the arc. We move it toward the center of the screen and UP (Y)
+        Vector3 midPoint = Vector3.Lerp(startPos, worldTarget, 0.5f);
+        midPoint.y += 2f; // High altitude for the "pop" toward camera
+        midPoint.z += 5f;  // Subtle shift to make the curve "round"
+
+        Vector3[] path = new Vector3[] { startPos, midPoint, worldTarget };
+
+        // 3. The Sequence
+        Sequence flightSeq = DOTween.Sequence();
+
+        // RESET ROTATION: Just a clean snap to zero
+        source.DORotate(Vector3.zero, _flightToTrayDuration, RotateMode.Fast);
+
+        // THE MOVE: Follow the Bezier Path
+        flightSeq.Append(source.DOPath(path, _flightToTrayDuration, PathType.CatmullRom)
+                .SetEase(Ease.OutQuad)); // OutQuad makes it feel "thrown"
+
+        // THE SCALE (The Waterfall Effect)
+        // Scale UP as it nears the camera (midpoint), then scale small for the UI slot
+        flightSeq.Join(source.DOScale(Vector3.one * 2.5f, _flightToTrayDuration * 0.4f).SetEase(Ease.OutCubic));
+        flightSeq.Insert(_flightToTrayDuration * 0.5f, source.DOScale(Vector3.one * 0.3f, _flightToTrayDuration * 0.5f).SetEase(Ease.InSine));
+
+        // SQUASH ON IMPACT: Purely visual juice
+        flightSeq.Insert(_flightToTrayDuration * 0.9f, source.DOScaleY(0.1f, 0.1f));
+
+
+
         flightSeq.OnComplete(() =>
         {
-            // Double check slot still holds this data (in case of rapid shifts)
+            // UI Feedback
+            targetSlot.transform.DOPunchScale(Vector3.one * 0.2f, 0.2f);
+
             if (targetSlot.CurrentItem == data)
                 targetSlot.RevealIcon(true);
-            else
-                RevealCorrectDataSlot(data);
 
             Destroy(source.gameObject);
             onComplete?.Invoke();
         });
-    }
-
-    private void RevealCorrectDataSlot(ItemData data)
-    {
-        var actualSlot = _slots.FirstOrDefault(s => s.CurrentItem == data);
-        actualSlot?.RevealIcon();
     }
 
     private IEnumerator SteppedLeapRoutine(ItemData data, int from, int targetIdx, Action onComplete)

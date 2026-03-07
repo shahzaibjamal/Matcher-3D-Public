@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using TS.LocalizationSystem;
+using Solo.MOST_IN_ONE;
 
 public class GameManager : MonoBehaviour
 {
@@ -217,6 +218,23 @@ public class GameManager : MonoBehaviour
     {
         return LevelManager.Instance.HasMoreContent();
     }
+
+    public void Vibrate()
+    {
+
+        if (SaveData.IsVibrateEnabled)
+        {
+#if UNITY_ANDROID || UNITY_IOS
+            MOST_HapticFeedback.Generate(MOST_HapticFeedback.HapticTypes.LightImpact);
+
+            // Handheld.Vibrate();
+#elif UNITY_EDITOR
+            UIScreenShake.ShakeStatic();
+            Debug.Log("Simulated vibration in Editor");
+#endif
+        }
+    }
+
     #endregion
 
 }

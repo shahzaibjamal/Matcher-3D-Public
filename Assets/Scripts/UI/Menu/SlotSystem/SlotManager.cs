@@ -54,7 +54,7 @@ public class SlotManager
                 _slots[i] = null;
 
                 // 5. Optional: Small delay for a nice sequential 'pop' out of the tray
-                await Task.Delay(250);
+                await Task.Delay(200);
             }
         }
 
