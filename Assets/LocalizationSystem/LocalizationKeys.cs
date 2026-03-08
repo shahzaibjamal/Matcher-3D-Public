@@ -53,6 +53,8 @@ namespace TS.LocalizationSystem
         
         public const string privacy = "privacy";
         
+        public const string terms = "terms";
+        
         public const string terms_condition = "terms_condition";
         
         public const string submit = "submit";
@@ -82,5 +84,19 @@ namespace TS.LocalizationSystem
         public const string vibrate = "vibrate";
         
         public const string language = "language";
+        
+        public const string clear_slots = "clear_slots";
+        
+        public const string clear = "clear";
+        
+        public const string no_space = "no_space";
+        
+        public const string spin_ad_message = "spin_ad_message";
+        
+        public const string yes = "yes";
+        
+        public const string no = "no";
+        
+        public const string show_ad = "show_ad";
     }
 }

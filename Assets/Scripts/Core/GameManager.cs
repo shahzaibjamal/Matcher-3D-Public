@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         LevelManager.Instance.Initialize(SaveData);
         SoundController.instance.Init(SaveData.IsMusicMuted, SaveData.IsSoundMuted);
 
-        MainMenuController.OnStartButtonClicked += StartGame;
+        GameEvents.OnStartButtonClicked += StartGame;
         GameEvents.OnGameInitializedEvent += LoadLevelById;
         GameEvents.OnGameQuitEvent += Cleanup;
         GameEvents.OnGameOverEvent += TriggerGameOver;
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
     }
     void OnDestroy()
     {
-        MainMenuController.OnStartButtonClicked -= StartGame;
+        GameEvents.OnStartButtonClicked -= StartGame;
         GameEvents.OnGameInitializedEvent -= LoadLevelById;
         GameEvents.OnGameQuitEvent -= Cleanup;
         GameEvents.OnGameOverEvent -= TriggerGameOver;
@@ -220,16 +220,10 @@ public class GameManager : MonoBehaviour
 
     public void Vibrate(Haptics.HapticTypes type = Haptics.HapticTypes.LightImpact)
     {
-
         if (SaveData.IsVibrateEnabled)
         {
 #if UNITY_ANDROID || UNITY_IOS
             Haptics.Generate(type);
-
-            // Handheld.Vibrate();
-#elif UNITY_EDITOR
-            UIScreenShake.ShakeStatic();
-            Debug.Log("Simulated vibration in Editor");
 #endif
         }
     }

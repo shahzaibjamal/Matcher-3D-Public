@@ -13,7 +13,7 @@ public class DailyRewardMenuController : MenuController<DailyRewardMenuView, Dai
     {
         GameManager.Instance.SaveData.Inventory.AddRewards(rewards);
         GameManager.Instance.SaveGame();
-        RewardManager.Instance.AddRewardToQueue(rewards);
+        RewardManager.Instance.AddRewardsToQueue(rewards);
     }
 
     public override void OnExit()

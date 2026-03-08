@@ -10,5 +10,6 @@ public class Metadata
     public List<LevelData> Levels = new List<LevelData>();
     public List<DailyRewardData> DailyRewards = new List<DailyRewardData>();
     public List<MapThemeData> MapThemes = new List<MapThemeData>(); // New List
+    public List<SpinWheelData> SpinWheelRewards = new List<SpinWheelData>();
 }
 

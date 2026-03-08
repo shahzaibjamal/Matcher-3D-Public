@@ -1,7 +1,6 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class ClickableItem : MonoBehaviour, IClickable
 {
@@ -20,16 +19,35 @@ public class ClickableItem : MonoBehaviour, IClickable
     private Vector3 _originalLocalPos;
     private bool _isInitialized = false;
 
+    // Static gatekeeper shared by all instances
+    private static bool _isTrayFillable = true;
+
     void Awake()
     {
         _hintLayer = LayerMask.NameToLayer("Hint");
         _defaultLayer = LayerMask.NameToLayer("Default");
     }
 
+    private void OnEnable()
+    {
+        GameEvents.OnSlotsFillableEvent += HandleFillableStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnSlotsFillableEvent -= HandleFillableStateChanged;
+    }
+
+    private void HandleFillableStateChanged(bool fillable)
+    {
+        _isTrayFillable = fillable;
+    }
+
     void OnDestroy()
     {
         OnItemClicked = null;
     }
+
     private void EnsureInit()
     {
         if (_isInitialized) return;
@@ -39,29 +57,31 @@ public class ClickableItem : MonoBehaviour, IClickable
 
     public void OnHandleClick(RaycastHit hitInfo)
     {
+        // If tray is full, do NOT process the click logic (sending to tray)
+        if (!_isTrayFillable)
+        {
+            // --- IMPLEMENT SFX FOR DENIAL HERE ---
+            // SoundController.Instance.Play("DenyClick");
+            return;
+        }
+
         HandleLogic();
     }
 
     private void HandleLogic()
     {
         if (ItemData == null) return;
-
-        // Apply to parent and all children recursively
         SetLayerRecursive(gameObject, _defaultLayer);
-
         OnItemClicked?.Invoke(ItemData, transform);
     }
 
     public void Highlight(bool isHinted)
     {
         int targetLayer = isHinted ? _hintLayer : _defaultLayer;
-
-        // Apply to parent and all children recursively
         SetLayerRecursive(gameObject, targetLayer);
 
         if (isHinted)
         {
-            // Add the Scale Pulse (Motion is key to catching the eye)
             transform.DOScale(Vector3.one * 1.05f, 0.5f)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine)
@@ -69,7 +89,6 @@ public class ClickableItem : MonoBehaviour, IClickable
         }
         else
         {
-            // Reset
             DOTween.Kill("HintLoop");
             transform.DOScale(Vector3.one, 0.2f);
         }
@@ -83,15 +102,32 @@ public class ClickableItem : MonoBehaviour, IClickable
             SetLayerRecursive(child.gameObject, newLayer);
         }
     }
+
     public void OnPointerDown(RaycastHit hitInfo)
     {
         if (Collider != null && !Collider.enabled) return;
         EnsureInit();
-        Highlight(true);
 
-        // Kill any existing "Drop" animation before starting "Lift"
         transform.DOKill();
-        transform.DOLocalMove(_originalLocalPos + Vector3.up * liftAmount, 0.1f).SetEase(Ease.OutCubic).SetId("HoverTween"); ;
+
+        if (_isTrayFillable)
+        {
+            // Normal Lift
+            Highlight(true);
+            transform.DOLocalMove(_originalLocalPos + Vector3.up * liftAmount, 0.1f)
+                .SetEase(Ease.OutCubic)
+                .SetId("HoverTween");
+        }
+        else
+        {
+            // Denial "Wobble" or "Heavy Lift"
+            // We lift it much less and add a little shake to show it's stuck
+            transform.DOLocalMove(_originalLocalPos + Vector3.up * (liftAmount * 0.3f), 0.05f)
+                .SetEase(Ease.OutBounce)
+                .OnComplete(() => transform.DOShakeRotation(0.2f, 5f, 10, 90));
+
+            // --- IMPLEMENT VFX FOR DENIAL HERE ---
+        }
     }
 
     public void OnPointerUp()
@@ -102,7 +138,8 @@ public class ClickableItem : MonoBehaviour, IClickable
 
         // Smoothly return home
         transform.DOKill();
-        transform.DOLocalMove(_originalLocalPos, 0.15f).SetEase(Ease.OutQuad).SetId("HoverTween"); ;
+        transform.DOLocalMove(_originalLocalPos, 0.15f)
+            .SetEase(Ease.OutQuad)
+            .SetId("HoverTween");
     }
-
 }

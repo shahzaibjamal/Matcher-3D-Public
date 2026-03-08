@@ -32,6 +32,7 @@ MonoBehaviour:
   - game_quit
   - game_quit_title
   - privacy
+  - terms
   - terms_condition
   - submit
   - confirm
@@ -47,6 +48,13 @@ MonoBehaviour:
   - tap_to_continue
   - vibrate
   - language
+  - clear_slots
+  - clear
+  - no_space
+  - spin_ad_message
+  - yes
+  - no
+  - show_ad
   _values:
   - Select language
   - Hey Guys
@@ -67,6 +75,7 @@ MonoBehaviour:
   - Would you like to quit game?
   - Exit
   - Privacy
+  - Terms
   - Terms & Condition
   - Submit
   - Confirm
@@ -82,3 +91,10 @@ MonoBehaviour:
   - Tap To Continue...
   - Vibrate
   - Language
+  - Would you like to clear the slots and try again?
+  - Clear
+  - No Space
+  - Would you like to see an ad to spin the wheel?
+  - Yes
+  - No
+  - Show Ad

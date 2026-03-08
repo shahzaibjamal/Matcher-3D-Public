@@ -148,6 +148,7 @@ public class SlotManager
         }
 
         _slots[targetIdx] = data;
+        GameEvents.OnSlotsFillableEvent?.Invoke(IsSlotAvailable());
 
         // 2. Flight
         await ExecuteFlight(data, targetIdx, source, true);
@@ -156,6 +157,7 @@ public class SlotManager
         {
             _isProcessingMatches = true;
             await ResolveAllMatches();
+            GameEvents.OnSlotsFillableEvent?.Invoke(IsSlotAvailable());
             _isProcessingMatches = false;
         }
 
@@ -173,6 +175,10 @@ public class SlotManager
         return true;
     }
 
+    public bool IsSlotAvailable()
+    {
+        return _slots[_slots.Length - 1] == null;
+    }
     private void TriggerGameOver(string reason, bool win)
     {
         Debug.LogError($"[GAME OVER] {reason}");

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MainMenuController : MenuController<MainMenuView, MainMenuData>
 {
-    public static event Action OnStartButtonClicked;
     public override void OnEnter()
     {
         SetState(new MainMenuBaseState_Main(this));
@@ -51,15 +50,9 @@ public class MainMenuController : MenuController<MainMenuView, MainMenuData>
             return;
         }
 
-        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+        MenuManager.Instance.OpenMenu<LevelDetailMenuView, LevelDetailMenuController, LevelDetailMenuData>(Menus.Type.LevelDetail, new LevelDetailMenuData
         {
-            OnLoadingComplete = OnLoadingComplete
+            LevelData = LevelManager.Instance.GetLevelByID(GameManager.Instance.SaveData.CurrentLevelID)
         });
-    }
-
-    private void OnLoadingComplete()
-    {
-        OnStartButtonClicked?.Invoke();
-        MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game, new GameMenuData());
     }
 }

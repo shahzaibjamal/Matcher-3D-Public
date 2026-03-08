@@ -1,7 +1,7 @@
-using UnityEngine;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
@@ -10,13 +10,15 @@ public class DataManager : MonoBehaviour
     [Header("Data Source")]
     [SerializeField] private string fileName = "metadata";
 
-    // The deserialized JSON data
     public Metadata Metadata { get; private set; }
 
-    // Fast lookup caches
     private Dictionary<string, ItemData> _itemCache = new Dictionary<string, ItemData>();
     private Dictionary<string, LevelData> _levelCache = new Dictionary<string, LevelData>();
     private Dictionary<int, DailyRewardData> _dailyRewardCache = new Dictionary<int, DailyRewardData>();
+
+    // NEW: Cache for Spin Wheel rewards
+    private Dictionary<int, RewardData> _spinWheelCache = new Dictionary<int, RewardData>();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -45,7 +47,7 @@ public class DataManager : MonoBehaviour
         {
             Metadata = JsonConvert.DeserializeObject<Metadata>(jsonFile.text);
             InitializeCaches();
-            Debug.Log($"[DataManager] Successfully loaded {Metadata.Levels.Count} levels and {Metadata.Items.Count} items.");
+            Debug.Log($"[DataManager] Loaded {Metadata.Levels.Count} levels and {Metadata.SpinWheelRewards.Count} spin rewards.");
         }
         catch (System.Exception e)
         {
@@ -55,53 +57,61 @@ public class DataManager : MonoBehaviour
 
     private void InitializeCaches()
     {
-        // Adding a null check just in case, though your initialization handles it
         _itemCache = Metadata.Items?.ToDictionary(item => item.Id) ?? new Dictionary<string, ItemData>();
         _levelCache = Metadata.Levels?.ToDictionary(lvl => lvl.Id) ?? new Dictionary<string, LevelData>();
         _dailyRewardCache = Metadata.DailyRewards?.ToDictionary(d => d.Day) ?? new Dictionary<int, DailyRewardData>();
+
+        // NEW: Initialize Spin Wheel cache
+        _spinWheelCache = Metadata.SpinWheelRewards?
+            .ToDictionary(sw => sw.ID, sw => sw.Reward) ?? new Dictionary<int, RewardData>();
     }
 
-    // --- Helper Functions ---
+    // --- NEW HELPER FUNCTIONS ---
 
-    /// <summary> Gets item data by its string ID (e.g., "apple_01") </summary>
+    /// <summary> Gets the reward data for a specific spin wheel segment ID </summary>
+    public RewardData GetSpinWheelReward(int id)
+    {
+        if (_spinWheelCache.TryGetValue(id, out var reward)) return reward;
+        Debug.LogWarning($"[DataManager] SpinWheel ID '{id}' not found.");
+        return null;
+    }
+
+    /// <summary> Returns all available spin wheel rewards for UI generation </summary>
+    public List<SpinWheelData> GetAllSpinWheelRewards()
+    {
+        return Metadata.SpinWheelRewards;
+    }
+
+    // --- Existing Helper Functions ---
+
     public ItemData GetItemByID(string id)
     {
         if (_itemCache.TryGetValue(id, out var item)) return item;
-        Debug.LogWarning($"[DataManager] Item ID '{id}' not found.");
         return null;
     }
 
-    /// <summary> Gets level data by its string ID (e.g., "lvl_101") </summary>
     public LevelData GetLevelByID(string id)
     {
         if (_levelCache.TryGetValue(id, out var lvl)) return lvl;
-        Debug.LogWarning($"[DataManager] Level ID '{id}' not found.");
         return null;
     }
 
-    /// <summary> Gets level data by its Level Number (sequential) </summary>
     public LevelData GetLevelByNumber(int number)
     {
         return Metadata.Levels.FirstOrDefault(l => l.Number == number);
     }
 
-    /// <summary> Returns all rewards for a specific day </summary>
     public DailyRewardData GetDailyReward(int day)
     {
         if (_dailyRewardCache.TryGetValue(day, out var data)) return data;
         return null;
     }
 
-    public LevelData GetDefaultLevel()
-    {
-        return Metadata.Levels.FirstOrDefault();
-    }
     public MapThemeData GetThemeByLevelNumber(int levelNumber)
     {
-        // Find themes where StartLevel <= levelNumber, then take the one with the highest StartLevel
         return Metadata.MapThemes
             .Where(t => t.StartLevel <= levelNumber)
             .OrderByDescending(t => t.StartLevel)
-            .FirstOrDefault() ?? Metadata.MapThemes.FirstOrDefault(); // Fallback to first theme
+            .FirstOrDefault() ?? Metadata.MapThemes.FirstOrDefault();
     }
 }

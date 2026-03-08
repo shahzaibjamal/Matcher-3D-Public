@@ -42,12 +42,6 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-        // // Ensure the blocking layer has a Button component
-        // if (blockingLayer.TryGetComponent<Button>(out Button btn))
-        // {
-        //     // When the dark background is clicked, it acts as a "Back" button
-        //     btn.onClick.AddListener(() => GoBack());
-        // }
         SubscribeBlockingButton();
     }
     public void OpenMenu<TView, TController, TData>(

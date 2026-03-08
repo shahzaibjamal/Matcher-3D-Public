@@ -18,6 +18,7 @@ levels_no_more,There are no more levels. Check back again for more!!,Não há ma
 game_quit,Would you like to quit game?,Deseja sair do jogo?,Deseja sair do jogo?
 game_quit_title,Exit,Saída,Saída
 privacy,Privacy,Privacidade,Privacidade
+terms,Terms,Termos,Termos
 terms_condition,Terms & Condition,Termos e Condições,Termos e Condições
 submit,Submit,Enviar,Enviar
 confirm,Confirm,Confirmar,Confirmar
@@ -33,3 +34,10 @@ rewards,Rewards,Recompensas,Recompensas
 tap_to_continue,Tap To Continue...,Toque para continuar...,Toque para continuar...
 vibrate,Vibrate,Vibrar,Vibrar
 language,Language,Linguagem,Lenguaje
+clear_slots,Would you like to clear the slots and try again?,Deseja limpar os espaços e tentar novamente?,¿Quieres limpiar los espacios y tentar novamente?
+clear,Clear,Claro,Claro
+no_space,No Space,Sem espaço,Sem espaço
+spin_ad_message,Would you like to see an ad to spin the wheel?,Você gostaria de ver um anúncio para girar a roleta?,¿Você gostaria de ver um anúncio para girar una roleta?
+yes,Yes,Sim,Sim
+no,No,Não,No
+show_ad,Show Ad,Mostrar anúncio,Mostrar anuncio

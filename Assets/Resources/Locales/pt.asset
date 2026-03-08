@@ -32,6 +32,7 @@ MonoBehaviour:
   - game_quit
   - game_quit_title
   - privacy
+  - terms
   - terms_condition
   - submit
   - confirm
@@ -47,6 +48,13 @@ MonoBehaviour:
   - tap_to_continue
   - vibrate
   - language
+  - clear_slots
+  - clear
+  - no_space
+  - spin_ad_message
+  - yes
+  - no
+  - show_ad
   _values:
   - Selecione o idioma
   - Ei pessoal
@@ -67,6 +75,7 @@ MonoBehaviour:
   - Deseja sair do jogo?
   - "Sa\xEDda"
   - Privacidade
+  - Termos
   - "Termos e Condi\xE7\xF5es"
   - Enviar
   - Confirmar
@@ -82,3 +91,10 @@ MonoBehaviour:
   - Toque para continuar...
   - Vibrar
   - Linguagem
+  - "Deseja limpar os espa\xE7os e tentar novamente?"
+  - Claro
+  - "Sem espa\xE7o"
+  - "Voc\xEA gostaria de ver um an\xFAncio para girar a roleta?"
+  - Sim
+  - "N\xE3o"
+  - "Mostrar an\xFAncio"

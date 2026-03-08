@@ -76,6 +76,7 @@ public class Inventory
             RewardType.Magnet => PowerUpType.Magnet,
             RewardType.Shake => PowerUpType.Shake,
             RewardType.Undo => PowerUpType.Undo,
+            RewardType.Gold => throw new NotImplementedException(),
         };
     }
 }

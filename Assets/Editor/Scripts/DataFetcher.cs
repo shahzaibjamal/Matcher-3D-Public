@@ -38,6 +38,7 @@ public static class DataFetcher
 
     private static void SaveMetadata(string json)
     {
+        Debug.LogError(json);
         try
         {
             // Deserialize to validate the structure before overwriting local file

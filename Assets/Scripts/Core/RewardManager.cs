@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,28 +35,44 @@ public class RewardManager : MonoBehaviour
             foreach (var reward in saved) _pendingRewards.Enqueue(reward);
         }
     }
-
-    public void AddRewardToQueue(List<RewardData> rewards)
+    public void AddRewardToQueue(RewardData reward)
     {
-        if (rewards == null) return;
+        if (reward == null) return;
+        AddRewardsToQueue(new List<RewardData> { reward });
+    }
+
+    public void AddRewardsToQueue(List<RewardData> rewards)
+    {
+        if (rewards == null || rewards.Count == 0) return;
 
         foreach (var reward in rewards)
         {
+            if (reward == null) continue;
+
             _pendingRewards.Enqueue(reward);
-            // Add to save data immediately so it's persistent
+
+            // Keep the save data in sync with the runtime queue
             GameManager.Instance.SaveData.SavedPendingRewards.Add(reward);
         }
-        GameManager.Instance.SaveGame(); // Save progress
-    }
 
-    public void CheckAndShowNext()
+        // Save once after the entire batch is processed to avoid IO overhead
+        GameManager.Instance.SaveGame();
+    }
+    public void CheckAndShowNext(Action onAllRewardsClaimed = null)
     {
-        if (_isShowingPopup || _pendingRewards.Count == 0) return;
+        // If we are already showing or the queue is empty, trigger the final callback
+        if (_isShowingPopup) return;
+
+        if (_pendingRewards.Count == 0)
+        {
+            onAllRewardsClaimed?.Invoke();
+            return;
+        }
 
         _isShowingPopup = true;
         RewardData nextReward = _pendingRewards.Dequeue();
 
-        // Remove from persistent save data since it's now being shown
+        // Sync save data
         GameManager.Instance.SaveData.SavedPendingRewards.Remove(nextReward);
         GameManager.Instance.SaveGame();
 
@@ -64,7 +81,8 @@ public class RewardManager : MonoBehaviour
             new RewardMenuData(nextReward, () =>
             {
                 _isShowingPopup = false;
-                CheckAndShowNext();
+                // Pass the callback forward to the next check
+                CheckAndShowNext(onAllRewardsClaimed);
             })
         );
     }

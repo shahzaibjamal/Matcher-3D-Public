@@ -28,5 +28,30 @@ public class GameSaveData
     public List<int> ClaimedDailyRewards = new List<int>();
 
     public DateTime SignUpDate;
+    public string LastSpinDateString; // Store as string for easier JSON serialization
     public List<RewardData> SavedPendingRewards = new List<RewardData>();
+
+    /// <summary>
+    /// Checks if the player is eligible for a new spin based on the calendar day.
+    /// </summary>
+    public bool CanSpin()
+    {
+        if (string.IsNullOrEmpty(LastSpinDateString)) return true;
+
+        if (DateTime.TryParse(LastSpinDateString, out DateTime lastSpin))
+        {
+            // Returns true if the current date is strictly after the last spin date
+            return DateTime.Now.Date > lastSpin.Date;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Updates the save data to record that a spin was used today.
+    /// </summary>
+    public void RecordSpin()
+    {
+        LastSpinDateString = DateTime.Now.ToString("yyyy-MM-dd");
+    }
 }

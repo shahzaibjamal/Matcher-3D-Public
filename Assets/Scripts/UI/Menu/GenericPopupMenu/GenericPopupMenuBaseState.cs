@@ -10,9 +10,9 @@ public class GenericPopupMenuBaseState : MenuBaseState<GenericPopupMenuControlle
     public override void Enter()
     {
         // 1. Set text content
-        View.TitleText.text = LocaleManager.Localize(Data.Title);
-        View.MessageText.text = LocaleManager.Localize(Data.Message);
-        View.ConfirmButtonText.text = LocaleManager.Localize(Data.ConfirmText);
+        View.TitleText.text = LocaleManager.Localize(Data.TitleKey);
+        View.MessageText.text = LocaleManager.Localize(Data.MessageKey);
+        View.ConfirmButtonText.text = LocaleManager.Localize(Data.ConfirmTextKey);
 
         // 2. Setup Buttons
         View.ConfirmButton.onClick.AddListener(OnConfirmButtonClicked);
@@ -21,7 +21,7 @@ public class GenericPopupMenuBaseState : MenuBaseState<GenericPopupMenuControlle
         if (Data.IsTwoButton)
         {
             View.CancelButton.gameObject.SetActive(true);
-            View.CancelButtonText.text = LocaleManager.Localize(Data.CancelText);
+            View.CancelButtonText.text = LocaleManager.Localize(Data.CancelTextKey);
             View.CancelButton.onClick.AddListener(OnCancelButtonClicked);
         }
         else

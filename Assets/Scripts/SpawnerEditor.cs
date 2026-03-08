@@ -1,74 +1,57 @@
 #if UNITY_EDITOR
-using UnityEditor;
+using System.Reflection;
+using System.Linq;
 #endif
 using UnityEngine;
-using System.Reflection;
 
 public partial class Spawner : MonoBehaviour
 {
-    /// <summary>
-    /// Shared logic for spawning game systems.
-    /// Can be called at runtime or from editor menu.
-    /// </summary>
-    public static void SpawnGameSystems()
-    {
-        // Find and delete any Spawner in the scene
-        var spawner = Object.FindObjectOfType<Spawner>();
-        if (spawner != null)
-        {
 #if UNITY_EDITOR
-            Object.DestroyImmediate(spawner.gameObject);
-#else
-            Object.Destroy(spawner.gameObject);
-#endif
-            Debug.Log("Spawner deleted.");
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) Debug_ClickRandom();
+        if (Input.GetKeyDown(KeyCode.M)) Debug_ClickTarget();
+    }
+
+    private void Debug_ClickRandom()
+    {
+        // CRITICAL: Clean up destroyed items before picking one
+        // _itemClickables.RemoveAll(i => i == null);
+
+        if (_itemClickables.Count == 0)
+        {
+            Debug.LogWarning("<color=yellow>[Debug]</color> No items left on board to click.");
+            return;
+        }
+
+        int index = Random.Range(0, _itemClickables.Count);
+        InvokeClick(_itemClickables[index]);
+    }
+
+    private void Debug_ClickTarget()
+    {
+        // Clean up here as well to ensure FirstOrDefault doesn't hit a null
+        // _itemClickables.RemoveAll(i => i == null);
+
+        if (_collectableLeft == null || _collectableLeft.Count == 0) return;
+
+        string targetID = _collectableLeft.Keys.First();
+
+        var targetItem = _itemClickables.FirstOrDefault(i => i.ItemData.Id == targetID);
+        if (targetItem != null)
+        {
+            InvokeClick(targetItem);
         }
         else
         {
-            Debug.Log("No Spawner found to delete.");
-        }
-
-        // Find the GameManager in the scene
-        var gameManager = Object.FindObjectOfType<GameManager>();
-        if (gameManager != null)
-        {
-            // Use reflection to call private method SpawnGameSystems
-            MethodInfo method = typeof(GameManager).GetMethod("SpawnGameSystems",
-                BindingFlags.Instance | BindingFlags.NonPublic);
-
-            if (method != null)
-            {
-                method.Invoke(gameManager, null);
-                Debug.Log("GameManager.SpawnGameSystems invoked via reflection.");
-            }
-            else
-            {
-                Debug.LogWarning("SpawnGameSystems method not found on GameManager.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No GameManager found in scene.");
-        }
-
-        // Initialize TrayView if present
-        var trayView = Object.FindObjectOfType<TrayView>();
-        if (trayView != null)
-        {
-            trayView.Initialize(7);
-        }
-        else
-        {
-            Debug.LogWarning("No TrayView found in scene.");
+            Debug.LogWarning($"<color=yellow>[Debug]</color> Could not find any board items with ID: {targetID}");
         }
     }
 
-#if UNITY_EDITOR
-    [MenuItem("Tools/Spawn Game Systems")]
-    public static void SpawnViaGameManager()
+    private void InvokeClick(ClickableItem item)
     {
-        // Just call the shared static method
-        SpawnGameSystems();
+        Debug.Log($"<color=cyan>[Debug]</color> Simulating click on: {item.ItemData.Id}");
+        item.OnHandleClick(default);
     }
 #endif
 }

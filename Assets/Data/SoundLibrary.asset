@@ -64,3 +64,6 @@ MonoBehaviour:
   - Name: popup_close
     Clip: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
     Volume: 1
+  - Name: tick
+    Clip: {fileID: 8300000, guid: 5b2896ac0006ff74880ff77546a8c2eb, type: 3}
+    Volume: 1

@@ -11,7 +11,6 @@ public class TrayView : MonoBehaviour
     [SerializeField] private Transform slotParent;
     [SerializeField] private Image ghostIconPrefab;
     [SerializeField] private ParticleSystem PoofParticle;
-    [SerializeField] private float _flightUpDuration = 0.5f;
     [SerializeField] private float _flightToTrayDuration = 0.5f;
     [SerializeField] private float _leapDuration = 0.5f;
 
@@ -194,7 +193,36 @@ public class TrayView : MonoBehaviour
         }
 
         Destroy(ghost.gameObject);
+
+        ValidateSlots();
+
         onComplete?.Invoke();
+    }
+
+    /// <summary>
+    /// Forces the visual state of all slots to match their logical data.
+    /// Useful for cleaning up after complex movement sequences.
+    /// </summary>
+    public void ValidateSlots()
+    {
+        if (_slots == null) return;
+
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            SlotView slot = _slots[i];
+
+            // If there is no logical data, the slot should be visually empty
+            if (slot.CurrentItem == null)
+            {
+                slot.Clear();
+            }
+            else
+            {
+                // If there is data, ensure the icon is active and showing the right sprite
+                // Using true here forces the icon to appear immediately without a fade if preferred
+                slot.RevealIcon(true);
+            }
+        }
     }
     private IEnumerator MatchGhostSequence(int startIdx, ItemData[] data, Action onComplete)
     {
@@ -247,6 +275,7 @@ public class TrayView : MonoBehaviour
         yield return mainSeq.WaitForCompletion();
 
         foreach (var g in ghosts) if (g) Destroy(g.gameObject);
+        ValidateSlots();
         onComplete?.Invoke();
     }
 

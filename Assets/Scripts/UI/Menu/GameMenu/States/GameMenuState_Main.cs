@@ -112,7 +112,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         }
         else
         {
-            MenuManager.Instance.OpenMenu<MatchLoseMenuMenuView, MatchLoseMenuMenuController, MatchLoseMenuMenuData>(Menus.Type.MatchhLose);
+            MenuManager.Instance.OpenMenu<MatchLoseMenuMenuView, MatchLoseMenuMenuController, MatchLoseMenuMenuData>(Menus.Type.MatchLose);
         }
     }
 

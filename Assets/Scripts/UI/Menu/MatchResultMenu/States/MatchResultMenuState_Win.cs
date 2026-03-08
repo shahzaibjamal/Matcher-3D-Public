@@ -98,17 +98,20 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     {
         base.OnContinueButtonClicked();
         // 5. Animation Sequence
-        int goldAmount = 0;
-        foreach (var rewardData in Data.LevelData.Rewards)
-        {
-            if (rewardData.RewardType == RewardType.Gold)
-            {
-                goldAmount += rewardData.Amount;
-            }
 
-        }
-        int totalGold = goldAmount + GameManager.Instance.SaveData.Inventory.Gold;
-        PlayGoldAnimation(goldAmount, totalGold, 0f, OnGoldAnimationCompleted);
+        // instread continue shows next level details and proceeds
+        OnGoldAnimationCompleted();
+        // int goldAmount = 0;
+        // foreach (var rewardData in Data.LevelData.Rewards)
+        // {
+        //     if (rewardData.RewardType == RewardType.Gold)
+        //     {
+        //         goldAmount += rewardData.Amount;
+        //     }
+
+        // }
+        // int totalGold = goldAmount + GameManager.Instance.SaveData.Inventory.Gold;
+        // PlayGoldAnimation(goldAmount, totalGold, 0f, OnGoldAnimationCompleted);
     }
 
     public void DisplayRewards()
@@ -180,9 +183,6 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
 
     private void UpdateRewardManager()
     {
-        var filteredRewards = Data.LevelData.Rewards
-            .Where(r => r.RewardType != RewardType.Gold)
-            .ToList();
-        RewardManager.Instance.AddRewardToQueue(filteredRewards);
+        RewardManager.Instance.AddRewardsToQueue(Data.LevelData.Rewards);
     }
 }

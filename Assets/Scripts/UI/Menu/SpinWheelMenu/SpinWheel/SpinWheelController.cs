@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class SpinWheelController : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class SpinWheelController : MonoBehaviour
     public Image resultIcon;
     public TextMeshProUGUI resultCount;
 
-    private List<RewardData> _currentRewards;
+    private List<SpinWheelData> _currentRewards;
     private List<SpinRewardView> _spawnedComponents = new List<SpinRewardView>();
 
     private bool _isStarted;
@@ -47,9 +48,11 @@ public class SpinWheelController : MonoBehaviour
 
     private void Awake() => HideResult();
 
-    public void Setup(List<RewardData> rewards)
+    private Action<SpinWheelData> _onRewardComplete;
+    public void Setup(List<SpinWheelData> rewards, Action<SpinWheelData> onRewardComplete)
     {
         _currentRewards = rewards;
+        _onRewardComplete = onRewardComplete;
         foreach (var item in _spawnedComponents) if (item != null) Destroy(item.gameObject);
         _spawnedComponents.Clear();
 
@@ -86,8 +89,8 @@ public class SpinWheelController : MonoBehaviour
             var comp = go.GetComponent<SpinRewardView>();
             if (i < _currentRewards.Count)
             {
-                Sprite icon = iconMapper.GetIcon(_currentRewards[i].RewardType);
-                comp.SetData(icon, _currentRewards[i].Amount);
+                Sprite icon = iconMapper.GetIcon(_currentRewards[i].Reward.RewardType);
+                comp.SetData(icon, _currentRewards[i].Reward.Amount);
             }
             _spawnedComponents.Add(comp);
         }
@@ -100,13 +103,13 @@ public class SpinWheelController : MonoBehaviour
 
         _isStarted = true;
         _currentRotationTime = 0.0f;
-        _maxRotationTime = Random.Range(4.0f, 6.0f);
+        _maxRotationTime = UnityEngine.Random.Range(4.0f, 6.0f);
 
         _startAngle = wheelContainer.localEulerAngles.z;
-        _winningSlotIndex = Random.Range(0, Mathf.Min(numberOfSlots, _currentRewards.Count));
+        _winningSlotIndex = UnityEngine.Random.Range(0, Mathf.Min(numberOfSlots, _currentRewards.Count));
 
         float angleStep = 360f / numberOfSlots;
-        int fullRotations = Random.Range(8, 12);
+        int fullRotations = UnityEngine.Random.Range(8, 12);
 
         // TARGETING LOGIC:
         // To bring Slot 'i' to the Top (0°):
@@ -156,12 +159,21 @@ public class SpinWheelController : MonoBehaviour
         needleRect.localEulerAngles = new Vector3(0, 0, -_currentNeedleAngle);
     }
 
-    public void OnTriggerNeedle() => Debug.Log("Tick!");
+    private float _lastTickTime;
+    [SerializeField] private float _tickCooldown = 0.05f; // 50ms minimum between ticks
+
+    public void OnTriggerNeedle()
+    {
+        if (Time.time - _lastTickTime < _tickCooldown) return;
+
+        _lastTickTime = Time.time;
+        SoundController.instance.PlaySoundEffect("tick");
+    }
 
     private void SettleWheel()
     {
         var winData = _currentRewards[_winningSlotIndex];
-        ShowResult(iconMapper.GetIcon(winData.RewardType), winData.Amount);
+        _onRewardComplete?.Invoke(winData);
     }
 
     private void ShowResult(Sprite icon, int amount)

@@ -67,6 +67,46 @@ public partial class Spawner : MonoBehaviour
     }
 
     #region Level Lifecycle
+    public void Cleanup()
+    {
+        // 1. Stop all active logic (Tweens, Schedulers, and Particles)
+        DOTween.KillAll(); // Or use a specific ID if you don't want to kill UI tweens
+        shakeParticle.Stop();
+
+        // 2. Destroy physical items
+        foreach (var clickable in _itemClickables)
+        {
+            if (clickable != null && clickable.gameObject != null)
+            {
+                Destroy(clickable.gameObject);
+            }
+        }
+
+        // 3. Clear the Level Container (the walls)
+        Transform container = Parent.Find("LevelContainer");
+        if (container != null)
+        {
+            // Use Destroy in runtime, DestroyImmediate in editor scripts
+            Destroy(container.gameObject);
+        }
+
+        // 4. Reset Data State
+        _itemClickables.Clear();
+        _undoHistory.Clear();
+
+        if (_collectableLeft != null)
+            _collectableLeft.Clear();
+
+        _currentLevelData = null;
+        _onItemClicked = null;
+
+        // 5. Reset Stats
+        InitialTotalItems = 0;
+        InitialCollectableItems = 0;
+        _levelVerticalOffset = 0;
+
+        Debug.Log("[Spawner] Cleanup Complete.");
+    }
     public void SpawnLevel(LevelData levelData, Action<ItemData, Transform> onItemClicked)
     {
         _onItemClicked = onItemClicked;
@@ -239,17 +279,34 @@ public partial class Spawner : MonoBehaviour
             }
         });
     }
-    private void HandleMatchResolved(int firstItemIndex, ItemData[] items, Action onComplete)
+    private void HandleMatchResolved(int firstItemIndex, ItemData[] items, Action _)
     {
-        if (_undoHistory.Count == 0 || items.Length == 0)
-        {
-            return;
-        }
+        if (_undoHistory.Count == 0 || items.Length == 0) return;
 
         string targetId = items[0].Id;
-        var filtered = _undoHistory.Where(item => item.Id != targetId).ToList();
+        int removedCount = 0;
+        int amountToRemove = 3;
 
-        _undoHistory = new Stack<ItemData>(filtered.Reverse<ItemData>());
+        // 1. Convert stack to list to manipulate easily
+        List<ItemData> historyList = _undoHistory.ToList();
+        List<ItemData> filteredList = new List<ItemData>();
+
+        // 2. Iterate and skip only the first 3 matches found
+        foreach (var item in historyList)
+        {
+            if (item.Id == targetId && removedCount < amountToRemove)
+            {
+                removedCount++;
+                continue; // Skip adding to the new list
+            }
+            filteredList.Add(item);
+        }
+
+        // 3. Rebuild the stack
+        // Since .ToList() on a Stack returns items in Pop order (Top to Bottom),
+        // and the Stack constructor pushes them in order, we reverse it to maintain original order.
+        filteredList.Reverse();
+        _undoHistory = new Stack<ItemData>(filteredList);
     }
 
     private void HandleHintPowerUp()
@@ -595,32 +652,6 @@ public partial class Spawner : MonoBehaviour
 
         TriggerSingleRumble();
         GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Shake);
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.Space)) Debug_ClickRandom();
-        if (Input.GetKeyUp(KeyCode.M)) Debug_ClickTarget();
-    }
-
-    private void Debug_ClickRandom()
-    {
-        _itemClickables.RemoveAll(i => i == null);
-        if (_itemClickables.Count == 0) return;
-
-        int index = UnityEngine.Random.Range(0, _itemClickables.Count);
-        var item = _itemClickables[index];
-        _onItemClicked?.Invoke(item.ItemData, item.transform);
-    }
-
-    private void Debug_ClickTarget()
-    {
-        // 1. Safety Checks
-        if (_collectableLeft == null || _collectableLeft.Count == 0) return;
-
-        // 2. Find the target
-        string targetID = _collectableLeft.Keys.First();
-        TrySelectSpecificItem(targetID);
     }
 
     #endregion

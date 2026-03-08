@@ -70,19 +70,19 @@
       "ItemsToSpawn": [
         {
           "Id": "cog_1",
-          "Count": 21
+          "Count": 3
         },
         {
           "Id": "heart",
-          "Count": 21
+          "Count": 9
         },
         {
           "Id": "potion_1",
-          "Count": 21
+          "Count": 3
         },
         {
           "Id": "beer",
-          "Count": 21
+          "Count": 6
         }
       ],
       "ItemsToCollect": [
@@ -2134,6 +2134,78 @@
       "FogColorHex": "#DD9646",
       "StartLevel": 61,
       "StarRequirement": 101
+    }
+  ],
+  "SpinWheelRewards": [
+    {
+      "ID": 1,
+      "Reward": {
+        "RewardType": "Gold",
+        "Amount": 50
+      }
+    },
+    {
+      "ID": 2,
+      "Reward": {
+        "RewardType": "Undo",
+        "Amount": 3
+      }
+    },
+    {
+      "ID": 3,
+      "Reward": {
+        "RewardType": "Shake",
+        "Amount": 1
+      }
+    },
+    {
+      "ID": 4,
+      "Reward": {
+        "RewardType": "Gold",
+        "Amount": 120
+      }
+    },
+    {
+      "ID": 5,
+      "Reward": {
+        "RewardType": "Hint",
+        "Amount": 2
+      }
+    },
+    {
+      "ID": 6,
+      "Reward": {
+        "RewardType": "Undo",
+        "Amount": 5
+      }
+    },
+    {
+      "ID": 7,
+      "Reward": {
+        "RewardType": "Gold",
+        "Amount": 200
+      }
+    },
+    {
+      "ID": 8,
+      "Reward": {
+        "RewardType": "Gold",
+        "Amount": 10
+      }
+    },
+    {
+      "ID": 9,
+      "Reward": {
+        "RewardType": "Magnet",
+        "Amount": 1
+      }
+    },
+    {
+      "ID": 10,
+      "Reward": {
+        "RewardType": "Undo",
+        "Amount": 5
+      }
     }
   ]
 }
