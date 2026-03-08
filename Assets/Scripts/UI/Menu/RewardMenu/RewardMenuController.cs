@@ -99,7 +99,6 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
     }
     public void OnClickClaim() // Linked to a full-screen button
     {
-        Debug.LogError("OnClickclaim");
         // Exit Animation
         View.RewardContainer.DOScale(0, 0.3f).SetEase(Ease.InBack);
         View.canvasGroup.DOFade(0, 0.3f).OnComplete(() =>

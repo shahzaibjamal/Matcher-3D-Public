@@ -8,59 +8,6 @@ public class SpinWheelMenuController : MenuController<SpinWheelMenuView, SpinWhe
         SetState(new SpinWheelMenuBaseState(this));
         View.SpinButton.onClick.AddListener(OnSpinwheelButtonClick);
 
-        var list = new List<RewardData>
-        {
-            new RewardData
-            {
-                Amount = 1,
-                RewardType = RewardType.Gold
-            },
-            new RewardData
-            {
-                Amount = 2,
-                RewardType = RewardType.Gold
-            },
-            new RewardData
-            {
-                Amount = 3,
-                RewardType = RewardType.Gold
-            },
-            new RewardData
-            {
-                Amount = 4,
-                RewardType = RewardType.Gold
-            },
-            new RewardData
-            {
-                Amount = 5,
-                RewardType = RewardType.Gold
-            },
-            new RewardData
-            {
-                Amount = 6,
-                RewardType = RewardType.Gold
-            },
-            new RewardData
-            {
-                Amount = 7,
-                RewardType = RewardType.Gold
-            },
-            new RewardData
-            {
-                Amount = 8,
-                RewardType = RewardType.Gold
-            },
-            new RewardData
-            {
-                Amount = 9,
-                RewardType = RewardType.Gold
-            },
-            new RewardData
-            {
-                Amount = 10,
-                RewardType = RewardType.Gold
-            }
-        };
         View.SpinWheelController.Setup(DataManager.Instance.Metadata.SpinWheelRewards, OnSpinWheelRewardComplete);
         UpdateSpinButton();
     }
@@ -69,6 +16,7 @@ public class SpinWheelMenuController : MenuController<SpinWheelMenuView, SpinWhe
     {
         if (GameManager.Instance.SaveData.CanSpin())
         {
+            View.SpinButton.interactable = false;
             View.SpinWheelController.TurnWheel();
             return;
         }
@@ -80,17 +28,20 @@ public class SpinWheelMenuController : MenuController<SpinWheelMenuView, SpinWhe
             LocaleManager.Localize(LocalizationKeys.yes),
             ShowAd,
             LocaleManager.Localize(LocalizationKeys.no)
+
         ));
     }
 
     private void ShowAd()
     {
         // show ad and then turn the wheel
+        View.SpinButton.interactable = false;
         View.SpinWheelController.TurnWheel();
     }
 
     private void OnSpinWheelRewardComplete(SpinWheelData spinWheelRewardData)
     {
+        View.SpinButton.interactable = true;
         GameManager.Instance.SaveData.RecordSpin();
         RewardManager.Instance.AddRewardToQueue(spinWheelRewardData.Reward);
         GameManager.Instance.SaveData.Inventory.AddRewards(new List<RewardData> { spinWheelRewardData.Reward });

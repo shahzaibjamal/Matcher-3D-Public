@@ -53,10 +53,26 @@ public class GameManager : MonoBehaviour
 
         _slotManager = new SlotManager(SLOT_COUNT);
 
+        float delay = 5.0f;
+#if UNITY_EDITOR
+        delay = 1;
+#endif
+
+
         // 1. Launch the Main Menu on Startup
-        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(
-            Menus.Type.Main,
-            new MainMenuData()
+        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(
+            Menus.Type.Loading,
+            new LoadingMenuData
+            {
+                Delay = delay,
+                OnLoadingComplete = () =>
+                {
+                    MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(
+                        Menus.Type.Main,
+                        new MainMenuData()
+                    );
+                }
+            }
         );
     }
     void OnDestroy()

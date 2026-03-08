@@ -37,8 +37,15 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
         UIAnimations.ToonOut(View.GetComponent<CanvasGroup>(), View.Root, () =>
         {
             GameEvents.OnGameQuitEvent?.Invoke();
-            MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main, new MainMenuData());
         });
+        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+        {
+            OnLoadingComplete = OnLoadingComplete
+        });
+    }
+    private void OnLoadingComplete()
+    {
+        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main);
     }
     private void OnResumeButtonClicked()
     {

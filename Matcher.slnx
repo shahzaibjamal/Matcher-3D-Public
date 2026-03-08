@@ -75,6 +75,7 @@
   <Project Path="UnityEngine.Purchasing.AppleStub.csproj" />
   <Project Path="UnityEngine.Purchasing.AppleCore.csproj" />
   <Project Path="UnityEngine.Purchasing.SecurityStub.csproj" />
+  <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="Unity.CollabProxy.Editor.csproj" />
   <Project Path="CFXRDemo.csproj" />
   <Project Path="IAPResolver.csproj" />

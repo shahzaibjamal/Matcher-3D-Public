@@ -13,11 +13,11 @@ public class LoadingMenuController : MenuController<LoadingMenuView, LoadingMenu
 
         // Use Data for timing logic, fallback to defaults if Data is null
         float min = View.MinTime;
-        float max = View.MaxTime;
+        float max = Data.Delay == -1 ? View.MaxTime : Data.Delay;
         float duration = Random.Range(min, max);
 
         // StartLoadingAnimations();
-        // SetupProgressBar(duration);
+        SetupProgressBar(duration);
 
         // Actual logic timer
         DOVirtual.DelayedCall(duration, () =>
@@ -35,7 +35,7 @@ public class LoadingMenuController : MenuController<LoadingMenuView, LoadingMenu
         float slowTime = totalDuration * 0.3f;
 
         View.ProgressSlider.value = 0;
-        View.ProgressSlider.DOValue(0.9f, fastTime).SetEase(Ease.OutBack);
+        View.ProgressSlider.DOValue(0.8f, fastTime).SetEase(Ease.OutSine);
         View.ProgressSlider.DOValue(1.0f, slowTime).SetEase(Ease.Linear).SetDelay(fastTime);
     }
 
