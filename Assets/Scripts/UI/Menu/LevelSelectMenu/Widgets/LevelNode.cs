@@ -28,7 +28,9 @@ public class LevelNode : MonoBehaviour
         _levelData = data.StaticData;
 
         // Visuals based on IsUnlocked
-        statusIcon.color = data.IsUnlocked ? Color.white : Color.gray;
+        var currentLevelId = GameManager.Instance.SaveData.CurrentLevelID;
+
+        statusIcon.color = data.IsUnlocked ? data.StaticData.Id == currentLevelId ? Color.green : Color.white : Color.gray;
         _button.interactable = data.IsUnlocked;
 
         // Show stars if level is completed
@@ -41,6 +43,9 @@ public class LevelNode : MonoBehaviour
     public void OnClick()
     {
         // Tell the Game Manager to load this level
-        MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game, new GameMenuData { levelId = _levelData.Id });
+        MenuManager.Instance.OpenMenu<LevelDetailMenuView, LevelDetailMenuController, LevelDetailMenuData>(Menus.Type.LevelDetail, new LevelDetailMenuData
+        {
+            LevelData = _levelData
+        });
     }
 }

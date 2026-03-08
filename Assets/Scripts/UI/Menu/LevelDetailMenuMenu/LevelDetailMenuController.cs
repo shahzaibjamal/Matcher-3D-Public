@@ -61,7 +61,10 @@ public class LevelDetailMenuController : MenuController<LevelDetailMenuView, Lev
     private void OnLoadingComplete()
     {
         GameEvents.OnStartButtonClicked?.Invoke();
-        MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game, new GameMenuData());
+        MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game, new GameMenuData
+        {
+            levelId = Data.LevelData.Id
+        });
     }
 
     public override void HandleBackInput()

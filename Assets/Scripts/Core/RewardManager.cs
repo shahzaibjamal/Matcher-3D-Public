@@ -49,13 +49,27 @@ public class RewardManager : MonoBehaviour
         {
             if (reward == null) continue;
 
-            _pendingRewards.Enqueue(reward);
+            // 1. Look for an existing reward of the same type in the SaveData list
+            // Since the Queue and List share object references, updating one updates both.
+            RewardData existingReward = GameManager.Instance.SaveData.SavedPendingRewards
+                .Find(r => r.RewardType == reward.RewardType);
 
-            // Keep the save data in sync with the runtime queue
-            GameManager.Instance.SaveData.SavedPendingRewards.Add(reward);
+            if (existingReward != null)
+            {
+                // 2. Bunching: Just increase the amount of the existing object
+                existingReward.Amount += reward.Amount;
+                Debug.Log($"[Rewards] Bunched {reward.RewardType}. New total: {existingReward.Amount}");
+            }
+            else
+            {
+                // 3. New Entry: If this type isn't in the queue yet, add it to both
+                _pendingRewards.Enqueue(reward);
+                GameManager.Instance.SaveData.SavedPendingRewards.Add(reward);
+                Debug.Log($"[Rewards] Added new {reward.RewardType} to queue.");
+            }
         }
 
-        // Save once after the entire batch is processed to avoid IO overhead
+        // Save once after the entire batch is processed
         GameManager.Instance.SaveGame();
     }
     public void CheckAndShowNext(Action onAllRewardsClaimed = null)

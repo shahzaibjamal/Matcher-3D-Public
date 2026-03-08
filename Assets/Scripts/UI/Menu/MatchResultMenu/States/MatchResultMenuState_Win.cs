@@ -183,6 +183,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
 
     private void UpdateRewardManager()
     {
+        GameManager.Instance.SaveData.Inventory.AddRewards(Data.LevelData.Rewards);
         RewardManager.Instance.AddRewardsToQueue(Data.LevelData.Rewards);
     }
 }

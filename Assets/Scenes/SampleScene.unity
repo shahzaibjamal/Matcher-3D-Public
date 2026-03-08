@@ -917,7 +917,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   maxDistance: 100
-  holdThreshold: 0.15
+  holdThreshold: 0.25
   moveThreshold: 10
 --- !u!4 &883651443
 Transform:
