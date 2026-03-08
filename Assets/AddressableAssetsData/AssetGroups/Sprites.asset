@@ -15,8 +15,38 @@ MonoBehaviour:
   m_GroupName: Sprites
   m_GUID: 67f9ffec56481634ab3cadd6bca44d29
   m_SerializeEntries:
+  - m_GUID: 05ffe7ad155544149a6b8bc5c68a05e5
+    m_Address: icon_fries
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 094c904be8d30da4d9e831e3de40df26
+    m_Address: icon_egg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d8608f235f4df742aaf333b3498694a
+    m_Address: icon_milk_carton
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2066c7a6edfc0194eaeb5e63e4aa2c70
     m_Address: beer0000
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2833b122331e5fb40b17419df90e0c2e
+    m_Address: icon_carrot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28806b4d183ded147ae77365b83ffff8
+    m_Address: icon_steak
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e1627cb71d2b584eb661e4a71139b0a
+    m_Address: icon_coffee_cup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -25,8 +55,108 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c5867357ef98274fbce874549ce9a4d
+    m_Address: icon_pumpkin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5caad15f86f3dfa4cb9d03f1c05f4d84
+    m_Address: icon_beer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d749d5bb1325084cb313c67ee1eb51b
+    m_Address: icon_apple
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ecc2628b964cb24384630d2884e0b2e
+    m_Address: icon_meat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 662d5d11ab7c5b5449e564450ddef5e8
+    m_Address: icon_potion_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69abc8730defad649aac4019a2cc22df
+    m_Address: icon_taco
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6adf182c41b52b14c9b89d7ff11c3b84
+    m_Address: icon_meatballs_sub
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b1bcfc65240aa4428e6bb62022c5702
+    m_Address: icon_turnip
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7568e6ef0c236c64e8c3977ad6f4c093
     m_Address: heart0000
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 756b6fa872513804ebe64983f63a624e
+    m_Address: icon_cup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76cdcadc6d8708d44a6ab46d8f63027c
+    m_Address: icon_potato
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8166149ec5ccea94ea3c9707309b697d
+    m_Address: icon_cheese
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 826c0d46496bc1e43ac2fb7c47e62c73
+    m_Address: icon_bowl
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b29de4d89c0c1b7439f2a01c87964532
+    m_Address: icon_cog_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2b5dbf5a2cfb8943ac5352b5d6cf49d
+    m_Address: icon_tomato
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7c16fb9e4d973144a51ce68dc573723
+    m_Address: icon_lettuce
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7ea0a1b3b9203c4180e83df1d98b174
+    m_Address: icon_oil_bottle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd7f229617ddfda479b9065166eec823
+    m_Address: icon_burger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cedb266533578e246bdf860bc53dd1d4
+    m_Address: icon_hotdog
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df8e1fafc1b119b468060074837a71c5
+    m_Address: icon_heart
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dfed2147ad9b9254eb9b02a47561f4db
+    m_Address: icon_philly_cheese_steaks
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

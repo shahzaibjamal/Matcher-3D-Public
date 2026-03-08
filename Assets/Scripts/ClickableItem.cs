@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class ClickableItem : MonoBehaviour, IClickable
 {
     [HideInInspector]
@@ -26,6 +27,8 @@ public class ClickableItem : MonoBehaviour, IClickable
     {
         _hintLayer = LayerMask.NameToLayer("Hint");
         _defaultLayer = LayerMask.NameToLayer("Default");
+        Rigidbody = GetComponent<Rigidbody>();
+        Collider = GetComponent<Collider>();
     }
 
     private void OnEnable()

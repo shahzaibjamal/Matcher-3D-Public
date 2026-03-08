@@ -15,8 +15,78 @@ MonoBehaviour:
   m_GroupName: Items
   m_GUID: d820a54aeb7697740b81e485f9a90331
   m_SerializeEntries:
+  - m_GUID: 0b8d1bfe6d69254488faeb7975b9221b
+    m_Address: Apple
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 114a1ac8b7cbd3047a8d1f0981e8bd7f
+    m_Address: Cheese
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 182920f2011f6434b95ffbe59ceba79b
+    m_Address: Turnip
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21f0d36a59902194facab831124335e3
+    m_Address: Carrot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22552859dfb91664089cf9f26346bc84
+    m_Address: Bowl
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24da14217454273408df0bedcc4e0f1e
+    m_Address: Taco
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 31da8749afad8b94f8020ce2fe4e78c1
     m_Address: beer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3826c4b637f713344982efec996b0f64
+    m_Address: Hotdog
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38976c95f67c54348aa9c8011f924bdb
+    m_Address: OilBottle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e644e02290ccbe46a5f1f53cbb38f04
+    m_Address: Fries
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3eccf9aef8097294da90c24981ed40ab
+    m_Address: Meat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ef4d68b92ec03543930e54d7f1d680c
+    m_Address: Steak
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47548c39b04c2c0409c9b5bad7188eff
+    m_Address: Potato
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c263719f58cfdc44bc72c488ffbe7fc
+    m_Address: Cup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62a64c40ad7a1a5489dc42db86bd103d
+    m_Address: PhillyCheeseSteaks
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -30,8 +100,53 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9cfa77482919ab642a3c9b9a6a6b86a1
+    m_Address: MilkCarton
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ec5a5c40176a684088bb7892f97cefc
+    m_Address: Pumpkin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a123118671375f54894f701e20da7741
+    m_Address: Burger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae3b3235a9611fd4dace45fff4d84c56
+    m_Address: Egg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc03419abd761d443bc0191f2f4f01e1
+    m_Address: Lettuce
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9267c6aa5ccf8b479940ad740d21904
+    m_Address: Tomato
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e0e9449f84012d2428859176cd2d0b06
     m_Address: heart
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e1527018ad2c1304cae3119b2be47613
+    m_Address: MeatballsSub
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e29eb9085d46b4b40a3540e7e2fcf560
+    m_Address: Bread
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fba7280615f65bb4596604323c248b57
+    m_Address: CoffeeCup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

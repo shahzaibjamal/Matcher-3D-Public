@@ -23,6 +23,138 @@
       "Name": "Potion",
       "PrefabName": "potion1",
       "IconName": "bottlePotionHealth0000"
+    },
+    {
+      "Id": "apple",
+      "Name": "Apple",
+      "PrefabName": "Apple",
+      "IconName": "icon_apple"
+    },
+    {
+      "Id": "bowl",
+      "Name": "Bowl",
+      "PrefabName": "Bowl",
+      "IconName": "icon_bowl"
+    },
+    {
+      "Id": "burger",
+      "Name": "Burger",
+      "PrefabName": "Burger",
+      "IconName": "icon_burger"
+    },
+    {
+      "Id": "carrot",
+      "Name": "Carrot",
+      "PrefabName": "Carrot",
+      "IconName": "icon_carrot"
+    },
+    {
+      "Id": "cheese",
+      "Name": "Cheese",
+      "PrefabName": "Cheese",
+      "IconName": "icon_cheese"
+    },
+    {
+      "Id": "coffee_cup",
+      "Name": "Coffee Cup",
+      "PrefabName": "CoffeeCup",
+      "IconName": "icon_coffee_cup"
+    },
+    {
+      "Id": "cup",
+      "Name": "Cup",
+      "PrefabName": "Cup",
+      "IconName": "icon_cup"
+    },
+    {
+      "Id": "egg",
+      "Name": "Egg",
+      "PrefabName": "Egg",
+      "IconName": "icon_egg"
+    },
+    {
+      "Id": "fries",
+      "Name": "Fries",
+      "PrefabName": "Fries",
+      "IconName": "icon_fries"
+    },
+    {
+      "Id": "hotdog",
+      "Name": "Hotdog",
+      "PrefabName": "Hotdog",
+      "IconName": "icon_hotdog"
+    },
+    {
+      "Id": "lettuce",
+      "Name": "Lettuce",
+      "PrefabName": "Lettuce",
+      "IconName": "icon_lettuce"
+    },
+    {
+      "Id": "meat",
+      "Name": "Meat",
+      "PrefabName": "Meat",
+      "IconName": "icon_meat"
+    },
+    {
+      "Id": "meatballs_sub",
+      "Name": "MeatballsSub",
+      "PrefabName": "MeatballsSub",
+      "IconName": "icon_meatballs_sub"
+    },
+    {
+      "Id": "milk_carton",
+      "Name": "MilkCarton",
+      "PrefabName": "MilkCarton",
+      "IconName": "icon_milk_carton"
+    },
+    {
+      "Id": "oil_bottle",
+      "Name": "OilBottle",
+      "PrefabName": "OilBottle",
+      "IconName": "icon_oil_bottle"
+    },
+    {
+      "Id": "philly_cheese_steaks",
+      "Name": "PhillyCheeseSteaks",
+      "PrefabName": "PhillyCheeseSteaks",
+      "IconName": "icon_philly_cheese_steaks"
+    },
+    {
+      "Id": "potato",
+      "Name": "Potato",
+      "PrefabName": "Potato",
+      "IconName": "icon_potato"
+    },
+    {
+      "Id": "pumpkin",
+      "Name": "Pumpkin",
+      "PrefabName": "Pumpkin",
+      "IconName": "icon_pumpkin"
+    },
+    {
+      "Id": "steak",
+      "Name": "Steak",
+      "PrefabName": "Steak",
+      "IconName": "icon_steak"
+    },
+    {
+      "Id": "taco",
+      "Name": "Taco",
+      "PrefabName": "Taco",
+      "IconName": "icon_taco"
+    },
+    {
+      "Id": "tomato",
+      "Name": "Tomato",
+      "PrefabName": "Tomato",
+      "IconName": "icon_tomato"
+    },
+    {
+      "Id": "turnip",
+      "Name": "Turnip",
+      "PrefabName": "Turnip",
+      "IconName": "icon_turnip"
     }
   ],
   "Levels": [
@@ -32,25 +164,21 @@
       "Name": "Level 01",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "apple",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "bowl",
           "Count": 3
         },
         {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
+          "Id": "burger",
           "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "heart"
+        "apple",
+        "burger"
       ],
       "Rewards": [
         {
@@ -69,25 +197,21 @@
       "Name": "Level 02",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "meat",
           "Count": 3
         },
         {
-          "Id": "heart",
-          "Count": 9
+          "Id": "oil_bottle",
+          "Count": 6
         },
         {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
+          "Id": "milk_carton",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "meat",
+        "milk_carton"
       ],
       "Rewards": [
         {
@@ -95,7 +219,7 @@
           "Amount": 20
         },
         {
-          "RewardType": "Magnet",
+          "RewardType": "Shake",
           "Amount": 1
         }
       ]
@@ -106,25 +230,25 @@
       "Name": "Level 03",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
+          "Id": "cup",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "egg",
+          "Count": 9
+        },
+        {
+          "Id": "fries",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "potato",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "cup",
+        "egg"
       ],
       "Rewards": [
         {
@@ -169,7 +293,7 @@
           "Amount": 20
         },
         {
-          "RewardType": "Magnet",
+          "RewardType": "Undo",
           "Amount": 1
         }
       ]
