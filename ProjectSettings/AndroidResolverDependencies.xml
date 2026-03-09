@@ -1,10 +1,14 @@
 <dependencies>
   <packages>
+    <package>androidx.constraintlayout:constraintlayout:2.1.4</package>
+    <package>androidx.lifecycle:lifecycle-process:2.6.2</package>
+    <package>com.google.android.gms:play-services-ads:25.0.0</package>
+    <package>com.google.android.ump:user-messaging-platform:4.0.0</package>
     <package>com.unity3d.ads:unity-ads:[4.16.3,4.17[</package>
   </packages>
   <files />
   <settings>
-    <setting name="androidAbis" value="armeabi-v7a" />
+    <setting name="androidAbis" value="arm64-v8a" />
     <setting name="bundleId" value="com.kick.hive.match.royale.king" />
     <setting name="explodeAars" value="True" />
     <setting name="gradleBuildEnabled" value="True" />

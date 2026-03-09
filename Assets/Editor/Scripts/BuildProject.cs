@@ -50,7 +50,7 @@ public class BuildProject : EditorWindow
         // --- 3. Build Formatting ---
         EditorUserBuildSettings.buildAppBundle = isRelease;
         string extension = isRelease ? ".aab" : ".apk";
-        string fileName = isRelease ? $"App_v{settings["Version"]}{extension}" : "App_Debug.apk";
+        string fileName = isRelease ? $"Matcher_v{settings["Version"]}{extension}" : "App_Debug.apk";
         string fullPath = Path.Combine(BuildPath, fileName);
 
         BuildPlayerOptions options = new BuildPlayerOptions
