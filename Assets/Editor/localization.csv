@@ -41,3 +41,6 @@ spin_ad_message,Would you like to see an ad to spin the wheel?,Você gostaria de
 yes,Yes,Sim,Sim
 no,No,Não,No
 show_ad,Show Ad,Mostrar anúncio,Mostrar anuncio
+no_ads,No Ads,Sem anúncios,Sem anúncios
+no_ads_message,Currently, there are no ads available...,Atualmente não há anúncios disponíveis...,Actualmente no hay anuncios disponibles...
+ok,Ok,OK,DE ACUERDO

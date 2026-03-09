@@ -55,6 +55,9 @@ MonoBehaviour:
   - yes
   - no
   - show_ad
+  - no_ads
+  - no_ads_message
+  - ok
   _values:
   - Selecione o idioma
   - Ei personal
@@ -98,3 +101,6 @@ MonoBehaviour:
   - Sim
   - No
   - Mostrar anuncio
+  - "Sem an\xFAncios"
+  - "Atualmente n\xE3o h\xE1 an\xFAncios dispon\xEDveis..."
+  - DE ACUERDO

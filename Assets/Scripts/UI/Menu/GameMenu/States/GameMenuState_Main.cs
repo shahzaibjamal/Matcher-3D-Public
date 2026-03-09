@@ -103,12 +103,14 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     {
         if (win)
         {
+            AdManager.Instance.TryShowInterstitial();
             MenuManager.Instance.OpenMenu<MatchResultMenuView, MatchResultMenuController, MatchResultMenuData>(Menus.Type.MatchResult, new MatchResultMenuData
             {
                 IsWin = win,
                 LevelData = _currentLevelData,
                 MatchRate = matchRate
             });
+
         }
         else
         {

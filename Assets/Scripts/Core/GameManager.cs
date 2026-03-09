@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
         SaveData = SaveSystem.Load();
         RewardManager.Instance.Init();
         LevelManager.Instance.Initialize(SaveData);
+        AdManager.Instance.UpdateLevelProgress(LevelManager.Instance.GetCurrentProgressLevel().Number);
+
         SoundController.instance.Init(SaveData.IsMusicMuted, SaveData.IsSoundMuted);
 
         GameEvents.OnStartButtonClicked += StartGame;
@@ -226,6 +228,7 @@ public class GameManager : MonoBehaviour
         LevelManager.Instance.MarkLevelComplete(levelId, Time.time - _levelStartTime, score, stars);
         Cleanup();
         SaveGame();
+        AdManager.Instance.UpdateLevelProgress(LevelManager.Instance.GetCurrentProgressLevel().Number);
     }
 
 

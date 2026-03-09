@@ -98,5 +98,11 @@ namespace TS.LocalizationSystem
         public const string no = "no";
         
         public const string show_ad = "show_ad";
+        
+        public const string no_ads = "no_ads";
+        
+        public const string no_ads_message = "no_ads_message";
+        
+        public const string ok = "ok";
     }
 }

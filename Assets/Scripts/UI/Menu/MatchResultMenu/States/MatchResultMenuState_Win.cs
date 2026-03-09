@@ -97,21 +97,9 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     public override void OnContinueButtonClicked()
     {
         base.OnContinueButtonClicked();
-        // 5. Animation Sequence
+        Data.Rewards = Data.LevelData.Rewards;
 
-        // instread continue shows next level details and proceeds
         OnGoldAnimationCompleted();
-        // int goldAmount = 0;
-        // foreach (var rewardData in Data.LevelData.Rewards)
-        // {
-        //     if (rewardData.RewardType == RewardType.Gold)
-        //     {
-        //         goldAmount += rewardData.Amount;
-        //     }
-
-        // }
-        // int totalGold = goldAmount + GameManager.Instance.SaveData.Inventory.Gold;
-        // PlayGoldAnimation(goldAmount, totalGold, 0f, OnGoldAnimationCompleted);
     }
 
     public void DisplayRewards()
@@ -161,18 +149,57 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         // show video ad 
         // And then callback and continue
         // Add ad multipler constant
-        int goldAmount = 0;
-        foreach (var rewardData in Data.LevelData.Rewards)
+
+        AdManager.Instance.ShowRewarded(OnRewardAdComplete, OnRewardAdFailed);
+    }
+
+    private void OnRewardAdFailed()
+    {
+        MenuManager.Instance.OpenMenu<GenericPopupMenuView, GenericPopupMenuController, GenericPopupMenuData>(Menus.Type.GenericPopup, new GenericPopupMenuData
+        (
+            LocalizationKeys.no,
+            LocalizationKeys.no_ads_message,
+            LocaleManager.Localize(LocalizationKeys.ok)
+        ));
+    }
+
+    private void OnRewardAdComplete()
+    {
+        // 1. Create a fresh list to hold the multiplied rewards
+        List<RewardData> bonusRewards = new List<RewardData>();
+        int goldAmountForAnimation = 0;
+        int finalTotalGold = GameManager.Instance.SaveData.Inventory.Gold;
+        View.GoldRewardView.Initialize(finalTotalGold);
+
+        // 2. Clone and Modify
+        foreach (var originalReward in Data.LevelData.Rewards)
         {
-            if (rewardData.RewardType == RewardType.Gold)
+            // Create a new instance so we don't mess with the original LevelData
+            RewardData newReward = new RewardData();
+            newReward.RewardType = originalReward.RewardType;
+
+            if (originalReward.RewardType == RewardType.Gold)
             {
-                goldAmount = rewardData.Amount;
+                // Apply the 3x multiplier
+                newReward.Amount = originalReward.Amount * 3;
+                goldAmountForAnimation = newReward.Amount;
+                finalTotalGold += newReward.Amount;
+            }
+            else
+            {
+                // Keep other rewards (Gems, Items, etc.) as they were
+                newReward.Amount = originalReward.Amount;
             }
 
+            bonusRewards.Add(newReward);
         }
-        int total = 3 * goldAmount + GameManager.Instance.SaveData.Inventory.Gold;
 
-        PlayGoldAnimation(3 * goldAmount, total, 0f, OnGoldAnimationCompleted);
+        // 3. Assign the new list to your Data container
+        Data.Rewards = bonusRewards;
+
+        // 4. Trigger the UI/Animation
+        // We pass the 3x amount and the calculated final total
+        PlayGoldAnimation(goldAmountForAnimation, finalTotalGold, 0f, OnGoldAnimationCompleted);
     }
 
     private void OnGoldAnimationCompleted()
@@ -183,7 +210,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
 
     private void UpdateRewardManager()
     {
-        GameManager.Instance.SaveData.Inventory.AddRewards(Data.LevelData.Rewards);
-        RewardManager.Instance.AddRewardsToQueue(Data.LevelData.Rewards);
+        GameManager.Instance.SaveData.Inventory.AddRewards(Data.Rewards);
+        RewardManager.Instance.AddRewardsToQueue(Data.Rewards);
     }
 }

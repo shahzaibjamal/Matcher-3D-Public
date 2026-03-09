@@ -55,6 +55,9 @@ MonoBehaviour:
   - yes
   - no
   - show_ad
+  - no_ads
+  - no_ads_message
+  - ok
   _values:
   - Select language
   - Hey Guys
@@ -98,3 +101,6 @@ MonoBehaviour:
   - Yes
   - No
   - Show Ad
+  - No Ads
+  - Currently
+  - Ok

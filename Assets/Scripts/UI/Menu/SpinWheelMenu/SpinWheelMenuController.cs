@@ -28,17 +28,28 @@ public class SpinWheelMenuController : MenuController<SpinWheelMenuView, SpinWhe
             LocaleManager.Localize(LocalizationKeys.yes),
             ShowAd,
             LocaleManager.Localize(LocalizationKeys.no)
-
         ));
     }
 
     private void ShowAd()
     {
         // show ad and then turn the wheel
+        AdManager.Instance.ShowRewarded(OnRewardAdComplete, OnRewardAdFailed);
+    }
+    private void OnRewardAdComplete()
+    {
         View.SpinButton.interactable = false;
         View.SpinWheelController.TurnWheel();
     }
-
+    private void OnRewardAdFailed()
+    {
+        MenuManager.Instance.OpenMenu<GenericPopupMenuView, GenericPopupMenuController, GenericPopupMenuData>(Menus.Type.GenericPopup, new GenericPopupMenuData
+        (
+            LocalizationKeys.no,
+            LocalizationKeys.no_ads_message,
+            LocaleManager.Localize(LocalizationKeys.ok)
+        ));
+    }
     private void OnSpinWheelRewardComplete(SpinWheelData spinWheelRewardData)
     {
         View.SpinButton.interactable = true;
