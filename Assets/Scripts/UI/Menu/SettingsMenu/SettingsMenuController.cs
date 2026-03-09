@@ -24,6 +24,6 @@ public class SettingsMenuController : MenuController<SettingsMenuView, SettingsM
     private void OnCloseButtonClicked()
     {
         SetState(new SettingsMenuBaseState_Main(this));
-        SoundController.instance.PlaySoundEffect("btn");
+        SoundController.Instance.PlaySoundEffect("btn");
     }
 }

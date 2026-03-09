@@ -67,3 +67,6 @@ MonoBehaviour:
   - Name: tick
     Clip: {fileID: 8300000, guid: 5b2896ac0006ff74880ff77546a8c2eb, type: 3}
     Volume: 1
+  - Name: deny
+    Clip: {fileID: 8300000, guid: 6ade074b94e1b8a4f9d0398fe1aee572, type: 3}
+    Volume: 1

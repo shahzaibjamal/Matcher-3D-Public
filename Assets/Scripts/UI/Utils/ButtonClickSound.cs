@@ -26,6 +26,6 @@ public class ButtonClickSound : MonoBehaviour
 
     private void OnClick()
     {
-        SoundController.instance.PlaySoundEffect("btn");
+        SoundController.Instance.PlaySoundEffect("btn");
     }
 }

@@ -165,15 +165,19 @@
       "ItemsToSpawn": [
         {
           "Id": "apple",
-          "Count": 3
+          "Count": 30
         },
         {
           "Id": "bowl",
-          "Count": 3
+          "Count": 30
+        },
+        {
+          "Id": "meat",
+          "Count": 30
         },
         {
           "Id": "burger",
-          "Count": 3
+          "Count": 30
         }
       ],
       "ItemsToCollect": [

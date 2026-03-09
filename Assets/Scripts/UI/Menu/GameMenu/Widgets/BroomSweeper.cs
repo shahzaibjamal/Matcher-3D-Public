@@ -21,7 +21,7 @@ public class BroomSweeper : MonoBehaviour
     [ContextMenu("Test Sweep Animation")] // Right-click component in Inspector to trigger
     public void PlayBroomSweep()
     {
-        var source = SoundController.instance.PlaySoundEffect("broom", true);
+        var source = SoundController.Instance.PlaySoundEffect("broom", true);
         // 1. Reset and Kill previous tweens
         _activeSequence?.Kill();
         _broom.DOKill();

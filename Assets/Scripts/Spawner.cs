@@ -162,7 +162,6 @@ public partial class Spawner : MonoBehaviour
                 _itemClickables.Add(clickable);
                 clickable.ItemData = item.CreateCopy();
                 clickable.OnItemClicked = _onItemClicked;
-                // clickable.OnItemClicked += HandleInternalItemClicked;
             }
         });
     }
@@ -257,7 +256,6 @@ public partial class Spawner : MonoBehaviour
                 _itemClickables.Add(clickable);
                 clickable.ItemData = item;
                 clickable.OnItemClicked = _onItemClicked;
-                // clickable.OnItemClicked += HandleInternalItemClicked;
 
                 // 3. The "Throw" Physics
                 if (go.TryGetComponent<Rigidbody>(out var rb))
@@ -444,26 +442,12 @@ public partial class Spawner : MonoBehaviour
 
         GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Magnet);
     }
-    private bool TrySelectSpecificItem(string Id)
-    {
-        var targetItem = _itemClickables.Find(c => c != null && c.ItemData.Id == Id);
-        if (targetItem != null)
-        {
-            ProcessItemSelection(targetItem);
-            return true;
-        }
-        return false;
-    }
 
     private void ProcessItemSelection(ClickableItem item)
     {
         if (item == null) return;
 
-        // Fire external event for UI/GameManager
-        _onItemClicked?.Invoke(item.ItemData, item.transform);
-
-        // Call internal handler to update Dictionaries/Lists
-        HandleInternalItemClicked(item.ItemData, -1, item.transform, true, null);
+        item.OnHandleClick(default);
     }
 
     private Vector3 CalculateRandomSpawnPos()
@@ -637,7 +621,7 @@ public partial class Spawner : MonoBehaviour
 
             shakeParticle.transform.position = new Vector3(epicenter.x, 0, epicenter.z);
             shakeParticle.Play();
-            SoundController.instance.PlaySoundEffect("shake");
+            SoundController.Instance.PlaySoundEffect("shake");
             // 3. Schedule the next
             shakesRemaining--;
             if (shakesRemaining > 0)

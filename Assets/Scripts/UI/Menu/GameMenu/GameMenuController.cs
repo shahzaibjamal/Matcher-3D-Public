@@ -4,7 +4,7 @@ public class GameMenuController : MenuController<GameMenuView, GameMenuData>
     public override void OnEnter()
     {
         SetState(new GameMenuBaseState_Main(this));
-        SoundController.instance.PlayBGM("game_bg", 1.0f);
+        SoundController.Instance.PlayBGM("game_bg", 1.0f);
     }
     public override void OnExit()
     {

@@ -83,15 +83,15 @@ public class PowerUpButton : MonoBehaviour
             switch (_type)
             {
                 case PowerUpType.Magnet:
-                    SoundController.instance.PlaySoundEffect("magnet");
+                    SoundController.Instance.PlaySoundEffect("magnet");
                     break;
                 case PowerUpType.Shake:
                     break;
                 case PowerUpType.Hint:
-                    SoundController.instance.PlaySoundEffect("hint");
+                    SoundController.Instance.PlaySoundEffect("hint");
                     break;
                 case PowerUpType.Undo:
-                    SoundController.instance.PlaySoundEffect("undo");
+                    SoundController.Instance.PlaySoundEffect("undo");
                     break;
             }
         }

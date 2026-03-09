@@ -48,6 +48,7 @@ public class ClickableItem : MonoBehaviour, IClickable
 
     void OnDestroy()
     {
+        transform.DOKill();
         OnItemClicked = null;
     }
 
@@ -63,8 +64,7 @@ public class ClickableItem : MonoBehaviour, IClickable
         // If tray is full, do NOT process the click logic (sending to tray)
         if (!_isTrayFillable)
         {
-            // --- IMPLEMENT SFX FOR DENIAL HERE ---
-            // SoundController.Instance.Play("DenyClick");
+            SoundController.Instance.PlaySoundEffect("Deny");
             return;
         }
 
@@ -92,7 +92,7 @@ public class ClickableItem : MonoBehaviour, IClickable
         }
         else
         {
-            DOTween.Kill("HintLoop");
+            transform.DOKill();
             transform.DOScale(Vector3.one, 0.2f);
         }
     }

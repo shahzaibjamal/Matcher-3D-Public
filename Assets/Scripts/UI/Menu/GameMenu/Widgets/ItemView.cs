@@ -99,7 +99,7 @@ public class ItemView : MonoBehaviour
         Scheduler.Instance.ExecuteAfterDelay(0.45f, () =>
         {
             GameManager.Instance.Vibrate();
-            SoundController.instance.PlaySoundEffect("item_complete");
+            SoundController.Instance.PlaySoundEffect("item_complete");
         });
         _particleSystem.Play();
 

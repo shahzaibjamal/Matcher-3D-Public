@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class SoundController : MonoBehaviour
 {
-    public static SoundController instance;
+    public static SoundController Instance;
 
     [Header("References")]
     public GameObject AudioListenerObject;
@@ -28,7 +28,7 @@ public class SoundController : MonoBehaviour
     private float _resumeTime = 0f;
     void Awake()
     {
-        instance = this;
+        Instance = this;
 
         _soundsMap = new Dictionary<string, SoundEffect>();
         if (library != null)

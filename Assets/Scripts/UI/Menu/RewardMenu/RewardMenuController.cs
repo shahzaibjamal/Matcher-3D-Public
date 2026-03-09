@@ -53,7 +53,7 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
         View.GodRaysTransform.localScale = Vector3.zero;
         View.GodRaysTransform.localRotation = Quaternion.identity;
         View.FullscreenButton.interactable = false;
-        SoundController.instance.PlaySoundEffect("reward");
+        SoundController.Instance.PlaySoundEffect("reward");
 
         // --- 2. The Sequence ---
         _sequence = DOTween.Sequence().SetUpdate(true);

@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         LevelManager.Instance.Initialize(SaveData);
         AdManager.Instance.UpdateLevelProgress(LevelManager.Instance.GetCurrentProgressLevel().Number);
 
-        SoundController.instance.Init(SaveData.IsMusicMuted, SaveData.IsSoundMuted);
+        SoundController.Instance.Init(SaveData.IsMusicMuted, SaveData.IsSoundMuted);
 
         GameEvents.OnStartButtonClicked += StartGame;
         GameEvents.OnGameInitializedEvent += LoadLevelById;

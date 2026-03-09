@@ -12,7 +12,7 @@ public class SettingsMenuBaseState_Privacy : SettingsMenuBaseState
         View.PrivacyContainer.gameObject.SetActive(true);
         View.CloseButton.gameObject.SetActive(true);
         View.TitleText.text = LocaleManager.Localize(LocalizationKeys.privacy);
-        SoundController.instance.PlaySoundEffect("menu_click");
+        SoundController.Instance.PlaySoundEffect("menu_click");
     }
 
     public override void Exit()

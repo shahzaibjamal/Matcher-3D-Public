@@ -57,6 +57,7 @@ public class SlotManager
                 await Task.Delay(200);
             }
         }
+        GameEvents.OnSlotsFillableEvent?.Invoke(IsSlotAvailable());
 
         _undoStack.Clear();
     }

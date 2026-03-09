@@ -47,13 +47,13 @@ public class SettingsMenuBaseState_Main : SettingsMenuBaseState
     private void OnSoundValueChanged(bool value)
     {
         GameManager.Instance.SaveData.IsSoundMuted = value;
-        SoundController.instance.ToggleSfx(value);
+        SoundController.Instance.ToggleSfx(value);
     }
 
     private void OnMusicValueChanged(bool value)
     {
         GameManager.Instance.SaveData.IsMusicMuted = value;
-        SoundController.instance.ToggleMusic(value);
+        SoundController.Instance.ToggleMusic(value);
     }
 
     private void OnLanguageButtonClicked()

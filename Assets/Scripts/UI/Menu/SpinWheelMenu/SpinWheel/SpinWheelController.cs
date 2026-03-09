@@ -167,7 +167,7 @@ public class SpinWheelController : MonoBehaviour
         if (Time.time - _lastTickTime < _tickCooldown) return;
 
         _lastTickTime = Time.time;
-        SoundController.instance.PlaySoundEffect("tick");
+        SoundController.Instance.PlaySoundEffect("tick");
     }
 
     private void SettleWheel()
