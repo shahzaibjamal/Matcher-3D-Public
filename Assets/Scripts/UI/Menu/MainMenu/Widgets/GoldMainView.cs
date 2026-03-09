@@ -50,4 +50,11 @@ public class GoldMainView : MonoBehaviour
 
     // Returns the world position of the icon for the fly animation target
     public Vector3 GetTargetPosition() => GoldIcon.transform.position;
+
+    void OnDestroy()
+    {
+        GoldIcon.transform.DOKill();
+        Container.DOKill();
+        _countTween.Kill();
+    }
 }

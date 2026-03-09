@@ -25,9 +25,9 @@ public class SpinWheelMenuController : MenuController<SpinWheelMenuView, SpinWhe
         (
             LocalizationKeys.show_ad,
             LocalizationKeys.spin_ad_message,
-            LocaleManager.Localize(LocalizationKeys.yes),
+            LocalizationKeys.yes,
             ShowAd,
-            LocaleManager.Localize(LocalizationKeys.no)
+            LocalizationKeys.no
         ));
     }
 

@@ -19,6 +19,8 @@ public class MatchResultMenuBaseState : MenuBaseState<MatchResultMenuController,
 
     public override void Exit()
     {
+        _buttonSequence.Kill();
+        View.Root.DOKill();
     }
 
     private void ShowMatchResultAnimation()

@@ -21,8 +21,15 @@ public static class UIAnimations
 
     public static void ToonOut(CanvasGroup canvas, RectTransform container, System.Action onComplete = null)
     {
+        // If the container is already null, don't even start
+        if (container == null) return;
+
         Sequence seq = DOTween.Sequence().SetUpdate(true);
-        // Shrink slightly before vanishing
+
+        // LINK the sequence to the GameObject. 
+        // If 'container' is destroyed, the tween stops instantly.
+        seq.SetLink(container.gameObject);
+
         seq.Append(container.DOScale(1.1f, 0.1f).SetEase(Ease.OutQuad));
         seq.Append(container.DOScale(0, Duration).SetEase(Ease.InBack));
         seq.Join(canvas.DOFade(0, 0.2f));

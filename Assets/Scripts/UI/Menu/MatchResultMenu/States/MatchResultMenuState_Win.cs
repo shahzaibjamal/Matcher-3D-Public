@@ -36,6 +36,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
 
     public override void Exit()
     {
+        View.GodRays.transform.DOKill();
         base.Exit();
     }
 
@@ -159,7 +160,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         (
             LocalizationKeys.no,
             LocalizationKeys.no_ads_message,
-            LocaleManager.Localize(LocalizationKeys.ok)
+            LocalizationKeys.ok
         ));
     }
 
@@ -169,7 +170,6 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         List<RewardData> bonusRewards = new List<RewardData>();
         int goldAmountForAnimation = 0;
         int finalTotalGold = GameManager.Instance.SaveData.Inventory.Gold;
-        View.GoldRewardView.Initialize(finalTotalGold);
 
         // 2. Clone and Modify
         foreach (var originalReward in Data.LevelData.Rewards)
@@ -197,6 +197,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         // 3. Assign the new list to your Data container
         Data.Rewards = bonusRewards;
 
+        View.GoldRewardView.Initialize(goldAmountForAnimation);
         // 4. Trigger the UI/Animation
         // We pass the 3x amount and the calculated final total
         PlayGoldAnimation(goldAmountForAnimation, finalTotalGold, 0f, OnGoldAnimationCompleted);

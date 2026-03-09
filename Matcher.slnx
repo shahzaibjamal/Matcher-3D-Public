@@ -30,6 +30,7 @@
   <Project Path="Unity.Addressables.DocExampleCode.Editor.Tests.csproj" />
   <Project Path="Unity.Services.Core.csproj" />
   <Project Path="Unity.VisualScripting.Flow.csproj" />
+  <Project Path="IngameDebugConsole.Runtime.csproj" />
   <Project Path="Unity.PerformanceTesting.csproj" />
   <Project Path="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.csproj" />
   <Project Path="UnityEditor.Purchasing.csproj" />
@@ -86,6 +87,7 @@
   <Project Path="UnityEngine.Purchasing.WinRTCore.csproj" />
   <Project Path="UnityEngine.XR.LegacyInputHelpers.csproj" />
   <Project Path="Unity.Services.Core.Networking.csproj" />
+  <Project Path="IngameDebugConsole.Editor.csproj" />
   <Project Path="Unity.VisualScripting.DocCodeExamples.csproj" />
   <Project Path="CFXR.WelcomeScreen.csproj" />
   <Project Path="Unity.ScriptableBuildPipeline.csproj" />

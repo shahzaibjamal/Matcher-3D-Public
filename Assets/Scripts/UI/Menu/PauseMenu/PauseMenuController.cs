@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
@@ -12,7 +13,7 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
         View.HomeButton.onClick.AddListener(OnHomeButtonClicked);
         View.SettingsButton.onClick.AddListener(OnSettingsButtonClicked);
 
-        UIAnimations.ToonIn(View.GetComponent<CanvasGroup>(), View.Root, null);
+        UIAnimations.ToonIn(View.canvasGroup, View.Root, null);
     }
     public override void OnExit()
     {
@@ -21,6 +22,7 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
         View.HomeButton.onClick.RemoveListener(OnHomeButtonClicked);
         View.BGButton.onClick.RemoveListener(OnResumeButtonClicked);
         View.SettingsButton.onClick.RemoveListener(OnSettingsButtonClicked);
+        View.canvasGroup.transform.DOKill();
         base.OnExit();
     }
 
@@ -34,14 +36,15 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
 
     private void OnHomeButtonClicked()
     {
-        UIAnimations.ToonOut(View.GetComponent<CanvasGroup>(), View.Root, () =>
+        UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
         {
             GameEvents.OnGameQuitEvent?.Invoke();
+            MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+            {
+                OnLoadingComplete = OnLoadingComplete
+            });
         });
-        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-        {
-            OnLoadingComplete = OnLoadingComplete
-        });
+
     }
     private void OnLoadingComplete()
     {
@@ -49,7 +52,7 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
     }
     private void OnResumeButtonClicked()
     {
-        UIAnimations.ToonOut(View.GetComponent<CanvasGroup>(), View.Root, () =>
+        UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
         {
             MenuManager.Instance.GoBack();
         });

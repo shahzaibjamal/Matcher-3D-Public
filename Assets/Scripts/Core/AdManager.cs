@@ -15,6 +15,7 @@ public class AdManager : MonoBehaviour
 
     [Header("Current Progress")]
     [SerializeField] private int currentLevel = 1;
+    [SerializeField] private List<string> _testDevicesIds;
 
     [Header("Unlock Thresholds")]
     public int bannerUnlockLevel = 1;
@@ -37,6 +38,8 @@ public class AdManager : MonoBehaviour
     private string _activeBannerId;
     private string _activeInterstitialId;
     private string _activeRewardedId;
+
+    private Action _onPendingLoadFailed;
 
 #if USE_ADMOB
     private BannerView _bannerView;
@@ -79,7 +82,7 @@ public class AdManager : MonoBehaviour
     {
 #if USE_ADMOB
         // Configure test devices if any are provided in the inspector
-        RequestConfiguration requestConfiguration = new RequestConfiguration { TestDeviceIds = new List<string>() }; // Add device IDs here if needed
+        RequestConfiguration requestConfiguration = new RequestConfiguration { TestDeviceIds = _testDevicesIds }; // Add device IDs here if needed
         MobileAds.SetRequestConfiguration(requestConfiguration);
 
         MobileAds.Initialize(initStatus =>
@@ -157,21 +160,20 @@ public class AdManager : MonoBehaviour
         {
             _rewardedAd.Show((Reward reward) =>
             {
-                // CRITICAL: This runs on a background thread. Enqueue to Main Thread.
                 Enqueue(() =>
                 {
-                    Debug.Log("[AdManager] Reward Earned!");
                     onFinished?.Invoke();
                 });
             });
         }
         else
         {
-            onFailed?.Invoke();
+            // Store the failure callback so LoadRewardedAd can find it
+            _onPendingLoadFailed = onFailed;
             LoadRewardedAd();
         }
 #else
-        onFinished?.Invoke();
+    onFinished?.Invoke();
 #endif
     }
 
@@ -203,13 +205,24 @@ public class AdManager : MonoBehaviour
                 if (err != null)
                 {
                     Debug.LogWarning("[AdManager] Rewarded Load Failed: " + err.GetMessage());
+
+                    // TRIGGER THE STORED CALLBACK HERE
+                    _onPendingLoadFailed?.Invoke();
+                    _onPendingLoadFailed = null; // Clear it so it doesn't fire twice
                     return;
                 }
+
                 _rewardedAd = ad;
                 _rewardedAd.OnAdFullScreenContentClosed += LoadRewardedAd;
+
+                // If we were waiting for this ad to show immediately:
+                // Optional: You could auto-show here, but usually it's safer to 
+                // let the user click again or show a "Ready" toast.
+                _onPendingLoadFailed = null;
             });
+
         });
     }
+}
 #endif
     #endregion
-}

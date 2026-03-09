@@ -25,6 +25,8 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StoreButton.onClick.AddListener(OnStoreButtonClicked);
         GameEvents.OnGoldUpdatedEvent += HandleGoldUpdate;
 
+
+        // Animations
         StartPlayButtonAnimation();
         StartGiftAnimation();
         StartSpinAnimation();
