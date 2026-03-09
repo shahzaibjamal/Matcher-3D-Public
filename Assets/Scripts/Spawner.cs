@@ -181,10 +181,14 @@ public partial class Spawner : MonoBehaviour
             if (_collectableLeft.ContainsKey(data.Id))
             {
                 _collectableLeft[data.Id]--;
+                SoundController.Instance.PlaySoundEffect("ding");
                 if (_collectableLeft[data.Id] <= 0)
                     _collectableLeft.Remove(data.Id);
             }
-
+            else
+            {
+                SoundController.Instance.PlaySoundEffect("pick");
+            }
         }
     }
 

@@ -81,12 +81,12 @@ public class TrayView : MonoBehaviour
             return;
         }
 
-        SoundController.Instance.PlaySoundEffect("pick");
-
+        Vector3 rotationVector = default;
         if (source.TryGetComponent<ClickableItem>(out var clickableItem))
         {
             clickableItem.Rigidbody.isKinematic = true;
             clickableItem.Collider.enabled = false;
+            rotationVector = clickableItem.IsUpright ? Vector3.zero : new Vector3(90, 0, 0);
         }
 
         SlotView targetSlot = _slots[targetIdx];
@@ -94,8 +94,14 @@ public class TrayView : MonoBehaviour
 
         // 1. Setup Positions
         Vector3 startPos = source.position;
+        // Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, targetSlot.transform.position);
+        // Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 8f));
+        float boardDepth = Mathf.Abs(Camera.main.transform.position.z - source.position.z);
+        float verticalDepth = Mathf.Abs(Camera.main.transform.position.y - source.position.y);
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, targetSlot.transform.position);
-        Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 8f));
+        Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, verticalDepth));
+        // worldTarget.y = source.position.y;
+        // Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, boardDepth));
         worldTarget = Vector3.Lerp(startPos, worldTarget, percentage);
 
         // 2. Create projectile arc control points (axis swapped, 4 points)
@@ -124,7 +130,7 @@ public class TrayView : MonoBehaviour
         Sequence flightSeq = DOTween.Sequence();
 
         // Reset rotation cleanly
-        source.DORotate(Vector3.zero, 0.3f, RotateMode.Fast);
+        source.DORotate(rotationVector, 0.3f, RotateMode.Fast);
 
         // Projectile-style move along arc, ignoring rotation
         flightSeq.Append(source.DOPath(path, _flightToTrayDuration, PathType.CatmullRom, PathMode.Ignore)
@@ -132,7 +138,7 @@ public class TrayView : MonoBehaviour
                 .SetOptions(false)); // prevents orientation snapping
 
         // Scale effects
-        flightSeq.Join(source.DOScale(Vector3.one * 1.5f, _flightToTrayDuration * 0.4f).SetEase(Ease.OutCubic));
+        flightSeq.Join(source.DOScale(Vector3.one * 1.2f, _flightToTrayDuration * 0.4f).SetEase(Ease.OutCubic));
         flightSeq.Insert(_flightToTrayDuration * 0.5f, source.DOScale(Vector3.one * 0.3f, _flightToTrayDuration * 0.5f).SetEase(Ease.InSine));
         flightSeq.Insert(_flightToTrayDuration * 0.9f, source.DOScaleY(0.1f, 0.1f));
 

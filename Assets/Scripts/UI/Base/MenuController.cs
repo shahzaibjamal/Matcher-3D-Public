@@ -29,6 +29,10 @@ public abstract class MenuController<TView, TData> : IMenuController
     {
         CurrentState?.Exit();
         CurrentState = null;
+        if (View.DisplayMode == Menus.MenuDisplayMode.Overlay || View.DisplayMode == Menus.MenuDisplayMode.Popup)
+        {
+            SoundController.Instance.PlaySoundEffect("popup_close");
+        }
     }
 
     public abstract void OnPause();
@@ -36,8 +40,6 @@ public abstract class MenuController<TView, TData> : IMenuController
     public abstract void OnResume();
     public virtual void HandleBackInput()
     {
-        SoundController.Instance.PlaySoundEffect("popup_close");
-        // 1. Generic behavior for temporary UI
         if (View.DisplayMode == Menus.MenuDisplayMode.Overlay ||
             View.DisplayMode == Menus.MenuDisplayMode.Popup)
         {

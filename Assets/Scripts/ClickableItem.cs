@@ -10,6 +10,7 @@ public class ClickableItem : MonoBehaviour, IClickable
     public Collider Collider;
     public Rigidbody Rigidbody;
     public Action<ItemData, Transform> OnItemClicked;
+    public bool IsUpright;
 
     private int _hintLayer = -1;
     private int _defaultLayer = -1;
@@ -117,7 +118,7 @@ public class ClickableItem : MonoBehaviour, IClickable
         {
             // Normal Lift
             Highlight(true);
-            transform.DOLocalMove(_originalLocalPos + Vector3.up * liftAmount, 0.1f)
+            transform.DOLocalMove(transform.localPosition + Vector3.up * liftAmount, 0.1f)
                 .SetEase(Ease.OutCubic)
                 .SetId("HoverTween");
         }
@@ -125,7 +126,7 @@ public class ClickableItem : MonoBehaviour, IClickable
         {
             // Denial "Wobble" or "Heavy Lift"
             // We lift it much less and add a little shake to show it's stuck
-            transform.DOLocalMove(_originalLocalPos + Vector3.up * (liftAmount * 0.3f), 0.05f)
+            transform.DOLocalMove(transform.localPosition + Vector3.up * (liftAmount * 0.3f), 0.05f)
                 .SetEase(Ease.OutBounce)
                 .OnComplete(() => transform.DOShakeRotation(0.2f, 5f, 10, 90));
 
@@ -141,7 +142,7 @@ public class ClickableItem : MonoBehaviour, IClickable
 
         // Smoothly return home
         transform.DOKill();
-        transform.DOLocalMove(_originalLocalPos, 0.15f)
+        transform.DOLocalMove(transform.localPosition, 0.15f)
             .SetEase(Ease.OutQuad)
             .SetId("HoverTween");
     }

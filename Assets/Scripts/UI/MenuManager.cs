@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -93,6 +94,7 @@ public class MenuManager : MonoBehaviour
                 existingSession.View.SetVisible(true);
                 existingSession.Controller.OnResume();
                 UpdateBlockingLayer();
+
                 return;
             }
         }
@@ -133,6 +135,11 @@ public class MenuManager : MonoBehaviour
 
             // Call Enter last
             controller.OnEnter();
+            if (menuView.DisplayMode == Menus.MenuDisplayMode.Overlay || menuView.DisplayMode == Menus.MenuDisplayMode.Popup)
+            {
+                SoundController.Instance.PlaySoundEffect("back");
+            }
+
         }
 
         UpdateBlockingLayer();
@@ -141,6 +148,11 @@ public class MenuManager : MonoBehaviour
     public void GoBack()
     {
         if (_menuStack.Count == 0) return;
+
+        if (blockingLayer != null && blockingLayer.TryGetComponent<Button>(out var btn))
+        {
+            btn.interactable = false;
+        }
 
         // 1. POP THE CURRENT TOP
         MenuSession closingSession = _menuStack.Pop();
@@ -151,6 +163,10 @@ public class MenuManager : MonoBehaviour
         {
             closingSession.Controller.OnExit();
             closingSession.View.Destroy();
+            if (blockingLayer != null && blockingLayer.TryGetComponent<Button>(out var btn))
+            {
+                btn.interactable = true;
+            }
         });
 
         // 2. SMART RESTORE PREVIOUS
