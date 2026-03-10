@@ -3,6 +3,9 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections;
 using System.IO;
+using UnityEditor;
+using System.Text.RegularExpressions; // Required for AssetDatabase and PrefabUtility
+
 
 public class AutoSpriteBaker : MonoBehaviour
 {
@@ -18,6 +21,7 @@ public class AutoSpriteBaker : MonoBehaviour
     [Range(0, 45)] public float trimRight = 10f;
     [Range(0, 45)] public float trimTop = 10f;
     [Range(0, 45)] public float trimBottom = 10f;
+    public GameObject CullObject;
 
     [ContextMenu("Run Full Batch Capture")]
     public void StartBatch()
@@ -73,6 +77,7 @@ public class AutoSpriteBaker : MonoBehaviour
 
     private void CapturePNG(string id)
     {
+        CullObject.SetActive(false);
         RenderTexture rt = new RenderTexture(resolution, resolution, 24, RenderTextureFormat.ARGB32);
         captureCamera.targetTexture = rt;
         captureCamera.backgroundColor = new Color(0, 0, 0, 0);
@@ -112,5 +117,87 @@ public class AutoSpriteBaker : MonoBehaviour
         DestroyImmediate(rt);
         DestroyImmediate(fullShot);
         DestroyImmediate(cropped);
+        CullObject.SetActive(true);
+    }
+
+    [ContextMenu("Capture Current View")]
+    public void CaptureCurrentView()
+    {
+        // Ensure the folder exists before capturing
+        string folderPath = Path.Combine(Application.dataPath, saveFolder);
+        if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+
+        // Generate a unique timestamped ID so you don't overwrite previous captures
+        string timestampId = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
+
+        // Use your existing logic to render and save
+        CapturePNG("manual_");
+
+        Debug.Log($"<color=green>Manual Capture Saved:</color> manual_{timestampId}.png");
+
+#if UNITY_EDITOR
+        UnityEditor.AssetDatabase.Refresh();
+#endif
+    }
+
+
+    // ... inside your class ...
+    [ContextMenu("Process Prefabs & Format Names")]
+    public void ProcessPrefabsAndFormatNames()
+    {
+        string folderPath = "Assets/Prefabs/Items"; // Path to your prefabs
+        string txtPath = Path.Combine(Application.dataPath, "PrefabNames.txt");
+
+        string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { folderPath });
+        StringBuilder formattedNamesSummary = new StringBuilder();
+        formattedNamesSummary.AppendLine("\n--- Formatted Names List ---");
+
+        using (StreamWriter writer = new StreamWriter(txtPath))
+        {
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+
+                if (prefab != null)
+                {
+                    // 1. Write original name to the file
+                    writer.WriteLine(prefab.name);
+
+                    // 2. Generate the formatted name (e.g., Pot01 -> pot_01)
+                    string formattedName = FormatToToonStyle(prefab.name);
+                    formattedNamesSummary.AppendLine(formattedName);
+
+                    // 3. Update the Prefab's ClickableItem rotation
+                    GameObject contents = PrefabUtility.LoadPrefabContents(path);
+                    if (contents.TryGetComponent<ClickableItem>(out var clickable))
+                    {
+                        clickable.Rotation = rotationOffset;
+                        PrefabUtility.SaveAsPrefabAsset(contents, path);
+                    }
+                    PrefabUtility.UnloadPrefabContents(contents);
+                }
+
+                // break; // Uncomment this to test with just one item
+            }
+
+            // 4. Append the lowercase formatted list at the end of the file
+            writer.Write(formattedNamesSummary.ToString());
+        }
+
+        AssetDatabase.Refresh();
+        Debug.Log($"Processed {guids.Length} items. Formatting complete in PrefabNames.txt");
+    }
+
+    private string FormatToToonStyle(string original)
+    {
+        // 1. Insert underscore between lowercase and uppercase (CamelCase): GoldenKey -> Golden_Key
+        string camelCaseSeparated = Regex.Replace(original, @"([a-z])([A-Z])", "$1_$2");
+
+        // 2. Insert underscore between letters and numbers: Key05 -> Key_05
+        string digitSeparated = Regex.Replace(camelCaseSeparated, @"([a-zA-Z])(\d)", "$1_$2");
+
+        // 3. Convert to lowercase: Golden_Key_05 -> golden_key_05
+        return digitSeparated.ToLower();
     }
 }
