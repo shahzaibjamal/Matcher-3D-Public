@@ -10,6 +10,7 @@ public class ItemData : ICloneable
     public string Name;
     public string PrefabName;
     public string IconName;
+    public ItemSize Size;
 
     public object Clone()
     {
@@ -27,4 +28,11 @@ public class ItemData : ICloneable
     {
         return (ItemData)this.Clone();
     }
+}
+
+public enum ItemSize
+{
+    Small = 1,
+    Medium = 2,
+    Large = 3
 }

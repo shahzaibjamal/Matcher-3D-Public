@@ -4,6 +4,8 @@ using UnityEngine.Networking;
 using Newtonsoft.Json;
 using System.IO;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public static class DataFetcher
 {
@@ -69,5 +71,71 @@ public static class DataFetcher
             Debug.LogError($"[DataFetcher] Parsing Error: {e.Message}");
             EditorUtility.DisplayDialog("Parsing Error", "The data from Google Sheets is malformed. Check the console.", "OK");
         }
+    }
+    public static LevelData GenerateDynamicLevel(int levelNumber, List<ItemData> masterItems)
+    {
+        // 1. Define Growth Curves (Linear or Exponential)
+        float difficultyMult = 1f + (levelNumber * 0.15f); // 15% harder per level
+
+        // Metrics
+        int targetCount = Mathf.Clamp(3 + (levelNumber / 2), 3, 15); // How many unique types to find
+        int itemsPerTarget = Mathf.Clamp(1 + (levelNumber / 5), 1, 5); // How many of each type to find
+        int junkCount = Mathf.FloorToInt(10 * difficultyMult); // Background noise
+
+        LevelData newLevel = new LevelData()
+        {
+            Id = $"Level_{levelNumber}",
+            Number = levelNumber,
+            Name = $"Challenge {levelNumber}"
+        };
+
+        // 2. Select the Targets
+        // Shuffle master list and pick 'targetCount' unique items
+        var shuffledItems = masterItems.OrderBy(x => UnityEngine.Random.value).ToList();
+        var selectedTargets = shuffledItems.Take(targetCount).ToList();
+
+        foreach (var item in selectedTargets)
+        {
+            // Add to the list of things the player MUST find
+            newLevel.ItemsToCollect.Add(item.Id);
+
+            // Add to the physical spawn list
+            newLevel.ItemsToSpawn.Add(new LevelItemEntry
+            {
+                Id = item.Id,
+                Count = itemsPerTarget
+            });
+        }
+
+        // 3. Populate with Junk (Visual Noise)
+        // Pick random items that aren't necessarily the targets
+        for (int i = 0; i < junkCount; i++)
+        {
+            var randomJunk = masterItems[UnityEngine.Random.Range(0, masterItems.Count)];
+
+            // Check if item already exists in spawn list to increment count, or add new
+            var existing = newLevel.ItemsToSpawn.Find(x => x.Id == randomJunk.Id);
+            if (existing != null)
+            {
+                existing.Count++;
+            }
+            else
+            {
+                newLevel.ItemsToSpawn.Add(new LevelItemEntry
+                {
+                    Id = randomJunk.Id,
+                    Count = 1
+                });
+            }
+        }
+
+        // 4. Reward Logic (Basic example: 10 gold per item to collect)
+        newLevel.Rewards.Add(new RewardData
+        {
+            RewardType = RewardType.Gold,
+            Amount = newLevel.ItemsToCollect.Count * 10
+        });
+
+        return newLevel;
     }
 }
