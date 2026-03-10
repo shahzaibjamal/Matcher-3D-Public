@@ -140,17 +140,33 @@ public partial class Spawner : MonoBehaviour
 
     private void ExecuteSpawning()
     {
+        int totalToSpawn = 0;
+        foreach (var entry in _currentLevelData.ItemsToSpawn)
+        {
+            totalToSpawn += entry.Count;
+        }
+
+        int spawnedCount = 0;
         foreach (var entry in _currentLevelData.ItemsToSpawn)
         {
             ItemData item = DataManager.Instance.GetItemByID(entry.Id);
             for (int i = 0; i < entry.Count; i++)
             {
-                CreateItemInstance(item);
+                CreateItemInstance(item, () =>
+            {
+                spawnedCount++;
+
+                // 2. Check if this was the last one
+                if (spawnedCount >= totalToSpawn)
+                {
+                    OnAllItemsSpawned();
+                }
+            });
             }
         }
     }
 
-    private void CreateItemInstance(ItemData item)
+    private void CreateItemInstance(ItemData item, System.Action onInstanceReady = null)
     {
         Vector3 spawnPos = CalculateRandomSpawnPos();
         Quaternion randomRot = UnityEngine.Random.rotation;
@@ -163,7 +179,14 @@ public partial class Spawner : MonoBehaviour
                 clickable.ItemData = item.CreateCopy();
                 clickable.OnItemClicked = _onItemClicked;
             }
+            onInstanceReady?.Invoke();
         });
+    }
+
+    private void OnAllItemsSpawned()
+    {
+        // This is where you fire the event for your Curtains or Iris to open
+        GameEvents.OnSpawnerInitializedEvent?.Invoke();
     }
     #endregion
 

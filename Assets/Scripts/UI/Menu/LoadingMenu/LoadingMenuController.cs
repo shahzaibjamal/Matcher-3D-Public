@@ -16,7 +16,6 @@ public class LoadingMenuController : MenuController<LoadingMenuView, LoadingMenu
         float max = Data.Delay == -1 ? View.MaxTime : Data.Delay;
         float duration = Random.Range(min, max);
 
-        // StartLoadingAnimations();
         SetupProgressBar(duration);
 
         // Actual logic timer
@@ -39,41 +38,6 @@ public class LoadingMenuController : MenuController<LoadingMenuView, LoadingMenu
         View.ProgressSlider.DOValue(1.0f, slowTime).SetEase(Ease.Linear).SetDelay(fastTime);
     }
 
-    public void StartLoadingAnimations()
-    {
-        // 1. Initial Positioning (The Ring)
-        float angleStep = 360f / View.OrbitalIcons.Length;
-
-        for (int i = 0; i < View.OrbitalIcons.Length; i++)
-        {
-            RectTransform icon = View.OrbitalIcons[i];
-
-            // Use Trig to place them in a circle based on your Radius variable
-            float angleInRad = i * angleStep * Mathf.Deg2Rad;
-            float x = Mathf.Cos(angleInRad) * View.Radius;
-            float y = Mathf.Sin(angleInRad) * View.Radius;
-
-            icon.anchoredPosition = new Vector2(x, y);
-
-            // Reset their rotation to zero before starting
-            icon.localRotation = Quaternion.identity;
-        }
-
-        // 2. The Global Orbit (The Parent)
-        // Rotating the center moves all children in a circle
-        View.IconCenter.DOLocalRotate(new Vector3(0, 0, -360), View.RotationSpeed, RotateMode.FastBeyond360)
-            .SetEase(Ease.Linear)
-            .SetLoops(-1, LoopType.Incremental);
-
-        // 3. The Counter-Rotation (The Children)
-        // Rotating the children in the opposite direction keeps them upright
-        foreach (var icon in View.OrbitalIcons)
-        {
-            icon.DOLocalRotate(new Vector3(0, 0, 360), View.RotationSpeed, RotateMode.FastBeyond360)
-                .SetEase(Ease.Linear)
-                .SetLoops(-1, LoopType.Incremental);
-        }
-    }
     public override void OnExit()
     {
         // 1. Kill the Logic Timer (The most dangerous one!)

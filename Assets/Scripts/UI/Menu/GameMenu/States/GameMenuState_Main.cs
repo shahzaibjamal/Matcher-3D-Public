@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TS.LocalizationSystem;
 using UnityEngine;
 
@@ -9,33 +10,39 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     private List<ItemView> _activeViews = new List<ItemView>();
     private List<PowerUpButton> _activeButtons = new List<PowerUpButton>();
     private LevelData _currentLevelData = null;
+    private Vector3 _leftCurtainPosition;
+    private Vector3 _rightCurtainPosition;
 
     public GameMenuBaseState_Main(GameMenuController controller) : base(controller) { }
 
     public override void Enter()
     {
         base.Enter();
-        View.StartCoroutine(StartGame());
         View.PauseButton.onClick.AddListener(OnPauseButtonClicked);
         GameEvents.OnMatchStartedEvent += HandleMatchStarted;
         GameEvents.OnShowMatchResultEvent += HandleMatchResult;
         GameEvents.OnCleanSweepTrayEvent += HandleCleanSweep;
+        GameEvents.OnSpawnerInitializedEvent += OnSpawnerInitialized;
 
         View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
-        Debug.LogError("GameMenu : OnterCalled called ");
+        View.TrayView.Initialize(GameManager.SLOT_COUNT);
 
+        InputManager.Instance.RegisterKey(KeyCode.Z, OnSpawnerInitialized);
+        _leftCurtainPosition = View.LeftCurtain.anchoredPosition;
+        _rightCurtainPosition = View.RightCurtain.anchoredPosition;
     }
 
     public override void Exit()
     {
         base.Exit();
+        InputManager.Instance.UnregisterKey(KeyCode.Z, OnSpawnerInitialized);
 
         GameEvents.OnMatchStartedEvent -= HandleMatchStarted;
         GameEvents.OnShowMatchResultEvent -= HandleMatchResult;
         GameEvents.OnCleanSweepTrayEvent -= HandleCleanSweep;
+        GameEvents.OnSpawnerInitializedEvent -= OnSpawnerInitialized;
         View.PauseButton.onClick.RemoveListener(OnPauseButtonClicked);
         Cleanup();
-        Debug.LogError("GameMenu : OnExit called ");
     }
 
     private void HandleMatchStarted(LevelData levelData)
@@ -88,6 +95,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         _activeViews.Clear();
 
         _currentLevelData = null;
+        _curtainSeq.Kill();
     }
 
     private void CheckWin()
@@ -125,9 +133,31 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
     private void OnPauseButtonClicked() => Controller.OpenPauseMenu();
 
-    IEnumerator StartGame()
+    Sequence _curtainSeq;
+    private void OnSpawnerInitialized()
     {
-        yield return null;
-        Controller.StartGame();
+        float screenWidth = View.GetComponent<RectTransform>().rect.width;
+
+        // 2. Create the Sequence
+        Sequence _curtainSeq = DOTween.Sequence();
+        View.LeftCurtain.anchoredPosition = _leftCurtainPosition;
+        View.RightCurtain.anchoredPosition = _rightCurtainPosition;
+
+        // --- THE OPENING ANIMATION ---
+        // // // Anticipation: Squeeze inward slightly (50 units) to "charge up" the move
+        // _curtainSeq.Append(View.LeftCurtain.DOAnchorPosX(View.inward, 0.1f).SetEase(Ease.OutQuad));
+        // _curtainSeq.Join(View.RightCurtain.DOAnchorPosX(-View.inward, 0.1f).SetEase(Ease.OutQuad));
+
+        // Snap Open: Use InBack so they pull together then fly apart
+
+        //inBack
+        _curtainSeq.Append(View.LeftCurtain.DOAnchorPosX(View.useOutward ? -View.outward : -screenWidth, 0.6f).SetEase(Ease.InBack));
+        _curtainSeq.Join(View.RightCurtain.DOAnchorPosX(View.useOutward ? View.outward : screenWidth, 0.6f).SetEase(Ease.InBack));
     }
+    [ContextMenu("Test: Open Curtains")]
+    public void TestOpen()
+    {
+        OnSpawnerInitialized();
+    }
+
 }

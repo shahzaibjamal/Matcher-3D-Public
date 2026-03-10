@@ -22,8 +22,8 @@ public class GameMenuController : MenuController<GameMenuView, GameMenuData>
 
     public void StartGame()
     {
-        GameEvents.OnGameInitializedEvent?.Invoke(Data.levelId);
-        View.TrayView.Initialize(GameManager.SLOT_COUNT);
+        // GameEvents.OnGameInitializedEvent?.Invoke(Data.levelId);
+        // View.TrayView.Initialize(GameManager.SLOT_COUNT);
     }
     public override void HandleBackInput()
     {

@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
 
         SoundController.Instance.Init(SaveData.IsMusicMuted, SaveData.IsSoundMuted);
 
-        GameEvents.OnStartButtonClicked += StartGame;
+        // GameEvents.OnStartButtonClicked += StartGame;
         GameEvents.OnGameInitializedEvent += LoadLevelById;
         GameEvents.OnGameQuitEvent += Cleanup;
         GameEvents.OnGameOverEvent += TriggerGameOver;
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
     }
     void OnDestroy()
     {
-        GameEvents.OnStartButtonClicked -= StartGame;
+        // GameEvents.OnStartButtonClicked -= StartGame;
         GameEvents.OnGameInitializedEvent -= LoadLevelById;
         GameEvents.OnGameQuitEvent -= Cleanup;
         GameEvents.OnGameOverEvent -= TriggerGameOver;
@@ -98,13 +98,13 @@ public class GameManager : MonoBehaviour
     #region Game Lifecycle Functions
 
 
-    public void StartGame()
-    {
-        Debug.Log("Game Manager: Starting Game...");
+    // public void StartGame()
+    // {
+    //     Debug.Log("Game Manager: Starting Game...");
 
-        OnGameStarted?.Invoke();
-        Cleanup();
-    }
+    //     OnGameStarted?.Invoke();
+    //     Cleanup();
+    // }
 
     public void LoadLevelById(string levelId = null)
     {

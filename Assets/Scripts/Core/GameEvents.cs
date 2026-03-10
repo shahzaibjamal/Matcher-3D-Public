@@ -5,7 +5,7 @@ using UnityEngine;
 public static class GameEvents
 {
     // For new items entering the tray
-    public static Action OnStartButtonClicked;
+    public static Action OnSpawnerInitializedEvent;
 
     public static Action<ItemData, int, Transform, bool, Action> OnItemAddedToSlotEvent;
     // For items shifting left/right

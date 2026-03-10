@@ -26,7 +26,7 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
     Volume: 0.144
   - Name: item_complete
-    Clip: {fileID: 8300000, guid: 79180f511d89441b9aa23ccae1992fe0, type: 3}
+    Clip: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
     Volume: 1
   - Name: undo
     Clip: {fileID: 8300000, guid: 84e427d6b66ab4066b6a4dcd0ce819ee, type: 3}
@@ -69,4 +69,10 @@ MonoBehaviour:
     Volume: 1
   - Name: deny
     Clip: {fileID: 8300000, guid: 6ade074b94e1b8a4f9d0398fe1aee572, type: 3}
+    Volume: 1
+  - Name: ding
+    Clip: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
+    Volume: 1
+  - Name: back
+    Clip: {fileID: 8300000, guid: b6428d4edb06344ba829da4edd9967c1, type: 3}
     Volume: 1

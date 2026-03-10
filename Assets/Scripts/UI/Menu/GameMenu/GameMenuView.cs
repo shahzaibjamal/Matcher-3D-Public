@@ -13,9 +13,11 @@ public class GameMenuView : MenuView
     public TMP_Text LevelId;
     public GoldMainView GoldMainView;
     public PowerUpButton PowerUpPrefab;
-
-    private List<PowerUpButton> _activeButtons = new List<PowerUpButton>();
-
+    public RectTransform LeftCurtain;
+    public RectTransform RightCurtain;
+    public float inward;
+    public float outward;
+    public bool useOutward = false;
     public Transform PowerUpContainer;
 
     [Header("Data Configuration")]
