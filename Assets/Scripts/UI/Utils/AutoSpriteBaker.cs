@@ -4,7 +4,8 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections;
 using System.IO;
 using UnityEditor;
-using System.Text.RegularExpressions; // Required for AssetDatabase and PrefabUtility
+using System.Text.RegularExpressions;
+using System.Text; // Required for AssetDatabase and PrefabUtility
 
 
 public class AutoSpriteBaker : MonoBehaviour
@@ -50,7 +51,10 @@ public class AutoSpriteBaker : MonoBehaviour
             {
                 GameObject instance = Instantiate(handle.Result);
                 instance.transform.localScale = Vector3.one;
-                instance.transform.rotation = Quaternion.Euler(rotationOffset);
+                if (instance.TryGetComponent<ClickableItem>(out var clickableItem))
+                {
+                    instance.transform.rotation = Quaternion.Euler(clickableItem.Rotation);
+                }
 
                 Rigidbody rb = instance.GetComponent<Rigidbody>();
                 if (rb != null)
@@ -145,15 +149,22 @@ public class AutoSpriteBaker : MonoBehaviour
     [ContextMenu("Process Prefabs & Format Names")]
     public void ProcessPrefabsAndFormatNames()
     {
-        string folderPath = "Assets/Prefabs/Items"; // Path to your prefabs
+        string folderPath = "Assets/Art/Prefabs/Items/Newer"; // Path to your prefabs
         string txtPath = Path.Combine(Application.dataPath, "PrefabNames.txt");
 
         string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { folderPath });
-        StringBuilder formattedNamesSummary = new StringBuilder();
-        formattedNamesSummary.AppendLine("\n--- Formatted Names List ---");
+        // StringBuilders for the summary sections
+        StringBuilder uids = new StringBuilder();
+        uids.AppendLine("\n--- Uids Format ---");
+
+        StringBuilder names = new StringBuilder();
+        names.AppendLine("\n--- Names Format ---");
+
 
         using (StreamWriter writer = new StreamWriter(txtPath))
         {
+            // writer.WriteLine("\n--- PrefabNames Format ---");
+
             foreach (string guid in guids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
@@ -162,17 +173,18 @@ public class AutoSpriteBaker : MonoBehaviour
                 if (prefab != null)
                 {
                     // 1. Write original name to the file
-                    writer.WriteLine(prefab.name);
+                    // writer.WriteLine(prefab.name);
 
-                    // 2. Generate the formatted name (e.g., Pot01 -> pot_01)
-                    string formattedName = FormatToToonStyle(prefab.name);
-                    formattedNamesSummary.AppendLine(formattedName);
+                    // 2. Build the different formats
+                    uids.AppendLine(FormatToUnderscore(prefab.name));
+                    // names.AppendLine(FormatToSpaced(prefab.name));
 
                     // 3. Update the Prefab's ClickableItem rotation
                     GameObject contents = PrefabUtility.LoadPrefabContents(path);
                     if (contents.TryGetComponent<ClickableItem>(out var clickable))
                     {
-                        clickable.Rotation = rotationOffset;
+                        clickable.Rotation = contents.transform.rotation.eulerAngles;
+                        clickable.Position = contents.transform.position;
                         PrefabUtility.SaveAsPrefabAsset(contents, path);
                     }
                     PrefabUtility.UnloadPrefabContents(contents);
@@ -182,22 +194,28 @@ public class AutoSpriteBaker : MonoBehaviour
             }
 
             // 4. Append the lowercase formatted list at the end of the file
-            writer.Write(formattedNamesSummary.ToString());
+            // 4. Append both lists at the end of the file
+            writer.Write(uids.ToString());
+            // writer.Write(names.ToString());
         }
 
         AssetDatabase.Refresh();
         Debug.Log($"Processed {guids.Length} items. Formatting complete in PrefabNames.txt");
     }
 
-    private string FormatToToonStyle(string original)
+    private string FormatToUnderscore(string original)
     {
-        // 1. Insert underscore between lowercase and uppercase (CamelCase): GoldenKey -> Golden_Key
-        string camelCaseSeparated = Regex.Replace(original, @"([a-z])([A-Z])", "$1_$2");
+        // GoldenKey01 -> golden_key_01
+        string res = Regex.Replace(original, @"([a-z])([A-Z])", "$1_$2");
+        res = Regex.Replace(res, @"([a-zA-Z])(\d)", "$1_$2");
+        return res.ToLower();
+    }
 
-        // 2. Insert underscore between letters and numbers: Key05 -> Key_05
-        string digitSeparated = Regex.Replace(camelCaseSeparated, @"([a-zA-Z])(\d)", "$1_$2");
-
-        // 3. Convert to lowercase: Golden_Key_05 -> golden_key_05
-        return digitSeparated.ToLower();
+    private string FormatToSpaced(string original)
+    {
+        // GoldenKey01 -> Golden Key 01
+        string res = Regex.Replace(original, @"([a-z])([A-Z])", "$1 $2");
+        res = Regex.Replace(res, @"([a-zA-Z])(\d)", "$1 $2");
+        return res; // Keeps original casing
     }
 }

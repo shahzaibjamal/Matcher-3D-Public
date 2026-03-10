@@ -7,11 +7,14 @@ public class ClickableItem : MonoBehaviour, IClickable
 {
     [HideInInspector]
     public ItemData ItemData;
+    [HideInInspector]
     public Collider Collider;
+    [HideInInspector]
     public Rigidbody Rigidbody;
     public Action<ItemData, Transform> OnItemClicked;
     public bool IsUpright;
     public Vector3 Rotation;
+    public Vector3 Position;
 
     private int _hintLayer = -1;
     private int _defaultLayer = -1;

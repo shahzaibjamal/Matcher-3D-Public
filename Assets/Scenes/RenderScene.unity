@@ -766,7 +766,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3138024627409251286, guid: 0b8d1bfe6d69254488faeb7975b9221b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6593155080855706970, guid: 0b8d1bfe6d69254488faeb7975b9221b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -834,6 +834,10 @@ PrefabInstance:
     - target: {fileID: 6014652823639794692, guid: 50280d58e4038b049b376715079ebeb0, type: 3}
       propertyPath: m_Name
       value: Cup03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6014652823639794692, guid: 50280d58e4038b049b376715079ebeb0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8012126337315873848, guid: 50280d58e4038b049b376715079ebeb0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -936,6 +940,10 @@ PrefabInstance:
     - target: {fileID: 776681699148948403, guid: c4d8c95e1d90f9745aab542e1407c5c7, type: 3}
       propertyPath: m_Name
       value: Spatula02
+      objectReference: {fileID: 0}
+    - target: {fileID: 776681699148948403, guid: c4d8c95e1d90f9745aab542e1407c5c7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1080,6 +1088,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chest
       objectReference: {fileID: 0}
+    - target: {fileID: 4187727439113844579, guid: 92ffb71259320ea43b8d5a6e37ec005f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1096,6 +1108,10 @@ PrefabInstance:
     - target: {fileID: 2578252395368859769, guid: 4a5cf3c3e6471494e96b212e0225b70e, type: 3}
       propertyPath: m_Name
       value: Pot01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2578252395368859769, guid: 4a5cf3c3e6471494e96b212e0225b70e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6436608373831144242, guid: 4a5cf3c3e6471494e96b212e0225b70e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1153,6 +1169,10 @@ PrefabInstance:
     - target: {fileID: 455496468254799647, guid: 38cc68b7766b7d946b2936540b6f2b0f, type: 3}
       propertyPath: m_Name
       value: BuildingBlock02
+      objectReference: {fileID: 0}
+    - target: {fileID: 455496468254799647, guid: 38cc68b7766b7d946b2936540b6f2b0f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2360127150912238756, guid: 38cc68b7766b7d946b2936540b6f2b0f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1317,6 +1337,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spoon01
       objectReference: {fileID: 0}
+    - target: {fileID: 5897014070973400461, guid: 0db18d1ff154ba24dbced86506ad763c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1333,6 +1357,10 @@ PrefabInstance:
     - target: {fileID: 5326264847188123025, guid: d17c15cc7923ada4cae5122dc5aa77d5, type: 3}
       propertyPath: m_Name
       value: Cup01
+      objectReference: {fileID: 0}
+    - target: {fileID: 5326264847188123025, guid: d17c15cc7923ada4cae5122dc5aa77d5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8703941964578146456, guid: d17c15cc7923ada4cae5122dc5aa77d5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1527,6 +1555,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spatula04
       objectReference: {fileID: 0}
+    - target: {fileID: 3642814683881744232, guid: 9de346451935f3c40bfd8b280a62567b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1589,6 +1621,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Clock
       objectReference: {fileID: 0}
+    - target: {fileID: 5747966885898206864, guid: 6ba7ca27fb833e54b8f258948b6313b9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1620,6 +1656,10 @@ PrefabInstance:
     - target: {fileID: 1167209103360798590, guid: 5a34ca9625523774899a109d4d1a388c, type: 3}
       propertyPath: m_Name
       value: Plant
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167209103360798590, guid: 5a34ca9625523774899a109d4d1a388c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6109712522714644079, guid: 5a34ca9625523774899a109d4d1a388c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1718,6 +1758,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LetterCube01
       objectReference: {fileID: 0}
+    - target: {fileID: 7782812926373427295, guid: e4577b5cd7b922a44a3c70b1b0f3250a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1779,6 +1823,10 @@ PrefabInstance:
     - target: {fileID: 7561864910510497391, guid: 383cec3a17614754694d01f333ec1751, type: 3}
       propertyPath: m_Name
       value: BeautyBottle02
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561864910510497391, guid: 383cec3a17614754694d01f333ec1751, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1909,6 +1957,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knife01
       objectReference: {fileID: 0}
+    - target: {fileID: 4790249981493207654, guid: 32bcf0e2953755a45b07dfc5384a7cbf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5467601082586572351, guid: 32bcf0e2953755a45b07dfc5384a7cbf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.69
@@ -1965,6 +2017,10 @@ PrefabInstance:
     - target: {fileID: 771084274947017618, guid: 9ffa9aa0cebe1bb40a0645ebb22898a4, type: 3}
       propertyPath: m_Name
       value: Cup02
+      objectReference: {fileID: 0}
+    - target: {fileID: 771084274947017618, guid: 9ffa9aa0cebe1bb40a0645ebb22898a4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3368831292747912510, guid: 9ffa9aa0cebe1bb40a0645ebb22898a4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2195,6 +2251,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MiniStove
       objectReference: {fileID: 0}
+    - target: {fileID: 4103519562040876380, guid: 1099dcbd961f1b141b51c948bb626819, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2256,6 +2316,10 @@ PrefabInstance:
     - target: {fileID: 6297685885825701139, guid: 852dfc6cab339fd4aa53211e206498ae, type: 3}
       propertyPath: m_Name
       value: Lamp01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297685885825701139, guid: 852dfc6cab339fd4aa53211e206498ae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2415,6 +2479,10 @@ PrefabInstance:
     - target: {fileID: 4133324828430272574, guid: 45ace8e9afa1d794db37226cc9b71e0e, type: 3}
       propertyPath: m_Name
       value: BeatyBottle01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133324828430272574, guid: 45ace8e9afa1d794db37226cc9b71e0e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8290578394030002460, guid: 45ace8e9afa1d794db37226cc9b71e0e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2785,6 +2853,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Star
       objectReference: {fileID: 0}
+    - target: {fileID: 2753226129030218009, guid: 2fbca71b33ea4bc4bacad89d62e0021b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2841,6 +2913,10 @@ PrefabInstance:
     - target: {fileID: 2656338560876440571, guid: d3b181422db952b4d8de1139d8dae212, type: 3}
       propertyPath: m_Name
       value: Book01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2656338560876440571, guid: d3b181422db952b4d8de1139d8dae212, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2991,6 +3067,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Book02
       objectReference: {fileID: 0}
+    - target: {fileID: 1333656324235869767, guid: bb96b08f69f717c4e80676392fcf058e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9157325646101948578, guid: bb96b08f69f717c4e80676392fcf058e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.543
@@ -3053,6 +3133,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lamp02
       objectReference: {fileID: 0}
+    - target: {fileID: 5555298306342141545, guid: 7ff9d9916648f1640817e64b492e39b8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9018556795289539421, guid: 7ff9d9916648f1640817e64b492e39b8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.94
@@ -3113,7 +3197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1001 &5960978862021652241
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3125,6 +3209,10 @@ PrefabInstance:
     - target: {fileID: 5203470865137716536, guid: f59c1c61956dbb647a7d82e61acd3dc5, type: 3}
       propertyPath: m_Name
       value: RollingPin
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203470865137716536, guid: f59c1c61956dbb647a7d82e61acd3dc5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6679814421812824691, guid: f59c1c61956dbb647a7d82e61acd3dc5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3187,6 +3275,10 @@ PrefabInstance:
     - target: {fileID: 244518375563826685, guid: 6b24240b89a0d9b4e91faebc6067001e, type: 3}
       propertyPath: m_Name
       value: Pot02
+      objectReference: {fileID: 0}
+    - target: {fileID: 244518375563826685, guid: 6b24240b89a0d9b4e91faebc6067001e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7588958127098499503, guid: 6b24240b89a0d9b4e91faebc6067001e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3290,6 +3382,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stool
       objectReference: {fileID: 0}
+    - target: {fileID: 7879439883583273041, guid: 81c161a1b7726864e82d4f0d726ce4f2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3346,6 +3442,10 @@ PrefabInstance:
     - target: {fileID: 5587495082540846117, guid: bede3a4dda5e640429ce560f4357215c, type: 3}
       propertyPath: m_Name
       value: Pan01
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587495082540846117, guid: bede3a4dda5e640429ce560f4357215c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3496,6 +3596,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BuildingBlock01
       objectReference: {fileID: 0}
+    - target: {fileID: 5287054219994341488, guid: 48c847bf5f996fb46940b9225ea913bf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6084390838272750452, guid: 48c847bf5f996fb46940b9225ea913bf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.543
@@ -3608,6 +3712,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Oven
       objectReference: {fileID: 0}
+    - target: {fileID: 8983114613543364400, guid: 0c8ff00ea853a3943998acd4654d2fb4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3664,6 +3772,10 @@ PrefabInstance:
     - target: {fileID: 2836984422512445650, guid: 30d7e6af5439123408d42ca60df7c8c3, type: 3}
       propertyPath: m_Name
       value: Globe
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836984422512445650, guid: 30d7e6af5439123408d42ca60df7c8c3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3753,6 +3865,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chair03
       objectReference: {fileID: 0}
+    - target: {fileID: 1281745031317335320, guid: 90c43d6cabb66cf4690af4513d259bd6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4933173158114180150, guid: 90c43d6cabb66cf4690af4513d259bd6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.24
@@ -3809,6 +3925,10 @@ PrefabInstance:
     - target: {fileID: 466181533614323332, guid: 2c0d321cc71dc11448f055ef79b0ffb9, type: 3}
       propertyPath: m_Name
       value: Ball02
+      objectReference: {fileID: 0}
+    - target: {fileID: 466181533614323332, guid: 2c0d321cc71dc11448f055ef79b0ffb9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3720474851908171237, guid: 2c0d321cc71dc11448f055ef79b0ffb9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3907,6 +4027,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spatula01
       objectReference: {fileID: 0}
+    - target: {fileID: 8842738856733380527, guid: ff1263f5eaacba843990f759812e3273, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3923,6 +4047,10 @@ PrefabInstance:
     - target: {fileID: 1821749108212059068, guid: d37a81ba274493a43934a5aefaf848a2, type: 3}
       propertyPath: m_Name
       value: Chair02
+      objectReference: {fileID: 0}
+    - target: {fileID: 1821749108212059068, guid: d37a81ba274493a43934a5aefaf848a2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4948608531390849057, guid: d37a81ba274493a43934a5aefaf848a2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3980,6 +4108,10 @@ PrefabInstance:
     - target: {fileID: 4325809015338842817, guid: 94364a6c541715b4a8a1c11b616214ed, type: 3}
       propertyPath: m_Name
       value: Ball01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4325809015338842817, guid: 94364a6c541715b4a8a1c11b616214ed, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6233535703642350688, guid: 94364a6c541715b4a8a1c11b616214ed, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4043,6 +4175,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ball03
       objectReference: {fileID: 0}
+    - target: {fileID: 3503446791943301695, guid: d517fa5bc09a7cf43bfe03b92ca752f5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4249848871081293622, guid: d517fa5bc09a7cf43bfe03b92ca752f5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.05
@@ -4105,6 +4241,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Brush01
       objectReference: {fileID: 0}
+    - target: {fileID: 699996514129843116, guid: 2b3b16b4afae5384e9b060db90f6252f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4687928232273714767, guid: 2b3b16b4afae5384e9b060db90f6252f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.543
@@ -4162,6 +4302,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chair01
       objectReference: {fileID: 0}
+    - target: {fileID: 1967812399291394905, guid: b79d81f345e456b4289f28d1b0c6d7b9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2111103077424754505, guid: b79d81f345e456b4289f28d1b0c6d7b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.24
@@ -4218,6 +4362,10 @@ PrefabInstance:
     - target: {fileID: 758369781178698509, guid: 0dc85dfe506c9e24baeeac99920f3e3d, type: 3}
       propertyPath: m_Name
       value: PizzaCutter
+      objectReference: {fileID: 0}
+    - target: {fileID: 758369781178698509, guid: 0dc85dfe506c9e24baeeac99920f3e3d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6092357724376693538, guid: 0dc85dfe506c9e24baeeac99920f3e3d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4316,6 +4464,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pan02
       objectReference: {fileID: 0}
+    - target: {fileID: 7183609071141596210, guid: efe82eb7e653bdf47958ac7bcd53cf51, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4403,6 +4555,10 @@ PrefabInstance:
     - target: {fileID: 480779888926415007, guid: 678b5b70d9e2c5645bea04b0b3fef64d, type: 3}
       propertyPath: m_Name
       value: Pot03
+      objectReference: {fileID: 0}
+    - target: {fileID: 480779888926415007, guid: 678b5b70d9e2c5645bea04b0b3fef64d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7559700966679956416, guid: 678b5b70d9e2c5645bea04b0b3fef64d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4642,6 +4798,10 @@ PrefabInstance:
     - target: {fileID: 6592830834503183825, guid: 31173cad475c2c54194d392ffd8400d6, type: 3}
       propertyPath: m_Name
       value: Spatula03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6592830834503183825, guid: 31173cad475c2c54194d392ffd8400d6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

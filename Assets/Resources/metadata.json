@@ -1,40 +1,82 @@
 {
   "Items": [
     {
-      "Id": "cog_1",
-      "Name": "Cog",
-      "PrefabName": "cog1",
-      "IconName": "cog1_0000"
-    },
-    {
-      "Id": "heart",
-      "Name": "Heart",
-      "PrefabName": "heart",
-      "IconName": "heart0000"
-    },
-    {
-      "Id": "beer",
-      "Name": "Beer",
-      "PrefabName": "beer",
-      "IconName": "beer0000"
-    },
-    {
-      "Id": "potion_1",
-      "Name": "Potion",
-      "PrefabName": "potion1",
-      "IconName": "bottlePotionHealth0000"
-    },
-    {
       "Id": "apple",
       "Name": "Apple",
       "PrefabName": "Apple",
       "IconName": "icon_apple"
     },
     {
+      "Id": "ball_01",
+      "Name": "Ball 01",
+      "PrefabName": "Ball01",
+      "IconName": "icon_ball_01"
+    },
+    {
+      "Id": "ball_02",
+      "Name": "Ball 02",
+      "PrefabName": "Ball02",
+      "IconName": "icon_ball_02"
+    },
+    {
+      "Id": "ball_03",
+      "Name": "Ball 03",
+      "PrefabName": "Ball03",
+      "IconName": "icon_ball_03"
+    },
+    {
+      "Id": "beauty_bottle_01",
+      "Name": "Beauty Bottle 01",
+      "PrefabName": "BeautyBottle01",
+      "IconName": "icon_beauty_bottle_01"
+    },
+    {
+      "Id": "beauty_bottle_02",
+      "Name": "Beauty Bottle 02",
+      "PrefabName": "BeautyBottle02",
+      "IconName": "icon_beauty_bottle_02"
+    },
+    {
+      "Id": "book_01",
+      "Name": "Book 01",
+      "PrefabName": "Book01",
+      "IconName": "icon_book_01"
+    },
+    {
+      "Id": "book_02",
+      "Name": "Book 02",
+      "PrefabName": "Book02",
+      "IconName": "icon_book_02"
+    },
+    {
       "Id": "bowl",
       "Name": "Bowl",
       "PrefabName": "Bowl",
       "IconName": "icon_bowl"
+    },
+    {
+      "Id": "bread",
+      "Name": "Bread",
+      "PrefabName": "Bread",
+      "IconName": "icon_bread"
+    },
+    {
+      "Id": "brush_01",
+      "Name": "Brush 01",
+      "PrefabName": "Brush01",
+      "IconName": "icon_brush_01"
+    },
+    {
+      "Id": "building_block_01",
+      "Name": "Building Block 01",
+      "PrefabName": "BuildingBlock01",
+      "IconName": "icon_building_block_01"
+    },
+    {
+      "Id": "building_block_02",
+      "Name": "Building Block 02",
+      "PrefabName": "BuildingBlock02",
+      "IconName": "icon_building_block_02"
     },
     {
       "Id": "burger",
@@ -49,10 +91,40 @@
       "IconName": "icon_carrot"
     },
     {
+      "Id": "chair_01",
+      "Name": "Chair 01",
+      "PrefabName": "Chair01",
+      "IconName": "icon_chair_01"
+    },
+    {
+      "Id": "chair_02",
+      "Name": "Chair 02",
+      "PrefabName": "Chair02",
+      "IconName": "icon_chair_02"
+    },
+    {
+      "Id": "chair_03",
+      "Name": "Chair 03",
+      "PrefabName": "Chair03",
+      "IconName": "icon_chair_03"
+    },
+    {
       "Id": "cheese",
       "Name": "Cheese",
       "PrefabName": "Cheese",
       "IconName": "icon_cheese"
+    },
+    {
+      "Id": "chest",
+      "Name": "Chest",
+      "PrefabName": "Chest",
+      "IconName": "icon_chest"
+    },
+    {
+      "Id": "clock",
+      "Name": "Clock",
+      "PrefabName": "Clock",
+      "IconName": "icon_clock"
     },
     {
       "Id": "coffee_cup",
@@ -67,6 +139,24 @@
       "IconName": "icon_cup"
     },
     {
+      "Id": "cup_01",
+      "Name": "Cup 01",
+      "PrefabName": "Cup01",
+      "IconName": "icon_cup_01"
+    },
+    {
+      "Id": "cup_02",
+      "Name": "Cup 02",
+      "PrefabName": "Cup02",
+      "IconName": "icon_cup_02"
+    },
+    {
+      "Id": "cup_03",
+      "Name": "Cup 03",
+      "PrefabName": "Cup03",
+      "IconName": "icon_cup_03"
+    },
+    {
       "Id": "egg",
       "Name": "Egg",
       "PrefabName": "Egg",
@@ -79,10 +169,40 @@
       "IconName": "icon_fries"
     },
     {
+      "Id": "globe",
+      "Name": "Globe",
+      "PrefabName": "Globe",
+      "IconName": "icon_globe"
+    },
+    {
       "Id": "hotdog",
       "Name": "Hotdog",
       "PrefabName": "Hotdog",
       "IconName": "icon_hotdog"
+    },
+    {
+      "Id": "knife_01",
+      "Name": "Knife 01",
+      "PrefabName": "Knife01",
+      "IconName": "icon_knife_01"
+    },
+    {
+      "Id": "lamp_01",
+      "Name": "Lamp 01",
+      "PrefabName": "Lamp01",
+      "IconName": "icon_lamp_01"
+    },
+    {
+      "Id": "lamp_02",
+      "Name": "Lamp 02",
+      "PrefabName": "Lamp02",
+      "IconName": "icon_lamp_02"
+    },
+    {
+      "Id": "letter_cube_01",
+      "Name": "Letter Cube 01",
+      "PrefabName": "LetterCube01",
+      "IconName": "icon_letter_cube_01"
     },
     {
       "Id": "lettuce",
@@ -98,27 +218,81 @@
     },
     {
       "Id": "meatballs_sub",
-      "Name": "MeatballsSub",
+      "Name": "Meatballs Sub",
       "PrefabName": "MeatballsSub",
       "IconName": "icon_meatballs_sub"
     },
     {
       "Id": "milk_carton",
-      "Name": "MilkCarton",
+      "Name": "Milk Carton",
       "PrefabName": "MilkCarton",
       "IconName": "icon_milk_carton"
     },
     {
+      "Id": "mini_stove",
+      "Name": "Mini Stove",
+      "PrefabName": "MiniStove",
+      "IconName": "icon_mini_stove"
+    },
+    {
       "Id": "oil_bottle",
-      "Name": "OilBottle",
+      "Name": "Oil Bottle",
       "PrefabName": "OilBottle",
       "IconName": "icon_oil_bottle"
     },
     {
+      "Id": "oven",
+      "Name": "Oven",
+      "PrefabName": "Oven",
+      "IconName": "icon_oven"
+    },
+    {
+      "Id": "pan_01",
+      "Name": "Pan 01",
+      "PrefabName": "Pan01",
+      "IconName": "icon_pan_01"
+    },
+    {
+      "Id": "pan_02",
+      "Name": "Pan 02",
+      "PrefabName": "Pan02",
+      "IconName": "icon_pan_02"
+    },
+    {
       "Id": "philly_cheese_steaks",
-      "Name": "PhillyCheeseSteaks",
+      "Name": "Philly Cheese Steaks",
       "PrefabName": "PhillyCheeseSteaks",
       "IconName": "icon_philly_cheese_steaks"
+    },
+    {
+      "Id": "pizza_cutter",
+      "Name": "Pizza Cutter",
+      "PrefabName": "PizzaCutter",
+      "IconName": "icon_pizza_cutter"
+    },
+    {
+      "Id": "plant",
+      "Name": "Plant",
+      "PrefabName": "Plant",
+      "IconName": "icon_plant"
+    },
+    {
+      "Id": "pot_01",
+      "Name": "Pot 01",
+      "PrefabName": "Pot01",
+      "IconName": "icon_pot_01"
+    },
+    {
+      "Id": "pot_02",
+      "Name": "Pot 02",
+      "PrefabName": "Pot02",
+      "IconName": "icon_pot_02"
+    },
+    {
+      "Id": "pot_03",
+      "Name": "Pot 03",
+      "PrefabName": "Pot03",
+      "IconName": "icon_pot_03"
     },
     {
       "Id": "potato",
@@ -133,10 +307,58 @@
       "IconName": "icon_pumpkin"
     },
     {
+      "Id": "rolling_pin",
+      "Name": "Rolling Pin",
+      "PrefabName": "RollingPin",
+      "IconName": "icon_rolling_pin"
+    },
+    {
+      "Id": "spatula_01",
+      "Name": "Spatula 01",
+      "PrefabName": "Spatula01",
+      "IconName": "icon_spatula_01"
+    },
+    {
+      "Id": "spatula_02",
+      "Name": "Spatula 02",
+      "PrefabName": "Spatula02",
+      "IconName": "icon_spatula_02"
+    },
+    {
+      "Id": "spatula_03",
+      "Name": "Spatula 03",
+      "PrefabName": "Spatula03",
+      "IconName": "icon_spatula_03"
+    },
+    {
+      "Id": "spatula_04",
+      "Name": "Spatula 04",
+      "PrefabName": "Spatula04",
+      "IconName": "icon_spatula_04"
+    },
+    {
+      "Id": "spoon_01",
+      "Name": "Spoon 01",
+      "PrefabName": "Spoon01",
+      "IconName": "icon_spoon_01"
+    },
+    {
+      "Id": "star",
+      "Name": "Star",
+      "PrefabName": "Star",
+      "IconName": "icon_star"
+    },
+    {
       "Id": "steak",
       "Name": "Steak",
       "PrefabName": "Steak",
       "IconName": "icon_steak"
+    },
+    {
+      "Id": "stool",
+      "Name": "Stool",
+      "PrefabName": "Stool",
+      "IconName": "icon_stool"
     },
     {
       "Id": "taco",
