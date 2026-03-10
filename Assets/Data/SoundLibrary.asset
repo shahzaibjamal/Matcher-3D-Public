@@ -15,16 +15,16 @@ MonoBehaviour:
   sfxList:
   - Name: bg
     Clip: {fileID: 8300000, guid: aa294cfeb8da18348b7c28d8aa96be05, type: 3}
-    Volume: 0.197
+    Volume: 0.5
   - Name: game_bg
     Clip: {fileID: 8300000, guid: ef81660f7436c4d42985bec7f0050c47, type: 3}
-    Volume: 0.081
+    Volume: 0.5
   - Name: shake
     Clip: {fileID: 8300000, guid: 7e26c9daf4c32483b9c2790e662d3f1b, type: 3}
     Volume: 1
   - Name: pick
     Clip: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
-    Volume: 0.144
+    Volume: 1
   - Name: item_complete
     Clip: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
     Volume: 1

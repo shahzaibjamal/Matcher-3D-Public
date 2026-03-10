@@ -61,7 +61,11 @@ public class MenuManager : MonoBehaviour
         // 1. ONE SCREEN ONLY / CLEAN SLATE RULE
         if (newMode == Menus.MenuDisplayMode.ScreenReplace)
         {
-            // Unwind the stack completely until we've removed the previous screen
+
+            if (blockingLayer != null && blockingLayer.TryGetComponent<Button>(out var btn))
+            {
+                btn.interactable = false;
+            }            // Unwind the stack completely until we've removed the previous screen
             // and all popups currently sitting on top of it.
             while (_menuStack.Count > 0)
             {

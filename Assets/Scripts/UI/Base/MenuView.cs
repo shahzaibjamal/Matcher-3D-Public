@@ -20,7 +20,7 @@ public abstract class MenuView : MonoBehaviour, IMenuView
     {
         if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
         // Example: Different animations based on DisplayMode
-        if (DisplayMode == Menus.MenuDisplayMode.Popup)
+        if (DisplayMode == Menus.MenuDisplayMode.Popup || DisplayMode == Menus.MenuDisplayMode.Overlay)
         {
             transform.localScale = Vector3.zero;
             transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);

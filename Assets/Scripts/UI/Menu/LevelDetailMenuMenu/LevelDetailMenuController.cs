@@ -12,7 +12,6 @@ public class LevelDetailMenuController : MenuController<LevelDetailMenuView, Lev
         View.StartButton.onClick.AddListener(OnStartButtonClicked);
         View.LevelText.text = string.Format(LocaleManager.Localize(LocalizationKeys.title_level), Data.LevelData.Number);
         LoadRewards();
-        View.StartButton.interactable = true;
     }
     public override void OnExit()
     {
@@ -53,8 +52,6 @@ public class LevelDetailMenuController : MenuController<LevelDetailMenuView, Lev
     }
     private void OnStartButtonClicked()
     {
-        Debug.LogError("OnStart Button called Level detail");
-        View.StartButton.interactable = false;
         MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
         {
             OnLoadingComplete = OnLoadingComplete

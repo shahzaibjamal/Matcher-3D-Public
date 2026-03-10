@@ -12,7 +12,6 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
         View.BGButton.onClick.AddListener(OnResumeButtonClicked);
         View.HomeButton.onClick.AddListener(OnHomeButtonClicked);
         View.SettingsButton.onClick.AddListener(OnSettingsButtonClicked);
-        View.HomeButton.interactable = true;
 
         UIAnimations.ToonIn(View.canvasGroup, View.Root, null);
     }
@@ -37,7 +36,6 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
 
     private void OnHomeButtonClicked()
     {
-        View.HomeButton.interactable = false;
         UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
         {
             GameEvents.OnGameQuitEvent?.Invoke();

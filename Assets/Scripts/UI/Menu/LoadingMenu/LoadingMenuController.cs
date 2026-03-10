@@ -40,8 +40,6 @@ public class LoadingMenuController : MenuController<LoadingMenuView, LoadingMenu
 
     public override void OnExit()
     {
-
-        Debug.LogError("OnExit called");
         // 1. Kill the Logic Timer (The most dangerous one!)
         // Using DOTween.Kill(target) on the View or Data is a good safety measure
         DOTween.Kill(View.ProgressSlider);
