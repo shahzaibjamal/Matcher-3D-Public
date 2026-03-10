@@ -18,7 +18,6 @@ public abstract class MenuView : MonoBehaviour, IMenuView
     // Logic for animations when the menu opens
     public virtual void OnEnter()
     {
-
         if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
         // Example: Different animations based on DisplayMode
         if (DisplayMode == Menus.MenuDisplayMode.Popup)

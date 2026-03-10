@@ -65,7 +65,6 @@ public class SlotManager
     private void OnItemsCollected()
     {
         _allGoalsReached = true;
-        Debug.LogError("OnItemsCollected received - _allGoalsReached");
     }
 
     public async void OnUndoRequest(bool _)
@@ -184,6 +183,7 @@ public class SlotManager
     {
         Debug.LogError($"[GAME OVER] {reason}");
         GameEvents.OnGameOverEvent?.Invoke(win); // Fire an event to show UI
+        GameEvents.OnSlotsFillableEvent?.Invoke(false);
     }
     private async Task ResolveAllMatches()
     {

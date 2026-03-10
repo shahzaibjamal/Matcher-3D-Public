@@ -10,16 +10,18 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
         SetState(new RewardMenuBaseState_Main(this));
         Setup(Data.RewardData);
         View.FullscreenButton.onClick.AddListener(OnClickClaim);
+        View.FullscreenButton.interactable = true;
+
 
     }
     public override void OnExit()
     {
-        View.RewardContainer.DOKill();
         View.FullscreenButton.onClick.RemoveListener(OnClickClaim);
         _sequence?.Kill();
         View.RewardContainer.DOKill();
         View.GodRaysTransform.DOKill();
         View.AmountText.transform.DOKill();
+        View.canvasGroup.transform.DOKill();
         base.OnExit();
         Data.Callback?.Invoke();
     }
@@ -99,6 +101,7 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
     }
     public void OnClickClaim() // Linked to a full-screen button
     {
+        View.FullscreenButton.interactable = false;
         // Exit Animation
         View.RewardContainer.DOScale(0, 0.3f).SetEase(Ease.InBack);
         View.canvasGroup.DOFade(0, 0.3f).OnComplete(() =>

@@ -4,379 +4,442 @@
       "Id": "apple",
       "Name": "Apple",
       "PrefabName": "Apple",
-      "IconName": "icon_apple"
+      "IconName": "icon_apple",
+      "Size": 2
     },
     {
       "Id": "ball_01",
       "Name": "Ball 01",
       "PrefabName": "Ball01",
-      "IconName": "icon_ball_01"
+      "IconName": "icon_ball_01",
+      "Size": 1
     },
     {
       "Id": "ball_02",
       "Name": "Ball 02",
       "PrefabName": "Ball02",
-      "IconName": "icon_ball_02"
+      "IconName": "icon_ball_02",
+      "Size": 1
     },
     {
       "Id": "ball_03",
       "Name": "Ball 03",
       "PrefabName": "Ball03",
-      "IconName": "icon_ball_03"
+      "IconName": "icon_ball_03",
+      "Size": 2
     },
     {
       "Id": "beauty_bottle_01",
       "Name": "Beauty Bottle 01",
       "PrefabName": "BeautyBottle01",
-      "IconName": "icon_beauty_bottle_01"
+      "IconName": "icon_beauty_bottle_01",
+      "Size": 2
     },
     {
       "Id": "beauty_bottle_02",
       "Name": "Beauty Bottle 02",
       "PrefabName": "BeautyBottle02",
-      "IconName": "icon_beauty_bottle_02"
+      "IconName": "icon_beauty_bottle_02",
+      "Size": 2
     },
     {
       "Id": "book_01",
       "Name": "Book 01",
       "PrefabName": "Book01",
-      "IconName": "icon_book_01"
+      "IconName": "icon_book_01",
+      "Size": 2
     },
     {
       "Id": "book_02",
       "Name": "Book 02",
       "PrefabName": "Book02",
-      "IconName": "icon_book_02"
+      "IconName": "icon_book_02",
+      "Size": 2
     },
     {
       "Id": "bowl",
       "Name": "Bowl",
       "PrefabName": "Bowl",
-      "IconName": "icon_bowl"
+      "IconName": "icon_bowl",
+      "Size": 3
     },
     {
       "Id": "bread",
       "Name": "Bread",
       "PrefabName": "Bread",
-      "IconName": "icon_bread"
+      "IconName": "icon_bread",
+      "Size": 2
     },
     {
       "Id": "brush_01",
       "Name": "Brush 01",
       "PrefabName": "Brush01",
-      "IconName": "icon_brush_01"
+      "IconName": "icon_brush_01",
+      "Size": 3
     },
     {
       "Id": "building_block_01",
       "Name": "Building Block 01",
       "PrefabName": "BuildingBlock01",
-      "IconName": "icon_building_block_01"
+      "IconName": "icon_building_block_01",
+      "Size": 3
     },
     {
       "Id": "building_block_02",
       "Name": "Building Block 02",
       "PrefabName": "BuildingBlock02",
-      "IconName": "icon_building_block_02"
+      "IconName": "icon_building_block_02",
+      "Size": 2
     },
     {
       "Id": "burger",
       "Name": "Burger",
       "PrefabName": "Burger",
-      "IconName": "icon_burger"
+      "IconName": "icon_burger",
+      "Size": 2
     },
     {
       "Id": "carrot",
       "Name": "Carrot",
       "PrefabName": "Carrot",
-      "IconName": "icon_carrot"
+      "IconName": "icon_carrot",
+      "Size": 3
     },
     {
       "Id": "chair_01",
       "Name": "Chair 01",
       "PrefabName": "Chair01",
-      "IconName": "icon_chair_01"
+      "IconName": "icon_chair_01",
+      "Size": 1
     },
     {
       "Id": "chair_02",
       "Name": "Chair 02",
       "PrefabName": "Chair02",
-      "IconName": "icon_chair_02"
+      "IconName": "icon_chair_02",
+      "Size": 1
     },
     {
       "Id": "chair_03",
       "Name": "Chair 03",
       "PrefabName": "Chair03",
-      "IconName": "icon_chair_03"
+      "IconName": "icon_chair_03",
+      "Size": 1
     },
     {
       "Id": "cheese",
       "Name": "Cheese",
       "PrefabName": "Cheese",
-      "IconName": "icon_cheese"
+      "IconName": "icon_cheese",
+      "Size": 3
     },
     {
       "Id": "chest",
       "Name": "Chest",
       "PrefabName": "Chest",
-      "IconName": "icon_chest"
+      "IconName": "icon_chest",
+      "Size": 1
     },
     {
       "Id": "clock",
       "Name": "Clock",
       "PrefabName": "Clock",
-      "IconName": "icon_clock"
+      "IconName": "icon_clock",
+      "Size": 2
     },
     {
       "Id": "coffee_cup",
       "Name": "Coffee Cup",
       "PrefabName": "CoffeeCup",
-      "IconName": "icon_coffee_cup"
+      "IconName": "icon_coffee_cup",
+      "Size": 2
     },
     {
       "Id": "cup",
       "Name": "Cup",
       "PrefabName": "Cup",
-      "IconName": "icon_cup"
+      "IconName": "icon_cup",
+      "Size": 2
     },
     {
       "Id": "cup_01",
       "Name": "Cup 01",
       "PrefabName": "Cup01",
-      "IconName": "icon_cup_01"
+      "IconName": "icon_cup_01",
+      "Size": 2
     },
     {
       "Id": "cup_02",
       "Name": "Cup 02",
       "PrefabName": "Cup02",
-      "IconName": "icon_cup_02"
+      "IconName": "icon_cup_02",
+      "Size": 2
     },
     {
       "Id": "cup_03",
       "Name": "Cup 03",
       "PrefabName": "Cup03",
-      "IconName": "icon_cup_03"
+      "IconName": "icon_cup_03",
+      "Size": 2
     },
     {
       "Id": "egg",
       "Name": "Egg",
       "PrefabName": "Egg",
-      "IconName": "icon_egg"
+      "IconName": "icon_egg",
+      "Size": 3
     },
     {
       "Id": "fries",
       "Name": "Fries",
       "PrefabName": "Fries",
-      "IconName": "icon_fries"
+      "IconName": "icon_fries",
+      "Size": 2
     },
     {
       "Id": "globe",
       "Name": "Globe",
       "PrefabName": "Globe",
-      "IconName": "icon_globe"
+      "IconName": "icon_globe",
+      "Size": 2
     },
     {
       "Id": "hotdog",
       "Name": "Hotdog",
       "PrefabName": "Hotdog",
-      "IconName": "icon_hotdog"
+      "IconName": "icon_hotdog",
+      "Size": 2
     },
     {
       "Id": "knife_01",
       "Name": "Knife 01",
       "PrefabName": "Knife01",
-      "IconName": "icon_knife_01"
+      "IconName": "icon_knife_01",
+      "Size": 3
     },
     {
       "Id": "lamp_01",
       "Name": "Lamp 01",
       "PrefabName": "Lamp01",
-      "IconName": "icon_lamp_01"
+      "IconName": "icon_lamp_01",
+      "Size": 1
     },
     {
       "Id": "lamp_02",
       "Name": "Lamp 02",
       "PrefabName": "Lamp02",
-      "IconName": "icon_lamp_02"
+      "IconName": "icon_lamp_02",
+      "Size": 1
     },
     {
       "Id": "letter_cube_01",
       "Name": "Letter Cube 01",
       "PrefabName": "LetterCube01",
-      "IconName": "icon_letter_cube_01"
+      "IconName": "icon_letter_cube_01",
+      "Size": 1
     },
     {
       "Id": "lettuce",
       "Name": "Lettuce",
       "PrefabName": "Lettuce",
-      "IconName": "icon_lettuce"
+      "IconName": "icon_lettuce",
+      "Size": 2
     },
     {
       "Id": "meat",
       "Name": "Meat",
       "PrefabName": "Meat",
-      "IconName": "icon_meat"
+      "IconName": "icon_meat",
+      "Size": 2
     },
     {
       "Id": "meatballs_sub",
       "Name": "Meatballs Sub",
       "PrefabName": "MeatballsSub",
-      "IconName": "icon_meatballs_sub"
+      "IconName": "icon_meatballs_sub",
+      "Size": 2
     },
     {
       "Id": "milk_carton",
       "Name": "Milk Carton",
       "PrefabName": "MilkCarton",
-      "IconName": "icon_milk_carton"
+      "IconName": "icon_milk_carton",
+      "Size": 1
     },
     {
       "Id": "mini_stove",
       "Name": "Mini Stove",
       "PrefabName": "MiniStove",
-      "IconName": "icon_mini_stove"
+      "IconName": "icon_mini_stove",
+      "Size": 1
     },
     {
       "Id": "oil_bottle",
       "Name": "Oil Bottle",
       "PrefabName": "OilBottle",
-      "IconName": "icon_oil_bottle"
+      "IconName": "icon_oil_bottle",
+      "Size": 2
     },
     {
       "Id": "oven",
       "Name": "Oven",
       "PrefabName": "Oven",
-      "IconName": "icon_oven"
+      "IconName": "icon_oven",
+      "Size": 1
     },
     {
       "Id": "pan_01",
       "Name": "Pan 01",
       "PrefabName": "Pan01",
-      "IconName": "icon_pan_01"
+      "IconName": "icon_pan_01",
+      "Size": 2
     },
     {
       "Id": "pan_02",
       "Name": "Pan 02",
       "PrefabName": "Pan02",
-      "IconName": "icon_pan_02"
+      "IconName": "icon_pan_02",
+      "Size": 2
     },
     {
       "Id": "philly_cheese_steaks",
       "Name": "Philly Cheese Steaks",
       "PrefabName": "PhillyCheeseSteaks",
-      "IconName": "icon_philly_cheese_steaks"
+      "IconName": "icon_philly_cheese_steaks",
+      "Size": 2
     },
     {
       "Id": "pizza_cutter",
       "Name": "Pizza Cutter",
       "PrefabName": "PizzaCutter",
-      "IconName": "icon_pizza_cutter"
+      "IconName": "icon_pizza_cutter",
+      "Size": 3
     },
     {
       "Id": "plant",
       "Name": "Plant",
       "PrefabName": "Plant",
-      "IconName": "icon_plant"
+      "IconName": "icon_plant",
+      "Size": 2
     },
     {
       "Id": "pot_01",
       "Name": "Pot 01",
       "PrefabName": "Pot01",
-      "IconName": "icon_pot_01"
+      "IconName": "icon_pot_01",
+      "Size": 2
     },
     {
       "Id": "pot_02",
       "Name": "Pot 02",
       "PrefabName": "Pot02",
-      "IconName": "icon_pot_02"
+      "IconName": "icon_pot_02",
+      "Size": 2
     },
     {
       "Id": "pot_03",
       "Name": "Pot 03",
       "PrefabName": "Pot03",
-      "IconName": "icon_pot_03"
+      "IconName": "icon_pot_03",
+      "Size": 2
     },
     {
       "Id": "potato",
       "Name": "Potato",
       "PrefabName": "Potato",
-      "IconName": "icon_potato"
+      "IconName": "icon_potato",
+      "Size": 3
     },
     {
       "Id": "pumpkin",
       "Name": "Pumpkin",
       "PrefabName": "Pumpkin",
-      "IconName": "icon_pumpkin"
+      "IconName": "icon_pumpkin",
+      "Size": 1
     },
     {
       "Id": "rolling_pin",
       "Name": "Rolling Pin",
       "PrefabName": "RollingPin",
-      "IconName": "icon_rolling_pin"
+      "IconName": "icon_rolling_pin",
+      "Size": 2
     },
     {
       "Id": "spatula_01",
       "Name": "Spatula 01",
       "PrefabName": "Spatula01",
-      "IconName": "icon_spatula_01"
+      "IconName": "icon_spatula_01",
+      "Size": 3
     },
     {
       "Id": "spatula_02",
       "Name": "Spatula 02",
       "PrefabName": "Spatula02",
-      "IconName": "icon_spatula_02"
+      "IconName": "icon_spatula_02",
+      "Size": 3
     },
     {
       "Id": "spatula_03",
       "Name": "Spatula 03",
       "PrefabName": "Spatula03",
-      "IconName": "icon_spatula_03"
+      "IconName": "icon_spatula_03",
+      "Size": 3
     },
     {
       "Id": "spatula_04",
       "Name": "Spatula 04",
       "PrefabName": "Spatula04",
-      "IconName": "icon_spatula_04"
+      "IconName": "icon_spatula_04",
+      "Size": 3
     },
     {
       "Id": "spoon_01",
       "Name": "Spoon 01",
       "PrefabName": "Spoon01",
-      "IconName": "icon_spoon_01"
+      "IconName": "icon_spoon_01",
+      "Size": 3
     },
     {
       "Id": "star",
       "Name": "Star",
       "PrefabName": "Star",
-      "IconName": "icon_star"
+      "IconName": "icon_star",
+      "Size": 2
     },
     {
       "Id": "steak",
       "Name": "Steak",
       "PrefabName": "Steak",
-      "IconName": "icon_steak"
+      "IconName": "icon_steak",
+      "Size": 2
     },
     {
       "Id": "stool",
       "Name": "Stool",
       "PrefabName": "Stool",
-      "IconName": "icon_stool"
+      "IconName": "icon_stool",
+      "Size": 1
     },
     {
       "Id": "taco",
       "Name": "Taco",
       "PrefabName": "Taco",
-      "IconName": "icon_taco"
+      "IconName": "icon_taco",
+      "Size": 2
     },
     {
       "Id": "tomato",
       "Name": "Tomato",
       "PrefabName": "Tomato",
-      "IconName": "icon_tomato"
+      "IconName": "icon_tomato",
+      "Size": 2
     },
     {
       "Id": "turnip",
       "Name": "Turnip",
       "PrefabName": "Turnip",
-      "IconName": "icon_turnip"
+      "IconName": "icon_turnip",
+      "Size": 2
     }
   ],
   "Levels": [
@@ -386,30 +449,25 @@
       "Name": "Level 01",
       "ItemsToSpawn": [
         {
-          "Id": "apple",
+          "Id": "oil_bottle",
           "Count": 3
         },
         {
-          "Id": "bowl",
-          "Count": 3
-        },
-        {
-          "Id": "burger",
+          "Id": "egg",
           "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "apple",
-        "burger"
+        "oil_bottle"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
+          "Amount": 65
         },
         {
-          "RewardType": "Hint",
-          "Amount": 1
+          "RewardType": "Undo",
+          "Amount": 5
         }
       ]
     },
@@ -419,30 +477,25 @@
       "Name": "Level 02",
       "ItemsToSpawn": [
         {
-          "Id": "meat",
+          "Id": "chair_02",
           "Count": 3
         },
         {
-          "Id": "oil_bottle",
-          "Count": 6
-        },
-        {
-          "Id": "milk_carton",
-          "Count": 6
+          "Id": "stool",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "meat",
-        "milk_carton"
+        "stool"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
+          "Amount": 71
         },
         {
-          "RewardType": "Shake",
-          "Amount": 1
+          "RewardType": "Hint",
+          "Amount": 3
         }
       ]
     },
@@ -452,34 +505,29 @@
       "Name": "Level 03",
       "ItemsToSpawn": [
         {
-          "Id": "cup",
-          "Count": 9
-        },
-        {
-          "Id": "egg",
-          "Count": 9
-        },
-        {
-          "Id": "fries",
+          "Id": "taco",
           "Count": 3
         },
         {
-          "Id": "potato",
-          "Count": 6
+          "Id": "pan_01",
+          "Count": 3
+        },
+        {
+          "Id": "star",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cup",
-        "egg"
+        "star"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
+          "Amount": 75
         },
         {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "RewardType": "Shake",
+          "Amount": 2
         }
       ]
     },
@@ -489,33 +537,28 @@
       "Name": "Level 04",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "stool",
           "Count": 3
         },
         {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
+          "Id": "cup_03",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "tomato",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "stool"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
+          "Amount": 80
         },
         {
-          "RewardType": "Undo",
+          "RewardType": "Magnet",
           "Amount": 1
         }
       ]
@@ -526,30 +569,26 @@
       "Name": "Level 05",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "spatula_04",
           "Count": 3
         },
         {
-          "Id": "heart",
-          "Count": 9
+          "Id": "spatula_03",
+          "Count": 6
         },
         {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
+          "Id": "cheese",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "cheese",
+        "spatula_04"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
+          "Amount": 83
         },
         {
           "RewardType": "Magnet",
@@ -563,34 +602,26 @@
       "Name": "Level 06",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
+          "Id": "burger",
+          "Count": 6
         },
         {
-          "Id": "heart",
+          "Id": "cheese",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "rolling_pin",
           "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "burger",
+        "rolling_pin"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 86
         }
       ]
     },
@@ -600,34 +631,30 @@
       "Name": "Level 07",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "mini_stove",
+          "Count": 6
+        },
+        {
+          "Id": "apple",
           "Count": 3
         },
         {
-          "Id": "heart",
-          "Count": 9
+          "Id": "steak",
+          "Count": 6
         },
         {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
+          "Id": "spatula_01",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "steak",
+        "apple"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 89
         }
       ]
     },
@@ -637,34 +664,30 @@
       "Name": "Level 08",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "spatula_03",
           "Count": 3
         },
         {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
+          "Id": "hotdog",
           "Count": 6
+        },
+        {
+          "Id": "pot_03",
+          "Count": 3
+        },
+        {
+          "Id": "oil_bottle",
+          "Count": 9
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "oil_bottle",
+        "pot_03"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 92
         }
       ]
     },
@@ -674,34 +697,30 @@
       "Name": "Level 09",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "book_02",
           "Count": 3
         },
         {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
+          "Id": "meat",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "brush_01",
           "Count": 6
+        },
+        {
+          "Id": "pan_01",
+          "Count": 12
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "meat",
+        "pan_01"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 95
         }
       ]
     },
@@ -711,34 +730,38 @@
       "Name": "Level 10",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "letter_cube_01",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "oven",
+          "Count": 6
+        },
+        {
+          "Id": "bread",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "taco",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "knife_01",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "oven",
+        "letter_cube_01"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
+          "Amount": 97
         },
         {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "RewardType": "Undo",
+          "Amount": 4
         }
       ]
     },
@@ -748,34 +771,34 @@
       "Name": "Level 11",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
+          "Id": "milk_carton",
           "Count": 6
+        },
+        {
+          "Id": "star",
+          "Count": 6
+        },
+        {
+          "Id": "chest",
+          "Count": 3
+        },
+        {
+          "Id": "tomato",
+          "Count": 6
+        },
+        {
+          "Id": "beauty_bottle_01",
+          "Count": 9
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "milk_carton",
+        "tomato"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 99
         }
       ]
     },
@@ -785,34 +808,35 @@
       "Name": "Level 12",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
+          "Id": "steak",
           "Count": 9
         },
         {
-          "Id": "potion_1",
-          "Count": 3
+          "Id": "spatula_03",
+          "Count": 6
         },
         {
-          "Id": "beer",
+          "Id": "pan_02",
+          "Count": 6
+        },
+        {
+          "Id": "spoon_01",
+          "Count": 6
+        },
+        {
+          "Id": "cup_03",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "cup_03",
+        "pan_02",
+        "spatula_03"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 101
         }
       ]
     },
@@ -822,34 +846,39 @@
       "Name": "Level 13",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "carrot",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "spoon_01",
+          "Count": 3
+        },
+        {
+          "Id": "letter_cube_01",
           "Count": 9
         },
         {
-          "Id": "potion_1",
-          "Count": 3
+          "Id": "lamp_01",
+          "Count": 6
         },
         {
-          "Id": "beer",
+          "Id": "steak",
           "Count": 6
+        },
+        {
+          "Id": "ball_03",
+          "Count": 9
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "ball_03",
+        "steak",
+        "letter_cube_01"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 104
         }
       ]
     },
@@ -859,34 +888,39 @@
       "Name": "Level 14",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
+          "Id": "fries",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "meatballs_sub",
           "Count": 3
         },
         {
-          "Id": "beer",
-          "Count": 6
+          "Id": "beauty_bottle_01",
+          "Count": 9
+        },
+        {
+          "Id": "bowl",
+          "Count": 3
+        },
+        {
+          "Id": "cup_02",
+          "Count": 9
+        },
+        {
+          "Id": "tomato",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "tomato",
+        "meatballs_sub",
+        "cup_02"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 106
         }
       ]
     },
@@ -896,33 +930,42 @@
       "Name": "Level 15",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "lettuce",
+          "Count": 12
+        },
+        {
+          "Id": "meat",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "pan_01",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "cup_01",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "rolling_pin",
+          "Count": 6
+        },
+        {
+          "Id": "ball_03",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "cup_01",
+        "pan_01",
+        "meat"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
+          "Amount": 108
         },
         {
-          "RewardType": "Magnet",
+          "RewardType": "Hint",
           "Amount": 1
         }
       ]
@@ -933,34 +976,39 @@
       "Name": "Level 16",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "burger",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "spatula_02",
+          "Count": 12
+        },
+        {
+          "Id": "lettuce",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "meatballs_sub",
+          "Count": 6
+        },
+        {
+          "Id": "cup_01",
           "Count": 3
         },
         {
-          "Id": "beer",
-          "Count": 6
+          "Id": "potato",
+          "Count": 9
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "meatballs_sub",
+        "cup_01",
+        "potato"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 110
         }
       ]
     },
@@ -970,34 +1018,43 @@
       "Name": "Level 17",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
+          "Id": "pot_02",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "knife_01",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "chair_01",
           "Count": 6
+        },
+        {
+          "Id": "tomato",
+          "Count": 6
+        },
+        {
+          "Id": "clock",
+          "Count": 6
+        },
+        {
+          "Id": "beauty_bottle_01",
+          "Count": 12
+        },
+        {
+          "Id": "cup_03",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "clock",
+        "knife_01",
+        "tomato"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 111
         }
       ]
     },
@@ -1007,34 +1064,44 @@
       "Name": "Level 18",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
+          "Id": "knife_01",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "carrot",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "chair_01",
+          "Count": 9
+        },
+        {
+          "Id": "pot_01",
+          "Count": 9
+        },
+        {
+          "Id": "building_block_01",
+          "Count": 9
+        },
+        {
+          "Id": "chair_03",
+          "Count": 3
+        },
+        {
+          "Id": "pot_02",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "carrot",
+        "chair_01",
+        "pot_01",
+        "knife_01"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 113
         }
       ]
     },
@@ -1044,34 +1111,44 @@
       "Name": "Level 19",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
+          "Id": "bowl",
           "Count": 6
+        },
+        {
+          "Id": "apple",
+          "Count": 6
+        },
+        {
+          "Id": "book_01",
+          "Count": 12
+        },
+        {
+          "Id": "brush_01",
+          "Count": 3
+        },
+        {
+          "Id": "chair_01",
+          "Count": 6
+        },
+        {
+          "Id": "pan_02",
+          "Count": 12
+        },
+        {
+          "Id": "coffee_cup",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "pan_02",
+        "apple",
+        "coffee_cup",
+        "bowl"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 115
         }
       ]
     },
@@ -1081,34 +1158,52 @@
       "Name": "Level 20",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
+          "Id": "building_block_02",
+          "Count": 6
         },
         {
-          "Id": "heart",
+          "Id": "spatula_01",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "oil_bottle",
+          "Count": 6
+        },
+        {
+          "Id": "beauty_bottle_02",
+          "Count": 6
+        },
+        {
+          "Id": "plant",
+          "Count": 6
+        },
+        {
+          "Id": "milk_carton",
+          "Count": 6
+        },
+        {
+          "Id": "star",
           "Count": 3
         },
         {
-          "Id": "beer",
-          "Count": 6
+          "Id": "brush_01",
+          "Count": 9
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "beauty_bottle_02",
+        "brush_01",
+        "building_block_02",
+        "oil_bottle"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
+          "Amount": 117
         },
         {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "RewardType": "Undo",
+          "Amount": 3
         }
       ]
     },
@@ -1118,34 +1213,48 @@
       "Name": "Level 21",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
+          "Id": "building_block_01",
           "Count": 6
+        },
+        {
+          "Id": "spatula_04",
+          "Count": 3
+        },
+        {
+          "Id": "meatballs_sub",
+          "Count": 3
+        },
+        {
+          "Id": "ball_01",
+          "Count": 6
+        },
+        {
+          "Id": "chair_03",
+          "Count": 6
+        },
+        {
+          "Id": "steak",
+          "Count": 15
+        },
+        {
+          "Id": "chair_01",
+          "Count": 12
+        },
+        {
+          "Id": "pan_01",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "chair_01",
+        "building_block_01",
+        "steak",
+        "spatula_04"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 118
         }
       ]
     },
@@ -1155,34 +1264,48 @@
       "Name": "Level 22",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "globe",
+          "Count": 6
+        },
+        {
+          "Id": "chair_02",
+          "Count": 12
+        },
+        {
+          "Id": "bowl",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "cup_02",
           "Count": 9
         },
         {
-          "Id": "potion_1",
-          "Count": 3
+          "Id": "carrot",
+          "Count": 6
         },
         {
-          "Id": "beer",
+          "Id": "mini_stove",
           "Count": 6
+        },
+        {
+          "Id": "spatula_03",
+          "Count": 12
+        },
+        {
+          "Id": "beauty_bottle_02",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "spatula_03",
+        "globe",
+        "bowl",
+        "carrot"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 120
         }
       ]
     },
@@ -1192,34 +1315,48 @@
       "Name": "Level 23",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "apple",
+          "Count": 12
+        },
+        {
+          "Id": "milk_carton",
+          "Count": 6
+        },
+        {
+          "Id": "bread",
+          "Count": 6
+        },
+        {
+          "Id": "ball_01",
+          "Count": 12
+        },
+        {
+          "Id": "letter_cube_01",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "carrot",
           "Count": 9
         },
         {
-          "Id": "potion_1",
-          "Count": 3
+          "Id": "oil_bottle",
+          "Count": 9
         },
         {
-          "Id": "beer",
-          "Count": 6
+          "Id": "plant",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "letter_cube_01",
+        "ball_01",
+        "milk_carton",
+        "plant"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 121
         }
       ]
     },
@@ -1229,34 +1366,52 @@
       "Name": "Level 24",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "cup_02",
+          "Count": 6
+        },
+        {
+          "Id": "lamp_01",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "potato",
           "Count": 9
         },
         {
-          "Id": "potion_1",
-          "Count": 3
+          "Id": "pizza_cutter",
+          "Count": 12
         },
         {
-          "Id": "beer",
+          "Id": "cheese",
+          "Count": 6
+        },
+        {
+          "Id": "egg",
+          "Count": 6
+        },
+        {
+          "Id": "letter_cube_01",
+          "Count": 6
+        },
+        {
+          "Id": "pot_01",
+          "Count": 9
+        },
+        {
+          "Id": "philly_cheese_steaks",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "cup_02",
+        "philly_cheese_steaks",
+        "potato",
+        "pot_01"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 123
         }
       ]
     },
@@ -1266,33 +1421,56 @@
       "Name": "Level 25",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "chair_01",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "egg",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "star",
+          "Count": 9
+        },
+        {
+          "Id": "building_block_01",
+          "Count": 6
+        },
+        {
+          "Id": "potato",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "philly_cheese_steaks",
+          "Count": 15
+        },
+        {
+          "Id": "stool",
+          "Count": 9
+        },
+        {
+          "Id": "brush_01",
+          "Count": 3
+        },
+        {
+          "Id": "cup",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "brush_01",
+        "chair_01",
+        "potato",
+        "philly_cheese_steaks",
+        "stool"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
+          "Amount": 125
         },
         {
-          "RewardType": "Magnet",
+          "RewardType": "Hint",
           "Amount": 1
         }
       ]
@@ -1303,34 +1481,53 @@
       "Name": "Level 26",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "knife_01",
+          "Count": 6
+        },
+        {
+          "Id": "pot_02",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "ball_01",
+          "Count": 6
+        },
+        {
+          "Id": "bread",
+          "Count": 6
+        },
+        {
+          "Id": "chair_03",
+          "Count": 15
+        },
+        {
+          "Id": "building_block_01",
           "Count": 9
         },
         {
-          "Id": "potion_1",
-          "Count": 3
+          "Id": "pumpkin",
+          "Count": 9
         },
         {
-          "Id": "beer",
-          "Count": 6
+          "Id": "letter_cube_01",
+          "Count": 9
+        },
+        {
+          "Id": "turnip",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "bread",
+        "pumpkin",
+        "knife_01",
+        "building_block_01",
+        "ball_01"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 126
         }
       ]
     },
@@ -1340,34 +1537,57 @@
       "Name": "Level 27",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "philly_cheese_steaks",
+          "Count": 15
+        },
+        {
+          "Id": "fries",
+          "Count": 6
+        },
+        {
+          "Id": "potato",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "stool",
+          "Count": 6
+        },
+        {
+          "Id": "ball_02",
+          "Count": 3
+        },
+        {
+          "Id": "pot_01",
+          "Count": 6
+        },
+        {
+          "Id": "plant",
           "Count": 9
         },
         {
-          "Id": "potion_1",
-          "Count": 3
+          "Id": "cup_02",
+          "Count": 6
         },
         {
-          "Id": "beer",
+          "Id": "pizza_cutter",
+          "Count": 9
+        },
+        {
+          "Id": "burger",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "fries",
+        "stool",
+        "philly_cheese_steaks",
+        "potato",
+        "pizza_cutter"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 127
         }
       ]
     },
@@ -1377,34 +1597,57 @@
       "Name": "Level 28",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
+          "Id": "hotdog",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "plant",
+          "Count": 6
+        },
+        {
+          "Id": "beauty_bottle_02",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "spatula_02",
+          "Count": 18
+        },
+        {
+          "Id": "tomato",
+          "Count": 3
+        },
+        {
+          "Id": "apple",
+          "Count": 9
+        },
+        {
+          "Id": "cup_03",
+          "Count": 12
+        },
+        {
+          "Id": "philly_cheese_steaks",
+          "Count": 3
+        },
+        {
+          "Id": "chair_02",
           "Count": 6
+        },
+        {
+          "Id": "clock",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "plant",
+        "apple",
+        "chair_02",
+        "spatula_02",
+        "beauty_bottle_02"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 129
         }
       ]
     },
@@ -1414,34 +1657,57 @@
       "Name": "Level 29",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
+          "Id": "spatula_02",
+          "Count": 12
         },
         {
-          "Id": "heart",
+          "Id": "philly_cheese_steaks",
+          "Count": 12
+        },
+        {
+          "Id": "book_01",
+          "Count": 6
+        },
+        {
+          "Id": "chair_01",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "book_02",
+          "Count": 9
+        },
+        {
+          "Id": "egg",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "cup_03",
+          "Count": 3
+        },
+        {
+          "Id": "pot_01",
+          "Count": 3
+        },
+        {
+          "Id": "clock",
+          "Count": 12
+        },
+        {
+          "Id": "spatula_04",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "spatula_02",
+        "cup_03",
+        "book_02",
+        "spatula_04",
+        "pot_01"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 130
         }
       ]
     },
@@ -1451,34 +1717,65 @@
       "Name": "Level 30",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "taco",
+          "Count": 6
+        },
+        {
+          "Id": "globe",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "burger",
+          "Count": 12
+        },
+        {
+          "Id": "bowl",
+          "Count": 6
+        },
+        {
+          "Id": "building_block_02",
           "Count": 9
         },
         {
-          "Id": "potion_1",
-          "Count": 3
+          "Id": "cup_01",
+          "Count": 6
         },
         {
-          "Id": "beer",
+          "Id": "oven",
+          "Count": 9
+        },
+        {
+          "Id": "coffee_cup",
+          "Count": 9
+        },
+        {
+          "Id": "pan_01",
+          "Count": 9
+        },
+        {
+          "Id": "pot_01",
           "Count": 6
+        },
+        {
+          "Id": "spatula_03",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "building_block_02",
+        "coffee_cup",
+        "pan_01",
+        "bowl",
+        "taco"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
+          "Amount": 132
         },
         {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "RewardType": "Hint",
+          "Amount": 3
         }
       ]
     },
@@ -1488,34 +1785,61 @@
       "Name": "Level 31",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
+          "Id": "coffee_cup",
+          "Count": 6
         },
         {
-          "Id": "heart",
+          "Id": "fries",
+          "Count": 6
+        },
+        {
+          "Id": "lettuce",
+          "Count": 12
+        },
+        {
+          "Id": "meat",
+          "Count": 6
+        },
+        {
+          "Id": "pumpkin",
+          "Count": 6
+        },
+        {
+          "Id": "star",
           "Count": 9
         },
         {
-          "Id": "potion_1",
-          "Count": 3
+          "Id": "spoon_01",
+          "Count": 6
         },
         {
-          "Id": "beer",
+          "Id": "pizza_cutter",
           "Count": 6
+        },
+        {
+          "Id": "bowl",
+          "Count": 12
+        },
+        {
+          "Id": "pan_01",
+          "Count": 6
+        },
+        {
+          "Id": "bread",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "star",
+        "bread",
+        "lettuce",
+        "meat",
+        "fries"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 133
         }
       ]
     },
@@ -1525,34 +1849,62 @@
       "Name": "Level 32",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
+          "Id": "building_block_01",
+          "Count": 12
+        },
+        {
+          "Id": "bowl",
           "Count": 3
         },
         {
-          "Id": "heart",
+          "Id": "carrot",
+          "Count": 3
+        },
+        {
+          "Id": "clock",
+          "Count": 3
+        },
+        {
+          "Id": "book_02",
+          "Count": 15
+        },
+        {
+          "Id": "oven",
+          "Count": 6
+        },
+        {
+          "Id": "spatula_03",
+          "Count": 6
+        },
+        {
+          "Id": "pot_02",
           "Count": 9
         },
         {
-          "Id": "potion_1",
-          "Count": 3
+          "Id": "fries",
+          "Count": 9
         },
         {
-          "Id": "beer",
-          "Count": 6
+          "Id": "brush_01",
+          "Count": 12
+        },
+        {
+          "Id": "spatula_02",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "fries",
+        "spatula_03",
+        "spatula_02",
+        "building_block_01",
+        "book_02",
+        "pot_02"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 134
         }
       ]
     },
@@ -1562,34 +1914,62 @@
       "Name": "Level 33",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
+          "Id": "building_block_02",
+          "Count": 6
         },
         {
-          "Id": "heart",
+          "Id": "globe",
+          "Count": 6
+        },
+        {
+          "Id": "egg",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "book_01",
+          "Count": 6
+        },
+        {
+          "Id": "meatballs_sub",
+          "Count": 12
+        },
+        {
+          "Id": "beauty_bottle_01",
+          "Count": 12
+        },
+        {
+          "Id": "building_block_01",
+          "Count": 6
+        },
+        {
+          "Id": "stool",
+          "Count": 9
+        },
+        {
+          "Id": "chair_03",
           "Count": 3
         },
         {
-          "Id": "beer",
-          "Count": 6
+          "Id": "pan_02",
+          "Count": 12
+        },
+        {
+          "Id": "bowl",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "globe",
+        "building_block_02",
+        "stool",
+        "chair_03",
+        "pan_02",
+        "meatballs_sub"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 136
         }
       ]
     },
@@ -1599,34 +1979,66 @@
       "Name": "Level 34",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
+          "Id": "meatballs_sub",
+          "Count": 6
         },
         {
-          "Id": "heart",
+          "Id": "tomato",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "milk_carton",
+          "Count": 12
+        },
+        {
+          "Id": "chair_03",
+          "Count": 6
+        },
+        {
+          "Id": "brush_01",
+          "Count": 15
+        },
+        {
+          "Id": "star",
+          "Count": 9
+        },
+        {
+          "Id": "burger",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "cup_01",
+          "Count": 3
+        },
+        {
+          "Id": "pot_03",
+          "Count": 6
+        },
+        {
+          "Id": "oil_bottle",
+          "Count": 6
+        },
+        {
+          "Id": "taco",
+          "Count": 6
+        },
+        {
+          "Id": "pan_02",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "cup_01",
+        "star",
+        "pot_03",
+        "pan_02",
+        "burger",
+        "taco"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 137
         }
       ]
     },
@@ -1636,737 +2048,70 @@
       "Name": "Level 35",
       "ItemsToSpawn": [
         {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
+          "Id": "ball_02",
           "Count": 9
         },
         {
-          "Id": "potion_1",
+          "Id": "cup_03",
           "Count": 3
         },
         {
-          "Id": "beer",
+          "Id": "spatula_03",
           "Count": 6
+        },
+        {
+          "Id": "chair_03",
+          "Count": 9
+        },
+        {
+          "Id": "book_02",
+          "Count": 12
+        },
+        {
+          "Id": "letter_cube_01",
+          "Count": 9
+        },
+        {
+          "Id": "pot_02",
+          "Count": 6
+        },
+        {
+          "Id": "pot_03",
+          "Count": 12
+        },
+        {
+          "Id": "book_01",
+          "Count": 6
+        },
+        {
+          "Id": "cup",
+          "Count": 3
+        },
+        {
+          "Id": "globe",
+          "Count": 6
+        },
+        {
+          "Id": "ball_01",
+          "Count": 9
         }
       ],
       "ItemsToCollect": [
-        "cog_1",
-        "beer"
+        "cup",
+        "chair_03",
+        "cup_03",
+        "book_02",
+        "book_01",
+        "pot_03"
       ],
       "Rewards": [
         {
           "RewardType": "Gold",
-          "Amount": 20
+          "Amount": 138
         },
         {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_36",
-      "Number": 36,
-      "Name": "Level 36",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_37",
-      "Number": 37,
-      "Name": "Level 37",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_38",
-      "Number": 38,
-      "Name": "Level 38",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_39",
-      "Number": 39,
-      "Name": "Level 39",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_40",
-      "Number": 40,
-      "Name": "Level 40",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_41",
-      "Number": 41,
-      "Name": "Level 41",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_42",
-      "Number": 42,
-      "Name": "Level 42",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_43",
-      "Number": 43,
-      "Name": "Level 43",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_44",
-      "Number": 44,
-      "Name": "Level 44",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_45",
-      "Number": 45,
-      "Name": "Level 45",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_46",
-      "Number": 46,
-      "Name": "Level 46",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_47",
-      "Number": 47,
-      "Name": "Level 47",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_48",
-      "Number": 48,
-      "Name": "Level 48",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_49",
-      "Number": 49,
-      "Name": "Level 49",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_50",
-      "Number": 50,
-      "Name": "Level 50",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_51",
-      "Number": 51,
-      "Name": "Level 51",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_52",
-      "Number": 52,
-      "Name": "Level 52",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_53",
-      "Number": 53,
-      "Name": "Level 53",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
-        }
-      ]
-    },
-    {
-      "Id": "level_54",
-      "Number": 54,
-      "Name": "Level 54",
-      "ItemsToSpawn": [
-        {
-          "Id": "cog_1",
-          "Count": 3
-        },
-        {
-          "Id": "heart",
-          "Count": 9
-        },
-        {
-          "Id": "potion_1",
-          "Count": 3
-        },
-        {
-          "Id": "beer",
-          "Count": 6
-        }
-      ],
-      "ItemsToCollect": [
-        "cog_1",
-        "beer"
-      ],
-      "Rewards": [
-        {
-          "RewardType": "Gold",
-          "Amount": 20
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "RewardType": "Shake",
+          "Amount": 2
         }
       ]
     }

@@ -63,7 +63,8 @@ public class TrayView : MonoBehaviour
 
     [Range(0, 1)]
     [SerializeField] private float percentage = 0.9f;  // exaggeration toward slot in x
-
+    public Vector3 Axis = Vector3.right;
+    public float Angle = 90;
     private void HandleItemAddedToSlot(ItemData data, int targetIdx, Transform source, bool isAdded, Action onComplete)
     {
         if (_slots == null || targetIdx < 0 || targetIdx >= _slots.Length)
@@ -86,7 +87,19 @@ public class TrayView : MonoBehaviour
         {
             clickableItem.Rigidbody.isKinematic = true;
             clickableItem.Collider.enabled = false;
-            rotationVector = clickableItem.IsUpright ? Vector3.zero : new Vector3(90, 0, 0);
+            // rotationVector = clickableItem.Rotation;
+            // rotationVector = new Vector3(clickableItem.Rotation.x, clickableItem.Rotation.y - 180f, clickableItem.Rotation.z);
+            Quaternion originalRotation = Quaternion.Euler(clickableItem.Rotation);
+
+            // 2. Create the "Axis Flip" rotation (90 degrees around X)
+            Quaternion axisFlip = Quaternion.AngleAxis(Angle, Axis);
+
+            // 3. Combine them. 
+            // Note: Multiplying 'axisFlip' on the left applies it in World Space.
+            Quaternion topDownRotation = axisFlip * originalRotation;
+
+            // 4. Extract the final angle for your use elsewhere
+            rotationVector = clickableItem.IsUpright ? clickableItem.Rotation + new Vector3(0, 180, 0) : topDownRotation.eulerAngles + new Vector3(0, 180, 0);
         }
 
         SlotView targetSlot = _slots[targetIdx];

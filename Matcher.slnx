@@ -59,8 +59,8 @@
   <Project Path="Unity.Addressables.csproj" />
   <Project Path="Unity.Services.Core.Components.csproj" />
   <Project Path="Unity.Mathematics.Editor.csproj" />
-  <Project Path="Unity.VisualScripting.SettingsProvider.Editor.csproj" />
   <Project Path="GoogleMobileAds.Editor.csproj" />
+  <Project Path="Unity.VisualScripting.SettingsProvider.Editor.csproj" />
   <Project Path="Purchasing.Common.csproj" />
   <Project Path="Unity.VSCode.Editor.csproj" />
   <Project Path="Unity.Services.Core.Threading.csproj" />

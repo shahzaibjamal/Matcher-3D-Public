@@ -44,7 +44,6 @@ public class GameManager : MonoBehaviour
 
         SoundController.Instance.Init(SaveData.IsMusicMuted, SaveData.IsSoundMuted);
 
-        // GameEvents.OnStartButtonClicked += StartGame;
         GameEvents.OnGameInitializedEvent += LoadLevelById;
         GameEvents.OnGameQuitEvent += Cleanup;
         GameEvents.OnGameOverEvent += TriggerGameOver;
@@ -123,8 +122,6 @@ public class GameManager : MonoBehaviour
 
     private void LoadLevelSpawner(LevelData levelData)
     {
-        Debug.LogError("LoadLevelSpawner");
-
         if (_activeSpawner == null && _spawnerPrefab != null)
         {
             AssetLoader.Instance.InstantiatePrefab("Spawner", (spawner) =>

@@ -562,9 +562,9 @@ MonoBehaviour:
   currentLevel: 1
   _testDevicesIds:
   - 1B9F6BAEEB1823528F77F212C1C46892
-  bannerUnlockLevel: 1
-  interstitialUnlockLevel: 1
-  rewardedUnlockLevel: 1
+  bannerUnlockLevel: 3
+  interstitialUnlockLevel: 10
+  rewardedUnlockLevel: 3
   interstitialChance: 0.5
   realBannerId: ca-app-pub-3489872370282662/6280758579
   realInterstitialId: ca-app-pub-3489872370282662/8112026638
@@ -840,7 +840,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.5
+  m_Intensity: 0.8
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

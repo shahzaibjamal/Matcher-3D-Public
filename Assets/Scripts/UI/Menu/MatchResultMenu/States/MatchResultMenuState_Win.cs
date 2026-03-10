@@ -15,8 +15,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     {
         base.Enter();
 
-        if (Data.LevelData.Number > 10 || true)
-            View.GoldMulitplierButton.gameObject.SetActive(true);
+        View.GoldMulitplierButton.gameObject.SetActive(Data.LevelData.Number > AdManager.Instance.rewardedUnlockLevel);
         View.Result.text = LocaleManager.Localize(LocalizationKeys.result_win);
         View.Status.gameObject.SetActive(true);
 
@@ -57,15 +56,15 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         for (int i = 0; i < View.StarViews.Length; i++)
         {
             delay = i * starsAppearDelay; // stars appear delay
-            if (i < score)
-            {
-                // Stagger by 0.3 seconds each: 0.0s, 0.3s, 0.6s
-                View.StarViews[i].Show(delay);
-            }
-            else
-            {
-                View.StarViews[i].ResetView();
-            }
+                                          // if (i < score)
+                                          // {
+                                          // Stagger by 0.3 seconds each: 0.0s, 0.3s, 0.6s
+            View.StarViews[i].Show(delay);
+            // }
+            // else
+            // {
+            //     View.StarViews[i].ResetView();
+            // }
         }
 
         // 1. Kill any existing rotation to prevent stacking
@@ -206,7 +205,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     private void OnGoldAnimationCompleted()
     {
         UpdateRewardManager();
-        Scheduler.Instance.ExecuteAfterDelay(1.5f, Controller.GoToMainMenu);
+        Scheduler.Instance.ExecuteAfterDelay(1.5f, Controller.GoToNextLevel);
     }
 
     private void UpdateRewardManager()
