@@ -33,7 +33,7 @@ public class PerformanceMonitor : MonoBehaviour
     [SerializeField] private int targetFrameRate = 60;
 
     [Tooltip("0 = Don't Sync, 1 = 60fps, 2 = 30fps")]
-    [Range(0, 2)]
+    [Range(0, 1)]
     [SerializeField] private int vSyncCount = 1;
 
     [Header("Physics Stability")]
@@ -207,28 +207,5 @@ public class PerformanceMonitor : MonoBehaviour
         _isVisible = !_isVisible;
         monitorCanvasGroup.alpha = _isVisible ? 1f : 0f;
         monitorCanvasGroup.blocksRaycasts = _isVisible;
-    }
-
-    private void OnGUI()
-    {
-        // 1. Position the button in the top-left corner
-        // GUI.Button(Rect(x, y, width, height), text)
-        if (GUI.Button(new Rect(20, 20, 250, 100), "Light"))
-        {
-            ToggleLight();
-        }
-    }
-    private void ToggleLight()
-    {
-        Light sceneLight = null;
-        if (sceneLight == null)
-        {
-            sceneLight = RenderSettings.sun; // Try to grab the default Sun if not assigned
-        }
-
-        if (sceneLight != null)
-        {
-            sceneLight.enabled = !sceneLight.enabled;
-        }
     }
 }

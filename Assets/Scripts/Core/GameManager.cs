@@ -96,15 +96,6 @@ public class GameManager : MonoBehaviour
     }
     #region Game Lifecycle Functions
 
-
-    // public void StartGame()
-    // {
-    //     Debug.Log("Game Manager: Starting Game...");
-
-    //     OnGameStarted?.Invoke();
-    //     Cleanup();
-    // }
-
     public void LoadLevelById(string levelId = null)
     {
         _currentLevelId = levelId;
@@ -117,6 +108,7 @@ public class GameManager : MonoBehaviour
         {
             levelData = LevelManager.Instance.GetLevelByID(levelId);
         }
+        _slotManager.Reset();
         LoadLevelSpawner(levelData);
     }
 

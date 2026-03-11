@@ -35,6 +35,8 @@ public class InputManager : MonoBehaviour
 
     void OnUpdate(float dt)
     {
+        if (PerformanceDebugMenu.IsMouseOverMenu) return;
+
         HandleKeyboardInput();
 
         if (Input.GetMouseButtonDown(0))
