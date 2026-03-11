@@ -152,13 +152,26 @@ public class InputManager : MonoBehaviour
     {
         clickable = null;
         Ray ray = _mainCam.ScreenPointToRay(Input.mousePosition);
+
         if (Physics.Raycast(ray, out hit, maxDistance, clickLayer))
         {
-            clickable = hit.collider.GetComponent<IClickable>();
+            // Try to get the direct link first (Fastest)
+            var link = hit.collider.GetComponent<ClickableLink>();
+            if (link != null)
+            {
+                clickable = link.ParentScript;
+            }
+            else
+            {
+                // Fallback to the recursive search
+                clickable = hit.collider.GetComponentInParent<IClickable>();
+            }
+
             return clickable != null;
         }
         return false;
     }
+
 
     // --- Standard Boilerplate ---
     private void HandleKeyboardInput()

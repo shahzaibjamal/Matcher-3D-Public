@@ -43,12 +43,14 @@ public class PerformanceDebugMenu : MonoBehaviour
 
     private void OnGUI()
     {
+        // 1. GLOBAL STYLING
         GUI.skin.button.fontSize = 35;
         GUI.skin.label.fontSize = 35;
-        GUI.skin.verticalScrollbar.fixedWidth = 50;
-        GUI.skin.verticalScrollbarThumb.fixedWidth = 50;
+        GUI.skin.horizontalSlider.fixedHeight = 60; // Thicker sliders for easier thumb control
+        GUI.skin.horizontalSliderThumb.fixedWidth = 60;
+        GUI.skin.horizontalSliderThumb.fixedHeight = 60;
 
-        // 1. TOP LEFT TOGGLE
+        // 2. TOP LEFT TOGGLE
         if (GUI.Button(new Rect(20, 20, 250, 100), _showMenu ? "CLOSE" : "DEBUG"))
         {
             _showMenu = !_showMenu;
@@ -56,23 +58,24 @@ public class PerformanceDebugMenu : MonoBehaviour
 
         if (!_showMenu) return;
 
-        // 2. FULL SCREEN BACKGROUND
-        GUI.backgroundColor = new Color(0, 0, 0, 0.95f);
+        // 3. FULL SCREEN BACKGROUND
+        GUI.backgroundColor = new Color(0, 0, 0, 0.9f);
         GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "");
         GUI.backgroundColor = Color.white;
 
-        // 3. SCROLL VIEW
+        // 4. DYNAMIC SCROLL VIEW
+        // We calculate the content height at the end of the previous frame or use a large buffer
         _scrollPosition = GUI.BeginScrollView(
             new Rect(0, 130, Screen.width, Screen.height - 150),
             _scrollPosition,
-            new Rect(0, 0, Screen.width - 100, 2500) // Height increased for new settings
+            new Rect(0, 0, Screen.width - 100, 4000) // Huge buffer to ensure nothing is cut off
         );
 
         float xMargin = 50;
         float itemWidth = Screen.width - 150;
         float currentY = 20;
 
-        // --- STATS ---
+        // --- SECTION: PERFORMANCE STATS ---
         float ms = Time.unscaledDeltaTime * 1000f;
         float fps = 1.0f / Time.unscaledDeltaTime;
         GUI.contentColor = Color.cyan;
@@ -80,112 +83,108 @@ public class PerformanceDebugMenu : MonoBehaviour
         currentY += 100;
         GUI.contentColor = Color.white;
 
-        // --- NEW SECTION: QUALITY SETTINGS SELECTOR ---
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "--- PROJECT QUALITY PRESETS ---");
+        // --- SECTION: QUALITY PRESETS ---
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "--- PROJECT QUALITY ---");
         currentY += 70;
-
-        string[] names = QualitySettings.names;
+        string[] qualityNames = QualitySettings.names;
         int currentLevel = QualitySettings.GetQualityLevel();
-
-        for (int i = 0; i < names.Length; i++)
+        for (int i = 0; i < qualityNames.Length; i++)
         {
-            // Highlight the currently active quality level in Green
-            if (i == currentLevel) GUI.backgroundColor = Color.green;
-            else GUI.backgroundColor = Color.white;
-
-            if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 90), names[i].ToUpper()))
+            GUI.backgroundColor = (i == currentLevel) ? Color.green : Color.white;
+            if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 90), qualityNames[i].ToUpper()))
             {
                 QualitySettings.SetQualityLevel(i, true);
             }
             currentY += 100;
         }
-        GUI.backgroundColor = Color.white; // Reset
+        GUI.backgroundColor = Color.white;
         currentY += 40;
 
-        // --- GPU TOOLS ---
+        // --- SECTION: GPU & RENDERING ---
         GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "--- GPU & RENDERING ---");
         currentY += 70;
-
-        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 120), "TOGGLE POST-PROCESSING"))
+        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 110), "TOGGLE POST-PROCESSING"))
         {
             if (_cameraData != null) _cameraData.renderPostProcessing = !_cameraData.renderPostProcessing;
         }
+        currentY += 130;
+
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Render Scale: {_urpAsset.renderScale:F2}");
+        currentY += 60;
+        _urpAsset.renderScale = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), _urpAsset.renderScale, 0.1f, 1.0f);
+        currentY += 120;
+
+        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 110), "TOGGLE SSAO (AMBIENT OCCLUSION)"))
+        {
+            if (rendererData != null)
+            {
+                foreach (var feature in rendererData.rendererFeatures)
+                    if (feature.name.Contains("Ambient") || feature.name.Contains("SSAO")) feature.SetActive(!feature.isActive);
+            }
+        }
         currentY += 140;
 
-        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 120), "TOGGLE SHADOWS"))
+        // --- SECTION: SHADOW POLISH ---
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "--- SHADOWS & GROUNDING ---");
+        currentY += 70;
+        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 110), "TOGGLE LIGHT SHADOWS"))
         {
             if (_dirLight != null) _dirLight.shadows = (_dirLight.shadows == LightShadows.None) ? LightShadows.Hard : LightShadows.None;
         }
-        currentY += 140;
+        currentY += 130;
 
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Manual Render Scale: {_urpAsset.renderScale:F2}");
-        currentY += 60;
-        _urpAsset.renderScale = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), _urpAsset.renderScale, 0.1f, 1.0f);
-        currentY += 140;
-
-        // --- PHYSICS ---
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "--- PHYSICS ---");
-        currentY += 70;
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Fixed Timestep: {Time.fixedDeltaTime:F3}");
-        currentY += 60;
-        if (GUI.Button(new Rect(xMargin, currentY, itemWidth / 2 - 20, 120), "LOW (0.05)")) Time.fixedDeltaTime = 0.05f;
-        if (GUI.Button(new Rect(xMargin + itemWidth / 2 + 20, currentY, itemWidth / 2 - 20, 120), "HIGH (0.02)")) Time.fixedDeltaTime = 0.02f;
-        currentY += 180;
-
-        // --- FEATURES ---
-        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 120), "TOGGLE HINT OUTLINE"))
-        {
-            if (rendererData != null)
-            {
-                foreach (var feature in rendererData.rendererFeatures)
-                {
-                    if (feature.name.Contains("Hint")) feature.SetActive(!feature.isActive);
-                }
-            }
-        }
-        currentY += 160;
-
-        // --- SECTION: AMBIENT OCCLUSION (SSAO) ---
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "--- ADVANCED EFFECTS ---");
-        currentY += 80;
-
-        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 120), "TOGGLE SSAO (HEAVY)"))
-        {
-            if (rendererData != null)
-            {
-                foreach (var feature in rendererData.rendererFeatures)
-                {
-                    // Usually named "ScreenSpaceAmbientOcclusion" by default
-                    if (feature.name.Contains("Ambient") || feature.name.Contains("SSAO"))
-                    {
-                        feature.SetActive(!feature.isActive);
-                    }
-                }
-            }
-        }
-        currentY += 140;
-
-        // --- SECTION: SHADOW POLISH & GROUNDING ---
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "--- SHADOW POLISH ---");
-        currentY += 80;
-
-        // Shadow Distance Slider (5-15m range)
         GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Shadow Distance: {_urpAsset.shadowDistance:F1}m");
         currentY += 60;
-        _urpAsset.shadowDistance = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), _urpAsset.shadowDistance, 5f, 15f);
+        _urpAsset.shadowDistance = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), _urpAsset.shadowDistance, 2f, 20f);
         currentY += 120;
 
-        // Shadow Strength
         GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Shadow Strength: {_dirLight.shadowStrength:F2}");
         currentY += 60;
         _dirLight.shadowStrength = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), _dirLight.shadowStrength, 0f, 1f);
         currentY += 120;
 
-        // Shadow Bias
         GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Shadow Bias: {_dirLight.shadowBias:F3}");
         currentY += 60;
         _dirLight.shadowBias = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), _dirLight.shadowBias, 0f, 0.05f);
         currentY += 140;
+
+        // --- SECTION: RIM LIGHT MASTER ---
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "--- STYLIZED RIM LIGHT ---");
+        currentY += 70;
+
+        bool isRimActive = Shader.IsKeywordEnabled("_RIM_LIGHT_ON");
+        GUI.backgroundColor = isRimActive ? Color.green : Color.red;
+        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 110), isRimActive ? "RIM LIGHT: ON" : "RIM LIGHT: OFF"))
+        {
+            if (isRimActive) Shader.DisableKeyword("_RIM_LIGHT_ON");
+            else Shader.EnableKeyword("_RIM_LIGHT_ON");
+        }
+        GUI.backgroundColor = Color.white;
+        currentY += 130;
+
+        float currentPower = Shader.GetGlobalFloat("_GlobalRimPower");
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Rim Sharpness: {currentPower:F1}");
+        currentY += 60;
+        float newPower = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), currentPower, 1.0f, 12.0f);
+        if (newPower != currentPower) Shader.SetGlobalFloat("_GlobalRimPower", newPower);
+        currentY += 120;
+
+        // --- SECTION: GRANULAR COLOR (THE SWEET SPOT) ---
+        Color c = Shader.GetGlobalColor("_RimColor");
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Rim Tint (RGB): [{c.r:F2}, {c.g:F2}, {c.b:F2}]");
+        currentY += 70;
+
+        float r = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 70), c.r, 0f, 1f); currentY += 90;
+        float g = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 70), c.g, 0f, 1f); currentY += 90;
+        float b = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 70), c.b, 0f, 1f); currentY += 100;
+
+        if (r != c.r || g != c.g || b != c.b) Shader.SetGlobalColor("_RimColor", new Color(r, g, b, 1.0f));
+
+        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 100), "RESET TO SWEET SPOT (0.25, 0, 0)"))
+        {
+            Shader.SetGlobalColor("_RimColor", new Color(0.25f, 0f, 0f, 1.0f));
+        }
+        currentY += 150;
 
         GUI.EndScrollView();
     }

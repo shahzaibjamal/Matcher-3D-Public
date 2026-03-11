@@ -86,7 +86,7 @@ public class TrayView : MonoBehaviour
         if (source.TryGetComponent<ClickableItem>(out var clickableItem))
         {
             clickableItem.Rigidbody.isKinematic = true;
-            clickableItem.Collider.enabled = false;
+            clickableItem.SetCollidersEnabled(false);
             // rotationVector = clickableItem.Rotation;
             // rotationVector = new Vector3(clickableItem.Rotation.x, clickableItem.Rotation.y - 180f, clickableItem.Rotation.z);
             Quaternion originalRotation = Quaternion.Euler(clickableItem.Rotation);

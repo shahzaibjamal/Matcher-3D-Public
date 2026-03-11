@@ -15,8 +15,6 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
             SetState(new MatchResultMenuBaseState_Lose(this));
         }
 
-        View.ContinueButton.interactable = true;
-        View.GoldMulitplierButton.interactable = true;
         View.ContinueButton.onClick.AddListener(OnContinueButtonClicked);
         View.GoldMulitplierButton.onClick.AddListener(OnGoldMultiplierButtonClicked);
         View.TitleLevelNumber.text = String.Format(LocaleManager.Localize(LocalizationKeys.title_level), Data.LevelData.Number);

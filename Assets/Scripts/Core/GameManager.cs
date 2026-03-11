@@ -16,8 +16,6 @@ public class GameManager : MonoBehaviour
     public const int SLOT_COUNT = 7;
     public GameSaveData SaveData { get; private set; }
 
-    // Events for other systems to subscribe to
-    public static event Action OnGameStarted;
     private float _levelStartTime;
     private string _currentLevelId;
     private void Awake()

@@ -102,7 +102,6 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     {
         if (_activeViews.Count == 0)
         {
-            // Debug.LogError("GameMenuBaseState_Main: OnItemsCollectedEvent fired");
             GameEvents.OnItemsCollectedEvent?.Invoke();
             GameEvents.OnGameOverEvent?.Invoke(true);
         }
@@ -136,6 +135,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     Sequence _curtainSeq;
     private void OnSpawnerInitialized()
     {
+        View.BlackCurtain.alpha = 1.0f;
         float screenWidth = View.GetComponent<RectTransform>().rect.width;
 
         // 2. Create the Sequence
@@ -143,16 +143,9 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         View.LeftCurtain.anchoredPosition = _leftCurtainPosition;
         View.RightCurtain.anchoredPosition = _rightCurtainPosition;
 
-        // --- THE OPENING ANIMATION ---
-        // // // Anticipation: Squeeze inward slightly (50 units) to "charge up" the move
-        // _curtainSeq.Append(View.LeftCurtain.DOAnchorPosX(View.inward, 0.1f).SetEase(Ease.OutQuad));
-        // _curtainSeq.Join(View.RightCurtain.DOAnchorPosX(-View.inward, 0.1f).SetEase(Ease.OutQuad));
-
-        // Snap Open: Use InBack so they pull together then fly apart
-
-        //inBack
         _curtainSeq.Append(View.LeftCurtain.DOAnchorPosX(View.useOutward ? -View.outward : -screenWidth, 0.6f).SetEase(Ease.InBack));
         _curtainSeq.Join(View.RightCurtain.DOAnchorPosX(View.useOutward ? View.outward : screenWidth, 0.6f).SetEase(Ease.InBack));
+        _curtainSeq.Join(View.BlackCurtain.DOFade(0.0f, 0.6f).SetEase(Ease.InBack));
     }
     [ContextMenu("Test: Open Curtains")]
     public void TestOpen()

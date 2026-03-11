@@ -15,6 +15,7 @@ public class GameMenuView : MenuView
     public PowerUpButton PowerUpPrefab;
     public RectTransform LeftCurtain;
     public RectTransform RightCurtain;
+    public CanvasGroup BlackCurtain;
     public float inward;
     public float outward;
     public bool useOutward = false;

@@ -19,12 +19,6 @@ public class GameMenuController : MenuController<GameMenuView, GameMenuData>
     {
         CurrentState.Enter();
     }
-
-    public void StartGame()
-    {
-        // GameEvents.OnGameInitializedEvent?.Invoke(Data.levelId);
-        // View.TrayView.Initialize(GameManager.SLOT_COUNT);
-    }
     public override void HandleBackInput()
     {
         OpenPauseMenu();
