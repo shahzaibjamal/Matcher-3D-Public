@@ -25,7 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SubtractiveShadowColor: {r: 1, g: 1, b: 1, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: eead61c6d9174544ea47e151b8b75364, type: 2}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: b2769866f5dd44745a79963140e8afe4, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: fcbe7cfe26c753046b24b86211a9099a, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -877,7 +877,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1
   m_RenderingLayerMask: 1
   m_Lightmapping: 1
   m_LightShadowCasterMode: 0
@@ -952,7 +952,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000019073486
+      value: -0.000011444092
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2340,8 +2340,8 @@ MonoBehaviour:
   lineColor: {r: 0, g: 1, b: 0, a: 1}
   smoothingWindow: 5
   monitorCanvasGroup: {fileID: 1906762028}
-  targetFrameRate: 60
-  vSyncCount: 1
+  targetFrameRate: 120
+  vSyncCount: 0
   maxDepenetrationVelocity: 0.25
   customGravity: {x: 0, y: -4, z: 0}
 --- !u!222 &2002200420

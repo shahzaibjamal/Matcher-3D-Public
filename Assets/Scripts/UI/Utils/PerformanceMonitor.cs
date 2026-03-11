@@ -208,4 +208,27 @@ public class PerformanceMonitor : MonoBehaviour
         monitorCanvasGroup.alpha = _isVisible ? 1f : 0f;
         monitorCanvasGroup.blocksRaycasts = _isVisible;
     }
+
+    private void OnGUI()
+    {
+        // 1. Position the button in the top-left corner
+        // GUI.Button(Rect(x, y, width, height), text)
+        if (GUI.Button(new Rect(20, 20, 250, 100), "Light"))
+        {
+            ToggleLight();
+        }
+    }
+    private void ToggleLight()
+    {
+        Light sceneLight = null;
+        if (sceneLight == null)
+        {
+            sceneLight = RenderSettings.sun; // Try to grab the default Sun if not assigned
+        }
+
+        if (sceneLight != null)
+        {
+            sceneLight.enabled = !sceneLight.enabled;
+        }
+    }
 }
