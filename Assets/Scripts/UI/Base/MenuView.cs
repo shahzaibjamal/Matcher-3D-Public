@@ -36,20 +36,18 @@ public abstract class MenuView : MonoBehaviour, IMenuView
     // Logic for animations when the menu closes
     public virtual void OnExit(Action onComplete)
     {
+        Sequence exitSequence = DOTween.Sequence();
+
         if (DisplayMode == Menus.MenuDisplayMode.Popup || DisplayMode == Menus.MenuDisplayMode.Overlay)
         {
-            // Chain Scale and Fade, then trigger callback
-            transform.DOScale(0f, 0.2f).SetEase(Ease.InBack);
+            exitSequence.Join(transform.DOScale(0f, 0.2f).SetEase(Ease.InBack));
         }
 
         if (canvasGroup != null)
         {
-            canvasGroup.DOFade(0f, fadeDuration).OnComplete(() => onComplete?.Invoke());
+            exitSequence.Join(canvasGroup.DOFade(0f, fadeDuration));
         }
-        else
-        {
-            // Fallback if no CanvasGroup is found
-            onComplete?.Invoke();
-        }
+
+        exitSequence.OnComplete(() => onComplete?.Invoke());
     }
 }

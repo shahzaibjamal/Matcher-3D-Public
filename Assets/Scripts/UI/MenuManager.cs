@@ -227,6 +227,10 @@ public class MenuManager : MonoBehaviour
 
         if (shouldDim)
         {
+            if (blockingLayer != null && blockingLayer.TryGetComponent<Button>(out var btnRestore))
+            {
+                btnRestore.interactable = true;
+            }
             // If it's already on, don't restart the animation
             if (!blockingLayer.activeSelf)
             {
