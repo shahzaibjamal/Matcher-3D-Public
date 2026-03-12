@@ -16,6 +16,7 @@ public class GameMenuView : MenuView
     public RectTransform LeftCurtain;
     public RectTransform RightCurtain;
     public CanvasGroup BlackCurtain;
+    public GameObject CurtainContainer;
     public float inward;
     public float outward;
     public bool useOutward = false;
@@ -25,5 +26,6 @@ public class GameMenuView : MenuView
     public PowerUpVisualDatabase PowerUpVisualDatabase;
 
     public BroomSweeper BroomSweeper;
+    public MagnifyingGlassSearch MagnifyingGlassSearch;
 
 }

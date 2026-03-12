@@ -12,6 +12,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     private LevelData _currentLevelData = null;
     private Vector3 _leftCurtainPosition;
     private Vector3 _rightCurtainPosition;
+    Sequence _curtainSeq;
 
     public GameMenuBaseState_Main(GameMenuController controller) : base(controller) { }
 
@@ -23,11 +24,12 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         GameEvents.OnShowMatchResultEvent += HandleMatchResult;
         GameEvents.OnCleanSweepTrayEvent += HandleCleanSweep;
         GameEvents.OnSpawnerInitializedEvent += OnSpawnerInitialized;
+        GameEvents.OnHintPowerupEvent += HandleHintPowerUp;
 
         View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
         View.TrayView.Initialize(GameManager.SLOT_COUNT);
 
-        InputManager.Instance.RegisterKey(KeyCode.Z, OnSpawnerInitialized);
+        InputManager.Instance.RegisterKey(KeyCode.Z, HandleHintPowerUp);
         _leftCurtainPosition = View.LeftCurtain.anchoredPosition;
         _rightCurtainPosition = View.RightCurtain.anchoredPosition;
     }
@@ -41,6 +43,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         GameEvents.OnShowMatchResultEvent -= HandleMatchResult;
         GameEvents.OnCleanSweepTrayEvent -= HandleCleanSweep;
         GameEvents.OnSpawnerInitializedEvent -= OnSpawnerInitialized;
+        GameEvents.OnHintPowerupEvent -= HandleHintPowerUp;
         View.PauseButton.onClick.RemoveListener(OnPauseButtonClicked);
         Cleanup();
     }
@@ -96,6 +99,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
         _currentLevelData = null;
         _curtainSeq.Kill();
+        View.CurtainContainer.SetActive(false);
     }
 
     private void CheckWin()
@@ -129,12 +133,16 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     {
         View.BroomSweeper.PlayBroomSweep();
     }
+    private void HandleHintPowerUp()
+    {
+        View.MagnifyingGlassSearch.PlaySearch();
+    }
 
     private void OnPauseButtonClicked() => Controller.OpenPauseMenu();
 
-    Sequence _curtainSeq;
     private void OnSpawnerInitialized()
     {
+        View.CurtainContainer.SetActive(true);
         View.BlackCurtain.alpha = 1.0f;
         float screenWidth = View.GetComponent<RectTransform>().rect.width;
 
@@ -147,10 +155,4 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         _curtainSeq.Join(View.RightCurtain.DOAnchorPosX(View.useOutward ? View.outward : screenWidth, 0.6f).SetEase(Ease.InBack));
         _curtainSeq.Join(View.BlackCurtain.DOFade(0.0f, 0.6f).SetEase(Ease.InBack));
     }
-    [ContextMenu("Test: Open Curtains")]
-    public void TestOpen()
-    {
-        OnSpawnerInitialized();
-    }
-
 }

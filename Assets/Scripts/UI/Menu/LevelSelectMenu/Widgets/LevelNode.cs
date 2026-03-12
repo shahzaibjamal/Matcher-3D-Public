@@ -36,7 +36,8 @@ public class LevelNode : MonoBehaviour
         // Show stars if level is completed
         for (int i = 0; i < stars.Length; i++)
         {
-            stars[i].SetActive(data.ProgressData != null && data.ProgressData.StarRating > i);
+            // stars[i].SetActive(data.ProgressData != null && data.ProgressData.StarRating > i);
+            stars[i].SetActive(data.ProgressData != null);
         }
     }
 

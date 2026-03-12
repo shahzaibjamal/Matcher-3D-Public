@@ -38,15 +38,20 @@ public class LevelDetailMenuController : MenuController<LevelDetailMenuView, Lev
 
     private void LoadRewards()
     {
+        string currentLevelID = GameManager.Instance.SaveData.CurrentLevelID;
+        bool isRewardUnclaimed = Data.LevelData.Id == currentLevelID;
         foreach (var rewardData in Data.LevelData.Rewards)
         {
-            var go = GameObject.Instantiate(View.RewardViewPrefab, View.RewardsContainer);
-            _rewardViews.Add(go);
-            if (go.TryGetComponent<RewardView>(out var rewardView))
+            if (isRewardUnclaimed || rewardData.RewardType == RewardType.Gold)
             {
-                Sprite icon = View.IconMapper.GetIcon(rewardData.RewardType);
+                var go = GameObject.Instantiate(View.RewardViewPrefab, View.RewardsContainer);
+                _rewardViews.Add(go);
+                if (go.TryGetComponent<RewardView>(out var rewardView))
+                {
+                    Sprite icon = View.IconMapper.GetIcon(rewardData.RewardType);
 
-                rewardView.Initialize(icon, rewardData.Amount);
+                    rewardView.Initialize(icon, rewardData.Amount);
+                }
             }
         }
     }

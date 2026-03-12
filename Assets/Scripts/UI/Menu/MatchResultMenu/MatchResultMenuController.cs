@@ -47,22 +47,29 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
 
     public void GoToNextLevel()
     {
+        string currentLevelID = GameManager.Instance.SaveData.CurrentLevelID;
         MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
         {
-            OnLoadingComplete = OnLoadingComplete
+            OnLoadingComplete = Data.LevelData.Id == currentLevelID ? OnLoadingCompleteToNextLevel : OnLoadingCompleteToLevelSelect
         });
         GameEvents.OnLevelCompleteEvent?.Invoke(Data.IsWin, Data.LevelData.Id, Data.Score, Data.Score);
     }
 
-    private void OnLoadingComplete()
+    private void OnLoadingCompleteToNextLevel()
     {
         string currentLevelID = GameManager.Instance.SaveData.CurrentLevelID;
+
         GameEvents.OnGameInitializedEvent?.Invoke(currentLevelID);
         MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game, new GameMenuData
         {
             levelId = currentLevelID
         });
     }
+    private void OnLoadingCompleteToLevelSelect()
+    {
+        MenuManager.Instance.OpenMenu<LevelSelectMenuView, LevelSelectMenuController, LevelSelectMenuData>(Menus.Type.LevelSelect);
+    }
+
     void OnGoldMultiplierButtonClicked()
     {
         (CurrentState as MatchResultMenuBaseState).OnGoldMultiplierButtonClicked();

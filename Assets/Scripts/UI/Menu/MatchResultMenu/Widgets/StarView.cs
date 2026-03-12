@@ -6,6 +6,7 @@ public class StarView : MonoBehaviour
 {
     [SerializeField] private Image _bgIcon; // The "Empty" background star
     [SerializeField] private Image _icon;   // The "Filled" star that animates
+    [SerializeField] private Image _previousStarIcon;   // The "Filled" star that animates
 
     private Vector3 _originalScale;
 
@@ -15,14 +16,15 @@ public class StarView : MonoBehaviour
         _originalScale = Vector3.one;
     }
 
-    public void Init()
+    public void Init(bool isCleared = false)
     {
-        ResetView();
+        ResetView(isCleared);
     }
 
-    public void ResetView()
+    public void ResetView(bool isCleared = false)
     {
         _icon.enabled = false;
+        _previousStarIcon.enabled = isCleared;
         _icon.transform.DOKill();
         _icon.transform.localScale = _originalScale;
         // Keep the background icon visible so player sees the "empty" slot
@@ -63,7 +65,7 @@ public class StarView : MonoBehaviour
             // Slight overshoot punch to make it feel "settled"
             _icon.transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.2f, 10, 1f);
 
-            // SoundController.instance.PlaySoundEffect("star");
+            SoundController.Instance.PlaySoundEffect("star");
             // Optional: Trigger haptic feedback or sound effect here
         });
     }

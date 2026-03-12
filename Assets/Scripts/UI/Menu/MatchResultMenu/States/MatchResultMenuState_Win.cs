@@ -56,15 +56,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         for (int i = 0; i < View.StarViews.Length; i++)
         {
             delay = i * starsAppearDelay; // stars appear delay
-                                          // if (i < score)
-                                          // {
-                                          // Stagger by 0.3 seconds each: 0.0s, 0.3s, 0.6s
             View.StarViews[i].Show(delay);
-            // }
-            // else
-            // {
-            //     View.StarViews[i].ResetView();
-            // }
         }
 
         // 1. Kill any existing rotation to prevent stacking
@@ -122,7 +114,6 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
             else
                 nonGoldReward = rewardData;
         }
-
         // 3. Update Gold View
         bool hasGold = goldAmount > 0;
         View.GoldRewardView.gameObject.SetActive(hasGold);
@@ -131,7 +122,9 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         // 4. Update Single "Other" Reward View
         bool hasOther = nonGoldReward != null;
         View.RewardView.gameObject.SetActive(hasOther);
-        if (hasOther)
+
+        string currentLevelID = GameManager.Instance.SaveData.CurrentLevelID;
+        if (hasOther && Data.LevelData.Id == currentLevelID)
         {
             Sprite icon = View.RewardIconMapper.GetIcon(nonGoldReward.RewardType);
             View.RewardView.Initialize(icon, nonGoldReward.Amount);
@@ -212,7 +205,32 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
 
     private void UpdateRewardManager()
     {
-        GameManager.Instance.SaveData.Inventory.AddRewards(Data.Rewards);
-        RewardManager.Instance.AddRewardsToQueue(Data.Rewards);
+        string currentLevelID = GameManager.Instance.SaveData.CurrentLevelID;
+
+        if (Data.LevelData.Id == currentLevelID)
+        {
+            // Full Reward: Current level matches, add everything
+            GameManager.Instance.SaveData.Inventory.AddRewards(Data.Rewards);
+            RewardManager.Instance.AddRewardsToQueue(Data.Rewards);
+        }
+        else
+        {
+            // Partial Reward: Level already completed/doesn't match, filter for Gold only
+            var goldRewards = new List<RewardData>(); // Replace 'Reward' with your actual class name if different
+
+            foreach (var reward in Data.Rewards)
+            {
+                if (reward.RewardType == RewardType.Gold)
+                {
+                    goldRewards.Add(reward);
+                }
+            }
+
+            if (goldRewards.Count > 0)
+            {
+                GameManager.Instance.SaveData.Inventory.AddRewards(goldRewards);
+                RewardManager.Instance.AddRewardsToQueue(goldRewards);
+            }
+        }
     }
 }

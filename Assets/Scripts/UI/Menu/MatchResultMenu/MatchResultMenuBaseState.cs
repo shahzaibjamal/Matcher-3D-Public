@@ -43,9 +43,10 @@ public class MatchResultMenuBaseState : MenuBaseState<MatchResultMenuController,
 
     private void ResetView()
     {
+        bool isCleared = Data.LevelData.Id != GameManager.Instance.SaveData.CurrentLevelID;
         for (int i = 0; i < View.StarViews.Length; i++)
         {
-            View.StarViews[i].ResetView();
+            View.StarViews[i].ResetView(isCleared);
         }
     }
 
