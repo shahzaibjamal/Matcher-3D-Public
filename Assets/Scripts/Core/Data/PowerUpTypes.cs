@@ -1,7 +1,7 @@
 public enum PowerUpType
 {
-    Magnet,
-    Shake,
-    Hint,
-    Undo
+    Undo = 1,
+    Hint = 2,
+    Shake = 3,
+    Magnet = 4
 }

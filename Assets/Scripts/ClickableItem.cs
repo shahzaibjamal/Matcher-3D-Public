@@ -90,6 +90,7 @@ public class ClickableItem : MonoBehaviour, IClickable
         if (ItemData == null) return;
         SetLayerRecursive(gameObject, _defaultLayer);
         OnItemClicked?.Invoke(ItemData, transform);
+        CheckFTUE();
     }
 
     public void Highlight(bool isHinted)
@@ -167,6 +168,15 @@ public class ClickableItem : MonoBehaviour, IClickable
         foreach (var col in _colliders)
         {
             if (col != null) col.enabled = isEnabled;
+        }
+    }
+
+    private void CheckFTUE()
+    {
+        if (!FTUEManager.Instance.IsSequenceCompleted("Opening"))
+        {
+            // var target = view.gameObject.AddComponent<FTUETarget>();
+            // target.TargetID = "ItemView";
         }
     }
 

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 163f80201a8fa27429c598cac68faae0, type: 3}
+  m_Name: FTUEDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::FTUEDatabase
+  sequences:
+  - {fileID: 11400000, guid: 97acf3751f4c94040b159731042ca409, type: 2}
+  - {fileID: 11400000, guid: 12557269e32b48643a73996772098479, type: 2}
+  - {fileID: 11400000, guid: 35b9d2ef06499ef4fa85fcacec606a55, type: 2}
+  - {fileID: 11400000, guid: 5159f3a7e6724d44880b0dd60429357f, type: 2}
+  - {fileID: 11400000, guid: f71430cea9e54d1439e6b5267d648048, type: 2}

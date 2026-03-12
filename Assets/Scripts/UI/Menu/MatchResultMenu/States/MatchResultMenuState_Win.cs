@@ -17,7 +17,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
 
         View.GoldMulitplierButton.gameObject.SetActive(Data.LevelData.Number > AdManager.Instance.rewardedUnlockLevel);
         View.Result.text = LocaleManager.Localize(LocalizationKeys.result_win);
-        View.Status.gameObject.SetActive(true);
+        View.Status.gameObject.SetActive(false);
 
         if (Data.MatchRate > 0.9f)
         {
@@ -69,6 +69,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
             .SetEase(Ease.Linear)      // Constant speed (essential for loops)
             .SetLoops(-1, LoopType.Incremental); // -1 means infinite    
 
+        View.Status.gameObject.SetActive(true);
         View.TextAnimation.PlayReveal();
 
         Scheduler.Instance.ExecuteAfterDelay(1.0f + delay, DisplayRewards);

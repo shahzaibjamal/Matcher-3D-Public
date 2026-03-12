@@ -467,7 +467,7 @@
         },
         {
           "RewardType": "Undo",
-          "Amount": 5
+          "Amount": 6
         }
       ]
     },
@@ -482,7 +482,7 @@
         },
         {
           "Id": "stool",
-          "Count": 3
+          "Count": 6
         }
       ],
       "ItemsToCollect": [
@@ -495,7 +495,7 @@
         },
         {
           "RewardType": "Hint",
-          "Amount": 3
+          "Amount": 4
         }
       ]
     },
@@ -559,7 +559,7 @@
         },
         {
           "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 2
         }
       ]
     },
@@ -592,7 +592,7 @@
         },
         {
           "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 2
         }
       ]
     },

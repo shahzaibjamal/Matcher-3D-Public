@@ -66,6 +66,7 @@ public class InputManager : MonoBehaviour
         {
             _currentHoveredTarget = clickable;
         }
+
     }
 
     private void HandlePointerHeld(float dt)
@@ -116,10 +117,12 @@ public class InputManager : MonoBehaviour
     {
         if (_currentHoveredTarget != null)
         {
+            MonoBehaviour targetBehaviour = _currentHoveredTarget as MonoBehaviour;
             // Case A: Fast Tap (threshold never reached)
             if (!_isSweepModeActive)
             {
                 _currentHoveredTarget.OnHandleClick(default);
+                CheckFTUE(targetBehaviour); // Trigger FTUE Check
             }
             // Case B: Released during a Sweep
             else
@@ -128,7 +131,10 @@ public class InputManager : MonoBehaviour
                 if (TryGetClickable(out RaycastHit hit, out IClickable finalTarget))
                 {
                     if (finalTarget == _currentHoveredTarget)
+                    {
                         _currentHoveredTarget.OnHandleClick(hit);
+                        CheckFTUE(targetBehaviour); // Trigger FTUE Check                        
+                    }
                 }
             }
 
@@ -137,6 +143,14 @@ public class InputManager : MonoBehaviour
         }
 
         _isSweepModeActive = false;
+    }
+
+    private void CheckFTUE(MonoBehaviour target)
+    {
+        if (target != null && target.TryGetComponent<FTUETarget>(out var ftue))
+        {
+            ftue.OnObjectClicked();
+        }
     }
 
     private void ClearCurrentHover()

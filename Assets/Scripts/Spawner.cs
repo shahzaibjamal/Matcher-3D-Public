@@ -175,12 +175,24 @@ public partial class Spawner : MonoBehaviour
         {
             if (go.TryGetComponent<ClickableItem>(out var clickable))
             {
+                CheckFTUE(item, clickable);
                 _itemClickables.Add(clickable);
                 clickable.ItemData = item.CreateCopy();
                 clickable.OnItemClicked = _onItemClicked;
             }
             onInstanceReady?.Invoke();
         });
+    }
+
+    int count = 1;
+    private void CheckFTUE(ItemData item, ClickableItem target)
+    {
+        if (!FTUEManager.Instance.IsSequenceCompleted("Opening") && item.Id == DataManager.Instance.Metadata.Levels[0].ItemsToCollect[0])
+        {
+            var ftueTarget = target.gameObject.AddComponent<FTUETarget>();
+            ftueTarget.Init("Item" + count++);
+            target.Highlight(true);
+        }
     }
 
     private void OnAllItemsSpawned()
@@ -662,7 +674,7 @@ public partial class Spawner : MonoBehaviour
         }
 
         TriggerSingleRumble();
-        GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Shake);
+        // GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Shake);
     }
 
     #endregion

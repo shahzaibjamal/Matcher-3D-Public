@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,7 @@ public class FTUEManager : MonoBehaviour
     [Header("UI Canvas References")]
     [SerializeField] private Canvas ftueCanvas;
     [SerializeField] private Image maskImage;
-    [SerializeField] private GameObject tooltip;
+    [SerializeField] private TMP_Text tooltip;
     [SerializeField] private RectTransform pointerHand;
 
     [Header("Settings")]
@@ -21,7 +22,7 @@ public class FTUEManager : MonoBehaviour
     [SerializeField] private float bounceSpeed = 8f;
     [SerializeField] private float bounceDistance = 20f;
 
-    private Dictionary<string, RectTransform> _registeredTargets = new Dictionary<string, RectTransform>();
+    private Dictionary<string, Transform> _registeredTargets = new Dictionary<string, Transform>();
     private FTUESequence _activeSequence;
     private int _stepIndex;
     private Material _maskMat;
@@ -53,7 +54,6 @@ public class FTUEManager : MonoBehaviour
         {
             _waitingForSignal = false; // Unlock
             Advance();
-
         }
     }
     void Awake()
@@ -65,11 +65,11 @@ public class FTUEManager : MonoBehaviour
         maskImage.material = _maskMat;
 
         ftueCanvas.enabled = false;
-        tooltip.SetActive(false);
+        tooltip.gameObject.SetActive(false);
         pointerHand.gameObject.SetActive(false);
     }
 
-    public void Register(string id, RectTransform rect) => _registeredTargets[id] = rect;
+    public void Register(string id, Transform rect) => _registeredTargets[id] = rect;
     public void Unregister(string id) => _registeredTargets.Remove(id);
 
     public void PlayTutorial(string sequenceID)
@@ -77,7 +77,13 @@ public class FTUEManager : MonoBehaviour
         _activeSequence = database.GetByID(sequenceID);
         if (_activeSequence == null) return;
 
-        if (PlayerPrefs.HasKey("FTUE_COMPLETE_" + _activeSequence.name))
+        // if (PlayerPrefs.HasKey("FTUE_COMPLETE_" + _activeSequence.name))
+        // {
+        //     Debug.Log($"Sequence {_activeSequence.name} already finished. Skipping.");
+        //     return;
+        // }
+        // Direct List Check
+        if (IsSequenceCompleted(_activeSequence.name))
         {
             Debug.Log($"Sequence {_activeSequence.name} already finished. Skipping.");
             return;
@@ -93,50 +99,77 @@ public class FTUEManager : MonoBehaviour
     {
         FTUEStep step = _activeSequence.steps[_stepIndex];
         _waitingForSignal = !string.IsNullOrEmpty(step.RequiredEvent);
+
         // Hide everything while we prepare
-        tooltip.SetActive(false);
+        tooltip.gameObject.SetActive(false);
         pointerHand.gameObject.SetActive(false);
 
         if (step.ShowCutout)
         {
-            // 1. FOCUS MODE (Dark screen + Hole)
+            // Wait for target to be registered (important if objects are spawned dynamically)
             while (!_registeredTargets.ContainsKey(step.TargetID)) yield return null;
 
-            RectTransform target = _registeredTargets[step.TargetID];
-            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, target.position);
+            Transform target = _registeredTargets[step.TargetID];
+            Vector2 screenPos;
 
-            _maskMat.SetFloat(AlphaScaleID, 1f); // Make the dark overlay visible
+            // Determine if we are looking at a UI element or a 3D World Object
+            if (target is RectTransform rect)
+            {
+                // UI: Use the specialized utility for RectTransforms
+                screenPos = RectTransformUtility.WorldToScreenPoint(null, rect.position);
+            }
+            else
+            {
+                // 3D: Project the world position to the screen pixel coordinates
+                screenPos = Camera.main.WorldToScreenPoint(target.position);
+            }
+
+            // 1. Update Mask Material
+            _maskMat.SetFloat(AlphaScaleID, 1f); // Ensure overlay is visible
             _maskMat.SetVector(CenterID, new Vector2(screenPos.x / Screen.width, screenPos.y / Screen.height));
             _maskMat.SetFloat(SizeID, step.CustomSize > 0 ? step.CustomSize : 0.15f);
 
-            UpdatePointer(target, step.ShowHand ? step.HandDirection : PointerDirection.None);
+            // 2. Update Pointer
+            UpdatePointer(screenPos, step.ShowHand ? step.HandDirection : PointerDirection.None);
+
+            // 3. Update Logical Mask (for blocking clicks)
+            // We pass the Transform; the FTUEMask script should be updated to handle non-rects too
             maskImage.GetComponent<FTUEMask>().SetState(target, true);
             maskImage.gameObject.SetActive(true);
+
+            // 4. Position Tooltip
             tooltip.transform.position = (Vector3)screenPos + new Vector3(0, 150, 0);
         }
         else
         {
+            // NARRATIVE MODE
             maskImage.gameObject.SetActive(false);
-            // 2. NARRATIVE / INVISIBLE MODE
-            // The screen stays 100% clear. No dark overlay.
             _maskMat.SetFloat(AlphaScaleID, 0f);
-
-            // Disable the "Hole" logic in the mask so clicks land anywhere
             maskImage.GetComponent<FTUEMask>().SetState(null, false);
 
-            // Position tooltip in a standard "Dialogue" spot (e.g., bottom-center)
+            // Fixed dialogue position at the bottom of the screen
             tooltip.transform.position = new Vector2(Screen.width / 2, 200);
         }
 
-        tooltip.SetActive(true);
-        // tooltipText.text = step.message;
+        tooltip.gameObject.SetActive(true);
+        // If you have a text component, update it here:
+        tooltip.text = step.Message;
     }
-    private void UpdatePointer(RectTransform target, PointerDirection direction)
+
+    // Change this line
+    private void UpdatePointer(Vector2 screenPos, PointerDirection direction)
     {
-        if (direction == PointerDirection.None) return;
+        if (direction == PointerDirection.None)
+        {
+            pointerHand.gameObject.SetActive(false);
+            return;
+        }
 
         pointerHand.gameObject.SetActive(true);
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, target.position);
+
+        // REMOVE the line that re-calculates screenPos:
+        // Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, target.position);
+
         Vector2 offsetDir = Vector2.zero;
 
         switch (direction)
@@ -148,6 +181,7 @@ public class FTUEManager : MonoBehaviour
         }
 
         if (_pointerRoutine != null) StopCoroutine(_pointerRoutine);
+        // Use the screenPos passed in from ExecuteStep
         _pointerRoutine = StartCoroutine(AnimatePointer((Vector3)screenPos + (Vector3)(offsetDir * handOffset), offsetDir));
     }
 
@@ -187,9 +221,18 @@ public class FTUEManager : MonoBehaviour
         if (_activeSequence != null)
         {
             // Mark this sequence as finished forever
-            PlayerPrefs.SetInt("FTUE_COMPLETE_" + _activeSequence.name, 1);
-            PlayerPrefs.Save();
+            // PlayerPrefs.SetInt("FTUE_COMPLETE_" + _activeSequence.name, 1);
+            // PlayerPrefs.Save();
+            string seqName = _activeSequence.name;
+            if (!IsSequenceCompleted(seqName))
+            {
+                GameManager.Instance.SaveData.CompletedFTUESequences.Add(seqName);
+
+                // Trigger your save logic here if necessary
+                GameManager.Instance.SaveGame();
+            }
         }
+
         ftueCanvas.enabled = false;
         _activeSequence = null;
         if (_pointerRoutine != null) StopCoroutine(_pointerRoutine);
@@ -201,5 +244,25 @@ public class FTUEManager : MonoBehaviour
             return false;
 
         return _activeSequence.steps[_stepIndex].TargetID == id;
+    }
+    /// <summary>
+    /// Checks if a specific sequence has ever been completed.
+    /// </summary>
+    public bool IsSequenceCompleted(string sequenceID)
+    {
+        // We use the same string format as in EndTutorial and PlayTutorial
+        // return PlayerPrefs.HasKey("FTUE_COMPLETE_" + sequenceID);
+        if (GameManager.Instance?.SaveData?.CompletedFTUESequences == null) return false;
+
+        // Simple List lookup
+        return GameManager.Instance.SaveData.CompletedFTUESequences.Contains(sequenceID);
+    }
+
+    /// <summary>
+    /// Returns true if there is an active tutorial currently appearing on screen.
+    /// </summary>
+    public bool IsTutorialActive()
+    {
+        return ftueCanvas != null && ftueCanvas.enabled;
     }
 }

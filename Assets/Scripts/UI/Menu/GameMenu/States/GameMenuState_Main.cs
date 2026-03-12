@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using TS.LocalizationSystem;
@@ -66,6 +64,14 @@ public class GameMenuBaseState_Main : GameMenuBaseState
                 CheckWin();
             });
 
+
+            // FTUE //
+            if (!FTUEManager.Instance.IsSequenceCompleted("Opening") && data.Id == DataManager.Instance.Metadata.Levels[0].ItemsToCollect[0])
+            {
+                var target = view.gameObject.AddComponent<FTUETarget>();
+                target.Init("ItemView");
+            }
+
             _activeViews.Add(view);
         }
         SetupPowerUps();
@@ -75,15 +81,20 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     public void SetupPowerUps()
     {
         // Create a button for every type defined in the Enum
-        foreach (PowerUpType type in Enum.GetValues(typeof(PowerUpType)))
+        foreach (PowerUpType type in System.Enum.GetValues(typeof(PowerUpType)))
         {
+            int amount = GameManager.Instance.SaveData.Inventory.GetPowerUpCount(type);
+
             PowerUpButton btn = GameObject.Instantiate(View.PowerUpPrefab, View.PowerUpContainer);
 
             // Fetch the specific sprite for this type from our SO database
             Sprite icon = View.PowerUpVisualDatabase != null ? View.PowerUpVisualDatabase.GetIcon(type) : null;
-            int amount = GameManager.Instance.SaveData.Inventory.GetPowerUpCount(type);
             btn.Initialize(type, amount, icon);
             _activeButtons.Add(btn);
+
+
+            var ftueTarget = btn.gameObject.AddComponent<FTUETarget>();
+            ftueTarget.Init(type.ToString());
         }
     }
 
@@ -142,6 +153,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
     private void OnSpawnerInitialized()
     {
+        Debug.LogError("Called");
         View.CurtainContainer.SetActive(true);
         View.BlackCurtain.alpha = 1.0f;
         float screenWidth = View.GetComponent<RectTransform>().rect.width;
@@ -154,5 +166,31 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         _curtainSeq.Append(View.LeftCurtain.DOAnchorPosX(View.useOutward ? -View.outward : -screenWidth, 0.6f).SetEase(Ease.InBack));
         _curtainSeq.Join(View.RightCurtain.DOAnchorPosX(View.useOutward ? View.outward : screenWidth, 0.6f).SetEase(Ease.InBack));
         _curtainSeq.Join(View.BlackCurtain.DOFade(0.0f, 0.6f).SetEase(Ease.InBack));
+        _curtainSeq.OnComplete(() =>
+        {
+            CheckForFTUE();
+        });
+    }
+
+    private void CheckForFTUE()
+    {
+
+        if (!FTUEManager.Instance.IsSequenceCompleted("Opening") && GameManager.Instance.SaveData.CurrentLevelID == "level_01")
+        {
+            FTUEManager.Instance.PlayTutorial("Opening");
+        }
+        if (!FTUEManager.Instance.IsSequenceCompleted("Hint") && GameManager.Instance.SaveData.CurrentLevelID == "level_03")
+        {
+            FTUEManager.Instance.PlayTutorial("Hint");
+        }
+        if (!FTUEManager.Instance.IsSequenceCompleted("Shake") && GameManager.Instance.SaveData.CurrentLevelID == "level_04")
+        {
+            FTUEManager.Instance.PlayTutorial("Shake");
+        }
+        if (!FTUEManager.Instance.IsSequenceCompleted("Magnet") && GameManager.Instance.SaveData.CurrentLevelID == "level_05")
+        {
+            FTUEManager.Instance.PlayTutorial("Magnet");
+        }
+
     }
 }

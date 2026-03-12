@@ -32,7 +32,6 @@ public class ItemView : MonoBehaviour
         GameEvents.OnRequestMatchResolveEvent -= HandleMatch;
     }
 
-
     private void UpdateUI()
     {
         AssetLoader.Instance.LoadIcon(ItemData.IconName, (sprite) =>

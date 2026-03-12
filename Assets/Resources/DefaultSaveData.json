@@ -8,10 +8,10 @@
         "Gold": 500,
         "Stars": 0,
         "PowerUps": {
-            "Magnet": 3,
-            "Shake": 3,
-            "Hint": 5,
-            "Undo": 10
+            "Magnet": -1,
+            "Shake": -1,
+            "Hint": -1,
+            "Undo": -1
         }
     },
     "LevelHistory": [

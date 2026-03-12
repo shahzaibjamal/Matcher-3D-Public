@@ -1,34 +1,49 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.EventSystems; // Required for UI compatibility
 
-// IPointerClickHandler allows this script to detect clicks directly
 public class FTUETarget : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private string targetID;
 
-    void OnEnable()
+    // --- 1. THE SHARED LOGIC ---
+    // This is the single "Gatekeeper" for advancing the tutorial
+    public void OnObjectClicked()
     {
-        if (FTUEManager.Instance != null)
-            FTUEManager.Instance.Register(targetID, GetComponent<RectTransform>());
-    }
-
-    void OnDisable()
-    {
-        if (FTUEManager.Instance != null)
-            FTUEManager.Instance.Unregister(targetID);
-    }
-
-    // This fires when the user clicks the element (even if it's a Button)
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        // Check if this is the target the Manager is currently looking for
         if (FTUEManager.Instance != null && FTUEManager.Instance.IsCurrentTarget(targetID))
         {
-            // Only advance if the current step requires a specific click
             if (FTUEManager.Instance.CurrentStepRequiresClick())
             {
                 FTUEManager.Instance.Advance();
             }
         }
+    }
+
+    // --- 2. THE UI BRIDGE ---
+    // Automatically called by Unity when a UI element (with a Graphic component) is clicked
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // Simply redirect to the shared logic
+        OnObjectClicked();
+    }
+
+    // --- 3. REGISTRATION ---
+    // This ensures the FTUEManager knows where this object is (2D or 3D)
+    private void OnEnable()
+    {
+        if (FTUEManager.Instance != null && !string.IsNullOrEmpty(targetID))
+            FTUEManager.Instance.Register(targetID, transform);
+    }
+
+    private void OnDisable()
+    {
+        if (FTUEManager.Instance != null)
+            FTUEManager.Instance.Unregister(targetID);
+    }
+
+    public void Init(string id)
+    {
+        targetID = id;
+        // Re-register if the ID is assigned dynamically
+        FTUEManager.Instance?.Register(targetID, transform);
     }
 }

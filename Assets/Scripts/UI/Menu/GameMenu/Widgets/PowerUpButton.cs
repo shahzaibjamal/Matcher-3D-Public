@@ -8,6 +8,7 @@ public class PowerUpButton : MonoBehaviour
     [SerializeField] private Button _button;
     [SerializeField] private TextMeshProUGUI _countText;
     [SerializeField] private Image _icon;
+    [SerializeField] private CanvasGroup _canvasGroup;
 
     private Sprite _sprite;
     private int _amount;
@@ -39,6 +40,8 @@ public class PowerUpButton : MonoBehaviour
         _button.interactable = _amount > 0;
         _icon.sprite = _sprite;
         // You could also change the icon based on the type here
+
+        _canvasGroup.alpha = _amount < 0 ? 0 : 1;
     }
 
     private void OnButtonClicked()
@@ -77,6 +80,7 @@ public class PowerUpButton : MonoBehaviour
         if (_type == type)
         {
             _amount--;
+            Debug.LogError("Amount magnet " + _amount + " type- " + type);
             // 1. Deduct via delta logic
             GameEvents.OnPowerUpAmountChangeEvent?.Invoke(_type, -1);
             RefreshUI();

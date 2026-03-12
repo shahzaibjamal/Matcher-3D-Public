@@ -164,6 +164,11 @@ public class TrayView : MonoBehaviour
 
             Destroy(source.gameObject);
             onComplete?.Invoke();
+
+            if (!FTUEManager.Instance.IsSequenceCompleted("Undo") && GameManager.Instance.SaveData.CurrentLevelID == "level_02")
+            {
+                FTUEManager.Instance.PlayTutorial("Undo");
+            }
         });
     }
 

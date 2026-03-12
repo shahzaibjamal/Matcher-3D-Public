@@ -17,7 +17,7 @@ public class GameSaveData
 {
     public string CurrentLevelID; // The last level the player was on
     public List<LevelProgress> LevelHistory = new List<LevelProgress>();
-
+    public List<string> CompletedFTUESequences = new List<string>();
     public Inventory Inventory { get; private set; } = new Inventory();
     // Global player stats
     public int TotalCoins;
