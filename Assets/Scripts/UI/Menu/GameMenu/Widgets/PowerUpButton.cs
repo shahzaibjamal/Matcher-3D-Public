@@ -80,7 +80,6 @@ public class PowerUpButton : MonoBehaviour
         if (_type == type)
         {
             _amount--;
-            Debug.LogError("Amount magnet " + _amount + " type- " + type);
             // 1. Deduct via delta logic
             GameEvents.OnPowerUpAmountChangeEvent?.Invoke(_type, -1);
             RefreshUI();

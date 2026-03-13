@@ -32,6 +32,7 @@ public class FTUEManager : MonoBehaviour
     // Shader Property IDs
     private static readonly int CenterID = Shader.PropertyToID("_Center");
     private static readonly int SizeID = Shader.PropertyToID("_Size");
+    private static readonly int AspectID = Shader.PropertyToID("_Aspect");
     private static readonly int AlphaScaleID = Shader.PropertyToID("_AlphaScale"); // New: Controls hole visibility
     private bool _waitingForSignal;
 
@@ -67,6 +68,8 @@ public class FTUEManager : MonoBehaviour
         ftueCanvas.enabled = false;
         tooltip.gameObject.SetActive(false);
         pointerHand.gameObject.SetActive(false);
+        _maskMat.SetFloat(AspectID, (float)Screen.width / (float)Screen.height);
+
     }
 
     public void Register(string id, Transform rect) => _registeredTargets[id] = rect;
@@ -77,11 +80,6 @@ public class FTUEManager : MonoBehaviour
         _activeSequence = database.GetByID(sequenceID);
         if (_activeSequence == null) return;
 
-        // if (PlayerPrefs.HasKey("FTUE_COMPLETE_" + _activeSequence.name))
-        // {
-        //     Debug.Log($"Sequence {_activeSequence.name} already finished. Skipping.");
-        //     return;
-        // }
         // Direct List Check
         if (IsSequenceCompleted(_activeSequence.name))
         {
@@ -221,8 +219,6 @@ public class FTUEManager : MonoBehaviour
         if (_activeSequence != null)
         {
             // Mark this sequence as finished forever
-            // PlayerPrefs.SetInt("FTUE_COMPLETE_" + _activeSequence.name, 1);
-            // PlayerPrefs.Save();
             string seqName = _activeSequence.name;
             if (!IsSequenceCompleted(seqName))
             {
@@ -251,7 +247,6 @@ public class FTUEManager : MonoBehaviour
     public bool IsSequenceCompleted(string sequenceID)
     {
         // We use the same string format as in EndTutorial and PlayTutorial
-        // return PlayerPrefs.HasKey("FTUE_COMPLETE_" + sequenceID);
         if (GameManager.Instance?.SaveData?.CompletedFTUESequences == null) return false;
 
         // Simple List lookup

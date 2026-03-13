@@ -153,13 +153,12 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
     private void OnSpawnerInitialized()
     {
-        Debug.LogError("Called");
         View.CurtainContainer.SetActive(true);
         View.BlackCurtain.alpha = 1.0f;
         float screenWidth = View.GetComponent<RectTransform>().rect.width;
 
         // 2. Create the Sequence
-        Sequence _curtainSeq = DOTween.Sequence();
+        _curtainSeq = DOTween.Sequence();
         View.LeftCurtain.anchoredPosition = _leftCurtainPosition;
         View.RightCurtain.anchoredPosition = _rightCurtainPosition;
 
@@ -174,7 +173,6 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
     private void CheckForFTUE()
     {
-
         if (!FTUEManager.Instance.IsSequenceCompleted("Opening") && GameManager.Instance.SaveData.CurrentLevelID == "level_01")
         {
             FTUEManager.Instance.PlayTutorial("Opening");
@@ -191,6 +189,5 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         {
             FTUEManager.Instance.PlayTutorial("Magnet");
         }
-
     }
 }

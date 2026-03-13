@@ -19,7 +19,7 @@ MonoBehaviour:
     RequireClick: 0
     ShowCutout: 1
     ShowHand: 1
-    CustomSize: 0.05
+    CustomSize: 0.1
     HandDirection: 2
   - TargetID: Item1
     RequiredEvent: 
@@ -27,7 +27,7 @@ MonoBehaviour:
     RequireClick: 1
     ShowCutout: 1
     ShowHand: 1
-    CustomSize: 0.024
+    CustomSize: 0.1
     HandDirection: 1
   - TargetID: Item2
     RequiredEvent: 
@@ -35,7 +35,7 @@ MonoBehaviour:
     RequireClick: 1
     ShowCutout: 1
     ShowHand: 1
-    CustomSize: 0.024
+    CustomSize: 0.1
     HandDirection: 3
   - TargetID: Item3
     RequiredEvent: 
@@ -43,5 +43,5 @@ MonoBehaviour:
     RequireClick: 1
     ShowCutout: 1
     ShowHand: 1
-    CustomSize: 0.024
+    CustomSize: 0.1
     HandDirection: 4

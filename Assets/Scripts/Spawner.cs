@@ -491,7 +491,7 @@ public partial class Spawner : MonoBehaviour
 
     private Vector3 CalculateRandomSpawnPos()
     {
-        float padding = 0.5f; // Keep items away from the wall edge
+        float padding = 0.0f; // Keep items away from the wall edge
 
         // Use the calculated max bounds
         float x = UnityEngine.Random.Range(-_spawnXMax + padding, _spawnXMax - padding);

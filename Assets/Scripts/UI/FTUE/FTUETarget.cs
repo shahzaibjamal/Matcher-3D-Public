@@ -5,6 +5,11 @@ public class FTUETarget : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private string targetID;
 
+    public string TargetID
+    {
+        get { return targetID; }
+        private set { targetID = value; }
+    }
     // --- 1. THE SHARED LOGIC ---
     // This is the single "Gatekeeper" for advancing the tutorial
     public void OnObjectClicked()

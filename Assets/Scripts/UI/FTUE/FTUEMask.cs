@@ -1,65 +1,138 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using System.Collections;
+using System;
 
 public class FTUEMask : MonoBehaviour, ICanvasRaycastFilter, IPointerClickHandler
 {
-    private Transform _target; // Changed from RectTransform to Transform
+    private Material _maskMat;
+    private Transform _target;
     private bool _isCutoutActive;
-    private float _customRadius = 0.15f; // Should match your shader size
 
-    /// <summary>
-    /// Configures whether the mask should allow clicks through a specific hole.
-    /// </summary>
+    [Header("Animation Settings")]
+    [SerializeField] private float _animationDuration = 0.6f;
+    [SerializeField] private float _startSizeMultiplier = 3.0f;
+    // Set a valid default preset here
+    [SerializeField] private AnimationCurve _shrinkCurve = AnimationCurve.Linear(0, 0, 1, 1);
+
+    private float _currentRadius;
+    private float _finalRadius = 0.15f;
+
+    [Tooltip("1,0 pins left. -1,0 pins right. 0,1 pins bottom.")]
+    [SerializeField] private Vector2 _pinDirection = new Vector2(1, 0);
+    private static readonly int CenterID = Shader.PropertyToID("_Center");
+    private static readonly int SizeID = Shader.PropertyToID("_Size");
+    private static readonly int AspectID = Shader.PropertyToID("_Aspect");
+
+    private void Awake() => _maskMat = GetComponent<Image>().material;
+
     public void SetState(Transform target, bool useCutout, float size = 0.15f)
     {
         _target = target;
         _isCutoutActive = useCutout;
-        _customRadius = size;
+        _finalRadius = size;
+        _maskMat = GetComponent<Image>().material;
+        if (_isCutoutActive)
+        {
+            StopAllCoroutines();
+            StartCoroutine(AnimatePinnedHole());
+        }
+        InputManager.Instance.RegisterKey(KeyCode.X, () =>
+        {
+            StopAllCoroutines();
+            StartCoroutine(AnimatePinnedHole());
+        });
     }
 
-    /// <summary>
-    /// Unity's internal check to see if a click "hits" this UI element.
-    /// </summary>
+    private IEnumerator AnimatePinnedHole()
+    {
+        float elapsed = 0f;
+        float startRadius = _finalRadius * _startSizeMultiplier;
+
+        while (elapsed < _animationDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = _shrinkCurve.Evaluate(elapsed / _animationDuration);
+            _currentRadius = Mathf.Lerp(startRadius, _finalRadius, t);
+
+            UpdateShader(_currentRadius);
+            yield return null;
+        }
+        _currentRadius = _finalRadius;
+    }
+
+    private void Update()
+    {
+        if (_isCutoutActive && _target != null) UpdateShader(_currentRadius);
+    }
+
+    private void UpdateShader(float animatedRadius)
+    {
+        if (_maskMat == null || _target == null) return;
+
+        float aspect = (float)Screen.width / Screen.height;
+        Vector2 uvTarget = GetTargetUV(); // 0 to 1 range
+        Vector2 screenCenter = new Vector2(0.5f, 0.5f);
+
+        // 1. Direction from Target to Screen Center
+        // This "pulls" the large circle's center toward the middle of the screen.
+        Vector2 shiftDir = (screenCenter - uvTarget).normalized;
+
+        // 2. The distance the center needs to travel
+        // When animatedRadius == _finalRadius, offset is 0 (Center is exactly on Target).
+        float offsetMagnitude = animatedRadius - _finalRadius;
+
+        // 3. Apply the shift
+        Vector2 offset = shiftDir * offsetMagnitude;
+
+        // Correct for the Shader's Aspect multiplication on the X axis
+        offset.x /= aspect;
+
+        Vector2 shiftedCenter = uvTarget + offset;
+
+        // 4. Update Shader
+        _maskMat.SetVector(CenterID, shiftedCenter);
+        _maskMat.SetFloat(AspectID, aspect);
+        _maskMat.SetFloat(SizeID, animatedRadius);
+    }
+    private Vector2 GetTargetUV()
+    {
+        Vector2 screenPos = GetTargetScreenPoint();
+        return new Vector2(screenPos.x / Screen.width, screenPos.y / Screen.height);
+    }
+
+
     public bool IsRaycastLocationValid(Vector2 sp, Camera eventCamera)
     {
-        // 1. Narrative Mode / No Target: Block everything
         if (!_isCutoutActive || _target == null) return true;
 
-        bool isInsideHole = false;
+        float aspect = (float)Screen.width / Screen.height;
+        Vector2 uvClick = new Vector2(sp.x / Screen.width, sp.y / Screen.height);
+        Vector2 uvTarget = GetTargetUV();
 
-        // 2. Logic for UI Elements
+        float offsetMagnitude = _currentRadius - _finalRadius;
+        Vector2 offset = _pinDirection.normalized * offsetMagnitude;
+        offset.x /= aspect;
+
+        Vector2 shiftedCenter = uvTarget + offset;
+
+        uvClick.x *= aspect;
+        shiftedCenter.x *= aspect;
+
+        return Vector2.Distance(uvClick, shiftedCenter) > _currentRadius;
+    }
+
+    private Vector2 GetTargetScreenPoint()
+    {
         if (_target is RectTransform rect)
-        {
-            isInsideHole = RectTransformUtility.RectangleContainsScreenPoint(rect, sp, eventCamera);
-        }
-        // 3. Logic for 3D Objects
-        else
-        {
-            // Convert 3D target to Screen Space
-            Vector2 screenPoint = Camera.main.WorldToScreenPoint(_target.position);
-
-            // Convert click pixel coordinates to Normalized (0-1) to match shader logic
-            Vector2 normalizedClick = new Vector2(sp.x / Screen.width, sp.y / Screen.height);
-            Vector2 normalizedTarget = new Vector2(screenPoint.x / Screen.width, screenPoint.y / Screen.height);
-
-            // Check if distance between click and target is within the "Hole" radius
-            // We adjust for Aspect Ratio to keep the hole circular
-            float aspect = (float)Screen.width / Screen.height;
-            Vector2 diff = normalizedClick - normalizedTarget;
-            diff.x *= aspect;
-
-            isInsideHole = diff.magnitude < _customRadius;
-        }
-
-        // Return FALSE (pass through) if inside, TRUE (block) if outside
-        return !isInsideHole;
+            return RectTransformUtility.WorldToScreenPoint(null, rect.position);
+        return Camera.main.WorldToScreenPoint(_target.position);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!FTUEManager.Instance.CurrentStepRequiresClick())
-        {
+        if (FTUEManager.Instance != null && !FTUEManager.Instance.CurrentStepRequiresClick())
             FTUEManager.Instance.Advance();
-        }
     }
 }

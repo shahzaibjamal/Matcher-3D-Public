@@ -75,6 +75,14 @@ public class ClickableItem : MonoBehaviour, IClickable
 
     public void OnHandleClick(RaycastHit hitInfo)
     {
+        if (IsActiveOpeningTutorial())
+        {
+            if (IsFTUETarget())
+            {
+                HandleLogic();
+            }
+            return;
+        }
         // If tray is full, do NOT process the click logic (sending to tray)
         if (!_isTrayFillable)
         {
@@ -90,7 +98,6 @@ public class ClickableItem : MonoBehaviour, IClickable
         if (ItemData == null) return;
         SetLayerRecursive(gameObject, _defaultLayer);
         OnItemClicked?.Invoke(ItemData, transform);
-        CheckFTUE();
     }
 
     public void Highlight(bool isHinted)
@@ -171,13 +178,18 @@ public class ClickableItem : MonoBehaviour, IClickable
         }
     }
 
-    private void CheckFTUE()
+    private bool IsActiveOpeningTutorial()
     {
-        if (!FTUEManager.Instance.IsSequenceCompleted("Opening"))
-        {
-            // var target = view.gameObject.AddComponent<FTUETarget>();
-            // target.TargetID = "ItemView";
-        }
+        return FTUEManager.Instance != null &&
+            FTUEManager.Instance.IsTutorialActive() &&
+            !FTUEManager.Instance.IsSequenceCompleted("Opening");
+    }
+
+    private bool IsFTUETarget()
+    {
+        return IsActiveOpeningTutorial() &&
+            TryGetComponent<FTUETarget>(out var target) &&
+            FTUEManager.Instance.IsCurrentTarget(target.TargetID);
     }
 
     /// <summary>
@@ -185,8 +197,17 @@ public class ClickableItem : MonoBehaviour, IClickable
     /// </summary>
     private bool IsInteractable()
     {
-        // If the first collider is disabled, we assume the whole item is "locked"
-        return _colliders != null && _colliders.Length > 0 && _colliders[0].enabled;
+        bool hasColliders = _colliders != null && _colliders.Length > 0 && _colliders[0].enabled;
+        if (!hasColliders) return false;
+
+        // If we are in the Opening tutorial, ONLY the target is interactable
+        if (IsActiveOpeningTutorial())
+        {
+            return IsFTUETarget();
+        }
+
+        // Otherwise, allow normal interaction
+        return true;
     }
 
 #if UNITY_EDITOR
