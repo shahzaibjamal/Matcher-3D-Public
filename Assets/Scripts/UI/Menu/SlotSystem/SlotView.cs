@@ -18,11 +18,14 @@ public class SlotView : MonoBehaviour
     public int Index => _index;
 
     private Vector3 _originalSlotPos; // Store the home position
+    private Color _originalColor; // Store original BG color
 
     private void Awake()
     {
         // Capture the starting position on start
         _originalSlotPos = _backgroundImage.rectTransform.localPosition;
+        if (_backgroundImage != null)
+            _originalColor = _backgroundImage.color;
     }
     public void SetItemDataOnly(ItemData itemData)
     {
@@ -92,11 +95,39 @@ public class SlotView : MonoBehaviour
         icon.transform.DOKill();
         _backgroundImage.rectTransform.DOKill();        // transform.DOKill();
         _backgroundImage.rectTransform.localPosition = _originalSlotPos;
+        _backgroundImage.color = _originalColor; // Reset color
     }
 
     public void PlayPoof()
     {
         _particlesPoof.Play();
+    }
+
+    public void Bounce(float strength = 25f, int vibrations = 5)
+    {
+        _backgroundImage.rectTransform.DOKill(); // Prevent overlapping bounces
+        _backgroundImage.rectTransform.localPosition = _originalSlotPos;
+
+        _backgroundImage.rectTransform
+            .DOPunchPosition(new Vector3(0, strength, 0), 0.5f, vibrations, 0.5f)
+            .SetId("SlotView: Bounce");
+    }
+
+    /// <summary>
+    /// Tweens color from Base -> Red -> Base.
+    /// Useful for showing "Full Tray" or "Invalid Action"
+    /// </summary>
+    public void FlashErrorColor(float duration = 0.4f, bool isSound = true)
+    {
+        _backgroundImage.DOKill(); // Stop any current color tweens
+
+        // Sequence: Go to red quickly, then back to original
+        Sequence colorSeq = DOTween.Sequence();
+        colorSeq.Append(_backgroundImage.DOColor(Color.red, duration * 0.5f).SetEase(Ease.OutQuad));
+        colorSeq.Append(_backgroundImage.DOColor(_originalColor, duration * 0.5f).SetEase(Ease.InQuad));
+        colorSeq.SetId("SlotView: ColorFlash");
+        if (isSound)
+            SoundController.Instance.PlaySoundEffect("deny");
     }
     private int debugFontSize = 38; // adjustable font size
 

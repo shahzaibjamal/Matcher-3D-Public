@@ -77,6 +77,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         {
             View.ConfettiLeft.Play();
             View.ConfettiRight.Play();
+            View.ConfettiTop.Play();
             SoundController.Instance.PlaySoundEffect("confetti");
             View.ContinueButton.interactable = true;
             View.GoldMulitplierButton.interactable = true;

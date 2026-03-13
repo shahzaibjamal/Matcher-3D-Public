@@ -695,7 +695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 2100000, guid: c31e08056eb4bfa44860f7c690ea340f, type: 2}
-  m_Color: {r: 0.36477977, g: 0.36477977, b: 0.36477977, a: 0.7921569}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.8862745}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -732,8 +732,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4eef19f3dc5a248a7c29e171dee3d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FTUEMask
-  showDebugHole: 1
-  debugCircleVisual: {fileID: 318721086}
+  _animationDuration: 0.5
+  _startSizeMultiplier: 2
+  _shrinkCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _pinDirection: {x: 1, y: 0}
 --- !u!1 &594819792
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,7 +1195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0001335144
+      value: 0.0001411438
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1988,12 +2013,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a24e83596d273454d9183aa099b7fc40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FTUEManager
+  debugUpdateOffsets: 1
   database: {fileID: 11400000, guid: 8870a7ac7a2c23945ae7233a5727dfe1, type: 2}
   ftueCanvas: {fileID: 1045726394}
-  maskImage: {fileID: 443935055}
-  tooltip: {fileID: 867075492}
+  maskScript: {fileID: 443935057}
+  tooltipContainer: {fileID: 867075490}
+  tooltipText: {fileID: 867075492}
+  tooltipOffset: {x: 0, y: 353.6}
+  screenPadding: 350.1
   pointerHand: {fileID: 1482744681}
-  handOffset: 120
+  handOffset: {x: 0, y: 196.7}
   bounceSpeed: 8
   bounceDistance: 20
 --- !u!114 &1045726392
@@ -2994,12 +3023,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a24e83596d273454d9183aa099b7fc40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FTUEManager
+  debugUpdateOffsets: 1
   database: {fileID: 11400000, guid: 8870a7ac7a2c23945ae7233a5727dfe1, type: 2}
   ftueCanvas: {fileID: 594819795}
-  maskImage: {fileID: 0}
-  tooltip: {fileID: 0}
+  maskScript: {fileID: 0}
+  tooltipContainer: {fileID: 0}
+  tooltipText: {fileID: 0}
+  tooltipOffset: {x: 0, y: 150}
+  screenPadding: 50
   pointerHand: {fileID: 0}
-  handOffset: 120
+  handOffset: {x: 0, y: 80}
   bounceSpeed: 8
   bounceDistance: 20
 --- !u!4 &2070371520

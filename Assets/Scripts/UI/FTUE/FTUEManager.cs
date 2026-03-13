@@ -8,256 +8,340 @@ public class FTUEManager : MonoBehaviour
 {
     public static FTUEManager Instance { get; private set; }
 
-    [Header("Data & Database")]
+    [SerializeField] private bool debugUpdateOffsets = true;
+    [Header("References")]
     [SerializeField] private FTUEDatabase database;
-
-    [Header("UI Canvas References")]
     [SerializeField] private Canvas ftueCanvas;
-    [SerializeField] private Image maskImage;
-    [SerializeField] private TMP_Text tooltip;
-    [SerializeField] private RectTransform pointerHand;
+    [SerializeField] private FTUEMask maskScript;
 
-    [Header("Settings")]
-    [SerializeField] private float handOffset = 120f;
-    [SerializeField] private float bounceSpeed = 8f;
-    [SerializeField] private float bounceDistance = 20f;
+    [Header("Smart Tooltip")]
+    [SerializeField] private RectTransform tooltipContainer;
+    [SerializeField] private TMP_Text tooltipText;
+    [SerializeField] private Vector2 tooltipOffset = new Vector2(0, 150);
+    [SerializeField] private float screenPadding = 50f;
+
+    [Header("Smart Pointer")]
+    [SerializeField] private RectTransform pointerHand;
+    [SerializeField] private Vector2 handOffset = new Vector2(0, 80);
+    [SerializeField] private float bounceSpeed = 5f;
+    [SerializeField] private float bounceDistance = 30f;
 
     private Dictionary<string, Transform> _registeredTargets = new Dictionary<string, Transform>();
     private FTUESequence _activeSequence;
     private int _stepIndex;
-    private Material _maskMat;
     private Coroutine _activeStepRoutine;
-    private Coroutine _pointerRoutine;
-
-    // Shader Property IDs
-    private static readonly int CenterID = Shader.PropertyToID("_Center");
-    private static readonly int SizeID = Shader.PropertyToID("_Size");
-    private static readonly int AspectID = Shader.PropertyToID("_Aspect");
-    private static readonly int AlphaScaleID = Shader.PropertyToID("_AlphaScale"); // New: Controls hole visibility
     private bool _waitingForSignal;
+    // Caching for runtime tuning
+    private Vector2 _currentTargetScreenPos;
+    private PointerDirection _currentDirection;
 
-    void OnEnable()
-    {
-        FTUEEvents.OnSignal += HandleSignal;
-    }
-
-    void OnDisable()
-    {
-        FTUEEvents.OnSignal -= HandleSignal;
-    }
-
-    private void HandleSignal(string signalName)
-    {
-        if (!_waitingForSignal || _activeSequence == null) return;
-
-        // Check if this signal matches the requirement of the current step
-        if (_activeSequence.steps[_stepIndex].RequiredEvent == signalName)
-        {
-            _waitingForSignal = false; // Unlock
-            Advance();
-        }
-    }
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        _maskMat = Instantiate(maskImage.material);
-        maskImage.material = _maskMat;
-
         ftueCanvas.enabled = false;
-        tooltip.gameObject.SetActive(false);
+        tooltipContainer.gameObject.SetActive(false);
         pointerHand.gameObject.SetActive(false);
-        _maskMat.SetFloat(AspectID, (float)Screen.width / (float)Screen.height);
-
     }
 
-    public void Register(string id, Transform rect) => _registeredTargets[id] = rect;
-    public void Unregister(string id) => _registeredTargets.Remove(id);
-
-    public void PlayTutorial(string sequenceID)
+    private void Update()
     {
-        _activeSequence = database.GetByID(sequenceID);
-        if (_activeSequence == null) return;
-
-        // Direct List Check
-        if (IsSequenceCompleted(_activeSequence.name))
+        // This allows you to slide the Offset values in the Inspector 
+        // and see the Tooltip/Hand move instantly during Play Mode.
+        if (debugUpdateOffsets && IsTutorialActive() && _activeSequence != null)
         {
-            Debug.Log($"Sequence {_activeSequence.name} already finished. Skipping.");
-            return;
+            var step = _activeSequence.steps[_stepIndex];
+            if (step.ShowCutout)
+            {
+                PositionSmartPointer(_currentTargetScreenPos, _currentDirection);
+                PositionSmartTooltip(_currentTargetScreenPos, step.Message, _currentDirection);
+            }
         }
-        _stepIndex = 0;
-        ftueCanvas.enabled = true;
-
-        if (_activeStepRoutine != null) StopCoroutine(_activeStepRoutine);
-        _activeStepRoutine = StartCoroutine(ExecuteStep());
     }
 
-    private IEnumerator ExecuteStep()
+    private IEnumerator ExecuteStepRoutine()
     {
         FTUEStep step = _activeSequence.steps[_stepIndex];
         _waitingForSignal = !string.IsNullOrEmpty(step.RequiredEvent);
 
-        // Hide everything while we prepare
-        tooltip.gameObject.SetActive(false);
-        pointerHand.gameObject.SetActive(false);
-
         if (step.ShowCutout)
         {
-            // Wait for target to be registered (important if objects are spawned dynamically)
             while (!_registeredTargets.ContainsKey(step.TargetID)) yield return null;
-
             Transform target = _registeredTargets[step.TargetID];
-            Vector2 screenPos;
 
-            // Determine if we are looking at a UI element or a 3D World Object
-            if (target is RectTransform rect)
-            {
-                // UI: Use the specialized utility for RectTransforms
-                screenPos = RectTransformUtility.WorldToScreenPoint(null, rect.position);
-            }
-            else
-            {
-                // 3D: Project the world position to the screen pixel coordinates
-                screenPos = Camera.main.WorldToScreenPoint(target.position);
-            }
+            maskScript.SetState(target, true, step.CustomSize > 0 ? step.CustomSize : 0.15f);
 
-            // 1. Update Mask Material
-            _maskMat.SetFloat(AlphaScaleID, 1f); // Ensure overlay is visible
-            _maskMat.SetVector(CenterID, new Vector2(screenPos.x / Screen.width, screenPos.y / Screen.height));
-            _maskMat.SetFloat(SizeID, step.CustomSize > 0 ? step.CustomSize : 0.15f);
+            _currentTargetScreenPos = GetTargetScreenPoint(target);
+            _currentDirection = step.HandDirection;
 
-            // 2. Update Pointer
-            UpdatePointer(screenPos, step.ShowHand ? step.HandDirection : PointerDirection.None);
-
-            // 3. Update Logical Mask (for blocking clicks)
-            // We pass the Transform; the FTUEMask script should be updated to handle non-rects too
-            maskImage.GetComponent<FTUEMask>().SetState(target, true);
-            maskImage.gameObject.SetActive(true);
-
-            // 4. Position Tooltip
-            tooltip.transform.position = (Vector3)screenPos + new Vector3(0, 150, 0);
+            PositionSmartPointer(_currentTargetScreenPos, _currentDirection);
+            PositionSmartTooltip(_currentTargetScreenPos, step.Message, _currentDirection);
         }
         else
         {
-            // NARRATIVE MODE
-            maskImage.gameObject.SetActive(false);
-            _maskMat.SetFloat(AlphaScaleID, 0f);
-            maskImage.GetComponent<FTUEMask>().SetState(null, false);
-
-            // Fixed dialogue position at the bottom of the screen
-            tooltip.transform.position = new Vector2(Screen.width / 2, 200);
+            maskScript.SetState(null, false);
+            PositionNarrativeTooltip(step.Message);
+            pointerHand.gameObject.SetActive(false);
         }
-
-        tooltip.gameObject.SetActive(true);
-        // If you have a text component, update it here:
-        tooltip.text = step.Message;
     }
 
-    // Change this line
-    private void UpdatePointer(Vector2 screenPos, PointerDirection direction)
+    private void PositionSmartTooltip(Vector2 targetPos, string message, PointerDirection handDir)
     {
-        if (direction == PointerDirection.None)
-        {
-            pointerHand.gameObject.SetActive(false);
-            return;
-        }
+        tooltipContainer.gameObject.SetActive(true);
+        tooltipText.text = message;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(tooltipContainer);
 
+        // Calculate dynamic side-switching
+        Vector2 finalPos = targetPos;
+
+        // If in bottom half, push up. Top half, push down.
+        float yFlip = (targetPos.y < Screen.height * 0.5f) ? 1 : -1;
+        float xFlip = (targetPos.x < Screen.width * 0.5f) ? 1 : -1;
+
+        // Apply Inspector Offsets
+        finalPos.x += tooltipOffset.x * xFlip;
+        finalPos.y += tooltipOffset.y * yFlip;
+
+        // Screen Boundary Clamping
+        float halfWidth = (tooltipContainer.rect.width / 2) + screenPadding;
+        float halfHeight = (tooltipContainer.rect.height / 2) + screenPadding;
+
+        finalPos.x = Mathf.Clamp(finalPos.x, halfWidth, Screen.width - halfWidth);
+        finalPos.y = Mathf.Clamp(finalPos.y, halfHeight, Screen.height - halfHeight);
+
+        tooltipContainer.position = finalPos;
+    }
+
+    private void PositionSmartPointer(Vector2 targetPos, PointerDirection dir)
+    {
+        if (dir == PointerDirection.None) { pointerHand.gameObject.SetActive(false); return; }
         pointerHand.gameObject.SetActive(true);
 
-        // REMOVE the line that re-calculates screenPos:
-        // Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, target.position);
+        Vector2 dirVec = GetDirectionVector(dir);
+        float angle = Mathf.Atan2(dirVec.y, dirVec.x) * Mathf.Rad2Deg + 90f;
+        pointerHand.localEulerAngles = new Vector3(0, 0, angle);
 
-        Vector2 offsetDir = Vector2.zero;
+        // Use the handOffset from inspector
+        pointerHand.position = targetPos + (dirVec * handOffset.magnitude);
 
-        switch (direction)
+        // Restart animation with new base position
+        if (!debugUpdateOffsets)
         {
-            case PointerDirection.Top: offsetDir = Vector2.up; pointerHand.localEulerAngles = new Vector3(0, 0, 180); break;
-            case PointerDirection.Bottom: offsetDir = Vector2.down; pointerHand.localEulerAngles = new Vector3(0, 0, 0); break;
-            case PointerDirection.Left: offsetDir = Vector2.left; pointerHand.localEulerAngles = new Vector3(0, 0, -90); break;
-            case PointerDirection.Right: offsetDir = Vector2.right; pointerHand.localEulerAngles = new Vector3(0, 0, 90); break;
+            StopCoroutine(_pointerCoroutine);
+            _pointerCoroutine = StartCoroutine(AnimatePointer(dirVec));
         }
-
-        if (_pointerRoutine != null) StopCoroutine(_pointerRoutine);
-        // Use the screenPos passed in from ExecuteStep
-        _pointerRoutine = StartCoroutine(AnimatePointer((Vector3)screenPos + (Vector3)(offsetDir * handOffset), offsetDir));
     }
 
-    private IEnumerator AnimatePointer(Vector3 basePos, Vector2 dir)
+    private Coroutine _pointerCoroutine;
+
+    private IEnumerator AnimatePointer(Vector2 dir)
     {
         while (true)
         {
+            // Note: We don't use a cached basePos here if we want to live-tune 
+            // because the base center might be changing in the inspector.
+            Vector2 dirVec = GetDirectionVector(_currentDirection);
+            Vector3 centerPos = (Vector3)_currentTargetScreenPos + (Vector3)(dirVec * handOffset.magnitude);
+
             float bounce = Mathf.Sin(Time.time * bounceSpeed) * bounceDistance;
-            pointerHand.position = basePos + (Vector3)(dir * bounce);
+            pointerHand.position = centerPos + (Vector3)(dirVec * bounce);
             yield return null;
         }
     }
+    // --- ESSENTIAL GATEKEEPERS (RESTORED) ---
 
-    public void Advance()
+    public bool IsTutorialActive() => ftueCanvas != null && ftueCanvas.enabled;
+
+    public bool IsSequenceCompleted(string sequenceID)
     {
-        if (_waitingForSignal) return;
-        _stepIndex++;
-        if (_stepIndex < _activeSequence.steps.Count)
-        {
-            if (_activeStepRoutine != null) StopCoroutine(_activeStepRoutine);
-            _activeStepRoutine = StartCoroutine(ExecuteStep());
-        }
-        else
-        {
-            EndTutorial();
-        }
-    }
-
-    public bool CurrentStepRequiresClick()
-    {
-        if (_activeSequence == null) return false;
-        return _activeSequence.steps[_stepIndex].RequireClick;
-    }
-
-    public void EndTutorial()
-    {
-        if (_activeSequence != null)
-        {
-            // Mark this sequence as finished forever
-            string seqName = _activeSequence.name;
-            if (!IsSequenceCompleted(seqName))
-            {
-                GameManager.Instance.SaveData.CompletedFTUESequences.Add(seqName);
-
-                // Trigger your save logic here if necessary
-                GameManager.Instance.SaveGame();
-            }
-        }
-
-        ftueCanvas.enabled = false;
-        _activeSequence = null;
-        if (_pointerRoutine != null) StopCoroutine(_pointerRoutine);
+        if (GameManager.Instance?.SaveData?.CompletedFTUESequences == null) return false;
+        return GameManager.Instance.SaveData.CompletedFTUESequences.Contains(sequenceID);
     }
 
     public bool IsCurrentTarget(string id)
     {
         if (_activeSequence == null || _stepIndex < 0 || _stepIndex >= _activeSequence.steps.Count)
             return false;
-
         return _activeSequence.steps[_stepIndex].TargetID == id;
     }
-    /// <summary>
-    /// Checks if a specific sequence has ever been completed.
-    /// </summary>
-    public bool IsSequenceCompleted(string sequenceID)
-    {
-        // We use the same string format as in EndTutorial and PlayTutorial
-        if (GameManager.Instance?.SaveData?.CompletedFTUESequences == null) return false;
 
-        // Simple List lookup
-        return GameManager.Instance.SaveData.CompletedFTUESequences.Contains(sequenceID);
+    public bool CurrentStepRequiresClick()
+    {
+        if (_activeSequence == null || _stepIndex >= _activeSequence.steps.Count) return false;
+        return _activeSequence.steps[_stepIndex].RequireClick;
     }
 
-    /// <summary>
-    /// Returns true if there is an active tutorial currently appearing on screen.
-    /// </summary>
-    public bool IsTutorialActive()
+    // --- LOGIC ---
+
+    public void Register(string id, Transform tr) => _registeredTargets[id] = tr;
+    public void Unregister(string id) => _registeredTargets.Remove(id);
+
+    public void PlayTutorial(string sequenceID)
     {
-        return ftueCanvas != null && ftueCanvas.enabled;
+        _activeSequence = database.GetByID(sequenceID);
+        if (_activeSequence == null || IsSequenceCompleted(sequenceID)) return;
+
+        _stepIndex = 0;
+        ftueCanvas.enabled = true;
+        StartStep();
     }
+
+    private void StartStep()
+    {
+        if (_activeStepRoutine != null) StopCoroutine(_activeStepRoutine);
+        _activeStepRoutine = StartCoroutine(ExecuteStepRoutine());
+    }
+
+    // private IEnumerator ExecuteStepRoutine()
+    // {
+    //     FTUEStep step = _activeSequence.steps[_stepIndex];
+    //     _waitingForSignal = !string.IsNullOrEmpty(step.RequiredEvent);
+
+    //     if (step.ShowCutout)
+    //     {
+    //         while (!_registeredTargets.ContainsKey(step.TargetID)) yield return null;
+    //         Transform target = _registeredTargets[step.TargetID];
+
+    //         // Tell the Mask Script to handle the visuals
+    //         maskScript.SetState(target, true, step.CustomSize > 0 ? step.CustomSize : 0.15f);
+
+    //         _currentTargetScreenPos = GetTargetScreenPoint(target);
+    //         _currentDirection = step.HandDirection;
+    //         PositionSmartPointer(_currentTargetScreenPos, _currentDirection); // Do pointer first so padding is calculated
+    //         PositionSmartTooltip(_currentTargetScreenPos, step.Message, _currentDirection);
+    //     }
+    //     else
+    //     {
+    //         // Instead of maskImage.gameObject.SetActive(false), 
+    //         // we keep it active but tell the shader to be invisible.
+    //         maskScript.SetState(null, false);
+
+    //         // This ensures the Image component is still there to catch 
+    //         // the "Advance" click even if the shader looks like it's gone.
+    //         maskScript.enabled = true;
+
+    //         PositionNarrativeTooltip(step.Message);
+    //         pointerHand.gameObject.SetActive(false);
+    //     }
+    // }
+
+    // // --- UI SMART POSITIONING ---
+
+    // private void PositionSmartTooltip(Vector2 targetPos, string message, PointerDirection handDir)
+    // {
+    //     tooltipContainer.gameObject.SetActive(true);
+    //     tooltipText.text = message;
+
+    //     // 1. Let the text resize and container expand
+    //     LayoutRebuilder.ForceRebuildLayoutImmediate(tooltipContainer);
+
+    //     // 2. Calculate dynamic offset to avoid the cutout and the hand
+    //     // We move the tooltip further away if there is a hand in the way
+    //     float handPadding = (handDir != PointerDirection.None) ? handOffset.magnitude + bounceDistance : 0f;
+    //     float verticalBuffer = 100f + handPadding;
+    //     float horizontalBuffer = 150f + handPadding;
+
+    //     Vector2 finalPos = targetPos;
+
+    //     // 3. QUADRANT LOGIC: Flip position based on screen half-points
+    //     // If target is in bottom half, put tooltip above. If top half, put below.
+    //     if (targetPos.y < Screen.height * 0.5f)
+    //         finalPos.y += verticalBuffer;
+    //     else
+    //         finalPos.y -= verticalBuffer;
+
+    //     // If target is in left half, nudge right. If right half, nudge left.
+    //     if (targetPos.x < Screen.width * 0.5f)
+    //         finalPos.x += (targetPos.x < screenPadding) ? horizontalBuffer : 0;
+    //     else
+    //         finalPos.x -= (targetPos.x > Screen.width - screenPadding) ? horizontalBuffer : 0;
+
+    //     // 4. SCREEN BOUNDARY CLAMPING
+    //     // Get world-space corners of the tooltip to ensure it's fully on screen
+    //     float halfWidth = (tooltipContainer.rect.width / 2) + screenPadding;
+    //     float halfHeight = (tooltipContainer.rect.height / 2) + screenPadding;
+
+    //     finalPos.x = Mathf.Clamp(finalPos.x, halfWidth, Screen.width - halfWidth);
+    //     finalPos.y = Mathf.Clamp(finalPos.y, halfHeight, Screen.height - halfHeight);
+
+    //     tooltipContainer.position = finalPos;
+    // }
+
+    // private void PositionSmartPointer(Vector2 targetPos, PointerDirection dir)
+    // {
+    //     if (dir == PointerDirection.None) { pointerHand.gameObject.SetActive(false); return; }
+    //     pointerHand.gameObject.SetActive(true);
+
+    //     Vector2 dirVec = GetDirectionVector(dir);
+    //     float angle = Mathf.Atan2(dirVec.y, dirVec.x) * Mathf.Rad2Deg + 90f;
+    //     pointerHand.localEulerAngles = new Vector3(0, 0, angle);
+    //     pointerHand.position = targetPos + (dirVec * handOffset.magnitude);
+
+    //     StopCoroutine("AnimatePointer");
+    //     StartCoroutine("AnimatePointer", dirVec);
+    // }
+
+    // private IEnumerator AnimatePointer(Vector2 dir)
+    // {
+    //     Vector3 basePos = pointerHand.position;
+    //     while (true)
+    //     {
+    //         float bounce = Mathf.Sin(Time.time * bounceSpeed) * bounceDistance;
+    //         pointerHand.position = basePos + (Vector3)(dir * bounce);
+    //         yield return null;
+    //     }
+    // }
+
+    private void PositionNarrativeTooltip(string message)
+    {
+        tooltipContainer.gameObject.SetActive(true);
+        tooltipText.text = message;
+        tooltipContainer.position = new Vector2(Screen.width / 2, Screen.height * 0.2f);
+    }
+
+    public void Advance()
+    {
+        if (_waitingForSignal) return; // Logic lock
+
+        _stepIndex++;
+        if (_stepIndex < _activeSequence.steps.Count) StartStep();
+        else EndTutorial();
+    }
+
+    public void EndTutorial()
+    {
+        if (_activeSequence != null)
+        {
+            string seqName = _activeSequence.name;
+            if (!IsSequenceCompleted(seqName))
+            {
+                GameManager.Instance.SaveData.CompletedFTUESequences.Add(seqName);
+                GameManager.Instance.SaveGame();
+            }
+        }
+
+        ftueCanvas.enabled = false;
+        maskScript.SetState(null, false);
+        StopAllCoroutines();
+    }
+
+    private Vector2 GetTargetScreenPoint(Transform target)
+    {
+        if (target is RectTransform rect) return RectTransformUtility.WorldToScreenPoint(null, rect.position);
+        return Camera.main.WorldToScreenPoint(target.position);
+    }
+
+    private Vector2 GetDirectionVector(PointerDirection dir)
+    {
+        switch (dir)
+        {
+            case PointerDirection.Top: return Vector2.up;
+            case PointerDirection.Bottom: return Vector2.down;
+            case PointerDirection.Left: return Vector2.left;
+            case PointerDirection.Right: return Vector2.right;
+            default: return Vector2.zero;
+        }
+    }
+
 }

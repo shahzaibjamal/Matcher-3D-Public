@@ -28,4 +28,5 @@ public class MatchResultMenuView : MenuView
     public CanvasGroup RewardsCanvasGroup;
     public ParticleSystem ConfettiRight;
     public ParticleSystem ConfettiLeft;
+    public ParticleSystem ConfettiTop;
 }

@@ -34,6 +34,7 @@ public class TrayView : MonoBehaviour
         // USE NAMED METHODS HERE
         GameEvents.OnRequestSteppedLeapEvent += HandleSteppedLeapRequest;
         GameEvents.OnRequestMatchResolveEvent += HandleMatchResolveRequest;
+        GameEvents.OnUndoInvalidEvent += HandleUndoInvalid;
     }
 
     private void OnDisable()
@@ -42,6 +43,7 @@ public class TrayView : MonoBehaviour
         // NOW THESE WILL ACTUALLY UNSUBSCRIBE
         GameEvents.OnRequestSteppedLeapEvent -= HandleSteppedLeapRequest;
         GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolveRequest;
+        GameEvents.OnUndoInvalidEvent -= HandleUndoInvalid;
     }
 
     // Wrapper methods to bridge the Event to the Coroutine
@@ -74,10 +76,13 @@ public class TrayView : MonoBehaviour
             return;
         }
 
+
+        // UNDO
         if (!isAdded)
         {
             _slots[targetIdx].Clear();
             _slots[targetIdx].PlayPoof();
+            _slots[targetIdx].Bounce();
             Scheduler.Instance.ExecuteAfterDelay(0.2f, () => onComplete?.Invoke());
             return;
         }
@@ -168,6 +173,10 @@ public class TrayView : MonoBehaviour
             if (!FTUEManager.Instance.IsSequenceCompleted("Undo") && GameManager.Instance.SaveData.CurrentLevelID == "level_02")
             {
                 FTUEManager.Instance.PlayTutorial("Undo");
+            }
+            if (targetIdx == GameManager.SLOT_COUNT - 2)
+            {
+                _slots[_slots.Length - 1].FlashErrorColor(isSound: false);
             }
         });
     }
@@ -301,6 +310,14 @@ public class TrayView : MonoBehaviour
         foreach (var g in ghosts) if (g) Destroy(g.gameObject);
         ValidateSlots();
         onComplete?.Invoke();
+    }
+
+    private void HandleUndoInvalid()
+    {
+        if (_slots[0] != null)
+        {
+            _slots[0].FlashErrorColor();
+        }
     }
 
 }

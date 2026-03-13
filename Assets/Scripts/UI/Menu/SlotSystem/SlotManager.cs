@@ -73,7 +73,11 @@ public class SlotManager
     }
     public async Task UndoLastAction()
     {
-        if (_undoStack.Count == 0) return;
+        if (_undoStack.Count == 0)
+        {
+            GameEvents.OnUndoInvalidEvent?.Invoke();
+            return;
+        }
 
         // 1. Get the UId of the last item the player clicked
         string lastUId = _undoStack.Pop();

@@ -26,7 +26,7 @@ public static class GameEvents
 
     public static Action<bool> OnUndoPowerupEvent; // undo powerup also handy for sweeping clear the tray. so bool param tells if this an undo operation or undo powerup
     public static Action<string> OnUndoAddItemEvent;
-    // public static Action<string> OnCleanSweepItemEvent; //gameeover - cleanup
+    public static Action OnUndoInvalidEvent;
 
     public static Action OnHintPowerupEvent;
     public static Action<string> OnHintSlotsItemAvailableEvent; //fired by slotmanager to tell what item can be picked up

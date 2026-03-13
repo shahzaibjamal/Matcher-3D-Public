@@ -66,7 +66,7 @@ Material:
     - _Progress: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Size: 0.15
+    - _Size: 0
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -77,7 +77,7 @@ Material:
     - _XRMotionVectorsPass: 1
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
-    - _Center: {r: 0.60744756, g: 0.5896637, b: 0, a: 0}
+    - _Center: {r: 0.8142361, g: 0.115651034, b: 0, a: 0}
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

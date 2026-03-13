@@ -27,22 +27,23 @@ public class FTUEMask : MonoBehaviour, ICanvasRaycastFilter, IPointerClickHandle
 
     private void Awake() => _maskMat = GetComponent<Image>().material;
 
+    // Inside FTUEMask.cs
     public void SetState(Transform target, bool useCutout, float size = 0.15f)
     {
         _target = target;
         _isCutoutActive = useCutout;
         _finalRadius = size;
-        _maskMat = GetComponent<Image>().material;
-        if (_isCutoutActive)
+
+        if (_isCutoutActive && _target != null)
         {
+            // Set initial state or trigger your animation logic here
             StopAllCoroutines();
-            StartCoroutine(AnimatePinnedHole());
+            StartCoroutine(AnimatePinnedHole()); // Using your previous logic
         }
-        InputManager.Instance.RegisterKey(KeyCode.X, () =>
+        else
         {
-            StopAllCoroutines();
-            StartCoroutine(AnimatePinnedHole());
-        });
+            _maskMat.SetFloat(SizeID, 0); // Hide hole
+        }
     }
 
     private IEnumerator AnimatePinnedHole()
@@ -105,34 +106,88 @@ public class FTUEMask : MonoBehaviour, ICanvasRaycastFilter, IPointerClickHandle
 
     public bool IsRaycastLocationValid(Vector2 sp, Camera eventCamera)
     {
+        // 1. If no click is required on a target, the whole screen should be 
+        // "Valid" for the Mask so that OnPointerClick can trigger Advance().
+        if (FTUEManager.Instance != null && !FTUEManager.Instance.CurrentStepRequiresClick())
+        {
+            return true;
+        }
+
+        // 2. If no cutout is active, the mask is effectively invisible/disabled
         if (!_isCutoutActive || _target == null) return true;
 
+        // 3. Coordinate Conversion
         float aspect = (float)Screen.width / Screen.height;
         Vector2 uvClick = new Vector2(sp.x / Screen.width, sp.y / Screen.height);
         Vector2 uvTarget = GetTargetUV();
+        Vector2 screenCenter = new Vector2(0.5f, 0.5f);
 
+        // 4. Calculate the Shift Toward Screen Center
+        // This MUST match the UpdateShader logic exactly
+        Vector2 shiftDir = (screenCenter - uvTarget).normalized;
         float offsetMagnitude = _currentRadius - _finalRadius;
-        Vector2 offset = _pinDirection.normalized * offsetMagnitude;
+        Vector2 offset = shiftDir * offsetMagnitude;
         offset.x /= aspect;
 
         Vector2 shiftedCenter = uvTarget + offset;
 
-        uvClick.x *= aspect;
-        shiftedCenter.x *= aspect;
+        // 5. Distance Check (Aspect Corrected)
+        Vector2 diff = uvClick - shiftedCenter;
+        diff.x *= aspect;
 
-        return Vector2.Distance(uvClick, shiftedCenter) > _currentRadius;
+        // Return TRUE (Click hits Mask) if outside radius
+        // Return FALSE (Click passes through to Item) if inside radius
+        return diff.magnitude > _currentRadius;
     }
 
+    // private Vector2 GetTargetScreenPoint()
+    // {
+    //     if (_target is RectTransform rect)
+    //         return RectTransformUtility.WorldToScreenPoint(null, rect.position);
+    //     return Camera.main.WorldToScreenPoint(_target.position);
+    // }
     private Vector2 GetTargetScreenPoint()
     {
-        if (_target is RectTransform rect)
-            return RectTransformUtility.WorldToScreenPoint(null, rect.position);
-        return Camera.main.WorldToScreenPoint(_target.position);
-    }
+        if (_target == null) return Vector2.zero;
 
+        Vector3 worldCenter;
+
+        // 1. UI ELEMENT (RectTransform)
+        if (_target is RectTransform rect)
+        {
+            // Get the center of the local rectangle in world space
+            // This ignores the pivot (0,0 or 1,1) and finds the true geometric middle
+            Vector3 localCenter = rect.rect.center;
+            worldCenter = rect.TransformPoint(localCenter);
+        }
+        // 2. 3D OBJECT (Renderer Bounds)
+        else if (_target.TryGetComponent<Renderer>(out var renderer))
+        {
+            // Use the center of the bounding box (includes all child meshes if using a prefab)
+            worldCenter = renderer.bounds.center;
+        }
+        // 3. FALLBACK (Transform Pivot)
+        else
+        {
+            worldCenter = _target.position;
+        }
+
+        // Convert the calculated world center to screen pixel coordinates
+        if (_target is RectTransform)
+        {
+            // For UI, null camera assumes Screen Space Overlay
+            return RectTransformUtility.WorldToScreenPoint(null, worldCenter);
+        }
+
+        return Camera.main.WorldToScreenPoint(worldCenter);
+    }
     public void OnPointerClick(PointerEventData eventData)
     {
+        // If the step is narrative (doesn't require a specific item click), 
+        // any click on the mask (which is now the whole screen) advances the tutorial.
         if (FTUEManager.Instance != null && !FTUEManager.Instance.CurrentStepRequiresClick())
+        {
             FTUEManager.Instance.Advance();
+        }
     }
 }
