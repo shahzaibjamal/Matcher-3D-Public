@@ -24,12 +24,10 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         GameEvents.OnSpawnerInitializedEvent += OnSpawnerInitialized;
         GameEvents.OnHintPowerupEvent += HandleHintPowerUp;
 
-        View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
-        View.TrayView.Initialize(GameManager.SLOT_COUNT);
-
         InputManager.Instance.RegisterKey(KeyCode.Z, HandleHintPowerUp);
         _leftCurtainPosition = View.LeftCurtain.anchoredPosition;
         _rightCurtainPosition = View.RightCurtain.anchoredPosition;
+        View.CurtainContainer.SetActive(true);
     }
 
     public override void Exit()
@@ -153,7 +151,9 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
     private void OnSpawnerInitialized()
     {
-        View.CurtainContainer.SetActive(true);
+        View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
+        View.TrayView.Initialize(GameManager.SLOT_COUNT);
+
         View.BlackCurtain.alpha = 1.0f;
         float screenWidth = View.GetComponent<RectTransform>().rect.width;
 
@@ -167,8 +167,9 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         _curtainSeq.Join(View.BlackCurtain.DOFade(0.0f, 0.6f).SetEase(Ease.InBack));
         _curtainSeq.OnComplete(() =>
         {
-            CheckForFTUE();
+            Scheduler.Instance.ExecuteAfterDelay(0.5f, CheckForFTUE);
         });
+
     }
 
     private void CheckForFTUE()

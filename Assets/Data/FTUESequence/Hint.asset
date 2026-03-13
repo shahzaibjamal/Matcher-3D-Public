@@ -15,7 +15,7 @@ MonoBehaviour:
   steps:
   - TargetID: Hint
     RequiredEvent: 
-    Message: Hint PowerUp
+    Message: <color=green><b>Hint:</b></color> Tap to reveal a hidden item
     RequireClick: 1
     ShowCutout: 1
     ShowHand: 0

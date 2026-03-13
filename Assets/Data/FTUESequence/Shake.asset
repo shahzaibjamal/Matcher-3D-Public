@@ -15,7 +15,8 @@ MonoBehaviour:
   steps:
   - TargetID: Shake
     RequiredEvent: 
-    Message: Lightning PowerUp
+    Message: <color=green><b>Lightning:</b></color> Strike the board with high-voltage
+      energy to reshuffle items and clear your way.
     RequireClick: 1
     ShowCutout: 1
     ShowHand: 0

@@ -106,6 +106,12 @@ public class FTUEMask : MonoBehaviour, ICanvasRaycastFilter, IPointerClickHandle
 
     public bool IsRaycastLocationValid(Vector2 sp, Camera eventCamera)
     {
+        // If the typewriter is talking, the mask returns TRUE for the whole screen.
+        // This means the mask 'eats' the click and nothing underneath gets it.
+        if (FTUEManager.Instance != null && FTUEManager.Instance.IsTyping)
+        {
+            return true;
+        }
         // 1. If no click is required on a target, the whole screen should be 
         // "Valid" for the Mask so that OnPointerClick can trigger Advance().
         if (FTUEManager.Instance != null && !FTUEManager.Instance.CurrentStepRequiresClick())
@@ -140,12 +146,6 @@ public class FTUEMask : MonoBehaviour, ICanvasRaycastFilter, IPointerClickHandle
         return diff.magnitude > _currentRadius;
     }
 
-    // private Vector2 GetTargetScreenPoint()
-    // {
-    //     if (_target is RectTransform rect)
-    //         return RectTransformUtility.WorldToScreenPoint(null, rect.position);
-    //     return Camera.main.WorldToScreenPoint(_target.position);
-    // }
     private Vector2 GetTargetScreenPoint()
     {
         if (_target == null) return Vector2.zero;

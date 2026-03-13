@@ -15,7 +15,8 @@ MonoBehaviour:
   steps:
   - TargetID: ItemView
     RequiredEvent: 
-    Message: Item Vew click
+    Message: <color=green><b>Collectable:</b></color> Match and collect these special
+      items to win the level!
     RequireClick: 0
     ShowCutout: 1
     ShowHand: 1
@@ -23,7 +24,7 @@ MonoBehaviour:
     HandDirection: 2
   - TargetID: Item1
     RequiredEvent: 
-    Message: Item Vew 1 click
+    Message: Tap the <color=red><b>first</b></color> item!
     RequireClick: 1
     ShowCutout: 1
     ShowHand: 1
@@ -31,7 +32,7 @@ MonoBehaviour:
     HandDirection: 1
   - TargetID: Item2
     RequiredEvent: 
-    Message: Item Vew 2 click
+    Message: Tap the <color=red><b>second</b></color>. We are almost there!!
     RequireClick: 1
     ShowCutout: 1
     ShowHand: 1
@@ -39,7 +40,8 @@ MonoBehaviour:
     HandDirection: 3
   - TargetID: Item3
     RequiredEvent: 
-    Message: Item Vew 3 click
+    Message: Finally, tap the <color=red><b>third</b></color>  item to clear the
+      item and score!!
     RequireClick: 1
     ShowCutout: 1
     ShowHand: 1

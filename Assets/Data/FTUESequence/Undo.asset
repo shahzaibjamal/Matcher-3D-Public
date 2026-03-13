@@ -15,9 +15,10 @@ MonoBehaviour:
   steps:
   - TargetID: Undo
     RequiredEvent: 
-    Message: Undo PowerUp
+    Message: <color=green><b>Undo:</b></color> Made a mistake? Rewind your last move
+      and refine your strategy.
     RequireClick: 1
     ShowCutout: 1
     ShowHand: 0
     CustomSize: 0.05
-    HandDirection: 1
+    HandDirection: 2

@@ -6,6 +6,7 @@ public class LevelNode : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI levelNumberText;
     [SerializeField] private Image statusIcon; // Locked/Unlocked/Completed
     [SerializeField] private GameObject[] stars; // Visual star rating
+    [SerializeField] private CanvasGroup _canvasGroup; // Visual star rating
 
     private Button _button;
 
@@ -30,8 +31,10 @@ public class LevelNode : MonoBehaviour
         // Visuals based on IsUnlocked
         var currentLevelId = GameManager.Instance.SaveData.CurrentLevelID;
 
+        statusIcon.gameObject.SetActive(data.StaticData.Id == currentLevelId);
         statusIcon.color = data.IsUnlocked ? data.StaticData.Id == currentLevelId ? Color.green : Color.white : Color.gray;
         _button.interactable = data.IsUnlocked;
+        _canvasGroup.alpha = data.IsUnlocked ? 1.0f : 0.5f;
 
         // Show stars if level is completed
         for (int i = 0; i < stars.Length; i++)

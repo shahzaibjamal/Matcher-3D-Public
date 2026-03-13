@@ -31,7 +31,6 @@ public class TrayView : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnItemAddedToSlotEvent += HandleItemAddedToSlot;
-        // USE NAMED METHODS HERE
         GameEvents.OnRequestSteppedLeapEvent += HandleSteppedLeapRequest;
         GameEvents.OnRequestMatchResolveEvent += HandleMatchResolveRequest;
         GameEvents.OnUndoInvalidEvent += HandleUndoInvalid;
@@ -40,7 +39,6 @@ public class TrayView : MonoBehaviour
     private void OnDisable()
     {
         GameEvents.OnItemAddedToSlotEvent -= HandleItemAddedToSlot;
-        // NOW THESE WILL ACTUALLY UNSUBSCRIBE
         GameEvents.OnRequestSteppedLeapEvent -= HandleSteppedLeapRequest;
         GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolveRequest;
         GameEvents.OnUndoInvalidEvent -= HandleUndoInvalid;

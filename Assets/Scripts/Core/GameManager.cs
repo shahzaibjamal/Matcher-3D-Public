@@ -51,14 +51,17 @@ public class GameManager : MonoBehaviour
         GameEvents.OnLevelCompleteEvent += HandleLevelComplete;
 
         _slotManager = new SlotManager(SLOT_COUNT);
+        LaunchGame();
+    }
 
+    private void LaunchGame()
+    {
         float delay = 5.0f;
 #if UNITY_EDITOR
         delay = 1;
 #endif
 
-
-        // 1. Launch the Main Menu on Startup
+        // 1. Launch the Loading Menu on Startup
         MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(
             Menus.Type.Loading,
             new LoadingMenuData
@@ -66,17 +69,32 @@ public class GameManager : MonoBehaviour
                 Delay = delay,
                 OnLoadingComplete = () =>
                 {
-                    MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(
-                        Menus.Type.Main,
-                        new MainMenuData()
-                    );
+                    var saveData = GameManager.Instance.SaveData;
+
+                    // CHECK: If player is on Level 1 and hasn't finished the 'Opening' tutorial...
+                    if (saveData.CurrentLevelID == "level_01" &&
+                        !FTUEManager.Instance.IsSequenceCompleted("Opening"))
+                    {
+                        GameEvents.OnGameInitializedEvent?.Invoke(SaveData.CurrentLevelID);
+                        // JUMP TO GAME: Resume Level 01 immediately
+                        MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(
+                            Menus.Type.Game
+                        );
+                    }
+                    else
+                    {
+                        // FALLBACK: Go to Main Menu as usual
+                        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(
+                            Menus.Type.Main,
+                            new MainMenuData()
+                        );
+                    }
                 }
             }
         );
     }
     void OnDestroy()
     {
-        // GameEvents.OnStartButtonClicked -= StartGame;
         GameEvents.OnGameInitializedEvent -= LoadLevelById;
         GameEvents.OnGameQuitEvent -= Cleanup;
         GameEvents.OnGameOverEvent -= TriggerGameOver;
