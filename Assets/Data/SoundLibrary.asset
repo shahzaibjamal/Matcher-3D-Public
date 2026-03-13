@@ -50,7 +50,7 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: f6dd6437448e79c4f9fa2ca111fb023f, type: 3}
     Volume: 0.617
   - Name: star
-    Clip: {fileID: 8300000, guid: 515feadb02d2c2040964978c3ca52644, type: 3}
+    Clip: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
     Volume: 0.338
   - Name: broom
     Clip: {fileID: 8300000, guid: 6d40f7ae8df6ff946ba4252cfcbc8b42, type: 3}

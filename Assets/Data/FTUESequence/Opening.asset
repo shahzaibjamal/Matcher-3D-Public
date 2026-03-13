@@ -20,7 +20,7 @@ MonoBehaviour:
     RequireClick: 0
     ShowCutout: 1
     ShowHand: 1
-    CustomSize: 0.1
+    CustomSize: 0.08
     HandDirection: 2
   - TargetID: Item1
     RequiredEvent: 
