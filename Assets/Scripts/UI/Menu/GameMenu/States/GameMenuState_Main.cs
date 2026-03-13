@@ -28,6 +28,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         _leftCurtainPosition = View.LeftCurtain.anchoredPosition;
         _rightCurtainPosition = View.RightCurtain.anchoredPosition;
         View.CurtainContainer.SetActive(true);
+        Cleanup();
     }
 
     public override void Exit()

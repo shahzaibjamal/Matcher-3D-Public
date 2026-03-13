@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,16 +12,39 @@ public class MapChunk : MonoBehaviour
     // Inside MapChunk.cs
     [SerializeField] private Transform _nodeParent;
     [SerializeField] private Image _backgroundImage;
+    [SerializeField] private Image _backgroundImageLow;
     [SerializeField] private Image _topFog;
     [SerializeField] private Image _bottomFog;
     [SerializeField] private GameObject _lockOverlay;
     [SerializeField] private TMP_Text _starRequirementText;
     [SerializeField] private CanvasGroup _canvasGroup;
+    private Sequence _sequence;
+    private string _currentBaseKey; // Track the current key to release it later
 
+
+    void OnDisable()
+    {
+        _sequence.Kill();
+    }
+    void OnDestroy()
+    {
+        _sequence.Kill();
+        if (!string.IsNullOrEmpty(_currentBaseKey))
+        {
+            AssetLoader.Instance.ReleaseIcon(_currentBaseKey);
+            AssetLoader.Instance.ReleaseIcon(_currentBaseKey + "_low");
+        }
+    }
 
     // Call this when the chunk is "Recycled" to the top or bottom
     public void Configure(List<LevelDisplayData> levelBatch, int startLevelIndex, GameObject prefab, string bgName, string themeColor)
     {
+        if (!string.IsNullOrEmpty(_currentBaseKey))
+        {
+            AssetLoader.Instance.ReleaseIcon(_currentBaseKey);
+            AssetLoader.Instance.ReleaseIcon(_currentBaseKey + "_low");
+        }
+        _currentBaseKey = bgName;
         // Clear old nodes
         foreach (Transform child in transform)
         {
@@ -36,10 +60,26 @@ public class MapChunk : MonoBehaviour
         {
             Debug.LogError("Invalid hex color string");
         }
-
-        AssetLoader.Instance.LoadIcon(bgName, (sprite) =>
+        _sequence.Kill();
+        Color c = _backgroundImage.color;
+        c.a = 0f;
+        _backgroundImage.color = c;
+        AssetLoader.Instance.LoadIcon(bgName + "_low", (lowSprite) =>
         {
-            _backgroundImage.sprite = sprite;
+            if (lowSprite == null) return;
+            _backgroundImageLow.sprite = lowSprite;
+
+            // 4. LOAD HIGH-RES SECOND
+            AssetLoader.Instance.LoadIcon(bgName, (highSprite) =>
+            {
+                if (highSprite == null) return;
+
+                _backgroundImage.sprite = highSprite;
+
+                _sequence = DOTween.Sequence();
+                // Fade in the high-res over the low-res for a smooth transition
+                _sequence.Append(_backgroundImage.DOFade(1.0f, 1.0f));
+            });
         });
 
         if (levelBatch.Count == 0) return;

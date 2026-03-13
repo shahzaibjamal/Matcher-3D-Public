@@ -640,7 +640,7 @@ MonoBehaviour:
   bannerUnlockLevel: 5
   interstitialUnlockLevel: 10
   rewardedUnlockLevel: 3
-  interstitialChance: 0.5
+  interstitialChance: 0.333
   realBannerId: ca-app-pub-3489872370282662/6280758579
   realInterstitialId: ca-app-pub-3489872370282662/8112026638
   realRewardedId: ca-app-pub-3489872370282662/2696736786
@@ -1195,7 +1195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00012588501
+      value: 0.000091552734
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x

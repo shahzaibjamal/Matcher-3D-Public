@@ -34,7 +34,7 @@ public class LevelNode : MonoBehaviour
         statusIcon.gameObject.SetActive(data.StaticData.Id == currentLevelId);
         statusIcon.color = data.IsUnlocked ? data.StaticData.Id == currentLevelId ? Color.green : Color.white : Color.gray;
         _button.interactable = data.IsUnlocked;
-        _canvasGroup.alpha = data.IsUnlocked ? 1.0f : 0.5f;
+        _canvasGroup.alpha = data.IsUnlocked ? 1.0f : 0.4f;
 
         // Show stars if level is completed
         for (int i = 0; i < stars.Length; i++)

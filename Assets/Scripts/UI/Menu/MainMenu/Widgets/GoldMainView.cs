@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class GoldMainView : MonoBehaviour
 {
@@ -18,6 +19,12 @@ public class GoldMainView : MonoBehaviour
     void Awake()
     {
         UIShimmerEffect.Play();
+        GameEvents.OnGoldUpdatedEvent += OnGoldUpdate;
+    }
+
+    private void OnGoldUpdate(int amount)
+    {
+        PlayCollectAnimation(amount);
     }
 
     public void UpdateAmount(int initialAmount)
@@ -56,5 +63,6 @@ public class GoldMainView : MonoBehaviour
         GoldIcon.transform.DOKill();
         Container.DOKill();
         _countTween.Kill();
+        GameEvents.OnGoldUpdatedEvent -= OnGoldUpdate;
     }
 }

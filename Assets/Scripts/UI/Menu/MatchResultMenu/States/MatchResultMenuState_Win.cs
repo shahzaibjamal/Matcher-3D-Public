@@ -196,7 +196,8 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         View.GoldRewardView.Initialize(goldAmountForAnimation);
         // 4. Trigger the UI/Animation
         // We pass the 3x amount and the calculated final total
-        PlayGoldAnimation(goldAmountForAnimation, finalTotalGold, 0f, OnGoldAnimationCompleted);
+        // PlayGoldAnimation(goldAmountForAnimation, finalTotalGold, 0f, OnGoldAnimationCompleted);
+        OnGoldAnimationCompleted();
     }
 
     private void OnGoldAnimationCompleted()

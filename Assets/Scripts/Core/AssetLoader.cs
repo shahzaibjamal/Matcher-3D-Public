@@ -133,4 +133,40 @@ public class AssetLoader : MonoBehaviour
             };
         }
     }
+    // -------------------------
+    // RELEASING ICONS
+    // -------------------------
+
+    /// <summary>
+    /// Releases a specific sprite from memory and removes it from the cache.
+    /// </summary>
+    public void ReleaseIcon(string key)
+    {
+        if (_spriteCache.TryGetValue(key, out Sprite sprite))
+        {
+            // 1. Tell Addressables to release the memory
+            Addressables.Release(sprite);
+
+            // 2. Remove from our internal dictionary
+            _spriteCache.Remove(key);
+
+            Debug.Log($"AssetLoader: Released and uncached icon: {key}");
+        }
+    }
+
+    /// <summary>
+    /// Clears the entire sprite cache. Use this when switching major scenes
+    /// or when memory usage is high.
+    /// </summary>
+    public void ClearSpriteCache()
+    {
+        foreach (var sprite in _spriteCache.Values)
+        {
+            if (sprite != null)
+                Addressables.Release(sprite);
+        }
+
+        _spriteCache.Clear();
+        Debug.Log("AssetLoader: Sprite cache cleared completely.");
+    }
 }
