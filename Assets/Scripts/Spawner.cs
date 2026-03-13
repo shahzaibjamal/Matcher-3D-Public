@@ -627,8 +627,8 @@ public partial class Spawner : MonoBehaviour
         // --- Define Local Variables ---
         int shakesRemaining = 3;
         float shakeInterval = 0.7f;
-        float shakeRadius = 6.0f;
-        float shakePower = 0.5f;
+        float shakeRadius = 12.0f;
+        float shakePower = 1.0f;
         float upwardModifier = 0.2f;
 
         void TriggerSingleRumble()
@@ -670,6 +670,7 @@ public partial class Spawner : MonoBehaviour
             else
             {
                 GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Shake);
+                GameEvents.OnPowerUpEnableEvent?.Invoke(true);
             }
         }
 

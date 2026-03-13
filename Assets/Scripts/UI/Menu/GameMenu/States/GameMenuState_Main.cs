@@ -42,6 +42,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         GameEvents.OnSpawnerInitializedEvent -= OnSpawnerInitialized;
         GameEvents.OnHintPowerupEvent -= HandleHintPowerUp;
         View.PauseButton.onClick.RemoveListener(OnPauseButtonClicked);
+
         Cleanup();
     }
 
@@ -110,6 +111,8 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         _currentLevelData = null;
         _curtainSeq.Kill();
         View.CurtainContainer.SetActive(false);
+        GameEvents.OnSlotsFillableEvent?.Invoke(true); // reset
+        GameEvents.OnPowerUpEnableEvent?.Invoke(true); // reset power buttons  (unnecessary prob)
     }
 
     private void CheckWin()
@@ -118,6 +121,8 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         {
             GameEvents.OnItemsCollectedEvent?.Invoke();
             GameEvents.OnGameOverEvent?.Invoke(true);
+            GameEvents.OnPowerUpEnableEvent?.Invoke(false); // to stop powerup clicks
+            GameEvents.OnSlotsFillableEvent?.Invoke(false); // to stop more clicks
         }
     }
     private void HandleMatchResult(bool win, float matchRate)

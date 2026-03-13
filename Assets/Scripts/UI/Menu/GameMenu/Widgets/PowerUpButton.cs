@@ -49,14 +49,14 @@ public class PowerUpButton : MonoBehaviour
         if (_amount > 0)
         {
             // 2. Trigger the specific gameplay logic
-            TriggerPowerUpLogic();
-
             RefreshUI();
+            TriggerPowerUpLogic();
         }
     }
 
     private void TriggerPowerUpLogic()
     {
+        _button.interactable = false;
         switch (_type)
         {
             case PowerUpType.Magnet:
@@ -72,7 +72,6 @@ public class PowerUpButton : MonoBehaviour
                 GameEvents.OnUndoPowerupEvent?.Invoke(true);
                 break;
         }
-        _button.interactable = false;
     }
 
     private void OnPowerUpSuccess(PowerUpType type)
@@ -101,6 +100,6 @@ public class PowerUpButton : MonoBehaviour
     }
     private void OnPowerUpEnable(bool enable)
     {
-        _button.interactable = enable;
+        RefreshUI();
     }
 }

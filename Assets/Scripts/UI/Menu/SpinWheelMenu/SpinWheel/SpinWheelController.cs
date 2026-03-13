@@ -160,7 +160,7 @@ public class SpinWheelController : MonoBehaviour
     }
 
     private float _lastTickTime;
-    [SerializeField] private float _tickCooldown = 0.05f; // 50ms minimum between ticks
+    [SerializeField] private float _tickCooldown = 0.15f; // 50ms minimum between ticks
 
     public void OnTriggerNeedle()
     {

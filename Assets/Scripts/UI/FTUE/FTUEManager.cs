@@ -88,6 +88,7 @@ public class FTUEManager : MonoBehaviour
     {
         FTUEStep step = _activeSequence.steps[_stepIndex];
         _waitingForSignal = !string.IsNullOrEmpty(step.RequiredEvent);
+        SoundController.Instance.PlaySoundEffect("ftue_step");
 
         if (step.ShowCutout)
         {

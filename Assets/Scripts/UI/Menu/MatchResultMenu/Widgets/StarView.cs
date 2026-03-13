@@ -64,9 +64,6 @@ public class StarView : MonoBehaviour
             _icon.transform.DOShakePosition(0.2f, 15f, 30);
             // Slight overshoot punch to make it feel "settled"
             _icon.transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0), 0.2f, 10, 1f);
-
-            SoundController.Instance.PlaySoundEffect("star");
-            // Optional: Trigger haptic feedback or sound effect here
         });
     }
 }

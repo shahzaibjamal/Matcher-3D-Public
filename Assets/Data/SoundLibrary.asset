@@ -76,3 +76,6 @@ MonoBehaviour:
   - Name: back
     Clip: {fileID: 8300000, guid: b6428d4edb06344ba829da4edd9967c1, type: 3}
     Volume: 1
+  - Name: ftue_step
+    Clip: {fileID: 8300000, guid: 0c008ee3ee72a4362a35be25fa5de043, type: 3}
+    Volume: 1

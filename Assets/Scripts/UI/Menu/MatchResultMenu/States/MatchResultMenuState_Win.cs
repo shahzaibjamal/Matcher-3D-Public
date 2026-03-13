@@ -53,6 +53,13 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     {
         float delay = 0f;
         float starsAppearDelay = 0.3f;
+        Scheduler.Instance.ExecuteAfterDelay(starsAppearDelay, () =>
+        {
+            SoundController.Instance.PlaySoundEffect("star");
+
+        });
+
+
         for (int i = 0; i < View.StarViews.Length; i++)
         {
             delay = i * starsAppearDelay; // stars appear delay
