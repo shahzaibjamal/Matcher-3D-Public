@@ -18,6 +18,7 @@ public class DataManager : MonoBehaviour
 
     // NEW: Cache for Spin Wheel rewards
     private Dictionary<int, RewardData> _spinWheelCache = new Dictionary<int, RewardData>();
+    private Dictionary<string, StoreItemData> _storeCache = new Dictionary<string, StoreItemData>();
 
     private void Awake()
     {
@@ -64,6 +65,7 @@ public class DataManager : MonoBehaviour
         // NEW: Initialize Spin Wheel cache
         _spinWheelCache = Metadata.SpinWheelRewards?
             .ToDictionary(sw => sw.ID, sw => sw.Reward) ?? new Dictionary<int, RewardData>();
+        _storeCache = Metadata.StoreItems?.ToDictionary(s => s.Id) ?? new Dictionary<string, StoreItemData>();
     }
 
     // --- NEW HELPER FUNCTIONS ---
@@ -113,5 +115,15 @@ public class DataManager : MonoBehaviour
             .Where(t => t.StartLevel <= levelNumber)
             .OrderByDescending(t => t.StartLevel)
             .FirstOrDefault() ?? Metadata.MapThemes.FirstOrDefault();
+    }
+    public StoreItemData GetStoreItemByID(string id)
+    {
+        if (_storeCache.TryGetValue(id, out var item)) return item;
+        return null;
+    }
+
+    public List<StoreItemData> GetStoreByCategory(StoreItemCategory category)
+    {
+        return Metadata.StoreItems.Where(s => s.Category == category).ToList();
     }
 }

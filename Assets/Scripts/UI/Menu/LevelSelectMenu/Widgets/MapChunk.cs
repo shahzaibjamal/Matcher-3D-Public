@@ -32,7 +32,7 @@ public class MapChunk : MonoBehaviour
         if (!string.IsNullOrEmpty(_currentBaseKey))
         {
             AssetLoader.Instance.ReleaseIcon(_currentBaseKey);
-            AssetLoader.Instance.ReleaseIcon(_currentBaseKey + "_low");
+            AssetLoader.Instance.ReleaseIcon(_currentBaseKey + "");
         }
     }
 
@@ -42,7 +42,7 @@ public class MapChunk : MonoBehaviour
         if (!string.IsNullOrEmpty(_currentBaseKey))
         {
             AssetLoader.Instance.ReleaseIcon(_currentBaseKey);
-            AssetLoader.Instance.ReleaseIcon(_currentBaseKey + "_low");
+            AssetLoader.Instance.ReleaseIcon(_currentBaseKey + "");
         }
         _currentBaseKey = bgName;
         // Clear old nodes
@@ -64,7 +64,7 @@ public class MapChunk : MonoBehaviour
         Color c = _backgroundImage.color;
         c.a = 0f;
         _backgroundImage.color = c;
-        AssetLoader.Instance.LoadIcon(bgName + "_low", (lowSprite) =>
+        AssetLoader.Instance.LoadIcon(bgName + "", (lowSprite) =>
         {
             if (lowSprite == null) return;
             _backgroundImageLow.sprite = lowSprite;

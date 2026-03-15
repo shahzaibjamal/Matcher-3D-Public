@@ -1,23 +1,23 @@
 Key,en,pt,es
 LABEL_LANGUAGE,Select language,Selecione o idioma,Selecione o idioma
-LABEL_HELLO,Hey Guys,Ei pessoal,Ei personal
+LABEL_HELLO,Hey Guys,Ei pessoal,Ei pessoal
 BUTTON_HELLO,Say hello,Diga olá,Diga olá
 start_game,Play,Jogar,Jugar
-settings,Settings,Configurações,Configuraciones
+settings,Settings,Configurações,Configurações
 sound,Sound,Som,Algunos
 music,Music,Música,Música
 title_paused,Paused,Em pausa,En pausa
 continue,Continue,Continuar,Continuar
 title_level,Level {0},Nível {0},Nivel {0}
 status_perfect,Perfect,Perfeito,Perfecto
-status_good,Good,Bom,Bomba
+status_good,Good,Bom,Bom
 status_amazing,Amazing,Incrível,Increíble
 result_win,Level Complete,Nível concluído,Nível concluído
 result_lose,You Lost!,Você perdeu!,Você perdeu!
 levels_no_more,There are no more levels. Check back again for more!!,Não há mais níveis. Volte mais tarde para conferir os próximos!,Não há mais níveis. ¡Volte mais tarde para conferir los próximos!
 game_quit,Would you like to quit game?,Deseja sair do jogo?,Deseja sair do jogo?
 game_quit_title,Exit,Saída,Saída
-privacy,Privacy,Privacidade,Privacidade
+privacy,Privacy,Privacidade,Privacidad
 terms,Terms,Termos,Termos
 terms_condition,Terms & Condition,Termos e Condições,Termos e Condições
 submit,Submit,Enviar,Enviar
@@ -30,9 +30,9 @@ spin,Spin,Rodar,Rodar
 day,Day {0},Dia {0},Día {0}
 reward_amount,x{0},x{0},x{0}
 daily_reward,Daily Rewards,Recompensas diárias,Recompensas diárias
-rewards,Rewards,Recompensas,Recompensas
+rewards,Rewards,Recompensas,Recompensa
 tap_to_continue,Tap To Continue...,Toque para continuar...,Toque para continuar...
-vibrate,Vibrate,Vibrar,Vibrar
+vibrate,Vibrate,Vibrar,Vibrador
 language,Language,Linguagem,Lenguaje
 clear_slots,Would you like to clear the slots and try again?,Deseja limpar os espaços e tentar novamente?,¿Quieres limpiar los espacios y tentar novamente?
 clear,Clear,Claro,Claro
@@ -44,3 +44,8 @@ show_ad,Show Ad,Mostrar anúncio,Mostrar anuncio
 no_ads,No Ads,Sem anúncios,Sem anúncios
 no_ads_message,Currently, there are no ads available...,Atualmente não há anúncios disponíveis...,Actualmente no hay anuncios disponibles...
 ok,Ok,OK,DE ACUERDO
+restart_message,Restarting this level will cost a life!!,Reiniciar esta fase custará uma vida!!,Reiniciar esta fase cuidará una vida!!
+leave_level_message,Leaving the match will cost a life!!,Abandonar a partida custará uma vida!!,Abandonar a partida custará uma vida!!
+leave,Leave,Deixar,Deixar
+no_restart_message,Can't restart. Out of lives!! \nWould you like to go to main screen?,Não consigo reiniciar. Sem vidas!! \nDeseja ir para a tela principal?,No se puede reiniciar. Sem vidas!! \n¿Deseja ir para una tela principal?
+restart,Restart,Reiniciar,Reiniciar

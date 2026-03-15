@@ -23,6 +23,7 @@ public static class Menus
         LevelSelect = 16,
         MatchLose = 17,
         LevelDetail = 18,
+        LoseLife = 19,
 
     }
     public enum MenuDisplayMode

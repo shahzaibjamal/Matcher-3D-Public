@@ -26,5 +26,6 @@ public enum RewardType
 
     Shake = 4,
 
-    Undo = 5
+    Undo = 5,
+    Heart = 6
 }

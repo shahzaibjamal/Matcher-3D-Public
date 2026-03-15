@@ -156,7 +156,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnSettingsButtonClicked()
     {
-        MenuManager.Instance.OpenMenu<SettingsMenuView, SettingsMenuController, SettingsMenuData>(Menus.Type.Settings);
+        MenuManager.Instance.OpenMenu<SettingsMenuView, SettingsMenuController, SettingsMenuData>(Menus.Type.Settings, new SettingsMenuData());
     }
 
     private void OnDailyRewardsButtonClicked()

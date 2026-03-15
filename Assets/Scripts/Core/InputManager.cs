@@ -12,6 +12,10 @@ public class InputManager : MonoBehaviour
     [SerializeField] private LayerMask clickLayer;
     [SerializeField] private float maxDistance = 100f;
 
+    [Header("Detection Strategy")]
+    [Tooltip("If true, looks for IClickable directly on the collider's GameObject. If false, uses ClickableLink or searches parents.")]
+    [SerializeField] private bool directClickableOnly = true;
+
     [Header("Threshold Settings")]
     [SerializeField] private float holdThreshold = 0.15f;
     [SerializeField] private float moveThreshold = 10f;
@@ -61,12 +65,10 @@ public class InputManager : MonoBehaviour
         _holdTimer = 0;
         _isSweepModeActive = false;
 
-        // Just identify the potential first target, but don't lift yet
         if (TryGetClickable(out _, out IClickable clickable))
         {
             _currentHoveredTarget = clickable;
         }
-
     }
 
     private void HandlePointerHeld(float dt)
@@ -74,11 +76,9 @@ public class InputManager : MonoBehaviour
         _holdTimer += dt;
         float distMoved = Vector2.Distance(_startMousePos, Input.mousePosition);
 
-        // 1. Determine if we have transitioned from a "Tap" to a "Sweep"
         if (!_isSweepModeActive && (_holdTimer > holdThreshold || distMoved > moveThreshold))
         {
             _isSweepModeActive = true;
-            // Lift the item we are currently over when the threshold breaks
             if (_currentHoveredTarget != null)
             {
                 TryGetClickable(out RaycastHit hit, out _);
@@ -86,7 +86,6 @@ public class InputManager : MonoBehaviour
             }
         }
 
-        // 2. If in Sweep Mode, update the hovered target every frame
         if (_isSweepModeActive)
         {
             if (IsPointerOverUI())
@@ -97,17 +96,15 @@ public class InputManager : MonoBehaviour
 
             if (TryGetClickable(out RaycastHit hit, out IClickable newTarget))
             {
-                // If we moved onto a new object while sweeping
                 if (newTarget != _currentHoveredTarget)
                 {
-                    _currentHoveredTarget?.OnPointerUp(); // Drop old
+                    _currentHoveredTarget?.OnPointerUp();
                     _currentHoveredTarget = newTarget;
-                    _currentHoveredTarget.OnPointerDown(hit); // Lift new
+                    _currentHoveredTarget.OnPointerDown(hit);
                 }
             }
             else
             {
-                // Over empty space
                 ClearCurrentHover();
             }
         }
@@ -118,22 +115,20 @@ public class InputManager : MonoBehaviour
         if (_currentHoveredTarget != null)
         {
             MonoBehaviour targetBehaviour = _currentHoveredTarget as MonoBehaviour;
-            // Case A: Fast Tap (threshold never reached)
+
             if (!_isSweepModeActive)
             {
                 _currentHoveredTarget.OnHandleClick(default);
-                CheckFTUE(targetBehaviour); // Trigger FTUE Check
+                CheckFTUE(targetBehaviour);
             }
-            // Case B: Released during a Sweep
             else
             {
-                // Final confirmation: are we still over it?
                 if (TryGetClickable(out RaycastHit hit, out IClickable finalTarget))
                 {
                     if (finalTarget == _currentHoveredTarget)
                     {
                         _currentHoveredTarget.OnHandleClick(hit);
-                        CheckFTUE(targetBehaviour); // Trigger FTUE Check                        
+                        CheckFTUE(targetBehaviour);
                     }
                 }
             }
@@ -169,23 +164,29 @@ public class InputManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, maxDistance, clickLayer))
         {
-            // Try to get the direct link first (Fastest)
-            var link = hit.collider.GetComponent<ClickableLink>();
-            if (link != null)
+            if (directClickableOnly)
             {
-                clickable = link.ParentScript;
+                // Toggle ON: Direct approach (Collider is on the same object as the script)
+                clickable = hit.collider.GetComponent<IClickable>();
             }
             else
             {
-                // Fallback to the recursive search
-                clickable = hit.collider.GetComponentInParent<IClickable>();
+                // Toggle OFF: Link/Recursive approach
+                var link = hit.collider.GetComponent<ClickableLink>();
+                if (link != null)
+                {
+                    clickable = link.ParentScript;
+                }
+                else
+                {
+                    clickable = hit.collider.GetComponentInParent<IClickable>();
+                }
             }
 
             return clickable != null;
         }
         return false;
     }
-
 
     // --- Standard Boilerplate ---
     private void HandleKeyboardInput()
@@ -204,14 +205,12 @@ public class InputManager : MonoBehaviour
     {
         if (_keyCallbacks.ContainsKey(key)) _keyCallbacks[key] -= callback;
     }
+
     private bool IsPointerOverUI()
     {
         if (EventSystem.current == null) return false;
-
-        // Desktop
         if (EventSystem.current.IsPointerOverGameObject()) return true;
 
-        // Mobile
         for (int i = 0; i < Input.touchCount; ++i)
         {
             if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(i).fingerId))
@@ -219,6 +218,7 @@ public class InputManager : MonoBehaviour
         }
         return false;
     }
+
     void OnDestroy()
     {
         if (Scheduler.Instance != null) Scheduler.Instance.UnsubscribeUpdate(OnUpdate);

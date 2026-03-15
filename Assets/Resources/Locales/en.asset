@@ -58,6 +58,11 @@ MonoBehaviour:
   - no_ads
   - no_ads_message
   - ok
+  - restart_message
+  - leave_level_message
+  - leave
+  - no_restart_message
+  - restart
   _values:
   - Select language
   - Hey Guys
@@ -104,3 +109,8 @@ MonoBehaviour:
   - No Ads
   - Currently
   - Ok
+  - Restarting this level will cost a life!!
+  - Leaving the match will cost a life!!
+  - Leave
+  - Can't restart. Out of lives!! \nWould you like to go to main screen?
+  - Restart

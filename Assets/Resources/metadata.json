@@ -467,7 +467,7 @@
         },
         {
           "RewardType": "Undo",
-          "Amount": 6
+          "Amount": 5
         }
       ]
     },
@@ -482,7 +482,7 @@
         },
         {
           "Id": "stool",
-          "Count": 6
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
@@ -495,7 +495,7 @@
         },
         {
           "RewardType": "Hint",
-          "Amount": 4
+          "Amount": 3
         }
       ]
     },
@@ -559,7 +559,7 @@
         },
         {
           "RewardType": "Magnet",
-          "Amount": 2
+          "Amount": 1
         }
       ]
     },
@@ -592,7 +592,7 @@
         },
         {
           "RewardType": "Magnet",
-          "Amount": 2
+          "Amount": 1
         }
       ]
     },
@@ -2297,6 +2297,175 @@
         "RewardType": "Undo",
         "Amount": 5
       }
+    }
+  ],
+  "StoreItems": [
+    {
+      "Id": null,
+      "Name": "Full Heart Refill",
+      "Category": 3,
+      "PurchaseType": 0,
+      "Cost": 500.0,
+      "CurrencyType": 0,
+      "Rewards": [
+        {
+          "RewardType": "Heart",
+          "Amount": 5
+        }
+      ],
+      "Description": "Full Heart Refill"
+    },
+    {
+      "Id": null,
+      "Name": "Hint",
+      "Category": 2,
+      "PurchaseType": 0,
+      "Cost": 200.0,
+      "CurrencyType": 0,
+      "Rewards": [
+        {
+          "RewardType": "Hint",
+          "Amount": 1
+        }
+      ],
+      "Description": "Highlight collectables"
+    },
+    {
+      "Id": null,
+      "Name": "Hint",
+      "Category": 2,
+      "PurchaseType": 0,
+      "Cost": 150.0,
+      "CurrencyType": 0,
+      "Rewards": [
+        {
+          "RewardType": "Undo",
+          "Amount": 1
+        }
+      ],
+      "Description": "Undo last move"
+    },
+    {
+      "Id": null,
+      "Name": "Hint",
+      "Category": 2,
+      "PurchaseType": 0,
+      "Cost": 500.0,
+      "CurrencyType": 0,
+      "Rewards": [
+        {
+          "RewardType": "Magnet",
+          "Amount": 1
+        }
+      ],
+      "Description": "Collect 3 collectables."
+    },
+    {
+      "Id": null,
+      "Name": "Lightning Strike",
+      "Category": 2,
+      "PurchaseType": 0,
+      "Cost": 300.0,
+      "CurrencyType": 0,
+      "Rewards": [
+        {
+          "RewardType": "Shake",
+          "Amount": 1
+        }
+      ],
+      "Description": "Jolt the arena"
+    },
+    {
+      "Id": null,
+      "Name": "Gold Pouch",
+      "Category": 0,
+      "PurchaseType": 0,
+      "Cost": 0.0,
+      "CurrencyType": 0,
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 1000
+        }
+      ],
+      "Description": "Gold Pouch"
+    },
+    {
+      "Id": null,
+      "Name": "Gold Bundle",
+      "Category": 0,
+      "PurchaseType": 0,
+      "Cost": 1.0,
+      "CurrencyType": 0,
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 2000
+        }
+      ],
+      "Description": "Gold Pouch"
+    },
+    {
+      "Id": null,
+      "Name": "Starter Pack",
+      "Category": 0,
+      "PurchaseType": 0,
+      "Cost": 2.0,
+      "CurrencyType": 0,
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 1000
+        },
+        {
+          "RewardType": "Undo",
+          "Amount": 10
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 2
+        },
+        {
+          "RewardType": "Hint",
+          "Amount": 3
+        },
+        {
+          "RewardType": "Shake",
+          "Amount": 2
+        }
+      ],
+      "Description": "Starter Pack"
+    },
+    {
+      "Id": null,
+      "Name": "Adventure Pack",
+      "Category": 0,
+      "PurchaseType": 0,
+      "Cost": 4.0,
+      "CurrencyType": 0,
+      "Rewards": [
+        {
+          "RewardType": "Gold",
+          "Amount": 3000
+        },
+        {
+          "RewardType": "Undo",
+          "Amount": 20
+        },
+        {
+          "RewardType": "Magnet",
+          "Amount": 5
+        },
+        {
+          "RewardType": "Hint",
+          "Amount": 10
+        },
+        {
+          "RewardType": "Shake",
+          "Amount": 5
+        }
+      ],
+      "Description": "Adventure Pack"
     }
   ]
 }

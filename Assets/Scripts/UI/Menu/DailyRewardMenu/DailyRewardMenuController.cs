@@ -6,6 +6,7 @@ public class DailyRewardMenuController : MenuController<DailyRewardMenuView, Dai
     {
         SetState(new DailyRewardMenuBaseState_Main(this));
 
+        UIAnimations.ToonIn(View.canvasGroup, View.Root, null);
         View.DailyRewardsWindow.Initialize(DataManager.Instance.Metadata.DailyRewards, OnRewardClaimedCallback);
     }
 

@@ -10,6 +10,7 @@ public class SpinWheelMenuController : MenuController<SpinWheelMenuView, SpinWhe
 
         View.SpinWheelController.Setup(DataManager.Instance.Metadata.SpinWheelRewards, OnSpinWheelRewardComplete);
         UpdateSpinButton();
+        UIAnimations.ToonIn(View.canvasGroup, View.Root, null);
     }
 
     private void OnSpinwheelButtonClick()

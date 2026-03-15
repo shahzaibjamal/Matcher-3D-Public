@@ -43,6 +43,15 @@ public class Inventory
         else
             PowerUps[type] = amount;
     }
+    public void AddPowerUp(RewardType type, int amount)
+    {
+        PowerUpType pType = ConvertToPowerUpType(type);
+        if (PowerUps.ContainsKey(pType))
+            PowerUps[pType] += amount;
+        else
+            PowerUps[pType] = amount;
+    }
+
     public void AddRewards(List<RewardData> rewards)
     {
         if (rewards == null) return;

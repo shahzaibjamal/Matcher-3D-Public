@@ -12,6 +12,8 @@ public class LevelDetailMenuController : MenuController<LevelDetailMenuView, Lev
         View.StartButton.onClick.AddListener(OnStartButtonClicked);
         View.LevelText.text = string.Format(LocaleManager.Localize(LocalizationKeys.title_level), Data.LevelData.Number);
         LoadRewards();
+        UIAnimations.ToonIn(View.canvasGroup, View.Root, null);
+
     }
     public override void OnExit()
     {

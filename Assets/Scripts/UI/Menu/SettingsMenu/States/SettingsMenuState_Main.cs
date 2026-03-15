@@ -1,4 +1,5 @@
 using TS.LocalizationSystem;
+using UnityEngine;
 
 public class SettingsMenuBaseState_Main : SettingsMenuBaseState
 {
@@ -35,6 +36,7 @@ public class SettingsMenuBaseState_Main : SettingsMenuBaseState
         View.PrivacyButton.onClick.RemoveListener(OnPrivacyButtonClicked);
         View.TermsButton.onClick.RemoveListener(OnTermsButtonClicked);
         View.LanguageButton.onClick.RemoveListener(OnLanguageButtonClicked);
+        Data.InterStateChange = true;
     }
 
     private void OnVibrateValueChanged(bool value)
@@ -58,14 +60,17 @@ public class SettingsMenuBaseState_Main : SettingsMenuBaseState
 
     private void OnLanguageButtonClicked()
     {
+        Data.CurrentContainer = (RectTransform)View.LanguageContainer;
         Controller.SetState(new SettingsMenuBaseState_Language(Controller));
     }
     private void OnPrivacyButtonClicked()
     {
+        Data.CurrentContainer = (RectTransform)View.PrivacyContainer;
         Controller.SetState(new SettingsMenuBaseState_Privacy(Controller));
     }
     private void OnTermsButtonClicked()
     {
+        Data.CurrentContainer = (RectTransform)View.TermsContainer;
         Controller.SetState(new SettingsMenuBaseState_Terms(Controller));
     }
 }

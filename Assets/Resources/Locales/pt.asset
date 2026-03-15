@@ -58,6 +58,11 @@ MonoBehaviour:
   - no_ads
   - no_ads_message
   - ok
+  - restart_message
+  - leave_level_message
+  - leave
+  - no_restart_message
+  - restart
   _values:
   - Selecione o idioma
   - Ei pessoal
@@ -104,3 +109,8 @@ MonoBehaviour:
   - "Sem an\xFAncios"
   - ' there are no ads available...'
   - OK
+  - "Reiniciar esta fase custar\xE1 uma vida!!"
+  - "Abandonar a partida custar\xE1 uma vida!!"
+  - Deixar
+  - "N\xE3o consigo reiniciar. Sem vidas!! \\nDeseja ir para a tela principal?"
+  - Reiniciar

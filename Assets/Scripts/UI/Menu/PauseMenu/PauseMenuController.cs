@@ -36,45 +36,48 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
 
     private void OnHomeButtonClicked()
     {
-        UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
+        MenuManager.Instance.OpenMenu<LoseLifeMenuView, LoseLifeMenuController, LoseLifeMenuData>(Menus.Type.LoseLife, new LoseLifeMenuData
         {
-            GameEvents.OnGameQuitEvent?.Invoke();
-            MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-            {
-                OnLoadingComplete = OnLoadingComplete
-            });
+            isRestart = false
         });
+        // UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
+        // {
+        //     GameEvents.OnGameQuitEvent?.Invoke();
+        //     MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+        //     {
+        //         OnLoadingComplete = OnLoadingComplete
+        //     });
+        // });
+    }
 
-    }
-    private void OnLoadingComplete()
-    {
-        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main);
-    }
     private void OnResumeButtonClicked()
     {
         UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
         {
-            MenuManager.Instance.GoBack();
+            HandleBackInput();
         });
     }
 
     private void OnRestartButtonClicked()
     {
-
-        UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
+        MenuManager.Instance.OpenMenu<LoseLifeMenuView, LoseLifeMenuController, LoseLifeMenuData>(Menus.Type.LoseLife, new LoseLifeMenuData
         {
-            GameEvents.OnGameQuitEvent?.Invoke();
-            MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-            {
-                OnLoadingComplete = () =>
-                {
-                    GameEvents.OnLevelRestartEvent?.Invoke();
-
-                    MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game);
-
-                }
-            });
+            isRestart = true
         });
+        // UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
+        // {
+        //     GameEvents.OnGameQuitEvent?.Invoke();
+        //     MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+        //     {
+        //         OnLoadingComplete = () =>
+        //         {
+        //             GameEvents.OnLevelRestartEvent?.Invoke();
+
+        //             MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game);
+
+        //         }
+        //     });
+        // });
     }
 
     private void OnSettingsButtonClicked()

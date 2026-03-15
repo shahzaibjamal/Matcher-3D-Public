@@ -104,5 +104,15 @@ namespace TS.LocalizationSystem
         public const string no_ads_message = "no_ads_message";
         
         public const string ok = "ok";
+        
+        public const string restart_message = "restart_message";
+        
+        public const string leave_level_message = "leave_level_message";
+        
+        public const string leave = "leave";
+        
+        public const string no_restart_message = "no_restart_message";
+        
+        public const string restart = "restart";
     }
 }

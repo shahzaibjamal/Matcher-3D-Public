@@ -58,26 +58,31 @@ MonoBehaviour:
   - no_ads
   - no_ads_message
   - ok
+  - restart_message
+  - leave_level_message
+  - leave
+  - no_restart_message
+  - restart
   _values:
   - Selecione o idioma
-  - Ei personal
+  - Ei pessoal
   - "Diga ol\xE1"
   - Jugar
-  - Configuraciones
+  - "Configura\xE7\xF5es"
   - Algunos
   - "M\xFAsica"
   - En pausa
   - Continuar
   - Nivel {0}
   - Perfecto
-  - Bomba
+  - Bom
   - "Incre\xEDble"
   - "N\xEDvel conclu\xEDdo"
   - "Voc\xEA perdeu!"
   - "N\xE3o h\xE1 mais n\xEDveis. \xA1Volte mais tarde para conferir los pr\xF3ximos!"
   - Deseja sair do jogo?
   - "Sa\xEDda"
-  - Privacidade
+  - Privacidad
   - Termos
   - "Termos e Condi\xE7\xF5es"
   - Enviar
@@ -90,9 +95,9 @@ MonoBehaviour:
   - "D\xEDa {0}"
   - x{0}
   - "Recompensas di\xE1rias"
-  - Recompensas
+  - Recompensa
   - Toque para continuar...
-  - Vibrar
+  - Vibrador
   - Lenguaje
   - "\xBFQuieres limpiar los espacios y tentar novamente?"
   - Claro
@@ -104,3 +109,8 @@ MonoBehaviour:
   - "Sem an\xFAncios"
   - "Atualmente n\xE3o h\xE1 an\xFAncios dispon\xEDveis..."
   - DE ACUERDO
+  - "Reiniciar esta fase cuidar\xE1 una vida!!"
+  - "Abandonar a partida custar\xE1 uma vida!!"
+  - Deixar
+  - "No se puede reiniciar. Sem vidas!! \\n\xBFDeseja ir para una tela principal?"
+  - Reiniciar

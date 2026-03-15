@@ -20,6 +20,7 @@ public class SettingsMenuBaseState_Language : SettingsMenuBaseState
         View.TitleText.text = LocaleManager.Localize(LocalizationKeys.language);
         PopulateLanguages();
         SoundController.Instance.PlaySoundEffect("menu_click");
+        UIAnimations.ToonIn(View.canvasGroup, (RectTransform)View.LanguageContainer, null);
     }
 
     public override void Exit()

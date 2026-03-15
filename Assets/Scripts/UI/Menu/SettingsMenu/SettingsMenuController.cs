@@ -1,10 +1,13 @@
 
+using UnityEngine;
+
 public class SettingsMenuController : MenuController<SettingsMenuView, SettingsMenuData>
 {
     public override void OnEnter()
     {
         SetState(new SettingsMenuBaseState_Main(this));
         View.CloseButton.onClick.AddListener(OnCloseButtonClicked);
+        UIAnimations.ToonIn(View.canvasGroup, View.Root, null);
     }
     public override void OnExit()
     {
@@ -23,6 +26,7 @@ public class SettingsMenuController : MenuController<SettingsMenuView, SettingsM
 
     private void OnCloseButtonClicked()
     {
+        Data.CurrentContainer = (RectTransform)View.MainView.transform;
         SetState(new SettingsMenuBaseState_Main(this));
         SoundController.Instance.PlaySoundEffect("btn");
     }

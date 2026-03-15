@@ -4,6 +4,6 @@ using UnityEngine.UI;
 
 public class DailyRewardMenuView : MenuView
 {
-
+    public RectTransform Root;
     public DailyRewardsWindow DailyRewardsWindow;
 }

@@ -1,5 +1,3 @@
-using Unity.VisualScripting;
-
 public class SettingsMenuBaseState : MenuBaseState<SettingsMenuController, SettingsMenuView, SettingsMenuData>
 {
     public SettingsMenuBaseState(SettingsMenuController controller) : base(controller)
@@ -13,6 +11,8 @@ public class SettingsMenuBaseState : MenuBaseState<SettingsMenuController, Setti
         View.PrivacyContainer.gameObject.SetActive(false);
         View.TermsContainer.gameObject.SetActive(false);
         View.CloseButton.gameObject.SetActive(false);
+        if (Data.InterStateChange)
+            UIAnimations.ToonIn(View.canvasGroup, Data.CurrentContainer, null);
     }
 
 

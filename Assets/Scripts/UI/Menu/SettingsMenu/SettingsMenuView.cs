@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class SettingsMenuView : MenuView
 {
+    public RectTransform Root;
     public Button CloseButton;
     [Header("Main")]
     public Button LanguageButton;
