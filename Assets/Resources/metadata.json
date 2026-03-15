@@ -2301,12 +2301,12 @@
   ],
   "StoreItems": [
     {
-      "Id": null,
+      "Id": "hearts_refill_full",
       "Name": "Full Heart Refill",
       "Category": 3,
-      "PurchaseType": 0,
+      "PurchaseType": 1,
       "Cost": 500.0,
-      "CurrencyType": 0,
+      "CurrencyType": 1,
       "Rewards": [
         {
           "RewardType": "Heart",
@@ -2316,12 +2316,12 @@
       "Description": "Full Heart Refill"
     },
     {
-      "Id": null,
+      "Id": "power_up_hint",
       "Name": "Hint",
       "Category": 2,
-      "PurchaseType": 0,
+      "PurchaseType": 1,
       "Cost": 200.0,
-      "CurrencyType": 0,
+      "CurrencyType": 1,
       "Rewards": [
         {
           "RewardType": "Hint",
@@ -2331,12 +2331,12 @@
       "Description": "Highlight collectables"
     },
     {
-      "Id": null,
-      "Name": "Hint",
+      "Id": "power_up_undo",
+      "Name": "Undo",
       "Category": 2,
-      "PurchaseType": 0,
+      "PurchaseType": 1,
       "Cost": 150.0,
-      "CurrencyType": 0,
+      "CurrencyType": 1,
       "Rewards": [
         {
           "RewardType": "Undo",
@@ -2346,12 +2346,12 @@
       "Description": "Undo last move"
     },
     {
-      "Id": null,
-      "Name": "Hint",
+      "Id": "power_up_magnet",
+      "Name": "Magnet",
       "Category": 2,
-      "PurchaseType": 0,
+      "PurchaseType": 1,
       "Cost": 500.0,
-      "CurrencyType": 0,
+      "CurrencyType": 1,
       "Rewards": [
         {
           "RewardType": "Magnet",
@@ -2361,12 +2361,12 @@
       "Description": "Collect 3 collectables."
     },
     {
-      "Id": null,
+      "Id": "power_up_shake",
       "Name": "Lightning Strike",
       "Category": 2,
-      "PurchaseType": 0,
+      "PurchaseType": 1,
       "Cost": 300.0,
-      "CurrencyType": 0,
+      "CurrencyType": 1,
       "Rewards": [
         {
           "RewardType": "Shake",
@@ -2376,8 +2376,8 @@
       "Description": "Jolt the arena"
     },
     {
-      "Id": null,
-      "Name": "Gold Pouch",
+      "Id": "iap_gold_bunch",
+      "Name": "Gold Bunch",
       "Category": 0,
       "PurchaseType": 0,
       "Cost": 0.0,
@@ -2391,8 +2391,8 @@
       "Description": "Gold Pouch"
     },
     {
-      "Id": null,
-      "Name": "Gold Bundle",
+      "Id": "iap_gold_pouch",
+      "Name": "Gold Pouch",
       "Category": 0,
       "PurchaseType": 0,
       "Cost": 1.0,
@@ -2406,7 +2406,7 @@
       "Description": "Gold Pouch"
     },
     {
-      "Id": null,
+      "Id": "iap_starter_pack",
       "Name": "Starter Pack",
       "Category": 0,
       "PurchaseType": 0,
@@ -2437,7 +2437,7 @@
       "Description": "Starter Pack"
     },
     {
-      "Id": null,
+      "Id": "iap_adventure_pack",
       "Name": "Adventure Pack",
       "Category": 0,
       "PurchaseType": 0,

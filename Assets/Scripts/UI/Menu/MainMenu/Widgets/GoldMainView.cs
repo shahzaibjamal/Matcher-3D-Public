@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 
 public class GoldMainView : MonoBehaviour
 {
@@ -10,18 +9,30 @@ public class GoldMainView : MonoBehaviour
     public TMP_Text GoldText;
     public Image GoldIcon;
     public RectTransform Container; // The main parent of this HUD element
+    public Button AddMoreButton;  //store
 
     private int _displayedAmount = 0;
     private Tween _countTween;
 
     public UIShimmerEffect UIShimmerEffect;
 
+    public void Init(int amount, bool showAddMore)
+    {
+        UpdateAmount(amount);
+        AddMoreButton.gameObject.SetActive(showAddMore);
+    }
+
     void Awake()
     {
         UIShimmerEffect.Play();
         GameEvents.OnGoldUpdatedEvent += OnGoldUpdate;
+        AddMoreButton.onClick.AddListener(OnAddMoreButtonClicked);
     }
 
+    private void OnAddMoreButtonClicked()
+    {
+        MenuManager.Instance.OpenMenu<StoreMenuView, StoreMenuController, StoreMenuData>(Menus.Type.Store);
+    }
     private void OnGoldUpdate(int amount)
     {
         PlayCollectAnimation(amount);
@@ -64,5 +75,6 @@ public class GoldMainView : MonoBehaviour
         Container.DOKill();
         _countTween.Kill();
         GameEvents.OnGoldUpdatedEvent -= OnGoldUpdate;
+        AddMoreButton.onClick.RemoveListener(OnAddMoreButtonClicked);
     }
 }

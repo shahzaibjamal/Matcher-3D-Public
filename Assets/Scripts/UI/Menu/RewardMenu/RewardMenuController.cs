@@ -10,10 +10,16 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
         SetState(new RewardMenuBaseState_Main(this));
         Setup(Data.RewardData);
         View.FullscreenButton.onClick.AddListener(OnClickClaim);
-        View.FullscreenButton.interactable = true;
-
-
+        View.FullscreenButton.interactable = false;
+        // 3. THE GOD RAYS (Anti-Jitter Logic)
+        // Instead of starting from 0, we use RotateMode.LocalAxisAdd 
+        // to ensure it just keeps spinning relative to its current state.
+        View.GodRaysTransform.DOLocalRotate(new Vector3(0, 0, 360f), 5f, RotateMode.LocalAxisAdd)
+            .SetEase(Ease.Linear)
+            .SetLoops(-1)
+            .SetUpdate(true);
     }
+
     public override void OnExit()
     {
         View.FullscreenButton.onClick.RemoveListener(OnClickClaim);
@@ -88,13 +94,7 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetUpdate(true);
 
-            // 3. THE GOD RAYS (Anti-Jitter Logic)
-            // Instead of starting from 0, we use RotateMode.LocalAxisAdd 
-            // to ensure it just keeps spinning relative to its current state.
-            View.GodRaysTransform.DOLocalRotate(new Vector3(0, 0, 360f), 5f, RotateMode.LocalAxisAdd)
-                .SetEase(Ease.Linear)
-                .SetLoops(-1)
-                .SetUpdate(true);
+            View.FullscreenButton.interactable = true;
         });
 
         _sequence.Append(View.AmountText.transform.DOPunchScale(Vector3.one * 0.25f, 0.5f, 8, 1));

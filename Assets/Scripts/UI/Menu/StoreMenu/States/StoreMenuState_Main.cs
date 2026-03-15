@@ -33,7 +33,7 @@ public class StoreMenuBaseState_Main : StoreMenuBaseState
 
             // Spawn the Label (e.g., "Replenish", "Gold Purchases")
             GameObject label = GameObject.Instantiate(View.CategoryLabelPrefab, View.StoreItemsContainer);
-            label.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = category.ToString();
+            label.GetComponentInChildren<TMPro.TMP_Text>().text = category.ToString();
 
             // Spawn a Grid Container for the 2-column layout
             GameObject grid = GameObject.Instantiate(View.GridContainerPrefab, View.StoreItemsContainer);

@@ -93,6 +93,9 @@ public class PurchaseManager : MonoBehaviour
                 // Grant rewards using the strictly RewardData-only method
                 save.Inventory.AddRewards(currentState.ProcessedRewards);
 
+                RewardManager.Instance.AddRewardsToQueue(currentState.ProcessedRewards);
+                RewardManager.Instance.CheckAndShowNext();
+
                 GameSaveData.OnLivesChanged?.Invoke();
                 Debug.Log($"Purchased {data.Name} for {currentState.DisplayCost} Gold.");
             }

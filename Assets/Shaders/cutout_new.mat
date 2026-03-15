@@ -60,7 +60,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0.5
-    - _Aspect: 0.5625
+    - _Aspect: 0.46632123
     - _Blur: 0.328
     - _ColorMask: 15
     - _Progress: 1
@@ -78,7 +78,7 @@ Material:
     - _XRMotionVectorsPass: 1
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
-    - _Center: {r: 0.8142361, g: 0.115651034, b: 0, a: 0}
+    - _Center: {r: 0.8017036, g: 0.11565103, b: 0, a: 0}
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

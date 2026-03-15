@@ -63,6 +63,7 @@ MonoBehaviour:
   - leave
   - no_restart_message
   - restart
+  - store
   _values:
   - Select language
   - Hey Guys
@@ -114,3 +115,4 @@ MonoBehaviour:
   - Leave
   - Can't restart. Out of lives!! \nWould you like to go to main screen?
   - Restart
+  - Store

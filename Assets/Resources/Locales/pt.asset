@@ -63,6 +63,7 @@ MonoBehaviour:
   - leave
   - no_restart_message
   - restart
+  - store
   _values:
   - Selecione o idioma
   - Ei pessoal
@@ -114,3 +115,4 @@ MonoBehaviour:
   - Deixar
   - "N\xE3o consigo reiniciar. Sem vidas!! \\nDeseja ir para a tela principal?"
   - Reiniciar
+  - Loja

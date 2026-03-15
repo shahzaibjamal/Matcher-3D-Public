@@ -114,5 +114,7 @@ namespace TS.LocalizationSystem
         public const string no_restart_message = "no_restart_message";
         
         public const string restart = "restart";
+        
+        public const string store = "store";
     }
 }
