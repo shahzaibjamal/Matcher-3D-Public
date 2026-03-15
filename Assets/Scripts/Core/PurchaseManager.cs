@@ -25,6 +25,13 @@ public class PurchaseManager : MonoBehaviour
             .Where(state => state.IsVisible && (filterCategory == null || state.Category == filterCategory))
             .ToList();
     }
+    public Dictionary<StoreItemCategory, List<StoreItemUIState>> GetGroupedStoreFront()
+    {
+        // Gets all visible items and groups them by their Enum Category
+        return GetStoreFront()
+            .GroupBy(item => item.Category)
+            .ToDictionary(group => group.Key, group => group.ToList());
+    }
 
     private StoreItemUIState ProcessItemState(StoreItemData data)
     {
