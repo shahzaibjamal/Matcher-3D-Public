@@ -32,16 +32,16 @@ public class StoreMenuBaseState_Main : StoreMenuBaseState
             if (!groupedStore.ContainsKey(category)) continue;
 
             // Spawn the Label (e.g., "Replenish", "Gold Purchases")
-            GameObject label = GameObject.Instantiate(categoryLabelPrefab, View.StoreItemsContainer);
+            GameObject label = GameObject.Instantiate(View.CategoryLabelPrefab, View.StoreItemsContainer);
             label.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = category.ToString();
 
             // Spawn a Grid Container for the 2-column layout
-            GameObject grid = GameObject.Instantiate(gridContainerPrefab, View.StoreItemsContainer);
+            GameObject grid = GameObject.Instantiate(View.GridContainerPrefab, View.StoreItemsContainer);
 
             // Spawn items into that grid
             foreach (var itemState in groupedStore[category])
             {
-                GameObject card = GameObject.Instantiate(itemCardPrefab, grid.transform);
+                GameObject card = GameObject.Instantiate(View.ItemCardPrefab, grid.transform);
                 card.GetComponent<StoreItemView>().Setup(itemState);
             }
         }

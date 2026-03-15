@@ -5,4 +5,9 @@ public class StoreMenuView : MenuView
 {
     public RectTransform Root;
     public Transform StoreItemsContainer;
+
+    public GameObject ItemCardPrefab;
+    public GameObject GridContainerPrefab;
+    public GameObject CategoryLabelPrefab;
+
 }
