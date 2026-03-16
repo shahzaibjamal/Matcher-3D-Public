@@ -95,11 +95,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 31da8749afad8b94f8020ce2fe4e78c1
-    m_Address: beer
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 32bcf0e2953755a45b07dfc5384a7cbf
     m_Address: Knife01
     m_ReadOnly: 0
@@ -195,11 +190,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6a8fcd966223f4240a5a8a0cc03aa3b0
-    m_Address: cog1
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6b24240b89a0d9b4e91faebc6067001e
     m_Address: Pot02
     m_ReadOnly: 0
@@ -207,11 +197,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6ba7ca27fb833e54b8f258948b6313b9
     m_Address: Clock
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 75e4b502f6a4f764a81d0ffc96d4ab5b
-    m_Address: potion1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -337,11 +322,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d517fa5bc09a7cf43bfe03b92ca752f5
     m_Address: Ball03
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e0e9449f84012d2428859176cd2d0b06
-    m_Address: heart
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

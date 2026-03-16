@@ -50,11 +50,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2066c7a6edfc0194eaeb5e63e4aa2c70
-    m_Address: beer0000
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 23afa1822fc0a7b46b7b7643430c4777
     m_Address: icon_knife_01
     m_ReadOnly: 0
@@ -112,11 +107,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 565cd18ed99b9414f9926068688eded3
     m_Address: icon_building_block_01
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 57fb9e3f62d538649a880cfbcd8155d2
-    m_Address: cog1_0000
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -197,11 +187,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6c87524a37dbfd648a53205f4780b6d8
     m_Address: icon_chair_02
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7568e6ef0c236c64e8c3977ad6f4c093
-    m_Address: heart0000
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -372,11 +357,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f25cda03e671ddf40973fb7abee26c3b
     m_Address: icon_bread
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fe5b33de0212707499f3d8c7835213e1
-    m_Address: bottlePotionHealth0000
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
