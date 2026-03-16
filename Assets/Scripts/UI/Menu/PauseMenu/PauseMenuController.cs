@@ -40,14 +40,6 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
         {
             isRestart = false
         });
-        // UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
-        // {
-        //     GameEvents.OnGameQuitEvent?.Invoke();
-        //     MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-        //     {
-        //         OnLoadingComplete = OnLoadingComplete
-        //     });
-        // });
     }
 
     private void OnResumeButtonClicked()
@@ -64,24 +56,10 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
         {
             isRestart = true
         });
-        // UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
-        // {
-        //     GameEvents.OnGameQuitEvent?.Invoke();
-        //     MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-        //     {
-        //         OnLoadingComplete = () =>
-        //         {
-        //             GameEvents.OnLevelRestartEvent?.Invoke();
-
-        //             MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game);
-
-        //         }
-        //     });
-        // });
     }
 
     private void OnSettingsButtonClicked()
     {
-        MenuManager.Instance.OpenMenu<SettingsMenuView, SettingsMenuController, SettingsMenuData>(Menus.Type.Settings);
+        MenuManager.Instance.OpenMenu<SettingsMenuView, SettingsMenuController, SettingsMenuData>(Menus.Type.Settings, new SettingsMenuData());
     }
 }

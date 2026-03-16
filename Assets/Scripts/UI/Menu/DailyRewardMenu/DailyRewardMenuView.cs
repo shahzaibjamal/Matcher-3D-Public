@@ -1,4 +1,3 @@
-using CoppraGames;
 using UnityEngine;
 using UnityEngine.UI;
 
