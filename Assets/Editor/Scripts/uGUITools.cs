@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -107,5 +108,32 @@ public class uGUITools : MonoBehaviour
 
             t.localScale = new Vector3(t.localScale.x, -t.localScale.y, t.localScale.z);
         }
+    }
+    public class SpriteExporter
+    {
+        [MenuItem("uGUI/Export Selected Sprites")]
+        public static void SaveSelectedSprites()
+        {
+            foreach (Object obj in Selection.objects)
+            {
+                if (obj is Sprite sprite)
+                {
+                    var tex = sprite.texture;
+                    var rect = sprite.textureRect;
+                    var newTex = new Texture2D((int)rect.width, (int)rect.height);
+
+                    // Copy the pixels from the sheet to the new texture
+                    var pixels = tex.GetPixels((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+                    newTex.SetPixels(pixels);
+                    newTex.Apply();
+
+                    // Save to file
+                    byte[] bytes = newTex.EncodeToPNG();
+                    File.WriteAllBytes(Application.dataPath + "/Art/UI/SplitSprites/" + sprite.name + ".png", bytes);
+                }
+            }
+            AssetDatabase.Refresh();
+        }
+
     }
 }
