@@ -76,35 +76,76 @@ public class PurchaseManager : MonoBehaviour
         return state;
     }
 
-    public void PurchaseItem(string itemID)
+    public void PurchaseItem(string itemID, System.Action<bool> onComplete = null)
     {
         StoreItemData data = DataManager.Instance.GetStoreItemByID(itemID);
-        if (data == null) return;
+        if (data == null) { onComplete?.Invoke(false); return; }
 
         StoreItemUIState currentState = ProcessItemState(data);
         var save = GameManager.Instance.SaveData;
 
-        // Check if the cost is Gold or Real Money using your enum
+        // --- GOLD PURCHASE ---
         if (currentState.CurrencyType == StoreCurrencyType.Gold)
         {
-            // Use the gold update method you provided
             if (save.Inventory.TryUpdateGoldAmount(-currentState.DisplayCost))
             {
-                // Grant rewards using the strictly RewardData-only method
-                save.Inventory.AddRewards(currentState.ProcessedRewards);
-
-                RewardManager.Instance.AddRewardsToQueue(currentState.ProcessedRewards);
-                RewardManager.Instance.CheckAndShowNext();
-
-                GameSaveData.OnLivesChanged?.Invoke();
-                Debug.Log($"Purchased {data.Name} for {currentState.DisplayCost} Gold.");
+                FulfillRewards(currentState.ProcessedRewards);
+                onComplete?.Invoke(true);
+            }
+            else
+            {
+                Debug.LogWarning("Insufficient Gold.");
+                onComplete?.Invoke(false);
             }
         }
+        // --- USD (IAP) PURCHASE ---
         else if (currentState.CurrencyType == StoreCurrencyType.USD)
         {
-            // Trigger IAP Logic here
+            // Connectivity Check
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                Debug.LogError("No Internet Connection. Cannot initiate IAP.");
+                // You could trigger a "No Internet" Popup here
+                onComplete?.Invoke(false);
+                return;
+            }
+
             Debug.Log($"Initiating Real Money Transaction: {currentState.DisplayCost} USD");
-            // OnSuccess: save.Inventory.AddRewards(currentState.ProcessedRewards);
+
+            IAPManager.Instance.BuyProductID(itemID, (success) =>
+            {
+                if (success)
+                {
+                    // The only place USD rewards are granted
+                    FulfillRewards(currentState.ProcessedRewards);
+                    onComplete?.Invoke(true);
+                }
+                else
+                {
+                    onComplete?.Invoke(false);
+                }
+            });
         }
+    }
+
+    /// <summary>
+    /// The Single Authority for granting items. 
+    /// Called by both Gold and IAP paths.
+    /// </summary>
+    private void FulfillRewards(List<RewardData> rewards)
+    {
+        var save = GameManager.Instance.SaveData;
+
+        // 1. Logic: Update the Inventory
+        save.Inventory.AddRewards(rewards);
+
+        // 2. Visuals: Show the reward popups via your RewardManager
+        RewardManager.Instance.AddRewardsToQueue(rewards);
+        RewardManager.Instance.CheckAndShowNext();
+
+        // 3. UI Events: Notify listeners (like Heart bars)
+        GameSaveData.OnLivesChanged?.Invoke();
+
+        Debug.Log("Rewards fulfilled and UI notified.");
     }
 }

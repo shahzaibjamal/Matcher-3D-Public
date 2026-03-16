@@ -64,6 +64,7 @@ MonoBehaviour:
   - no_restart_message
   - restart
   - store
+  - iap_error_message
   _values:
   - Select language
   - Hey Guys
@@ -116,3 +117,4 @@ MonoBehaviour:
   - Can't restart. Out of lives!! \nWould you like to go to main screen?
   - Restart
   - Store
+  - Something went wrong with purchase. Please try again later!!

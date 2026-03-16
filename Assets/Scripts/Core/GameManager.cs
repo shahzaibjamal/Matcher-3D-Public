@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         RewardManager.Instance.Init();
         LevelManager.Instance.Initialize(SaveData);
         AdManager.Instance.UpdateLevelProgress(LevelManager.Instance.GetCurrentProgressLevel().Number);
+        IAPManager.Instance.Initialize();
 
         SoundController.Instance.Init(SaveData.IsMusicMuted, SaveData.IsSoundMuted);
 

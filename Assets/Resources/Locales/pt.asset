@@ -64,6 +64,7 @@ MonoBehaviour:
   - no_restart_message
   - restart
   - store
+  - iap_error_message
   _values:
   - Selecione o idioma
   - Ei pessoal
@@ -116,3 +117,4 @@ MonoBehaviour:
   - "N\xE3o consigo reiniciar. Sem vidas!! \\nDeseja ir para a tela principal?"
   - Reiniciar
   - Loja
+  - Ocorreu um problema com a compra. Tente novamente mais tarde!

@@ -116,5 +116,7 @@ namespace TS.LocalizationSystem
         public const string restart = "restart";
         
         public const string store = "store";
+        
+        public const string iap_error_message = "iap_error_message";
     }
 }

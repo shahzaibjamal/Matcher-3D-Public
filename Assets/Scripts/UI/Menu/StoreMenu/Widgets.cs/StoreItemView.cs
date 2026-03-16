@@ -1,4 +1,5 @@
 using TMPro;
+using TS.LocalizationSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,13 +35,44 @@ public class StoreItemView : MonoBehaviour
                         $"${_state.DisplayCost:F2}";
         _currencyIcon.gameObject.SetActive(_state.CurrencyType == StoreCurrencyType.Gold);
         LoadRewards();
+        RefreshUI();
     }
 
     private void OnBuyButtonClicked()
     {
-        PurchaseManager.Instance.PurchaseItem(_state.ItemID);
+        _buyButton.interactable = false;
+        PurchaseManager.Instance.PurchaseItem(_state.ItemID, OnPurchaseCallback);
     }
 
+    private void OnPurchaseCallback(bool success)
+    {
+        RefreshUI();
+        if (!success)
+        {
+            MenuManager.Instance.OpenMenu<GenericPopupMenuView, GenericPopupMenuController, GenericPopupMenuData>(
+                        Menus.Type.GenericPopup,
+                        new GenericPopupMenuData(
+                            LocalizationKeys.store,
+                            LocalizationKeys.iap_error_message,
+                            LocalizationKeys.cancel
+                        )
+                    );
+        }
+    }
+
+
+    private void RefreshUI()
+    {
+        if (_state.CurrencyType == StoreCurrencyType.Gold)
+        {
+            _buyButton.interactable = GameManager.Instance.SaveData.Inventory.Gold >= _state.DisplayCost;
+        }
+        else
+        {
+            _buyButton.interactable = true;
+
+        }
+    }
     public void LoadRewards()
     {
 
