@@ -12,6 +12,7 @@ public class DailyRewardView : MonoBehaviour
     [SerializeField] private Button claimButton;
     [SerializeField] private GameObject claimedOverlay;
     [SerializeField] private CanvasGroup _canvasGroup;
+    [SerializeField] private Image _bgDim;
 
     [Header("Rewards Container")]
     [SerializeField] private RectTransform rewardContainer; // Where icons are spawned
@@ -29,7 +30,7 @@ public class DailyRewardView : MonoBehaviour
         _onClaimRequested = claimCallback;
 
         // Visual state based on availability
-        _canvasGroup.alpha = isReady || isClaimed ? 1.0f : 0.6f;
+        _bgDim.gameObject.SetActive(!(isReady || isClaimed));
         dayText.text = string.Format(LocaleManager.Localize(LocalizationKeys.day), data.Day);
 
         claimedOverlay.SetActive(isClaimed);

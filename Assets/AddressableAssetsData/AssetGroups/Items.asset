@@ -45,11 +45,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 140c8b04bc085438f8b07bf7b5f2b00c
-    m_Address: LevelMap2
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 182920f2011f6434b95ffbe59ceba79b
     m_Address: Turnip
     m_ReadOnly: 0
@@ -135,11 +130,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 42ac597e358de47559dfb976d5790929
-    m_Address: LevelMap6
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 45ace8e9afa1d794db37226cc9b71e0e
     m_Address: BeautyBottle01
     m_ReadOnly: 0
@@ -175,11 +165,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 60f42577d3b9143bca686e738f0d58c3
-    m_Address: LevelMap1
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 62a64c40ad7a1a5489dc42db86bd103d
     m_Address: PhillyCheeseSteaks
     m_ReadOnly: 0
@@ -197,11 +182,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6ba7ca27fb833e54b8f258948b6313b9
     m_Address: Clock
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7ccb37844099942fe84f3591a5981b52
-    m_Address: LevelMap4
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -265,11 +245,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b11ffd01357b94737b779549b5b252eb
-    m_Address: LevelMap3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b79d81f345e456b4289f28d1b0c6d7b9
     m_Address: Chair01
     m_ReadOnly: 0
@@ -287,11 +262,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bede3a4dda5e640429ce560f4357215c
     m_Address: Pan01
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c3ce10a96a0d54f2fbca0fda272d93b7
-    m_Address: LevelMap5
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

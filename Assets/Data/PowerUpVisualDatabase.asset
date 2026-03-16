@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PowerUpVisualDatabase
   mappings:
   - Type: 4
-    Icon: {fileID: -7338417401194041014, guid: 39e0242329775814891ef673e48ae932, type: 3}
+    Icon: {fileID: 21300000, guid: 8f4ae03bcc821cb40a4c7647b45b51ca, type: 3}
     Color: {r: 0, g: 0, b: 0, a: 0}
   - Type: 1
-    Icon: {fileID: -1035832753, guid: 4ae2ccf01a85b364da21386682eb8574, type: 3}
+    Icon: {fileID: 21300000, guid: 385fce342cf574eaf94b92fe3ef52579, type: 3}
     Color: {r: 0, g: 0, b: 0, a: 0}
   - Type: 2
-    Icon: {fileID: 21300000, guid: e04e6c970b950d946a782ea08e5f971d, type: 3}
+    Icon: {fileID: 21300000, guid: f4194b9c5c0b6344b9fb49ae07ffe5d5, type: 3}
     Color: {r: 0, g: 0, b: 0, a: 0}
   - Type: 3
-    Icon: {fileID: -368517288, guid: 64e2a715fedc40044ab58dc513d5f070, type: 3}
+    Icon: {fileID: 21300000, guid: fb4c430d736c74d5494b9d0499fbeff5, type: 3}
     Color: {r: 0, g: 0, b: 0, a: 0}
