@@ -32,7 +32,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         StartSpinAnimation();
         StartShimmerAnimation(View.DailyRewardButton.transform);
         StartShimmerAnimation(View.StoreButton.transform);
-        View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
+        View.GoldMainView.Init(GameManager.Instance.SaveData.Inventory.Gold, true);
         View.StoreShimmer.Play();
         View.RewardShimmer.Play();
 
@@ -73,7 +73,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
 
     private void HandleGoldUpdate(int amount)
     {
-        View.GoldMainView.UpdateAmount(amount);
+        View.GoldMainView.Init(amount, true);
     }
 
     public void StartPlayButtonAnimation()

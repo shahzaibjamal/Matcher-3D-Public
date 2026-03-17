@@ -16,7 +16,7 @@ public class GoldMainView : MonoBehaviour
 
     public UIShimmerEffect UIShimmerEffect;
 
-    public void Init(int amount, bool showAddMore)
+    public void Init(int amount, bool showAddMore = false)
     {
         UpdateAmount(amount);
         AddMoreButton.gameObject.SetActive(showAddMore);
@@ -38,7 +38,7 @@ public class GoldMainView : MonoBehaviour
         PlayCollectAnimation(amount);
     }
 
-    public void UpdateAmount(int initialAmount)
+    private void UpdateAmount(int initialAmount)
     {
         _displayedAmount = initialAmount;
         GoldText.text = initialAmount.ToString("N0");

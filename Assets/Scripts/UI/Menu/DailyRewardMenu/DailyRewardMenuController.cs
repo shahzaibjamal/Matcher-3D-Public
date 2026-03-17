@@ -15,6 +15,7 @@ public class DailyRewardMenuController : MenuController<DailyRewardMenuView, Dai
         GameManager.Instance.SaveData.Inventory.AddRewards(rewards);
         GameManager.Instance.SaveGame();
         RewardManager.Instance.AddRewardsToQueue(rewards);
+        RewardManager.Instance.CheckAndShowNext();
     }
 
     public override void OnExit()

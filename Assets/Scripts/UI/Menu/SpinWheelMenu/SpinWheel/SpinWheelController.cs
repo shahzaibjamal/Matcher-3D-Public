@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using System;
 
 public class SpinWheelController : MonoBehaviour
@@ -27,12 +24,6 @@ public class SpinWheelController : MonoBehaviour
 
     [Header("Animation")]
     public AnimationCurve Curve;
-
-    [Header("Result UI")]
-    public GameObject resultPanel;
-    public Image resultIcon;
-    public TextMeshProUGUI resultCount;
-
     private List<SpinWheelData> _currentRewards;
     private List<SpinRewardView> _spawnedComponents = new List<SpinRewardView>();
 
@@ -45,8 +36,6 @@ public class SpinWheelController : MonoBehaviour
 
     private float _currentNeedleAngle;
     private float _lastTickAngle;
-
-    private void Awake() => HideResult();
 
     private Action<SpinWheelData> _onRewardComplete;
     public void Setup(List<SpinWheelData> rewards, Action<SpinWheelData> onRewardComplete)
@@ -176,15 +165,4 @@ public class SpinWheelController : MonoBehaviour
         _onRewardComplete?.Invoke(winData);
     }
 
-    private void ShowResult(Sprite icon, int amount)
-    {
-        if (resultPanel == null) return;
-        resultPanel.SetActive(true);
-        resultIcon.sprite = icon;
-        resultCount.text = "x" + amount;
-        StartCoroutine(DelayedHide());
-    }
-
-    private IEnumerator DelayedHide() { yield return new WaitForSeconds(3f); HideResult(); }
-    public void HideResult() => resultPanel?.SetActive(false);
 }

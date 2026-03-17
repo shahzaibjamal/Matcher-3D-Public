@@ -51,7 +51,7 @@ public class PerformanceDebugMenu : MonoBehaviour
         GUI.skin.horizontalSliderThumb.fixedHeight = 60;
 
         // 2. TOP LEFT TOGGLE
-        if (GUI.Button(new Rect(20, 20, 250, 100), _showMenu ? "CLOSE" : "DEBUG"))
+        if (GUI.Button(new Rect(400, 20, 250, 100), _showMenu ? "CLOSE" : "DEBUG"))
         {
             _showMenu = !_showMenu;
         }

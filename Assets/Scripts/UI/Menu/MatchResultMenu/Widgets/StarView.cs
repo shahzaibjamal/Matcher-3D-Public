@@ -51,7 +51,7 @@ public class StarView : MonoBehaviour
         starSeq.Join(_icon.transform.DOScale(2.0f, 0.5f).SetEase(Ease.OutBack));
 
         // 2-3 rotations (720 to 1080 degrees)
-        starSeq.Join(_icon.transform.DORotate(new Vector3(0, 0, 1080f), 0.5f, RotateMode.FastBeyond360)
+        starSeq.Join(_icon.transform.DOLocalRotate(new Vector3(0, 0, 1080f), 0.5f, RotateMode.FastBeyond360)
             .SetEase(Ease.OutCubic));
 
         // SECOND: The "Stomp" (Fast scale down to 1.0)

@@ -59,7 +59,6 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
 
         });
 
-
         for (int i = 0; i < View.StarViews.Length; i++)
         {
             delay = i * starsAppearDelay; // stars appear delay

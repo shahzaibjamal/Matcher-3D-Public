@@ -76,6 +76,7 @@ public class SlotManager
         if (_undoStack.Count == 0)
         {
             GameEvents.OnUndoInvalidEvent?.Invoke();
+            GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Undo);
             return;
         }
 

@@ -69,10 +69,10 @@ public class RewardMenuController : MenuController<RewardMenuView, RewardMenuDat
         _sequence.Append(View.canvasGroup.DOFade(1, 0.3f));
 
         // Join the God Rays entrance
-        _sequence.Join(View.GodRaysTransform.DOScale(1.2f, 0.6f).SetEase(Ease.OutBack));
+        _sequence.Join(View.GodRaysTransform.DOScale(1.4f, 0.6f).SetEase(Ease.OutBack));
 
         // C. The Icon "Pop"
-        _sequence.Append(View.RewardContainer.DOScale(1.1f, 0.4f).SetEase(Ease.OutBack));
+        _sequence.Append(View.RewardContainer.DOScale(1.4f, 0.4f).SetEase(Ease.OutBack));
         // D. The "Impact" Moment & Looping Logic
         _sequence.AppendCallback(() =>
         {

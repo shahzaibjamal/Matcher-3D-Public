@@ -157,7 +157,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
     private void OnSpawnerInitialized()
     {
-        View.GoldMainView.UpdateAmount(GameManager.Instance.SaveData.Inventory.Gold);
+        View.GoldMainView.Init(GameManager.Instance.SaveData.Inventory.Gold);
         View.TrayView.Initialize(GameManager.SLOT_COUNT);
 
         View.BlackCurtain.alpha = 1.0f;
