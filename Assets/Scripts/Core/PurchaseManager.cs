@@ -53,7 +53,7 @@ public class PurchaseManager : MonoBehaviour
 
             if (r.RewardType == RewardType.Heart)
             {
-                int missingLives = GameSaveData.MAX_LIVES - save.CurrentLives;
+                int missingLives = DataManager.Instance.Metadata.Settings.MaxLives - save.CurrentLives;
                 if (missingLives <= 0)
                 {
                     state.IsVisible = false;

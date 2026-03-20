@@ -17,6 +17,8 @@ public class LevelDetailMenuView : MenuView
 
     [Header("No Lives")]
     public GameObject NoLivesPanel;
+    public Image HeartIcon;
+    public Image HeartFillIcon;
     public Button OkButton;
     public Button ShopButton;
     public TMP_Text shopButtonText;

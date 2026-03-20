@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using UnityEngine;
 
 [Serializable]
 public class LevelProgress
@@ -34,8 +35,6 @@ public class GameSaveData
 
 
     #region Lives
-    public const int MAX_LIVES = 5;
-    public const int SECONDS_TO_RECOVER_LIFE = 1800;
     public string LastLifeLostTime;
 
     // Logic-driven property
@@ -51,26 +50,43 @@ public class GameSaveData
 
     public void UpdateLivesLogic()
     {
-        if (Inventory.CurrentLivesRaw >= MAX_LIVES || string.IsNullOrEmpty(LastLifeLostTime)) return;
+        int maxLives = DataManager.Instance.Metadata.Settings.MaxLives;
+        int secondsPerLife = DataManager.Instance.Metadata.Settings.SecondsToRecover;
+
+        if (Inventory.CurrentLivesRaw >= maxLives || string.IsNullOrEmpty(LastLifeLostTime))
+        {
+            LastLifeLostTime = string.Empty;
+            return;
+        }
 
         if (DateTime.TryParse(LastLifeLostTime, out DateTime lastLost))
         {
             double secondsPassed = (DateTime.Now - lastLost).TotalSeconds;
+            int livesToRestore = Mathf.FloorToInt((float)(secondsPassed / secondsPerLife));
 
-            if (secondsPassed >= SECONDS_TO_RECOVER_LIFE)
+            if (livesToRestore > 0)
             {
-                int recovered = (int)(secondsPassed / SECONDS_TO_RECOVER_LIFE);
-
-                Inventory.AddLives(recovered, MAX_LIVES);
-
-                if (Inventory.CurrentLivesRaw >= MAX_LIVES)
+                // --- STEP 1: Update the State FIRST ---
+                if (Inventory.CurrentLivesRaw + livesToRestore >= maxLives)
+                {
                     LastLifeLostTime = string.Empty;
+                }
                 else
-                    LastLifeLostTime = lastLost.AddSeconds(recovered * SECONDS_TO_RECOVER_LIFE).ToString("o");
+                {
+                    // Move anchor forward to account for consumed lives
+                    // We use the original lastLost + used time to be frame-perfect
+                    DateTime newAnchor = lastLost.AddSeconds(livesToRestore * secondsPerLife);
+                    LastLifeLostTime = newAnchor.ToString("o");
+                }
+
+                // --- STEP 2: Trigger the Event LAST ---
+                // Now, if this triggers a re-entry to this function, 
+                // the 'if (livesToRestore > 0)' check will be false because 
+                // the timestamp has already been moved forward.
+                Inventory.AddLives(livesToRestore, maxLives);
             }
         }
     }
-
     public void UseLife()
     {
         UpdateLivesLogic();
@@ -78,7 +94,7 @@ public class GameSaveData
 
         Inventory.ConsumeLife();
 
-        if (Inventory.CurrentLivesRaw < MAX_LIVES && string.IsNullOrEmpty(LastLifeLostTime))
+        if (Inventory.CurrentLivesRaw < DataManager.Instance.Metadata.Settings.MaxLives && string.IsNullOrEmpty(LastLifeLostTime))
         {
             LastLifeLostTime = DateTime.Now.ToString("o");
         }

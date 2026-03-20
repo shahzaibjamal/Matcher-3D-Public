@@ -1,4 +1,8 @@
 {
+  "Settings": {
+    "MaxLives": 5,
+    "SecondsToRecover": 60
+  },
   "Items": [
     {
       "Id": "apple",
@@ -2388,7 +2392,7 @@
           "Amount": 1000
         }
       ],
-      "Description": "Gold Pouch"
+      "Description": "Gold Bunch"
     },
     {
       "Id": "iap_gold_pouch",

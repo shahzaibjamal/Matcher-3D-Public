@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class Metadata
 {
     // Initialize lists to prevent null returns
+    public GameConfig Settings; // This maps to "Settings" in your JSON  
     public List<ItemData> Items = new List<ItemData>();
     public List<LevelData> Levels = new List<LevelData>();
     public List<DailyRewardData> DailyRewards = new List<DailyRewardData>();

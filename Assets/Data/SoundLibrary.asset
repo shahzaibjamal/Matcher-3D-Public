@@ -79,3 +79,6 @@ MonoBehaviour:
   - Name: ftue_step
     Clip: {fileID: 8300000, guid: 0c008ee3ee72a4362a35be25fa5de043, type: 3}
     Volume: 1
+  - Name: error
+    Clip: {fileID: 8300000, guid: df729d213c4be44a9b55cd109f5cd4f9, type: 3}
+    Volume: 1

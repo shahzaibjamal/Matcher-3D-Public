@@ -15,7 +15,6 @@ public class LevelDetailMenuMenuBaseState : MenuBaseState<LevelDetailMenuControl
         View.NoLivesPanel.SetActive(false);
     }
 
-
     public override void Exit()
     {
     }

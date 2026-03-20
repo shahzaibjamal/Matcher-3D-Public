@@ -14,7 +14,6 @@ public class MagnifyingGlassSearch : MonoBehaviour
 
     [Header("Timing")]
     [SerializeField] private float duration = 3.5f;
-    [SerializeField] private float fadeTime = 0.5f;
 
     // --- EDITOR TOOLS ---
 

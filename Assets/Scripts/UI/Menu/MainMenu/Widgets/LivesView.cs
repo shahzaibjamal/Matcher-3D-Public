@@ -2,13 +2,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System;
 
 public class LivesView : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private Image _mainFillImage;    // The actual colored bar
-    [SerializeField] private Image _ghostFillImage;   // The "delayed" white/transparent bar
+    [SerializeField] private Image _mainFillImage;
+    [SerializeField] private Image _ghostFillImage;
     [SerializeField] private TMP_Text _amountText;
+    [SerializeField] private TMP_Text _timerText; // Add this to your Prefab!
     [SerializeField] private Button _addMoreButton;
     [SerializeField] private RectTransform _barContainer;
 
@@ -18,24 +20,23 @@ public class LivesView : MonoBehaviour
     [SerializeField] private Vector3 _punchScale = new Vector3(0.15f, 0.15f, 0);
 
     [Header("Range Settings")]
-    [Tooltip("The fill amount where the bar actually starts (e.g., 0.15 if the icon covers the first 15%)")]
-    [Range(0.2f, 0.7f)][SerializeField] private float _fillOffset = 0.1f;
-    [Tooltip("The fill amount where the bar ends (usually 1.0)")]
+    [Range(0.0f, 0.7f)][SerializeField] private float _fillOffset = 0.1f;
     [Range(0.5f, 1f)][SerializeField] private float _maxFillLimit = 1f;
 
     private Tween _fillTween;
     private Tween _ghostTween;
+    private int _lastInternalLifeCount = -1;
 
     private void OnEnable()
     {
-        // Subscribe to the global life change event
-        GameEvents.OnLivesChanged += RefreshUI;
-        RefreshUI(true); // Snap to value immediately on screen load
+        // Still listen to events for immediate refills (purchases/rewards)
+        GameEvents.OnLivesChanged += HandleLifeChangeEvent;
+        RefreshUI(true);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnLivesChanged -= RefreshUI;
+        GameEvents.OnLivesChanged -= HandleLifeChangeEvent;
     }
 
     private void Start()
@@ -44,58 +45,90 @@ public class LivesView : MonoBehaviour
             _addMoreButton.onClick.AddListener(OnAddMoreClicked);
     }
 
+    // This is called by your MenuState's Scheduler every 0.2s
     public void RefreshUI() => RefreshUI(false);
+
+    private void HandleLifeChangeEvent() => RefreshUI(false);
 
     public void RefreshUI(bool immediate)
     {
         var save = GameManager.Instance.SaveData;
-        float targetFill = GameSaveData.MAX_LIVES > 0 ? (float)save.CurrentLives / GameSaveData.MAX_LIVES : 0;
+        int maxLives = DataManager.Instance.Metadata.Settings.MaxLives;
+        int currentLives = save.CurrentLives; // Accessing property triggers UpdateLivesLogic
 
-        // Update the number text immediately
-        _amountText.text = save.CurrentLives.ToString();
+        // 1. Update Timer Text with 1s Offset
+        UpdateTimerDisplay(save, maxLives);
 
-        float rawPercent = GameSaveData.MAX_LIVES > 0 ? (float)save.CurrentLives / GameSaveData.MAX_LIVES : 0;
-
-        // 2. Remap the value: NewValue = Offset + (Percent * (Max - Offset))
-        // This ensures 0 lives = _fillOffset and Max lives = _maxFillLimit
-        float remappedFill = _fillOffset + (rawPercent * (_maxFillLimit - _fillOffset));
-
-        _amountText.text = save.CurrentLives.ToString();
-        if (immediate)
+        // 2. Only run Bar Animations if the actual life count changed
+        // This prevents the bar from "punching" every 0.2s when the scheduler runs
+        if (currentLives != _lastInternalLifeCount)
         {
-            _mainFillImage.fillAmount = remappedFill;
-            if (_ghostFillImage != null) _ghostFillImage.fillAmount = targetFill;
+            AnimateBar(currentLives, maxLives, immediate);
+            _lastInternalLifeCount = currentLives;
+        }
+    }
+
+    private void UpdateTimerDisplay(GameSaveData save, int maxLives)
+    {
+        if (_timerText == null) return;
+
+        if (save.CurrentLives >= maxLives)
+        {
+            _timerText.text = "FULL"; // Or use Localization
             return;
         }
 
-        // 1. Animate Main Fill
-        _fillTween?.Kill();
-        _fillTween = _mainFillImage.DOFillAmount(remappedFill, _animationDuration)
-            .SetEase(Ease.OutQuad);
+        if (!string.IsNullOrEmpty(save.LastLifeLostTime) && DateTime.TryParse(save.LastLifeLostTime, out DateTime lastLost))
+        {
+            int secondsPerLife = DataManager.Instance.Metadata.Settings.SecondsToRecover;
+            TimeSpan diff = lastLost.AddSeconds(secondsPerLife) - DateTime.Now;
 
-        // 2. Animate Ghost Fill (The trailing effect)
+            // Visual Offset: Show 00:01 until the very moment the life is added
+            double displaySeconds = Math.Max(0, diff.TotalSeconds + 1);
+            TimeSpan t = TimeSpan.FromSeconds(displaySeconds);
+
+            _timerText.text = string.Format("{0:D2}:{1:D2}", (int)t.TotalMinutes, t.Seconds);
+
+            // Subtle color warning
+            _timerText.color = displaySeconds < 20 ? Color.red : Color.white;
+        }
+    }
+
+    private void AnimateBar(int currentLives, int maxLives, bool immediate)
+    {
+        float rawPercent = maxLives > 0 ? (float)currentLives / maxLives : 0;
+        float remappedFill = _fillOffset + (rawPercent * (_maxFillLimit - _fillOffset));
+
+        _amountText.text = currentLives.ToString();
+
+        if (immediate)
+        {
+            _mainFillImage.fillAmount = remappedFill;
+            if (_ghostFillImage != null) _ghostFillImage.fillAmount = rawPercent;
+            return;
+        }
+
+        // Main Fill
+        _fillTween?.Kill();
+        _fillTween = _mainFillImage.DOFillAmount(remappedFill, _animationDuration).SetEase(Ease.OutQuad);
+
+        // Ghost Fill
         if (_ghostFillImage != null)
         {
             _ghostTween?.Kill();
-            // Ghost bar waits slightly then catches up
-            _ghostTween = _ghostFillImage.DOFillAmount(targetFill, _animationDuration)
+            _ghostTween = _ghostFillImage.DOFillAmount(rawPercent, _animationDuration)
                 .SetDelay(_ghostDelay)
                 .SetEase(Ease.OutCubic);
         }
 
-        // 3. The "Juice" Punch
-        // Only punch if the value actually changed (prevents punch on Init)
-        _barContainer.DOKill();
-        _barContainer.localScale = Vector3.one;
+        // Juice Punch (Now only happens when life count actually changes!)
+        _barContainer.DOKill(true);
         _barContainer.DOPunchScale(_punchScale, 0.3f, 10, 1f);
     }
 
     private void OnAddMoreClicked()
     {
-        // Tactile button feedback
         _addMoreButton.transform.DOPunchScale(new Vector3(-0.1f, -0.1f, 0), 0.2f);
-
-        Debug.Log("Opening Lives/Store Menu...");
         MenuManager.Instance.OpenMenu<StoreMenuView, StoreMenuController, StoreMenuData>(Menus.Type.Store);
     }
 }

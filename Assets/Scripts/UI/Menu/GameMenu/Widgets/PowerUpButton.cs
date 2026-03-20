@@ -74,11 +74,12 @@ public class PowerUpButton : MonoBehaviour
         }
     }
 
-    private void OnPowerUpSuccess(PowerUpType type)
+    private void OnPowerUpSuccess(PowerUpType type, bool success)
     {
         if (_type == type)
         {
-            _amount--;
+            if (success)
+                _amount--;
             // 1. Deduct via delta logic
             GameEvents.OnPowerUpAmountChangeEvent?.Invoke(_type, -1);
             RefreshUI();

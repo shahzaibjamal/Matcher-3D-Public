@@ -53,7 +53,7 @@ public class Inventory
             if (reward.RewardType == RewardType.Gold)
                 TryUpdateGoldAmount(reward.Amount);
             else if (reward.RewardType == RewardType.Heart)
-                AddLives(reward.Amount, GameSaveData.MAX_LIVES);
+                AddLives(reward.Amount, DataManager.Instance.Metadata.Settings.MaxLives);
             else
                 AddPowerUp(ConvertToPowerUpType(reward.RewardType), reward.Amount);
         }

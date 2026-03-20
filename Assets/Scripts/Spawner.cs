@@ -255,7 +255,7 @@ public partial class Spawner : MonoBehaviour
         if (powerUpUsed)
         {
             // Only triggered when used as a manual PowerUp
-            GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Undo);
+            GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Undo, powerUpUsed);
             GameEvents.OnPowerUpEnableEvent?.Invoke(true);
         }
     }
@@ -398,7 +398,7 @@ public partial class Spawner : MonoBehaviour
         if (!string.IsNullOrEmpty(targetID))
         {
             HighlightItemsInField(targetID);
-            GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Hint);
+            GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Hint, true);
         }
     }
 
@@ -480,7 +480,7 @@ public partial class Spawner : MonoBehaviour
             });
         }
 
-        GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Magnet);
+        GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Magnet, true);
     }
 
     private void ProcessItemSelection(ClickableItem item)
@@ -670,13 +670,12 @@ public partial class Spawner : MonoBehaviour
             }
             else
             {
-                GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Shake);
+                GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Shake, true);
                 GameEvents.OnPowerUpEnableEvent?.Invoke(true);
             }
         }
 
         TriggerSingleRumble();
-        // GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Shake);
     }
 
     #endregion

@@ -13,6 +13,7 @@ public class PauseMenuController : MenuController<PauseMenuView, PauseMenuData>
         View.HomeButton.onClick.AddListener(OnHomeButtonClicked);
         View.SettingsButton.onClick.AddListener(OnSettingsButtonClicked);
 
+        View.RestartButton.gameObject.SetActive(GameManager.Instance.SaveData.CurrentLives > 1);
         UIAnimations.ToonIn(View.canvasGroup, View.Root, null);
     }
     public override void OnExit()

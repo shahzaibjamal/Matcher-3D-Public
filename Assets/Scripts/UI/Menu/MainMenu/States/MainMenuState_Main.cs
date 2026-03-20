@@ -8,6 +8,8 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     private Sequence _playButtonSequence;
     private Sequence _giftSeq;
     private Sequence _spinSeq;
+    private float _lifeUpdateDelay;
+
     public MainMenuBaseState_Main(MainMenuController controller) : base(controller)
     {
     }
@@ -37,6 +39,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.RewardShimmer.Play();
 
         Scheduler.Instance.ExecuteAfterDelay(0.5f, () => RewardManager.Instance.CheckAndShowNext());
+        Scheduler.Instance.SubscribeUpdate(UpdateLivesDisplay);
     }
 
     public override void Exit()
@@ -67,10 +70,20 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StartButton.transform.localScale = Vector3.one;
         View.GiftButton.transform.localScale = Vector3.one;
         View.DailySpinButton.transform.localRotation = Quaternion.identity;
+        Scheduler.Instance.UnsubscribeUpdate(UpdateLivesDisplay);
+
         base.Exit();
     }
 
-
+    private void UpdateLivesDisplay(float dt)
+    {
+        _lifeUpdateDelay += dt;
+        if (_lifeUpdateDelay > 2f)
+        {
+            _lifeUpdateDelay = 0;
+            View.LivesView.RefreshUI();
+        }
+    }
     private void HandleGoldUpdate(int amount)
     {
         View.GoldMainView.Init(amount, true);
