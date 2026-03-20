@@ -77,7 +77,6 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         SetupPowerUps();
     }
 
-
     public void SetupPowerUps()
     {
         // Create a button for every type defined in the Enum
@@ -112,7 +111,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         _curtainSeq.Kill();
         View.CurtainContainer.SetActive(false);
         GameEvents.OnSlotsFillableEvent?.Invoke(true); // reset
-        GameEvents.OnPowerUpEnableEvent?.Invoke(true); // reset power buttons  (unnecessary prob)
+        // GameEvents.OnPowerUpEnableEvent?.Invoke(true); // reset power buttons  (unnecessary prob)
     }
 
     private void CheckWin()
@@ -140,7 +139,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         }
         else
         {
-            MenuManager.Instance.OpenMenu<MatchLoseMenuMenuView, MatchLoseMenuMenuController, MatchLoseMenuMenuData>(Menus.Type.MatchLose);
+            MenuManager.Instance.OpenMenu<MatchLoseMenuView, MatchLoseMenuController, MatchLoseMenuData>(Menus.Type.MatchLose);
         }
     }
 
@@ -150,9 +149,13 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     }
     private void HandleHintPowerUp()
     {
-        View.MagnifyingGlassSearch.PlaySearch();
+        View.MagnifyingGlassSearch.PlaySearch(OnSearchComplete);
     }
 
+    private void OnSearchComplete()
+    {
+        GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Hint, true);
+    }
     private void OnPauseButtonClicked() => Controller.OpenPauseMenu();
 
     private void OnSpawnerInitialized()

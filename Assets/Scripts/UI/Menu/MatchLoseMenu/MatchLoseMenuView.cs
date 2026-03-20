@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MatchLoseMenuMenuView : MenuView
+public class MatchLoseMenuView : MenuView
 {
-
     public Button ClearButton;
     public Button QuitButton;
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+using System;
 
 public class MagnifyingGlassSearch : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class MagnifyingGlassSearch : MonoBehaviour
 
     [Header("Timing")]
     [SerializeField] private float duration = 3.5f;
+    private Action _onComplete;
 
     // --- EDITOR TOOLS ---
 
@@ -33,9 +35,10 @@ public class MagnifyingGlassSearch : MonoBehaviour
     }
 
     [ContextMenu("3. Play Search Wave")]
-    public void PlaySearch()
+    public void PlaySearch(Action onComplete)
     {
         if (absolutePath.Count < 2) return;
+        _onComplete = onComplete;
 
         Vector3[] path = new Vector3[absolutePath.Count];
         for (int i = 0; i < absolutePath.Count; i++)
@@ -63,6 +66,7 @@ public class MagnifyingGlassSearch : MonoBehaviour
 
         // 3. Fade Out: Starts at the halfway point, lasts for the second half
         s.Insert(halfDuration, canvasGroup.DOFade(0f, halfDuration).SetEase(Ease.OutQuad));
+        s.OnComplete(() => _onComplete());
     }
 
     // --- VISUAL FEEDBACK ---

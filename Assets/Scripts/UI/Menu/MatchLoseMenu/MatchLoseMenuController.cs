@@ -1,8 +1,8 @@
-public class MatchLoseMenuMenuController : MenuController<MatchLoseMenuMenuView, MatchLoseMenuMenuData>
+public class MatchLoseMenuController : MenuController<MatchLoseMenuView, MatchLoseMenuData>
 {
     public override void OnEnter()
     {
-        SetState(new MatchLoseMenuMenuBaseState(this));
+        SetState(new MatchLoseMenuBaseState(this));
         View.ClearButton.onClick.AddListener(OnClearButtonClick);
         View.QuitButton.onClick.AddListener(OnQuitButtonClick);
     }
@@ -32,14 +32,9 @@ public class MatchLoseMenuMenuController : MenuController<MatchLoseMenuMenuView,
     private void OnQuitButtonClick()
     {
         GameManager.Instance.SaveData.UseLife();
-        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+        MenuManager.Instance.OpenMenu<LoseLifeMenuView, LoseLifeMenuController, LoseLifeMenuData>(Menus.Type.LoseLife, new LoseLifeMenuData
         {
-            OnLoadingComplete = OnLoadingComplete
+            isRestart = false
         });
-    }
-
-    private void OnLoadingComplete()
-    {
-        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main);
     }
 }

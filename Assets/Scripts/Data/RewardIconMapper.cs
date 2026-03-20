@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-[CreateAssetMenu(fileName = "RewardIconMapper", menuName = "Game/Icon Mapper")]
+[CreateAssetMenu(fileName = "RewardIconMapper", menuName = "Game/Reward Icon Mapper")]
 public class RewardIconMapper : ScriptableObject
 {
     [System.Serializable]

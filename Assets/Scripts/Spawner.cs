@@ -398,7 +398,6 @@ public partial class Spawner : MonoBehaviour
         if (!string.IsNullOrEmpty(targetID))
         {
             HighlightItemsInField(targetID);
-            GameEvents.OnPowerUpSuccessEvent?.Invoke(PowerUpType.Hint, true);
         }
     }
 

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class LoseLifeMenuView : MenuView
 {
-
     public RectTransform Root;
     public Button LeaveButton;
     public Button CancelButton;

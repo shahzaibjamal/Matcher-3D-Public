@@ -82,3 +82,6 @@ MonoBehaviour:
   - Name: error
     Clip: {fileID: 8300000, guid: df729d213c4be44a9b55cd109f5cd4f9, type: 3}
     Volume: 1
+  - Name: cash
+    Clip: {fileID: 8300000, guid: 2ebe19afeca1fcc48989d1dffbe1d6ba, type: 3}
+    Volume: 1

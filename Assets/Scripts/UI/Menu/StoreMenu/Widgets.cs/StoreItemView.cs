@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using TS.LocalizationSystem;
 using UnityEngine;
@@ -14,8 +15,11 @@ public class StoreItemView : MonoBehaviour
     [SerializeField] private RectTransform _rewardsContainer;
     [SerializeField] private GameObject _storeRewardViewPreafb;
     [SerializeField] private RewardIconMapper _rewardIconMapper;
+    [SerializeField] private IAPIconMapper _iapIconMapper;
 
     private StoreItemUIState _state;
+    private Action<bool> _onPurchaseCallback;
+
     public void Awake()
     {
         _buyButton.onClick.AddListener(OnBuyButtonClicked);
@@ -25,9 +29,10 @@ public class StoreItemView : MonoBehaviour
     {
         _buyButton.onClick.RemoveAllListeners();
     }
-    public void Setup(StoreItemUIState state)
+    public void Setup(StoreItemUIState state, Action<bool> onPurchaseCallback)
     {
         _state = state;
+        _onPurchaseCallback = onPurchaseCallback;
         _titleText.text = _state.Name;
         _quantityText.text = "+" + _state.DisplayQuantity;
         _priceText.text = _state.CurrencyType == StoreCurrencyType.Gold ?
@@ -58,9 +63,13 @@ public class StoreItemView : MonoBehaviour
                         )
                     );
         }
+        else
+        {
+            _onPurchaseCallback?.Invoke(success);
+        }
     }
 
-    private void RefreshUI()
+    public void RefreshUI()
     {
         if (_state.CurrencyType == StoreCurrencyType.Gold)
         {
@@ -84,6 +93,9 @@ public class StoreItemView : MonoBehaviour
                 _priceText.text = _state.CurrencyType == StoreCurrencyType.Gold ?
                                 _state.DisplayCost.ToString() :
                                 $"${_state.DisplayCost:F2}";
+                _itemIcon.sprite = _state.CurrencyType == StoreCurrencyType.USD ?
+                _iapIconMapper.GetIcon(_state.ItemID) :
+                _rewardIconMapper.GetIcon(rewardData.RewardType);
             }
             else
             {

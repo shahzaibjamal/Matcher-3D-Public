@@ -32,7 +32,7 @@ public class MapChunk : MonoBehaviour
         if (!string.IsNullOrEmpty(_currentBaseKey))
         {
             AssetLoader.Instance.ReleaseIcon(_currentBaseKey);
-            AssetLoader.Instance.ReleaseIcon(_currentBaseKey + "");
+            AssetLoader.Instance.ReleaseIcon(_currentBaseKey + "_low");
         }
     }
 
@@ -42,7 +42,7 @@ public class MapChunk : MonoBehaviour
         if (!string.IsNullOrEmpty(_currentBaseKey))
         {
             AssetLoader.Instance.ReleaseIcon(_currentBaseKey);
-            AssetLoader.Instance.ReleaseIcon(_currentBaseKey + "");
+            AssetLoader.Instance.ReleaseIcon(_currentBaseKey + "_low");
         }
         _currentBaseKey = bgName;
         // Clear old nodes
@@ -64,7 +64,7 @@ public class MapChunk : MonoBehaviour
         Color c = _backgroundImage.color;
         c.a = 0f;
         _backgroundImage.color = c;
-        AssetLoader.Instance.LoadIcon(bgName + "", (lowSprite) =>
+        AssetLoader.Instance.LoadIcon(bgName + "_low", (lowSprite) =>
         {
             if (lowSprite == null) return;
             _backgroundImageLow.sprite = lowSprite;
@@ -100,7 +100,7 @@ public class MapChunk : MonoBehaviour
 
             Vector3 pos = path.GetPointOnPath(t);
             GameObject go = Instantiate(prefab, _nodeParent);
-            go.transform.position = pos;
+            go.transform.localPosition = pos;
 
             go.GetComponent<LevelNode>().Setup(levelBatch[i], startLevelIndex + i);
         }
@@ -110,6 +110,5 @@ public class MapChunk : MonoBehaviour
     {
         _lockOverlay.SetActive(show);
         _starRequirementText.text = text;
-        // _canvasGroup.alpha = show ? 0.6f : 1.0f;
     }
 }

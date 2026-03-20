@@ -102,5 +102,4 @@ public class MatchResultMenuBaseState : MenuBaseState<MatchResultMenuController,
     {
         // implemented by inherited state classes
     }
-
 }

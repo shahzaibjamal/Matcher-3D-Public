@@ -5,6 +5,13 @@ public class MatchResultMenuBaseState_Lose : MatchResultMenuBaseState
     public MatchResultMenuBaseState_Lose(MatchResultMenuController controller) : base(controller)
     {
     }
+    /*************************************************************/
+
+
+    //                       NOT BEING USED                       //
+
+
+    /*************************************************************/
 
     public override void Enter()
     {

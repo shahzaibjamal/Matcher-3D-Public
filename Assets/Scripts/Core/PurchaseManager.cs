@@ -87,7 +87,7 @@ public class PurchaseManager : MonoBehaviour
         // --- GOLD PURCHASE ---
         if (currentState.CurrencyType == StoreCurrencyType.Gold)
         {
-            if (save.Inventory.TryUpdateGoldAmount(-currentState.DisplayCost))
+            if (save.Inventory.TryUpdateGoldAmount(-(int)currentState.DisplayCost))
             {
                 FulfillRewards(currentState.ProcessedRewards);
                 onComplete?.Invoke(true);
@@ -141,10 +141,11 @@ public class PurchaseManager : MonoBehaviour
 
         // 2. Visuals: Show the reward popups via your RewardManager
         RewardManager.Instance.AddRewardsToQueue(rewards);
-        RewardManager.Instance.CheckAndShowNext();
+        Scheduler.Instance.ExecuteAfterDelay(0.5f, () => RewardManager.Instance.CheckAndShowNext());
 
         // 3. UI Events: Notify listeners (like Heart bars)
         GameEvents.OnLivesChanged?.Invoke();
+        SoundController.Instance.PlaySoundEffect("cash");
 
         Debug.Log("Rewards fulfilled and UI notified.");
     }

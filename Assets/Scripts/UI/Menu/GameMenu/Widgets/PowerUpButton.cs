@@ -56,7 +56,7 @@ public class PowerUpButton : MonoBehaviour
 
     private void TriggerPowerUpLogic()
     {
-        _button.interactable = false;
+        GameEvents.OnPowerUpEnableEvent?.Invoke(false);
         switch (_type)
         {
             case PowerUpType.Magnet:
@@ -79,10 +79,12 @@ public class PowerUpButton : MonoBehaviour
         if (_type == type)
         {
             if (success)
+            {
                 _amount--;
+            }
             // 1. Deduct via delta logic
             GameEvents.OnPowerUpAmountChangeEvent?.Invoke(_type, -1);
-            RefreshUI();
+            GameEvents.OnPowerUpEnableEvent?.Invoke(true);
             switch (_type)
             {
                 case PowerUpType.Magnet:
@@ -101,6 +103,18 @@ public class PowerUpButton : MonoBehaviour
     }
     private void OnPowerUpEnable(bool enable)
     {
-        RefreshUI();
+        if (!enable)
+        {
+            _button.interactable = enable;
+        }
+        else
+        {
+            Debug.LogError("power enabled - " + enable);
+            Scheduler.Instance.ExecuteAfterDelay(0.5f, () =>
+            {
+                RefreshUI();
+            });
+        }
+
     }
 }

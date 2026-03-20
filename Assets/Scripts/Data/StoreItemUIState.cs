@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
 public class StoreItemUIState
@@ -11,8 +12,18 @@ public class StoreItemUIState
     public StoreCurrencyType CurrencyType;
 
     public bool IsVisible;
-    public int DisplayCost;
+    public float DisplayCost;
+    public string GetFormattedCost()
+    {
+        if (PurchaseType == StorePurchaseType.IAP)
+        {
+            // "f2" ensures two decimal places (0.99)
+            return $"${DisplayCost:f2}";
+        }
 
+        // For Gold, we usually want whole numbers
+        return Mathf.FloorToInt(DisplayCost).ToString();
+    }
     // The list of rewards that will be passed to Inventory.AddRewards
     public List<RewardData> ProcessedRewards;
 
