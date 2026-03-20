@@ -30,6 +30,7 @@ public class LoseLifeMenuBaseState_Restart : LoseLifeMenuBaseState
 
     private void OnRestartButtonClicked()
     {
+        GameManager.Instance.SaveData.UseLife();
         UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
         {
             GameEvents.OnGameQuitEvent?.Invoke();

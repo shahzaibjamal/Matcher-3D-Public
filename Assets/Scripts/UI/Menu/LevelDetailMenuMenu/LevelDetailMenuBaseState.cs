@@ -8,10 +8,17 @@ public class LevelDetailMenuMenuBaseState : MenuBaseState<LevelDetailMenuControl
 
     public override void Enter()
     {
+        View.DetailPanel.SetActive(false);
+        View.NoLivesPanel.SetActive(false);
     }
 
 
     public override void Exit()
     {
+    }
+
+    public virtual void ResetUI()
+    {
+
     }
 }

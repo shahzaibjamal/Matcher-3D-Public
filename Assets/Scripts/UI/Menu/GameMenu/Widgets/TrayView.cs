@@ -19,7 +19,10 @@ public class TrayView : MonoBehaviour
     public void Initialize(int slotCount)
     {
         // Kill existing slots if any (Cleanup)
-        foreach (Transform child in slotParent) Destroy(child.gameObject);
+        foreach (Transform child in slotParent)
+        {
+            AssetLoader.Instance.ReleaseInstance(child.gameObject);
+        }
 
         _slots = new SlotView[slotCount];
         for (int i = 0; i < slotCount; i++)
@@ -165,7 +168,8 @@ public class TrayView : MonoBehaviour
             if (targetSlot.CurrentItem == data)
                 targetSlot.RevealIcon(true);
 
-            Destroy(source.gameObject);
+            AssetLoader.Instance.ReleaseInstance(source.gameObject);
+
             onComplete?.Invoke();
 
             if (!FTUEManager.Instance.IsSequenceCompleted("Undo") && GameManager.Instance.SaveData.CurrentLevelID == "level_02")

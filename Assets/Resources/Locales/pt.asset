@@ -65,6 +65,7 @@ MonoBehaviour:
   - restart
   - store
   - iap_error_message
+  - no_lives_anymore
   _values:
   - Selecione o idioma
   - Ei pessoal
@@ -118,3 +119,4 @@ MonoBehaviour:
   - Reiniciar
   - Loja
   - Ocorreu um problema com a compra. Tente novamente mais tarde!
+  - "N\xE3o h\xE1 mais vidas"

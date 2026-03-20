@@ -60,7 +60,6 @@ public class StoreItemView : MonoBehaviour
         }
     }
 
-
     private void RefreshUI()
     {
         if (_state.CurrencyType == StoreCurrencyType.Gold)

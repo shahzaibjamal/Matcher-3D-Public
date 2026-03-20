@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Newtonsoft.Json;
+using UnityEngine;
 
 [Serializable]
 public class Inventory
@@ -25,6 +27,7 @@ public class Inventory
         }
 
         Gold += delta;
+        EventDebugger.LogSubscribers(GameEvents.OnGoldUpdatedEvent, "Gold Event");
 
         // This is where you'd likely trigger an event like:
         GameEvents.OnGoldUpdatedEvent(Gold);
@@ -62,6 +65,10 @@ public class Inventory
             {
                 // We use the existing logic to update gold
                 TryUpdateGoldAmount(reward.Amount);
+            }
+            else if (reward.RewardType == RewardType.Heart)
+            {
+
             }
             else
             {

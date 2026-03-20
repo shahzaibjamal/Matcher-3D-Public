@@ -118,5 +118,7 @@ namespace TS.LocalizationSystem
         public const string store = "store";
         
         public const string iap_error_message = "iap_error_message";
+        
+        public const string no_lives_anymore = "no_lives_anymore";
     }
 }

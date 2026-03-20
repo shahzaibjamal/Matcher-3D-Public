@@ -25,6 +25,7 @@ public class LoseLifeMenuBaseState : MenuBaseState<LoseLifeMenuController, LoseL
 
     protected void OnLeaveButtonClicked()
     {
+        GameManager.Instance.SaveData.UseLife();
         UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
         {
             GameEvents.OnGameQuitEvent?.Invoke();

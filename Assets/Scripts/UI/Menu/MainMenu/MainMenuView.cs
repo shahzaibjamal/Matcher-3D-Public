@@ -8,6 +8,7 @@ public class MainMenuView : MenuView
     public Button DebugButton;
 
     public GoldMainView GoldMainView;
+    public LivesView LivesView;
 
     public Image FadeOutImage;
 

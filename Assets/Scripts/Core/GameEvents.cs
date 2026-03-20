@@ -39,6 +39,7 @@ public static class GameEvents
     public static Action OnCleanSweepTrayEvent; // clean the tray
 
     public static Action<int> OnGoldUpdatedEvent; // Gold amount update. update views 
+    public static Action OnLivesChanged;
 
 
 }

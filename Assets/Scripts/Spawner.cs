@@ -79,6 +79,7 @@ public partial class Spawner : MonoBehaviour
             if (clickable != null && clickable.gameObject != null)
             {
                 Destroy(clickable.gameObject);
+                AssetLoader.Instance.ReleaseInstance(clickable.gameObject);
             }
         }
 

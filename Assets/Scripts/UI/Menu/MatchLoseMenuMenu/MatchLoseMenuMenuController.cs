@@ -31,6 +31,7 @@ public class MatchLoseMenuMenuController : MenuController<MatchLoseMenuMenuView,
     }
     private void OnQuitButtonClick()
     {
+        GameManager.Instance.SaveData.UseLife();
         MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
         {
             OnLoadingComplete = OnLoadingComplete

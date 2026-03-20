@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
         GameEvents.OnLevelRestartEvent += RestartLevel;
         GameEvents.OnPowerUpAmountChangeEvent += HandlePowerUpAmountChange;
         GameEvents.OnGoldUpdatedEvent += OnGoldUpdate;
+        GameEvents.OnLivesChanged += OnLivesChanged;
         GameEvents.OnLevelCompleteEvent += HandleLevelComplete;
 
         _slotManager = new SlotManager(SLOT_COUNT);
@@ -102,12 +103,17 @@ public class GameManager : MonoBehaviour
         GameEvents.OnLevelRestartEvent -= RestartLevel;
         GameEvents.OnPowerUpAmountChangeEvent -= HandlePowerUpAmountChange;
         GameEvents.OnGoldUpdatedEvent -= OnGoldUpdate;
+        GameEvents.OnLivesChanged -= OnLivesChanged;
         GameEvents.OnLevelCompleteEvent -= HandleLevelComplete;
         _slotManager.Cleanup();
         _slotManager = null;
     }
 
     private void OnGoldUpdate(int amount)
+    {
+        SaveGame();
+    }
+    private void OnLivesChanged()
     {
         SaveGame();
     }

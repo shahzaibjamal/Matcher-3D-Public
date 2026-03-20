@@ -34,12 +34,10 @@ public class GameSaveData
 
     #region Lives
     public int MaxLives = 5;
-    public int SecondsToRecoverLife = 1800; // 30 minutes
+    public const int SECONDS_TO_RECOVER_LIFE = 1800; // 30 minutes
 
     public int CurrentLivesRaw = 5; // The last "known" life count saved to disk
     public string LastLifeLostTime; // ISO 8601 string
-
-    public static Action OnLivesChanged;
 
     public int CurrentLives
     {
@@ -59,9 +57,9 @@ public class GameSaveData
         {
             double secondsPassed = (DateTime.Now - lastLost).TotalSeconds;
 
-            if (secondsPassed >= SecondsToRecoverLife)
+            if (secondsPassed >= SECONDS_TO_RECOVER_LIFE)
             {
-                int recovered = (int)(secondsPassed / SecondsToRecoverLife);
+                int recovered = (int)(secondsPassed / SECONDS_TO_RECOVER_LIFE);
                 int previousCount = CurrentLivesRaw;
 
                 CurrentLivesRaw = Math.Min(MaxLives, CurrentLivesRaw + recovered);
@@ -71,12 +69,12 @@ public class GameSaveData
                 if (CurrentLivesRaw >= MaxLives)
                     LastLifeLostTime = string.Empty;
                 else
-                    LastLifeLostTime = lastLost.AddSeconds(recovered * SecondsToRecoverLife).ToString("o");
+                    LastLifeLostTime = lastLost.AddSeconds(recovered * SECONDS_TO_RECOVER_LIFE).ToString("o");
 
                 // Fire event if the integer value actually stepped up
                 if (previousCount != CurrentLivesRaw)
                 {
-                    OnLivesChanged?.Invoke();
+                    GameEvents.OnLivesChanged?.Invoke();
                 }
             }
         }
@@ -84,19 +82,23 @@ public class GameSaveData
 
     public void UseLife()
     {
-        // Ensure logic is up to date before spending
         UpdateLivesLogic();
 
         if (CurrentLivesRaw <= 0) return;
 
-        // Start the recovery timer if we are dropping away from MaxLives
-        if (CurrentLivesRaw == MaxLives)
+        // 1. Spend the life first
+        CurrentLivesRaw--;
+
+        // 2. Now check: Did we just drop below Max? 
+        // If we were at Max (or above) and are now at Max-1, start the clock.
+        // We also check if the timer isn't already running (string is null/empty).
+        if (CurrentLivesRaw < MaxLives && string.IsNullOrEmpty(LastLifeLostTime))
         {
             LastLifeLostTime = DateTime.Now.ToString("o");
+            // Debug.Log("Timer Started: Dropped below Max Lives.");
         }
 
-        CurrentLivesRaw--;
-        OnLivesChanged?.Invoke();
+        GameEvents.OnLivesChanged?.Invoke();
     }
     #endregion
     /// <summary>

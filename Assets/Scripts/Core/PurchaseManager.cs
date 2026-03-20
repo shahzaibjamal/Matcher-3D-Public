@@ -144,7 +144,7 @@ public class PurchaseManager : MonoBehaviour
         RewardManager.Instance.CheckAndShowNext();
 
         // 3. UI Events: Notify listeners (like Heart bars)
-        GameSaveData.OnLivesChanged?.Invoke();
+        GameEvents.OnLivesChanged?.Invoke();
 
         Debug.Log("Rewards fulfilled and UI notified.");
     }

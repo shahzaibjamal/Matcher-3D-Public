@@ -25,7 +25,6 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StoreButton.onClick.AddListener(OnStoreButtonClicked);
         GameEvents.OnGoldUpdatedEvent += HandleGoldUpdate;
 
-
         // Animations
         StartPlayButtonAnimation();
         StartGiftAnimation();
@@ -33,6 +32,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         StartShimmerAnimation(View.DailyRewardButton.transform);
         StartShimmerAnimation(View.StoreButton.transform);
         View.GoldMainView.Init(GameManager.Instance.SaveData.Inventory.Gold, true);
+        View.LivesView.RefreshUI();
         View.StoreShimmer.Play();
         View.RewardShimmer.Play();
 
