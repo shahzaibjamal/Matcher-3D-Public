@@ -12,6 +12,8 @@ public class LevelDetailMenuMenuBaseState_NoLives : LevelDetailMenuMenuBaseState
     {
         base.Enter();
         View.NoLivesPanel.SetActive(true);
+        View.OkButton.gameObject.SetActive(true);
+        View.ShopButton.gameObject.SetActive(true);
         View.ShopButton.onClick.AddListener(OnShopClicked);
         View.OkButton.onClick.AddListener(OnOkButtonClicked);
         View.NoLivesText.text = LocaleManager.Localize(LocalizationKeys.no_lives_anymore);

@@ -19,7 +19,7 @@ public class LivesView : MonoBehaviour
 
     [Header("Range Settings")]
     [Tooltip("The fill amount where the bar actually starts (e.g., 0.15 if the icon covers the first 15%)")]
-    [Range(0f, 0.5f)][SerializeField] private float _fillOffset = 0.1f;
+    [Range(0.2f, 0.7f)][SerializeField] private float _fillOffset = 0.1f;
     [Tooltip("The fill amount where the bar ends (usually 1.0)")]
     [Range(0.5f, 1f)][SerializeField] private float _maxFillLimit = 1f;
 
@@ -49,12 +49,12 @@ public class LivesView : MonoBehaviour
     public void RefreshUI(bool immediate)
     {
         var save = GameManager.Instance.SaveData;
-        float targetFill = save.MaxLives > 0 ? (float)save.CurrentLives / save.MaxLives : 0;
+        float targetFill = GameSaveData.MAX_LIVES > 0 ? (float)save.CurrentLives / GameSaveData.MAX_LIVES : 0;
 
         // Update the number text immediately
         _amountText.text = save.CurrentLives.ToString();
 
-        float rawPercent = save.MaxLives > 0 ? (float)save.CurrentLives / save.MaxLives : 0;
+        float rawPercent = GameSaveData.MAX_LIVES > 0 ? (float)save.CurrentLives / GameSaveData.MAX_LIVES : 0;
 
         // 2. Remap the value: NewValue = Offset + (Percent * (Max - Offset))
         // This ensures 0 lives = _fillOffset and Max lives = _maxFillLimit

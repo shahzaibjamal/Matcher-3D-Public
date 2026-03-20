@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 [Serializable]
 public class LevelProgress
@@ -33,25 +34,24 @@ public class GameSaveData
 
 
     #region Lives
-    public int MaxLives = 5;
-    public const int SECONDS_TO_RECOVER_LIFE = 1800; // 30 minutes
+    public const int MAX_LIVES = 5;
+    public const int SECONDS_TO_RECOVER_LIFE = 1800;
+    public string LastLifeLostTime;
 
-    public int CurrentLivesRaw = 5; // The last "known" life count saved to disk
-    public string LastLifeLostTime; // ISO 8601 string
-
+    // Logic-driven property
+    [JsonIgnore]
     public int CurrentLives
     {
         get
         {
             UpdateLivesLogic();
-            return CurrentLivesRaw;
+            return Inventory.CurrentLivesRaw;
         }
     }
 
-    private void UpdateLivesLogic()
+    public void UpdateLivesLogic()
     {
-        // If we are already full or no life was ever lost, there's nothing to calculate
-        if (CurrentLivesRaw >= MaxLives || string.IsNullOrEmpty(LastLifeLostTime)) return;
+        if (Inventory.CurrentLivesRaw >= MAX_LIVES || string.IsNullOrEmpty(LastLifeLostTime)) return;
 
         if (DateTime.TryParse(LastLifeLostTime, out DateTime lastLost))
         {
@@ -60,22 +60,13 @@ public class GameSaveData
             if (secondsPassed >= SECONDS_TO_RECOVER_LIFE)
             {
                 int recovered = (int)(secondsPassed / SECONDS_TO_RECOVER_LIFE);
-                int previousCount = CurrentLivesRaw;
 
-                CurrentLivesRaw = Math.Min(MaxLives, CurrentLivesRaw + recovered);
+                Inventory.AddLives(recovered, MAX_LIVES);
 
-                // If we hit Max, reset the timestamp. 
-                // Otherwise, move the anchor forward by exactly the number of lives recovered.
-                if (CurrentLivesRaw >= MaxLives)
+                if (Inventory.CurrentLivesRaw >= MAX_LIVES)
                     LastLifeLostTime = string.Empty;
                 else
                     LastLifeLostTime = lastLost.AddSeconds(recovered * SECONDS_TO_RECOVER_LIFE).ToString("o");
-
-                // Fire event if the integer value actually stepped up
-                if (previousCount != CurrentLivesRaw)
-                {
-                    GameEvents.OnLivesChanged?.Invoke();
-                }
             }
         }
     }
@@ -83,22 +74,14 @@ public class GameSaveData
     public void UseLife()
     {
         UpdateLivesLogic();
+        if (Inventory.CurrentLivesRaw <= 0) return;
 
-        if (CurrentLivesRaw <= 0) return;
+        Inventory.ConsumeLife();
 
-        // 1. Spend the life first
-        CurrentLivesRaw--;
-
-        // 2. Now check: Did we just drop below Max? 
-        // If we were at Max (or above) and are now at Max-1, start the clock.
-        // We also check if the timer isn't already running (string is null/empty).
-        if (CurrentLivesRaw < MaxLives && string.IsNullOrEmpty(LastLifeLostTime))
+        if (Inventory.CurrentLivesRaw < MAX_LIVES && string.IsNullOrEmpty(LastLifeLostTime))
         {
             LastLifeLostTime = DateTime.Now.ToString("o");
-            // Debug.Log("Timer Started: Dropped below Max Lives.");
         }
-
-        GameEvents.OnLivesChanged?.Invoke();
     }
     #endregion
     /// <summary>

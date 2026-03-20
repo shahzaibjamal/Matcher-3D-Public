@@ -8,6 +8,9 @@ public class LevelDetailMenuMenuBaseState : MenuBaseState<LevelDetailMenuControl
 
     public override void Enter()
     {
+        View.StartButton.gameObject.SetActive(false);
+        View.ShopButton.gameObject.SetActive(false);
+        View.OkButton.gameObject.SetActive(false);
         View.DetailPanel.SetActive(false);
         View.NoLivesPanel.SetActive(false);
     }

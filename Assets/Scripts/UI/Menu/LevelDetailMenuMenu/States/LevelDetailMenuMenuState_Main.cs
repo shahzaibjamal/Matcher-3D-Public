@@ -14,6 +14,7 @@ public class LevelDetailMenuMenuBaseState_Main : LevelDetailMenuMenuBaseState
     {
         base.Enter();
         View.DetailPanel.SetActive(true);
+        View.StartButton.gameObject.SetActive(true);
         View.StartButton.onClick.AddListener(OnStartButtonClicked);
         View.LevelText.text = string.Format(LocaleManager.Localize(LocalizationKeys.title_level), Data.LevelData.Number);
         View.OkButtonText.text = LocaleManager.Localize(LocalizationKeys.start_game);
