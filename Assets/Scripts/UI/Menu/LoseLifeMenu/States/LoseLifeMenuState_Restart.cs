@@ -34,14 +34,14 @@ public class LoseLifeMenuBaseState_Restart : LoseLifeMenuBaseState
         UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
         {
             GameEvents.OnGameQuitEvent?.Invoke();
-            MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-            {
-                OnLoadingComplete = () =>
-                {
-                    GameEvents.OnLevelRestartEvent?.Invoke();
-                    MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game);
-                }
-            });
+            GameEvents.OnLevelRestartEvent?.Invoke();
+            MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game);
+            // MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+            // {
+            //     OnLoadingComplete = () =>
+            //     {
+            //     }
+            // });
         });
     }
 }

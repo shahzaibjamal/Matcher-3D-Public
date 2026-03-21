@@ -13,6 +13,7 @@ public class PowerUpButton : MonoBehaviour
     private Sprite _sprite;
     private int _amount;
     private PowerUpType _type;
+    Color _dimmedColor = Color.gray;
     public void Initialize(PowerUpType powerUpType, int amount, Sprite sprite)
     {
         _button.onClick.AddListener(OnButtonClicked);
@@ -38,6 +39,7 @@ public class PowerUpButton : MonoBehaviour
     {
         _countText.text = _amount.ToString();
         _button.interactable = _amount > 0;
+        _button.image.color = _amount > 0 ? Color.white : _dimmedColor;
         _icon.sprite = _sprite;
         // You could also change the icon based on the type here
 

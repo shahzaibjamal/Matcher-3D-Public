@@ -66,10 +66,11 @@ public class LevelDetailMenuMenuBaseState_Main : LevelDetailMenuMenuBaseState
     }
     private void OnStartButtonClicked()
     {
-        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-        {
-            OnLoadingComplete = OnLoadingComplete
-        });
+        // MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+        // {
+        //     OnLoadingComplete = OnLoadingComplete
+        // });
+        OnLoadingComplete();
     }
 
     private void OnLoadingComplete()

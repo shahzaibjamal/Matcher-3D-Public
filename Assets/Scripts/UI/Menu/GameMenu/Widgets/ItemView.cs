@@ -30,6 +30,7 @@ public class ItemView : MonoBehaviour
     {
         GameEvents.OnItemAddedToSlotEvent -= OnItemAddedToSlot;
         GameEvents.OnRequestMatchResolveEvent -= HandleMatch;
+        AssetLoader.Instance.ReleaseIcon(ItemData.IconName);
     }
 
     private void UpdateUI()
@@ -69,14 +70,7 @@ public class ItemView : MonoBehaviour
             });
         }
     }
-    private void HandleUndo(string id)
-    {
-        if (ItemData == null || id != ItemData.Id) return;
 
-        CurrentCount++;
-        UpdateUI();
-        PlayMatchShake();
-    }
     public void PlayMatchShake()
     {
         transform.DOKill(true);

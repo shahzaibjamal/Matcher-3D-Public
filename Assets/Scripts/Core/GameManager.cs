@@ -63,37 +63,45 @@ public class GameManager : MonoBehaviour
         delay = 1;
 #endif
 
-        // 1. Launch the Loading Menu on Startup
-        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(
-            Menus.Type.Loading,
-            new LoadingMenuData
-            {
-                Delay = delay,
-                OnLoadingComplete = () =>
-                {
-                    var saveData = GameManager.Instance.SaveData;
 
-                    // CHECK: If player is on Level 1 and hasn't finished the 'Opening' tutorial...
-                    if (saveData.CurrentLevelID == "level_01" &&
-                        !FTUEManager.Instance.IsSequenceCompleted("Opening"))
-                    {
-                        GameEvents.OnGameInitializedEvent?.Invoke(SaveData.CurrentLevelID);
-                        // JUMP TO GAME: Resume Level 01 immediately
-                        MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(
-                            Menus.Type.Game
-                        );
-                    }
-                    else
-                    {
-                        // FALLBACK: Go to Main Menu as usual
-                        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(
-                            Menus.Type.Main,
-                            new MainMenuData()
-                        );
-                    }
+        var saveData = GameManager.Instance.SaveData;
+
+        // CHECK: If player is on Level 1 and hasn't finished the 'Opening' tutorial...
+        if (saveData.CurrentLevelID == "level_01" &&
+            !FTUEManager.Instance.IsSequenceCompleted("Opening"))
+        {
+            GameEvents.OnGameInitializedEvent?.Invoke(SaveData.CurrentLevelID);
+            // JUMP TO GAME: Resume Level 01 immediately
+            MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(
+                Menus.Type.Game, new GameMenuData
+                {
+                    Delay = delay
                 }
-            }
-        );
+            );
+        }
+        else
+        {
+            // FALLBACK: Go to Main Menu as usual
+            MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(
+                Menus.Type.Main,
+                new MainMenuData
+                {
+                    Delay = delay
+                }
+            );
+        }
+
+        // // 1. Launch the Loading Menu on Startup
+        // MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(
+        //     Menus.Type.Loading,
+        //     new LoadingMenuData
+        //     {
+        //         Delay = delay,
+        //         OnLoadingComplete = () =>
+        //         {
+        //         }
+        //     }
+        // );
     }
     void OnDestroy()
     {

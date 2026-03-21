@@ -29,16 +29,18 @@ public class LoseLifeMenuBaseState : MenuBaseState<LoseLifeMenuController, LoseL
         UIAnimations.ToonOut(View.canvasGroup, View.Root, () =>
         {
             GameEvents.OnGameQuitEvent?.Invoke();
-            MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-            {
-                OnLoadingComplete = OnLoadingComplete
-            });
+            MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main);
+
+            // MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+            // {
+            //     OnLoadingComplete = OnLoadingComplete
+            // });
         });
     }
 
-    private void OnLoadingComplete()
-    {
-        MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main);
-    }
+    // private void OnLoadingComplete()
+    // {
+    //     MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main);
+    // }
 
 }

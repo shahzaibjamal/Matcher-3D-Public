@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using TS.LocalizationSystem;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     private Vector3 _leftCurtainPosition;
     private Vector3 _rightCurtainPosition;
     Sequence _curtainSeq;
+    private bool _isSpawnerInitialized;
 
     public GameMenuBaseState_Main(GameMenuController controller) : base(controller) { }
 
@@ -24,17 +26,57 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         GameEvents.OnSpawnerInitializedEvent += OnSpawnerInitialized;
         GameEvents.OnHintPowerupEvent += HandleHintPowerUp;
 
-        InputManager.Instance.RegisterKey(KeyCode.Z, HandleHintPowerUp);
         _leftCurtainPosition = View.LeftCurtain.anchoredPosition;
         _rightCurtainPosition = View.RightCurtain.anchoredPosition;
         View.CurtainContainer.SetActive(true);
+        _isSpawnerInitialized = true;
+
+        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(
+                Menus.Type.Loading,
+                new LoadingMenuData
+                {
+                    // This tells the Loading Screen: "Don't close until this task finishes"
+                    Delay = Data == null ? -1 : Data.Delay,
+                    LoadingTask = WaitForSpawnerTask,
+                    OnLoadingComplete = OnLoadingComplete
+                });
+
         Cleanup();
     }
 
+
+    private async void OnLoadingComplete()
+    {
+        while (!_isSpawnerInitialized)
+        {
+            // await Task.Yield(); // Or await Task.Delay(100); to be less aggressive
+            await Task.Delay(100);
+        }
+
+        SoundController.Instance.PlayBGM("game_bg", 1.0f);
+        View.GoldMainView.Init(GameManager.Instance.SaveData.Inventory.Gold);
+        View.TrayView.Initialize(GameManager.SLOT_COUNT);
+
+        View.BlackCurtain.alpha = 1.0f;
+        float screenWidth = View.GetComponent<RectTransform>().rect.width;
+
+        // 2. Create the Sequence
+        _curtainSeq = DOTween.Sequence();
+        View.LeftCurtain.anchoredPosition = _leftCurtainPosition;
+        View.RightCurtain.anchoredPosition = _rightCurtainPosition;
+
+        _curtainSeq.Append(View.LeftCurtain.DOAnchorPosX(View.useOutward ? -View.outward : -screenWidth, 0.6f).SetEase(Ease.InBack));
+        _curtainSeq.Join(View.RightCurtain.DOAnchorPosX(View.useOutward ? View.outward : screenWidth, 0.6f).SetEase(Ease.InBack));
+        _curtainSeq.Join(View.BlackCurtain.DOFade(0.0f, 0.6f).SetEase(Ease.InBack));
+        _curtainSeq.OnComplete(() =>
+        {
+            Scheduler.Instance.ExecuteAfterDelay(0.5f, CheckForFTUE);
+        });
+
+    }
     public override void Exit()
     {
         base.Exit();
-        InputManager.Instance.UnregisterKey(KeyCode.Z, OnSpawnerInitialized);
 
         GameEvents.OnMatchStartedEvent -= HandleMatchStarted;
         GameEvents.OnShowMatchResultEvent -= HandleMatchResult;
@@ -111,7 +153,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
         _curtainSeq.Kill();
         View.CurtainContainer.SetActive(false);
         GameEvents.OnSlotsFillableEvent?.Invoke(true); // reset
-        // GameEvents.OnPowerUpEnableEvent?.Invoke(true); // reset power buttons  (unnecessary prob)
+        AssetLoader.Instance.ClearSpriteCache();
     }
 
     private void CheckWin()
@@ -160,27 +202,21 @@ public class GameMenuBaseState_Main : GameMenuBaseState
 
     private void OnSpawnerInitialized()
     {
-        View.GoldMainView.Init(GameManager.Instance.SaveData.Inventory.Gold);
-        View.TrayView.Initialize(GameManager.SLOT_COUNT);
-
-        View.BlackCurtain.alpha = 1.0f;
-        float screenWidth = View.GetComponent<RectTransform>().rect.width;
-
-        // 2. Create the Sequence
-        _curtainSeq = DOTween.Sequence();
-        View.LeftCurtain.anchoredPosition = _leftCurtainPosition;
-        View.RightCurtain.anchoredPosition = _rightCurtainPosition;
-
-        _curtainSeq.Append(View.LeftCurtain.DOAnchorPosX(View.useOutward ? -View.outward : -screenWidth, 0.6f).SetEase(Ease.InBack));
-        _curtainSeq.Join(View.RightCurtain.DOAnchorPosX(View.useOutward ? View.outward : screenWidth, 0.6f).SetEase(Ease.InBack));
-        _curtainSeq.Join(View.BlackCurtain.DOFade(0.0f, 0.6f).SetEase(Ease.InBack));
-        _curtainSeq.OnComplete(() =>
-        {
-            Scheduler.Instance.ExecuteAfterDelay(0.5f, CheckForFTUE);
-        });
-
+        _isSpawnerInitialized = true;
     }
 
+    private async Task WaitForSpawnerTask()
+    {
+        // Polling until the spawner event sets the bool to true
+        while (!_isSpawnerInitialized)
+        {
+            await Task.Yield();
+        }
+
+        // Optional: Add a tiny extra delay so the player doesn't 
+        // see the items pop in instantly before the curtains close
+        await Task.Delay(200);
+    }
     private void CheckForFTUE()
     {
         if (!FTUEManager.Instance.IsSequenceCompleted("Opening") && GameManager.Instance.SaveData.CurrentLevelID == "level_01")

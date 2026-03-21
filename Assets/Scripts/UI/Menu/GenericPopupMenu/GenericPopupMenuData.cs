@@ -15,6 +15,7 @@ public class GenericPopupMenuData : MenuData
 
     // Logic helper
     public bool IsTwoButton => !string.IsNullOrEmpty(CancelTextKey) || OnCancel != null;
+    public GenericPopupMenuData() { }
 
     public GenericPopupMenuData(
         string titleKey,

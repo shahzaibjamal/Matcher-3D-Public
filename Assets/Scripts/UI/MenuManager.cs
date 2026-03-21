@@ -50,12 +50,17 @@ public class MenuManager : MonoBehaviour
         TData tData = null)
         where TView : MenuView
         where TController : MenuController<TView, TData>, new()
-        where TData : MenuData
+        where TData : MenuData, new()
     {
         MenuRegistry.MenuEntry menuEntry = registry.GetMenuEntry(menuType);
         if (menuEntry.prefab == null) return;
 
         Menus.MenuDisplayMode newMode = menuEntry.defaultMode;
+        // ADD THIS BLOCK:
+        if (tData == null)
+        {
+            tData = new TData(); // This is where the 'new()' constraint is actually used
+        }
 
         // 1. ONE SCREEN ONLY RULE
         // 1. ONE SCREEN ONLY / CLEAN SLATE RULE

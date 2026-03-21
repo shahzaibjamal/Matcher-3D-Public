@@ -1,4 +1,5 @@
 
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -27,6 +28,16 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StoreButton.onClick.AddListener(OnStoreButtonClicked);
         GameEvents.OnGoldUpdatedEvent += HandleGoldUpdate;
 
+        Scheduler.Instance.SubscribeUpdate(UpdateLivesDisplay);
+        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+        {
+            Delay = Data.Delay,
+            OnLoadingComplete = OnLoadingComplete,
+            LoadingTask = WaitForSpawnerTask
+        });
+    }
+    private void OnLoadingComplete()
+    {
         // Animations
         StartPlayButtonAnimation();
         StartGiftAnimation();
@@ -39,7 +50,13 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.RewardShimmer.Play();
 
         Scheduler.Instance.ExecuteAfterDelay(0.5f, () => RewardManager.Instance.CheckAndShowNext());
-        Scheduler.Instance.SubscribeUpdate(UpdateLivesDisplay);
+    }
+
+    private async Task WaitForSpawnerTask()
+    {
+        // Optional: Add a tiny extra delay so the player doesn't 
+        // see the items pop in instantly before the curtains close
+        await Task.Delay(200);
     }
 
     public override void Exit()

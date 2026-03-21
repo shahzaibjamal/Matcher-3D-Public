@@ -1,5 +1,6 @@
 using System;
 using TS.LocalizationSystem;
+using Unity.VisualScripting;
 
 
 public class MatchResultMenuController : MenuController<MatchResultMenuView, MatchResultMenuData>
@@ -48,11 +49,18 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
     public void GoToNextLevel()
     {
         string currentLevelID = GameManager.Instance.SaveData.CurrentLevelID;
-        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-        {
-            OnLoadingComplete = Data.LevelData.Id == currentLevelID ? OnLoadingCompleteToNextLevel : OnLoadingCompleteToLevelSelect
-        });
+        // MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+        // {
         GameEvents.OnLevelCompleteEvent?.Invoke(Data.IsWin, Data.LevelData.Id, Data.Score, Data.Score);
+        if (Data.LevelData.Id == currentLevelID)
+        {
+            OnLoadingCompleteToNextLevel();
+        }
+        else
+        {
+            OnLoadingCompleteToLevelSelect();
+        }
+        // });
     }
 
     private void OnLoadingCompleteToNextLevel()
