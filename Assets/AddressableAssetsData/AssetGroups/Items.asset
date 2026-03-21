@@ -65,6 +65,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20730f1dc8953e340a2f0d93c3dd8b60
+    m_Address: Sushi01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 22552859dfb91664089cf9f26346bc84
     m_Address: Bowl
     m_ReadOnly: 0
@@ -295,6 +300,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 87f7a6494844cbb4d8a21aa95de8466b
+    m_Address: Sushi02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 903374f6447e0f94faa0b5200e5c770d
+    m_Address: Onigiri
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 90c43d6cabb66cf4690af4513d259bd6
     m_Address: Chair03
     m_ReadOnly: 0
@@ -350,8 +365,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7beb04116945504eab6902ba92d9e1c
+    m_Address: Sushi03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ae3b3235a9611fd4dace45fff4d84c56
     m_Address: Egg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b03abdd7a506c8b4796cf799588d7930
+    m_Address: Sushi04
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -447,6 +472,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d517fa5bc09a7cf43bfe03b92ca752f5
     m_Address: Ball03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d52792c748fdad841a6405b1221ebfda
+    m_Address: Baozi
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
