@@ -49,21 +49,18 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
     public void GoToNextLevel()
     {
         string currentLevelID = GameManager.Instance.SaveData.CurrentLevelID;
-        // MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-        // {
         GameEvents.OnLevelCompleteEvent?.Invoke(Data.IsWin, Data.LevelData.Id, Data.Score, Data.Score);
         if (Data.LevelData.Id == currentLevelID)
         {
-            OnLoadingCompleteToNextLevel();
+            LoadNextLevel();
         }
         else
         {
-            OnLoadingCompleteToLevelSelect();
+            LoadLevelSelect();
         }
-        // });
     }
 
-    private void OnLoadingCompleteToNextLevel()
+    private void LoadNextLevel()
     {
         string currentLevelID = GameManager.Instance.SaveData.CurrentLevelID;
 
@@ -73,7 +70,7 @@ public class MatchResultMenuController : MenuController<MatchResultMenuView, Mat
             levelId = currentLevelID
         });
     }
-    private void OnLoadingCompleteToLevelSelect()
+    private void LoadLevelSelect()
     {
         MenuManager.Instance.OpenMenu<LevelSelectMenuView, LevelSelectMenuController, LevelSelectMenuData>(Menus.Type.LevelSelect);
     }
