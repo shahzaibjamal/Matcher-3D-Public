@@ -1,87 +1,147 @@
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using UnityEditor;
-using System.Text.RegularExpressions;
-using System.Text; // Required for AssetDatabase and PrefabUtility
+using Newtonsoft.Json;
 
-
-public class AutoSpriteBaker : MonoBehaviour
+public class AutoSpriteBakerEditor : EditorWindow
 {
     [Header("Studio Setup")]
     public Camera captureCamera;
-    public Transform spawnPoint;
-    public Vector3 rotationOffset = new Vector3(0, 45, 0);
+    public Transform spawnParent; // The parent object in your scene
+    public List<GameObject> studioStageObjects = new List<GameObject>();
     public int resolution = 1024;
-    public string saveFolder = "BakedSprites";
+    public string saveFolder = "BakedSpritesNewer";
 
     [Header("Manual Trimming (%)")]
     [Range(0, 45)] public float trimLeft = 10f;
     [Range(0, 45)] public float trimRight = 10f;
     [Range(0, 45)] public float trimTop = 10f;
     [Range(0, 45)] public float trimBottom = 10f;
-    public GameObject CullObject;
 
-    [ContextMenu("Run Full Batch Capture")]
-    public void StartBatch()
+    private Metadata metadata;
+    private SerializedObject so;
+
+    [MenuItem("Tools/Sprite Baker Studio")]
+    public static void ShowWindow()
     {
-        StartCoroutine(BatchRoutine());
+        GetWindow<AutoSpriteBakerEditor>("Sprite Baker Studio");
     }
 
-    private IEnumerator BatchRoutine()
+    private void OnEnable()
     {
-        if (DataManager.Instance == null) { Debug.LogError("DataManager missing!"); yield break; }
+        so = new SerializedObject(this);
+    }
 
-        DataManager.Instance.LoadMetadata();
-        yield return new WaitForEndOfFrame();
+    private void OnGUI()
+    {
+        so.Update();
 
-        var items = DataManager.Instance.Metadata.Items;
-        string folderPath = Path.Combine(Application.dataPath, saveFolder);
+        GUILayout.Label("Hardware & Stage", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(so.FindProperty("captureCamera"));
+        EditorGUILayout.PropertyField(so.FindProperty("spawnParent"), new GUIContent("Spawn Parent (Container)"));
+        EditorGUILayout.PropertyField(so.FindProperty("studioStageObjects"), true);
 
-        if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+        GUILayout.Space(5);
+        GUILayout.Label("File Settings", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(so.FindProperty("resolution"));
+        EditorGUILayout.PropertyField(so.FindProperty("saveFolder"));
 
-        foreach (var item in items)
+        GUILayout.Space(10);
+        GUILayout.Label("Cropping Setup", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(so.FindProperty("trimLeft"));
+        EditorGUILayout.PropertyField(so.FindProperty("trimRight"));
+        EditorGUILayout.PropertyField(so.FindProperty("trimTop"));
+        EditorGUILayout.PropertyField(so.FindProperty("trimBottom"));
+
+        GUILayout.Space(20);
+
+        if (GUILayout.Button("Run Full Addressable Batch", GUILayout.Height(40)))
         {
-            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(item.PrefabName);
-            yield return handle;
-
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                GameObject instance = Instantiate(handle.Result);
-                instance.transform.localScale = Vector3.one;
-                if (instance.TryGetComponent<ClickableItem>(out var clickableItem))
-                {
-                    instance.transform.rotation = Quaternion.Euler(clickableItem.Rotation);
-                }
-
-                Rigidbody rb = instance.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.isKinematic = true;
-                    rb.useGravity = false;
-                }
-
-                yield return new WaitForSeconds(0.1f);
-
-                // Pass just the ID; the prefix is handled inside CapturePNG
-                CapturePNG(item.Id.ToString());
-
-                DestroyImmediate(instance);
-                Addressables.Release(handle);
-            }
+            RunAddressableBatch();
         }
 
-        Debug.Log("--- BATCH CAPTURE COMPLETE ---");
-#if UNITY_EDITOR
-        UnityEditor.AssetDatabase.Refresh();
-#endif
+        so.ApplyModifiedProperties();
+    }
+
+    private void RunAddressableBatch()
+    {
+        if (captureCamera == null) { Debug.LogError("Capture Camera is missing!"); return; }
+
+        LoadMetadataManually("Metadata");
+
+        if (metadata == null || metadata.Items == null) return;
+
+        string folderPath = Path.Combine(Application.dataPath, saveFolder);
+        if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+
+        int total = metadata.Items.Count;
+
+        try
+        {
+            for (int i = 0; i < total; i++)
+            {
+                var item = metadata.Items[i];
+                EditorUtility.DisplayProgressBar("Baking Addressables",
+                    $"Instantiating: {item.PrefabName} ({i + 1}/{total})",
+                    (float)i / total);
+
+                // Load Asset
+                AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(item.PrefabName);
+                GameObject prefab = handle.WaitForCompletion();
+
+                if (prefab != null)
+                {
+                    // Instantiate inside the Parent
+                    GameObject instance = Instantiate(prefab);
+
+                    // If no parent assigned, it defaults to world origin, 
+                    // otherwise it uses the parent's local zero.
+                    // instance.transform.localPosition = Vector3.zero;
+                    // instance.transform.localScale = Vector3.one;
+
+                    // Apply ClickableItem Data
+                    if (instance.TryGetComponent<ClickableItem>(out var clickableItem))
+                    {
+                        instance.transform.rotation = Quaternion.Euler(clickableItem.Rotation);
+                        instance.transform.position = clickableItem.Position;
+                    }
+                    // Physics safety
+                    Rigidbody rb = instance.GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        rb.isKinematic = true;
+                        rb.useGravity = false;
+                    }
+
+                    // Render & Save
+                    CapturePNG(item.Id.ToString());
+
+                    // Cleanup
+                    DestroyImmediate(instance);
+                    Addressables.Release(handle);
+                }
+            }
+        }
+        finally
+        {
+            EditorUtility.ClearProgressBar();
+            AssetDatabase.Refresh();
+            Debug.Log("--- BATCH COMPLETE ---");
+        }
+    }
+
+    private void LoadMetadataManually(string fileName)
+    {
+        TextAsset jsonFile = Resources.Load<TextAsset>(fileName);
+        if (jsonFile == null) return;
+        metadata = JsonConvert.DeserializeObject<Metadata>(jsonFile.text);
     }
 
     private void CapturePNG(string id)
     {
-        CullObject.SetActive(false);
         RenderTexture rt = new RenderTexture(resolution, resolution, 24, RenderTextureFormat.ARGB32);
         captureCamera.targetTexture = rt;
         captureCamera.backgroundColor = new Color(0, 0, 0, 0);
@@ -93,129 +153,27 @@ public class AutoSpriteBaker : MonoBehaviour
         fullShot.ReadPixels(new Rect(0, 0, resolution, resolution), 0, 0);
         fullShot.Apply();
 
-        // 1. DETACH CAMERA FIRST (Fixes the warning)
         captureCamera.targetTexture = null;
         RenderTexture.active = null;
 
-        // --- MANUAL SLIDER CROPPING ---
+        // Crop Math
         int leftPx = Mathf.FloorToInt(resolution * (trimLeft / 100f));
         int rightPx = Mathf.FloorToInt(resolution * (trimRight / 100f));
         int topPx = Mathf.FloorToInt(resolution * (trimTop / 100f));
         int bottomPx = Mathf.FloorToInt(resolution * (trimBottom / 100f));
-
-        int newWidth = resolution - leftPx - rightPx;
-        int newHeight = resolution - bottomPx - topPx;
+        int newWidth = Mathf.Max(1, resolution - leftPx - rightPx);
+        int newHeight = Mathf.Max(1, resolution - bottomPx - topPx);
 
         Texture2D cropped = new Texture2D(newWidth, newHeight, TextureFormat.RGBA32, false);
-        Color[] pixels = fullShot.GetPixels(leftPx, bottomPx, newWidth, newHeight);
-        cropped.SetPixels(pixels);
+        cropped.SetPixels(fullShot.GetPixels(leftPx, bottomPx, newWidth, newHeight));
         cropped.Apply();
 
-        // 2. SAVE TO CORRECT FOLDER
         byte[] bytes = cropped.EncodeToPNG();
-        string fileName = "icon_" + id + ".png";
-        string path = Path.Combine(Application.dataPath, saveFolder, fileName);
+        string path = Path.Combine(Application.dataPath, saveFolder, $"icon_{id}.png");
         File.WriteAllBytes(path, bytes);
 
-        // 3. CLEANUP
         DestroyImmediate(rt);
         DestroyImmediate(fullShot);
         DestroyImmediate(cropped);
-        CullObject.SetActive(true);
-    }
-
-    [ContextMenu("Capture Current View")]
-    public void CaptureCurrentView()
-    {
-        // Ensure the folder exists before capturing
-        string folderPath = Path.Combine(Application.dataPath, saveFolder);
-        if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
-
-        // Generate a unique timestamped ID so you don't overwrite previous captures
-        string timestampId = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
-
-        // Use your existing logic to render and save
-        CapturePNG("manual_");
-
-        Debug.Log($"<color=green>Manual Capture Saved:</color> manual_{timestampId}.png");
-
-#if UNITY_EDITOR
-        UnityEditor.AssetDatabase.Refresh();
-#endif
-    }
-
-
-    // ... inside your class ...
-    [ContextMenu("Process Prefabs & Format Names")]
-    public void ProcessPrefabsAndFormatNames()
-    {
-        string folderPath = "Assets/Art/Prefabs/Items/Newer"; // Path to your prefabs
-        string txtPath = Path.Combine(Application.dataPath, "PrefabNames.txt");
-
-        string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { folderPath });
-        // StringBuilders for the summary sections
-        StringBuilder uids = new StringBuilder();
-        uids.AppendLine("\n--- Uids Format ---");
-
-        StringBuilder names = new StringBuilder();
-        names.AppendLine("\n--- Names Format ---");
-
-
-        using (StreamWriter writer = new StreamWriter(txtPath))
-        {
-            // writer.WriteLine("\n--- PrefabNames Format ---");
-
-            foreach (string guid in guids)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guid);
-                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-
-                if (prefab != null)
-                {
-                    // 1. Write original name to the file
-                    // writer.WriteLine(prefab.name);
-
-                    // 2. Build the different formats
-                    uids.AppendLine(FormatToUnderscore(prefab.name));
-                    // names.AppendLine(FormatToSpaced(prefab.name));
-
-                    // 3. Update the Prefab's ClickableItem rotation
-                    GameObject contents = PrefabUtility.LoadPrefabContents(path);
-                    if (contents.TryGetComponent<ClickableItem>(out var clickable))
-                    {
-                        clickable.Rotation = contents.transform.rotation.eulerAngles;
-                        clickable.Position = contents.transform.position;
-                        PrefabUtility.SaveAsPrefabAsset(contents, path);
-                    }
-                    PrefabUtility.UnloadPrefabContents(contents);
-                }
-
-                // break; // Uncomment this to test with just one item
-            }
-
-            // 4. Append the lowercase formatted list at the end of the file
-            // 4. Append both lists at the end of the file
-            writer.Write(uids.ToString());
-            // writer.Write(names.ToString());
-        }
-
-        AssetDatabase.Refresh();
-        Debug.Log($"Processed {guids.Length} items. Formatting complete in PrefabNames.txt");
-    }
-
-    private string FormatToUnderscore(string original)
-    {
-        // GoldenKey01 -> golden_key_01
-        string res = Regex.Replace(original, @"([a-z])([A-Z])", "$1_$2");
-        res = Regex.Replace(res, @"([a-zA-Z])(\d)", "$1_$2");
-        return res.ToLower();
-    }
-
-    private string FormatToSpaced(string original)
-    {
-        // GoldenKey01 -> Golden Key 01
-        string res = Regex.Replace(original, @"([a-z])([A-Z])", "$1 $2");
-        res = Regex.Replace(res, @"([a-zA-Z])(\d)", "$1 $2");
-        return res; // Keeps original casing
     }
 }

@@ -253,6 +253,8 @@ public class ClickableItem : MonoBehaviour, IClickable
                 }
 
                 link.ParentScript = this;
+                Position = transform.position;
+                Rotation = transform.rotation.eulerAngles;
                 UnityEditor.EditorUtility.SetDirty(col.gameObject);
             }
 

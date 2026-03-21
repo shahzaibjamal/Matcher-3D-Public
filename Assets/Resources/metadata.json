@@ -442,7 +442,273 @@
       "Id": "turnip",
       "Name": "Turnip",
       "PrefabName": "Turnip",
-      "IconName": "icon_turnip",
+      "IconName": "Turnip",
+      "Size": 2
+    },
+    {
+      "Id": "asparagus",
+      "Name": "Asparagus",
+      "PrefabName": "Asparagus",
+      "IconName": "Asparagus",
+      "Size": 3
+    },
+    {
+      "Id": "avocado",
+      "Name": "Avocado",
+      "PrefabName": "Avocado",
+      "IconName": "Avocado",
+      "Size": 2
+    },
+    {
+      "Id": "banana",
+      "Name": "Banana",
+      "PrefabName": "Banana",
+      "IconName": "Banana",
+      "Size": 2
+    },
+    {
+      "Id": "blueberry",
+      "Name": "Blueberry",
+      "PrefabName": "Blueberry",
+      "IconName": "Blueberry",
+      "Size": 3
+    },
+    {
+      "Id": "broccoli",
+      "Name": "Broccoli",
+      "PrefabName": "Broccoli",
+      "IconName": "Broccoli",
+      "Size": 2
+    },
+    {
+      "Id": "cabbage",
+      "Name": "Cabbage",
+      "PrefabName": "Cabbage",
+      "IconName": "Cabbage",
+      "Size": 1
+    },
+    {
+      "Id": "carrot",
+      "Name": "Carrot",
+      "PrefabName": "Carrot",
+      "IconName": "Carrot",
+      "Size": 2
+    },
+    {
+      "Id": "cherry",
+      "Name": "Cherry",
+      "PrefabName": "Cherry",
+      "IconName": "Cherry",
+      "Size": 3
+    },
+    {
+      "Id": "chilli",
+      "Name": "Chilli",
+      "PrefabName": "Chilli",
+      "IconName": "Chilli",
+      "Size": 2
+    },
+    {
+      "Id": "chinese_kale",
+      "Name": "Chinese Kale",
+      "PrefabName": "Chinese Kale",
+      "IconName": "Chinese Kale",
+      "Size": 1
+    },
+    {
+      "Id": "coconut",
+      "Name": "Coconut",
+      "PrefabName": "Coconut",
+      "IconName": "Coconut",
+      "Size": 2
+    },
+    {
+      "Id": "corn",
+      "Name": "Corn",
+      "PrefabName": "Corn",
+      "IconName": "Corn",
+      "Size": 2
+    },
+    {
+      "Id": "cucumber",
+      "Name": "Cucumber",
+      "PrefabName": "Cucumber",
+      "IconName": "Cucumber",
+      "Size": 2
+    },
+    {
+      "Id": "egg_plant",
+      "Name": "Egg Plant",
+      "PrefabName": "Egg Plant",
+      "IconName": "Egg Plant",
+      "Size": 2
+    },
+    {
+      "Id": "garlic",
+      "Name": "Garlic",
+      "PrefabName": "Garlic",
+      "IconName": "Garlic",
+      "Size": 2
+    },
+    {
+      "Id": "grape",
+      "Name": "Grape",
+      "PrefabName": "Grape",
+      "IconName": "Grape",
+      "Size": 2
+    },
+    {
+      "Id": "kiwi",
+      "Name": "Kiwi",
+      "PrefabName": "Kiwi",
+      "IconName": "Kiwi",
+      "Size": 3
+    },
+    {
+      "Id": "leek",
+      "Name": "Leek",
+      "PrefabName": "Leek",
+      "IconName": "Leek",
+      "Size": 3
+    },
+    {
+      "Id": "lemon",
+      "Name": "Lemon",
+      "PrefabName": "Lemon",
+      "IconName": "Lemon",
+      "Size": 3
+    },
+    {
+      "Id": "lime",
+      "Name": "Lime",
+      "PrefabName": "Lime",
+      "IconName": "Lime",
+      "Size": 3
+    },
+    {
+      "Id": "litchi",
+      "Name": "Litchi",
+      "PrefabName": "Litchi",
+      "IconName": "Litchi",
+      "Size": 3
+    },
+    {
+      "Id": "mango",
+      "Name": "Mango",
+      "PrefabName": "Mango",
+      "IconName": "Mango",
+      "Size": 2
+    },
+    {
+      "Id": "mangosteen",
+      "Name": "Mangosteen",
+      "PrefabName": "Mangosteen",
+      "IconName": "Mangosteen",
+      "Size": 2
+    },
+    {
+      "Id": "melon",
+      "Name": "Melon",
+      "PrefabName": "Melon",
+      "IconName": "Melon",
+      "Size": 1
+    },
+    {
+      "Id": "mushroom",
+      "Name": "Mushroom",
+      "PrefabName": "Mushroom",
+      "IconName": "Mushroom",
+      "Size": 2
+    },
+    {
+      "Id": "onion",
+      "Name": "Onion",
+      "PrefabName": "Onion",
+      "IconName": "Onion",
+      "Size": 2
+    },
+    {
+      "Id": "orange",
+      "Name": "Orange",
+      "PrefabName": "Orange",
+      "IconName": "Orange",
+      "Size": 2
+    },
+    {
+      "Id": "papaya",
+      "Name": "Papaya",
+      "PrefabName": "Papaya",
+      "IconName": "Papaya",
+      "Size": 1
+    },
+    {
+      "Id": "peach",
+      "Name": "Peach",
+      "PrefabName": "Peach",
+      "IconName": "Peach",
+      "Size": 2
+    },
+    {
+      "Id": "pear",
+      "Name": "Pear",
+      "PrefabName": "Pear",
+      "IconName": "Pear",
+      "Size": 2
+    },
+    {
+      "Id": "pepper",
+      "Name": "Pepper",
+      "PrefabName": "Pepper",
+      "IconName": "Pepper",
+      "Size": 2
+    },
+    {
+      "Id": "pineapple",
+      "Name": "Pineapple",
+      "PrefabName": "Pineapple",
+      "IconName": "Pineapple",
+      "Size": 1
+    },
+    {
+      "Id": "rasberry",
+      "Name": "Rasberry",
+      "PrefabName": "Rasberry",
+      "IconName": "Rasberry",
+      "Size": 3
+    },
+    {
+      "Id": "radish",
+      "Name": "Radish",
+      "PrefabName": "Radish",
+      "IconName": "Radish",
+      "Size": 2
+    },
+    {
+      "Id": "star_fruit",
+      "Name": "Star Fruit",
+      "PrefabName": "Star Fruit",
+      "IconName": "Star Fruit",
+      "Size": 1
+    },
+    {
+      "Id": "strawberry",
+      "Name": "Strawberry",
+      "PrefabName": "Strawberry",
+      "IconName": "Strawberry",
+      "Size": 2
+    },
+    {
+      "Id": "watermelon",
+      "Name": "Watermelon",
+      "PrefabName": "Watermelon",
+      "IconName": "Watermelon",
+      "Size": 1
+    },
+    {
+      "Id": "white_radish",
+      "Name": "White Radish",
+      "PrefabName": "White Radish",
+      "IconName": "White Radish",
       "Size": 2
     }
   ],
@@ -2193,7 +2459,7 @@
     {
       "Id": "jungle",
       "ThemeName": "Jungle",
-      "BackgroundSpriteName": "map1",
+      "BackgroundSpriteName": "jungle",
       "FogColorHex": "#F3D86E",
       "StartLevel": 1,
       "StarRequirement": 0
@@ -2201,7 +2467,7 @@
     {
       "Id": "desert",
       "ThemeName": "Desert",
-      "BackgroundSpriteName": "map1",
+      "BackgroundSpriteName": "desert",
       "FogColorHex": "#DD9646",
       "StartLevel": 16,
       "StarRequirement": 20
@@ -2209,7 +2475,7 @@
     {
       "Id": "cosmic",
       "ThemeName": "Cosmic",
-      "BackgroundSpriteName": "map1",
+      "BackgroundSpriteName": "cosmic",
       "FogColorHex": "#DD9646",
       "StartLevel": 31,
       "StarRequirement": 45
@@ -2217,7 +2483,7 @@
     {
       "Id": "lava",
       "ThemeName": "Lava",
-      "BackgroundSpriteName": "map1",
+      "BackgroundSpriteName": "lava",
       "FogColorHex": "#DD9646",
       "StartLevel": 46,
       "StarRequirement": 72
@@ -2225,7 +2491,7 @@
     {
       "Id": "winter",
       "ThemeName": "Winter",
-      "BackgroundSpriteName": "map1",
+      "BackgroundSpriteName": "winter",
       "FogColorHex": "#DD9646",
       "StartLevel": 61,
       "StarRequirement": 101

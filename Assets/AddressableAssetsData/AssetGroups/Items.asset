@@ -15,8 +15,8 @@ MonoBehaviour:
   m_GroupName: Items
   m_GUID: d820a54aeb7697740b81e485f9a90331
   m_SerializeEntries:
-  - m_GUID: 0b8d1bfe6d69254488faeb7975b9221b
-    m_Address: Apple
+  - m_GUID: 0b2386a3f594588499c8e32d9a97db94
+    m_Address: Mango
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -45,13 +45,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16ac1302fb4151b46aa2d8f46813dd6c
+    m_Address: Melon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 182920f2011f6434b95ffbe59ceba79b
     m_Address: Turnip
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 21f0d36a59902194facab831124335e3
-    m_Address: Carrot
+  - m_GUID: 1a4b4cfbd03cd744dbb77898390d57bb
+    m_Address: Pear
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1da27cde9c4e3d64784c243aa534f88b
+    m_Address: Strawberry
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -65,8 +75,33 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24fa8004127706549a1b9b40581ce8c2
+    m_Address: StarFruit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25cd3eeb924eb27459acaf36036b7f23
+    m_Address: Cherry
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2907130a057241343aa3b84a7c521969
+    m_Address: Broccoli
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29ae01f57fc30cb459146dcc814a571e
+    m_Address: Blueberry
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2b3b16b4afae5384e9b060db90f6252f
     m_Address: Brush01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b87e5f7adb29934ba22699580b2eeb9
+    m_Address: Avocado
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -92,6 +127,21 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 32bcf0e2953755a45b07dfc5384a7cbf
     m_Address: Knife01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33535d8a7d0ab90468ba6bbc1e4e831c
+    m_Address: Potato
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3354fdcacfc00564e9e18fc365a3fc92
+    m_Address: Pepper
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3701985514dbd514c8ddae0f7befe883
+    m_Address: Cucumber
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -135,13 +185,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46dce27e72261c84ba36745675eae022
+    m_Address: Onion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 47548c39b04c2c0409c9b5bad7188eff
     m_Address: Potato
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47baf75409725b54db65397483112aa0
+    m_Address: Lemon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 48c847bf5f996fb46940b9225ea913bf
     m_Address: BuildingBlock01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48cad5121d1355a46b376b80a6ad4db1
+    m_Address: Cabbage
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -155,6 +220,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55c68a60db97ddf4289a44e30416892b
+    m_Address: Leek
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 56f3c360cfffb544e8e4e5ac17098bd9
+    m_Address: WhiteRadish
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5a34ca9625523774899a109d4d1a388c
     m_Address: Plant
     m_ReadOnly: 0
@@ -165,8 +240,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f924aeb482c98042a8b38cdb2b31c7f
+    m_Address: Coconut
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 62a64c40ad7a1a5489dc42db86bd103d
     m_Address: PhillyCheeseSteaks
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63686a1d0aa24ed42ae2030de2c7335e
+    m_Address: Peach
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -182,6 +267,21 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6ba7ca27fb833e54b8f258948b6313b9
     m_Address: Clock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6fed9b6f53d41b447b7a2b0902abb293
+    m_Address: Asparagus
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7447b451c6353624b99df2b59a514eb1
+    m_Address: Corn
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74feb9c07453b7d409be60f4e2b0d57e
+    m_Address: Garlic
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -215,6 +315,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9964d8ae590cc924cb3b26b7bb5215d9
+    m_Address: Apple
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9cfa77482919ab642a3c9b9a6a6b86a1
     m_Address: MilkCarton
     m_ReadOnly: 0
@@ -240,13 +345,43 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1514d3056e8726448de792f4378cb85
+    m_Address: Chili
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3da5fee6d3842842a48da132460e57a
+    m_Address: Eggplant
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ae3b3235a9611fd4dace45fff4d84c56
     m_Address: Egg
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2f91c64eb2ee8b4fbb652eb7a0d2ae9
+    m_Address: WaterMelon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b39f68dbe3768d94ab8adf73c71ef15a
+    m_Address: Lime
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b64598add1c7f1d489a510dd8bd97ee9
+    m_Address: Pineapple
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b79d81f345e456b4289f28d1b0c6d7b9
     m_Address: Chair01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8cad28b8c1573a4991ac8262719b8cf
+    m_Address: Raspberry
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -275,6 +410,26 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c985acc1674095a4e96698f5711b351f
+    m_Address: Carrot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: caeaac7ff4f32534fadce7d78b1097fa
+    m_Address: Kiwi
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: caf2f34e530afee4b90bc0162093cc25
+    m_Address: Orange
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d16c38d9fdc84cc4ab80bb56510616fd
+    m_Address: Papaya
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d17c15cc7923ada4cae5122dc5aa77d5
     m_Address: Cup01
     m_ReadOnly: 0
@@ -290,8 +445,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3be4ffafb0e43e4facb7de29ecd4650
+    m_Address: Mangosteen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d517fa5bc09a7cf43bfe03b92ca752f5
     m_Address: Ball03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d9e9b8b1b558c5242a1f68075c6bba14
+    m_Address: Mushroom
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -310,6 +475,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e69519fc25a00404d883cf9e869c9dc5
+    m_Address: Banana
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef5fed7f3ec004c4aafe9edbb149e8b5
+    m_Address: Grape
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: efe82eb7e653bdf47958ac7bcd53cf51
     m_Address: Pan02
     m_ReadOnly: 0
@@ -322,6 +497,21 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fba7280615f65bb4596604323c248b57
     m_Address: CoffeeCup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc3a11ceed03a06409fda096b4bafa4b
+    m_Address: Radish
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe23f3e0585a78646b3c070a701e6706
+    m_Address: Litchi
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff0a82cce1e3b9d42bd8d90373cd3d49
+    m_Address: ChineseKale
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
