@@ -30,7 +30,6 @@ public class ItemView : MonoBehaviour
     {
         GameEvents.OnItemAddedToSlotEvent -= OnItemAddedToSlot;
         GameEvents.OnRequestMatchResolveEvent -= HandleMatch;
-        AssetLoader.Instance.ReleaseIcon(ItemData.IconName);
     }
 
     private void UpdateUI()

@@ -488,13 +488,6 @@
       "Size": 1
     },
     {
-      "Id": "carrot",
-      "Name": "Carrot",
-      "PrefabName": "Carrot",
-      "IconName": "Carrot",
-      "Size": 2
-    },
-    {
       "Id": "cherry",
       "Name": "Cherry",
       "PrefabName": "Cherry",
@@ -2459,7 +2452,7 @@
     {
       "Id": "jungle",
       "ThemeName": "Jungle",
-      "BackgroundSpriteName": "jungle",
+      "BackgroundSpriteName": "map1",
       "FogColorHex": "#F3D86E",
       "StartLevel": 1,
       "StarRequirement": 0
@@ -2467,7 +2460,7 @@
     {
       "Id": "desert",
       "ThemeName": "Desert",
-      "BackgroundSpriteName": "desert",
+      "BackgroundSpriteName": "map1",
       "FogColorHex": "#DD9646",
       "StartLevel": 16,
       "StarRequirement": 20
@@ -2475,7 +2468,7 @@
     {
       "Id": "cosmic",
       "ThemeName": "Cosmic",
-      "BackgroundSpriteName": "cosmic",
+      "BackgroundSpriteName": "map1",
       "FogColorHex": "#DD9646",
       "StartLevel": 31,
       "StarRequirement": 45
@@ -2483,7 +2476,7 @@
     {
       "Id": "lava",
       "ThemeName": "Lava",
-      "BackgroundSpriteName": "lava",
+      "BackgroundSpriteName": "map1",
       "FogColorHex": "#DD9646",
       "StartLevel": 46,
       "StarRequirement": 72
@@ -2491,7 +2484,7 @@
     {
       "Id": "winter",
       "ThemeName": "Winter",
-      "BackgroundSpriteName": "winter",
+      "BackgroundSpriteName": "map1",
       "FogColorHex": "#DD9646",
       "StartLevel": 61,
       "StarRequirement": 101

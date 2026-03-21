@@ -190,11 +190,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 47548c39b04c2c0409c9b5bad7188eff
-    m_Address: Potato
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 47baf75409725b54db65397483112aa0
     m_Address: Lemon
     m_ReadOnly: 0
