@@ -11,6 +11,7 @@ public class ItemData : ICloneable
     public string PrefabName;
     public string IconName;
     public ItemSize Size;
+    public bool Enabled;
 
     public object Clone()
     {

@@ -81,6 +81,28 @@ public class PerformanceDebugMenu : MonoBehaviour
         GUI.contentColor = Color.cyan;
         GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"FRAME TIME: {ms:F2} ms ({Mathf.Ceil(fps)} FPS)");
         currentY += 100;
+#if UNITY_EDITOR
+        // Retrieve internal Unity Editor stats
+        int drawCalls = UnityEditor.UnityStats.drawCalls;
+        int batches = UnityEditor.UnityStats.batches;
+        int setPassCalls = UnityEditor.UnityStats.setPassCalls;
+        int triangles = UnityEditor.UnityStats.triangles;
+
+        // Note: Unity doesn't expose "Saved by Batching" as a single int, 
+        // but you can see the difference between Batches and Draw Calls.
+
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"BATCHES: {batches}");
+        currentY += 50;
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"DRAW CALLS: {drawCalls}");
+        currentY += 50;
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"SETPASS CALLS: {setPassCalls}");
+        currentY += 50;
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"TRIS: {triangles:N0}"); // N0 adds commas for readability
+        currentY += 100;
+#else
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "STATS: (Only available in Editor)");
+        currentY += 100;
+#endif
         GUI.contentColor = Color.white;
 
         // --- SECTION: QUALITY PRESETS ---

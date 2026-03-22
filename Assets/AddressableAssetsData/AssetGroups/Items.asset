@@ -15,6 +15,16 @@ MonoBehaviour:
   m_GroupName: Items
   m_GUID: d820a54aeb7697740b81e485f9a90331
   m_SerializeEntries:
+  - m_GUID: 0654c747527d0f648aef6c442e8dfdab
+    m_Address: ToiletPaper
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 096de96b2a11c6545b905ff01b435611
+    m_Address: Trumpet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0b2386a3f594588499c8e32d9a97db94
     m_Address: Mango
     m_ReadOnly: 0
@@ -60,6 +70,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17be849194d42bb448663a537af89f14
+    m_Address: Mic
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 182920f2011f6434b95ffbe59ceba79b
     m_Address: Turnip
     m_ReadOnly: 0
@@ -67,6 +82,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1a4b4cfbd03cd744dbb77898390d57bb
     m_Address: Pear
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a9f98282efc03c4f97e10f2163f3e08
+    m_Address: Tambourine
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bf0b9344be46bf448a9900b2000e221
+    m_Address: Bicycle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -100,6 +125,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28ff3001d4e1e7d489134d65b48a26f8
+    m_Address: Dice
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2907130a057241343aa3b84a7c521969
     m_Address: Broccoli
     m_ReadOnly: 0
@@ -107,6 +137,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 29ae01f57fc30cb459146dcc814a571e
     m_Address: Blueberry
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a726d5cb2998a24db00b45e148327c9
+    m_Address: TreasureChest
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -125,6 +160,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d6efb7d881e73444989980fa9dec882
+    m_Address: Drum
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2fbca71b33ea4bc4bacad89d62e0021b
     m_Address: Star
     m_ReadOnly: 0
@@ -140,6 +180,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32003fde9289fd945b264735768cce35
+    m_Address: Acorn
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 32bcf0e2953755a45b07dfc5384a7cbf
     m_Address: Knife01
     m_ReadOnly: 0
@@ -152,6 +197,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3354fdcacfc00564e9e18fc365a3fc92
     m_Address: Pepper
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3634f4aac89975e40b8cb3681042d42e
+    m_Address: Key
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -185,6 +235,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a9397052e70b3f4da343cc30fe753ad
+    m_Address: FlyingSaucer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3e644e02290ccbe46a5f1f53cbb38f04
     m_Address: Fries
     m_ReadOnly: 0
@@ -200,8 +255,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3fa1881b6667ce94bbcecf2d3e57524a
+    m_Address: Ink
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4103fc60dd48c2747a0baf66cd84e898
+    m_Address: Giftbox
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 45ace8e9afa1d794db37226cc9b71e0e
     m_Address: BeautyBottle01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46956b8e07c3d444ea7702cce8b74b41
+    m_Address: Balloon
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -212,6 +282,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 47baf75409725b54db65397483112aa0
     m_Address: Lemon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47da848eb51ef6548807a8522807628e
+    m_Address: Scooter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47f0ca59b241c784f84e159b26357437
+    m_Address: WoodenLog
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -235,6 +315,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b463772a96da51418292305b881fba5
+    m_Address: Nut
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4c1e3e6ed81609843942c166a79b0269
     m_Address: Donut02
     m_ReadOnly: 0
@@ -245,13 +330,33 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5043e564c0a674a4a9c4d1b8959c72f6
+    m_Address: Radio
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 55c68a60db97ddf4289a44e30416892b
     m_Address: Leek
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 56de6e87aab13044987aea1150f50dbe
+    m_Address: Chair04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 56f3c360cfffb544e8e4e5ac17098bd9
     m_Address: WhiteRadish
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5763f124b06614d479e22ffc4f5c46de
+    m_Address: Yarn
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57d0b6379d78b4849bb774b822dcbbdb
+    m_Address: Shoes
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -265,8 +370,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c799cea3009beb4a90d9a9fb9ff59dc
+    m_Address: Megaphone
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5f924aeb482c98042a8b38cdb2b31c7f
     m_Address: Coconut
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6238e795387eaa14595759955483a7d2
+    m_Address: Wheel
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -275,13 +390,33 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62b5bb2eb501651438455dcc86627bb6
+    m_Address: Trophy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 631b195a1c0e8444b93c7a42522365fb
+    m_Address: Icecream
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 63686a1d0aa24ed42ae2030de2c7335e
     m_Address: Peach
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 669ba69cd0df4e442835932df0ded4fc
+    m_Address: Backpack
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 678b5b70d9e2c5645bea04b0b3fef64d
     m_Address: Pot03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6948f9ab2e7cc0d44aa8c1b2e36efb05
+    m_Address: Guitar
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -305,6 +440,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72b22c9142d1d0745be71dc5c743de77
+    m_Address: Violin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7447b451c6353624b99df2b59a514eb1
     m_Address: Corn
     m_ReadOnly: 0
@@ -315,13 +455,53 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 759656bb18ef6f249835032497c7ccf0
+    m_Address: Candy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 781bae47def6a1b4da5eac1d6ad45064
+    m_Address: Umbrella
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a09a6b8f5c8cd344b5ad49ade191971
+    m_Address: Rainbow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ac5b8bab867e7f46b0d9959442556ad
+    m_Address: Hat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7df544826f7fe44449d821b5777284a2
+    m_Address: Bag
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ea69d44281b54942a934a543dbaade6
+    m_Address: Clock02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7ff9d9916648f1640817e64b492e39b8
     m_Address: Lamp02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80d946e09d7d7d145a785f5976d898bd
+    m_Address: Ship
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 81c161a1b7726864e82d4f0d726ce4f2
     m_Address: Stool
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8216a8bb93b152a4380a38a9a88fab2d
+    m_Address: Burger02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -332,6 +512,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 87f7a6494844cbb4d8a21aa95de8466b
     m_Address: Sushi02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8daa4fb228df61143b5254a0f838edb2
+    m_Address: Ring02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -365,8 +550,33 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 95f9fcf746125ff469e7e620419b3a10
+    m_Address: Car
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97d0d429388218345b44cdfd777a16ae
+    m_Address: Airplane
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9964d8ae590cc924cb3b26b7bb5215d9
     m_Address: Apple
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b46164dfce42d544a28fc66bf28622a
+    m_Address: Book03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b8f25f2390f5e344b8529432df2b984
+    m_Address: Jar
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9cf20c812af79b649a2325b1e79608f8
+    m_Address: Bone
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -385,8 +595,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f74ef9718d165141859dc7ae1aedb3e
+    m_Address: Train
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9ffa9aa0cebe1bb40a0645ebb22898a4
     m_Address: Cup02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0245a66961f68e4fa973caf524b8804
+    m_Address: Shield
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -400,6 +620,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a15ff22031e38ce439b561e8f484ea86
+    m_Address: Ball05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a3da5fee6d3842842a48da132460e57a
     m_Address: Eggplant
     m_ReadOnly: 0
@@ -407,6 +632,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a7beb04116945504eab6902ba92d9e1c
     m_Address: Sushi03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a80d44b0d8fa43a42b64296d03486975
+    m_Address: Rocket
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -445,8 +675,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4909113d583b83419cb300b9c6f9e10
+    m_Address: Butterfly
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b64598add1c7f1d489a510dd8bd97ee9
     m_Address: Pineapple
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b72d3e3f012457043b7fda3f84ca6f8f
+    m_Address: Screwdriver
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -465,6 +705,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b91b3594ce21794428b0ebe3512be453
+    m_Address: Fan
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bb96b08f69f717c4e80676392fcf058e
     m_Address: Book02
     m_ReadOnly: 0
@@ -480,6 +725,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0611a466dcc2224e935be6498d7062b
+    m_Address: Ball04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c325fe69b994826498652e1c39ad7d5b
+    m_Address: Robot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c4d8c95e1d90f9745aab542e1407c5c7
     m_Address: Spatula02
     m_ReadOnly: 0
@@ -487,6 +742,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c51a58acae958ef4187ff46aca4a80ae
     m_Address: CakeSlice04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c5936a3bf1edbcd4fa57b6f39e6a2657
+    m_Address: Xylophone
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c6462a54903d6d141b111b19d4ca2a95
+    m_Address: Lamp
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -510,6 +775,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d02a6a5f36c33184b99e116a0555b8a5
+    m_Address: Kettle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d16c38d9fdc84cc4ab80bb56510616fd
     m_Address: Papaya
     m_ReadOnly: 0
@@ -522,6 +792,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d30c75842e86bf449bb6032587f0ac10
     m_Address: Croissant
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d32b1353cd16c5f47aed45b3271b2269
+    m_Address: Piano
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -540,6 +815,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4efb7b4becb8ad47a4395634c7374e4
+    m_Address: Harp
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d517fa5bc09a7cf43bfe03b92ca752f5
     m_Address: Ball03
     m_ReadOnly: 0
@@ -550,8 +830,38 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d73230b8ab6c86f42887e6961f7815d4
+    m_Address: Helmet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d74c10834e0610d4f9554a8c600dd832
+    m_Address: Canon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d9e9b8b1b558c5242a1f68075c6bba14
     m_Address: Mushroom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: daec48a185f55154aa79f0769ef62ad1
+    m_Address: GoldCoinBag
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db36d2376879daf44a0821f9dc19bdc3
+    m_Address: Scissors
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: defff93a9e233c14d89b075c4bac926b
+    m_Address: Ring01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e09ac3d897acafe4f94fa569fdb064d8
+    m_Address: Bee
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -565,13 +875,38 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3821cab03e67274a932610f4bc90e14
+    m_Address: Tank
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e4577b5cd7b922a44a3c70b1b0f3250a
     m_Address: LetterCube01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e46f999b50fdc7c4fb675ed9ad9d3afb
+    m_Address: Broom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5913d271189d1040a26e544ba5b2cc9
+    m_Address: Volleyball
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e69519fc25a00404d883cf9e869c9dc5
     m_Address: Banana
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e81061af0bed06548986bd587a8edc47
+    m_Address: Ant
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e890c9f895899a046a17ead4b1e6c590
+    m_Address: Pencil
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -617,6 +952,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ff1263f5eaacba843990f759812e3273
     m_Address: Spatula01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff49fefedb57da4498d872738c4db248
+    m_Address: Basket
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

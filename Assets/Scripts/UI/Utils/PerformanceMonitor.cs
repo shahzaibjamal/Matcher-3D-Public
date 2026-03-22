@@ -149,15 +149,6 @@ public class PerformanceMonitor : MonoBehaviour
         _graphTexture.Apply();
     }
 
-    private void DrawHorizontalLine(int y, Color col)
-    {
-        if (y < 0 || y >= graphHeight) return;
-        for (int x = 0; x < graphWidth; x++)
-        {
-            _graphTexture.SetPixel(x, y, col);
-        }
-    }
-
     // Basic line drawing algorithm
     private void DrawLine(int x0, int y0, int x1, int y1, Color col)
     {
