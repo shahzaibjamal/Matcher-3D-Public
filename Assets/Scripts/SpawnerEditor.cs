@@ -46,6 +46,7 @@ public partial class Spawner : MonoBehaviour
         Debug.Log($"<color=cyan>[Debug]</color> Simulating click on: {item.ItemData.Id}");
         item.OnHandleClick(default);
     }
+#endif
 
     private int _debugSpawnIndex = 0;
     private bool _showDebugMenu = false; // Toggle state for the menu
@@ -155,5 +156,5 @@ public partial class Spawner : MonoBehaviour
 
         Debug.Log($"<color=white>[Debug]</color> Index shifted to: {_debugSpawnIndex}");
     }
-#endif
+
 }
