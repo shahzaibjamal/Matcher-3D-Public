@@ -111,12 +111,10 @@ public class PowerUpButton : MonoBehaviour
         }
         else
         {
-            Debug.LogError("power enabled - " + enable);
             Scheduler.Instance.ExecuteAfterDelay(0.5f, () =>
             {
                 RefreshUI();
             });
         }
-
     }
 }

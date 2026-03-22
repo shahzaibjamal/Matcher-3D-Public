@@ -151,16 +151,22 @@ public class GameManager : MonoBehaviour
             {
                 if (spawner.TryGetComponent<Spawner>(out _activeSpawner))
                 {
-                    _activeSpawner.SpawnLevel(levelData, (itemData, sourceTransform) =>
-                    {
-                        _slotManager.AddItem(itemData, sourceTransform);
-                    });
+                    // _activeSpawner.SpawnLevel(levelData, (itemData, sourceTransform) =>
+                    // {
+                    //     _slotManager.AddItem(itemData, sourceTransform);
+                    // });
+                    _activeSpawner.SpawnLevel(levelData, OnItemClicked);
+
                     _levelStartTime = Time.time;
                 }
             });
         }
     }
 
+    private void OnItemClicked(ItemData itemData, Transform sourceTransform)
+    {
+        _slotManager.AddItem(itemData, sourceTransform);
+    }
     public void TriggerGameOver(bool won)
     {
         Debug.Log("Game Manager: Game Over!" + (won ? " You won " : " You lost"));

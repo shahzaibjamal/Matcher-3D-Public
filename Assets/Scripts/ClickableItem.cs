@@ -28,7 +28,9 @@ public class ClickableItem : MonoBehaviour, IClickable
     private bool _isInitialized = false;
 
     // Static gatekeeper shared by all instances
-    private static bool _isTrayFillable = true;
+    private bool _isTrayFillable = true;
+
+    // private GameObject _shadow;
 
     void Awake()
     {
@@ -43,6 +45,13 @@ public class ClickableItem : MonoBehaviour, IClickable
         {
             _colliders = GetComponentsInChildren<Collider>();
         }
+
+        // AssetLoader.Instance.InstantiatePrefab("ShadowBlob", go =>
+        // {
+        //     _shadow = go;
+        //     _shadow.GetComponent<BlobShadow>().TargetObject = transform;
+        // });
+        ShadowManager.Instance.RegisterShadow(transform);
     }
 
     private void OnEnable()
@@ -64,6 +73,8 @@ public class ClickableItem : MonoBehaviour, IClickable
     {
         transform.DOKill();
         OnItemClicked = null;
+        // AssetLoader.Instance.ReleaseInstance(_shadow);
+        ShadowManager.Instance.UnregisterShadow(transform);
     }
 
     private void EnsureInit()
@@ -86,7 +97,7 @@ public class ClickableItem : MonoBehaviour, IClickable
         // If tray is full, do NOT process the click logic (sending to tray)
         if (!_isTrayFillable)
         {
-            SoundController.Instance.PlaySoundEffect("Deny");
+            SoundController.Instance.PlaySoundEffect("deny");
             return;
         }
 
@@ -97,6 +108,8 @@ public class ClickableItem : MonoBehaviour, IClickable
     {
         if (ItemData == null) return;
         SetLayerRecursive(gameObject, _defaultLayer);
+        // AssetLoader.Instance.ReleaseInstance(_shadow);
+        ShadowManager.Instance.UnregisterShadow(transform);
         OnItemClicked?.Invoke(ItemData, transform);
     }
 

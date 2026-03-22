@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9db9a15a85be0b4ca4397b2b5f58b25
+    m_Address: ShadowBlob
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 454a8c7e7824f0a4ea69190d0c06420b, type: 2}
   m_SchemaSet:

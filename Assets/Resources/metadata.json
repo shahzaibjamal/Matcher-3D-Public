@@ -1634,7 +1634,7 @@
         },
         {
           "RewardType": "Magnet",
-          "Amount": 1
+          "Amount": 2
         }
       ]
     },
@@ -1664,10 +1664,6 @@
         {
           "RewardType": "Gold",
           "Amount": 83
-        },
-        {
-          "RewardType": "Magnet",
-          "Amount": 1
         }
       ]
     },
