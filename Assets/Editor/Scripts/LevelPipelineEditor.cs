@@ -122,7 +122,7 @@ public class LevelPipelineEditor : Editor
         if (lv == 1) data.Rewards.Add(new RewardData { RewardType = RewardType.Undo, Amount = 5 });
         else if (lv == 2) data.Rewards.Add(new RewardData { RewardType = RewardType.Hint, Amount = 3 });
         else if (lv == 3) data.Rewards.Add(new RewardData { RewardType = RewardType.Shake, Amount = 2 });
-        else if (lv == 4) data.Rewards.Add(new RewardData { RewardType = RewardType.Magnet, Amount = 1 });
+        else if (lv == 4) data.Rewards.Add(new RewardData { RewardType = RewardType.Magnet, Amount = 2 });
         else if (lv % 5 == 0)
         {
             RewardType randomType = (RewardType)UnityEngine.Random.Range(2, 6);
