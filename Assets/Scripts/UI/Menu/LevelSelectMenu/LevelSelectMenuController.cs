@@ -3,8 +3,14 @@ public class LevelSelectMenuController : MenuController<LevelSelectMenuView, Lev
     public override void OnEnter()
     {
         SetState(new LevelSelectMenuBaseState_Main(this));
-        InitialFocus();
         View.CloseButtn.onClick.AddListener(HandleBackInput);
+
+        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
+        {
+            Delay = -1,
+            OnLoadingComplete = InitialFocus,
+            LoadingTask = View.InfiniteMapManager.InitializeMapAsync
+        });
     }
     public override void OnExit()
     {

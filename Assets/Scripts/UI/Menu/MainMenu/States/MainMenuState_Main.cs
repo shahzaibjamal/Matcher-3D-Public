@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class MainMenuBaseState_Main : MainMenuBaseState
 {
-
     private Sequence _playButtonSequence;
     private Sequence _giftSeq;
     private Sequence _spinSeq;
@@ -202,7 +201,6 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     private void OnStoreButtonClicked()
     {
         MenuManager.Instance.OpenMenu<LevelSelectMenuView, LevelSelectMenuController, LevelSelectMenuData>(Menus.Type.LevelSelect);
-
     }
     private void OnGiftButtonClicked()
     {

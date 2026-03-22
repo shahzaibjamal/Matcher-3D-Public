@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,51 +14,42 @@ public class InfiniteMapManager : MonoBehaviour
 
     private float _chunkHeight;
 
-    void Start()
+    // Remove Start() logic and put it here
+    public async Task InitializeMapAsync()
     {
-        // 1. Force stop movement to prevent "ghost" velocity jumps
+        // 1. Basic Setup (Synchronous)
         _scrollRect.StopMovement();
-
         _content.pivot = new Vector2(0.5f, 0f);
         _content.anchorMin = new Vector2(0.5f, 0f);
         _content.anchorMax = new Vector2(0.5f, 0f);
-
         _chunkHeight = _chunks[0].RectTransform.rect.height;
 
-        RefreshAllChunks();
+        // 2. Perform Data and Layout Calculations (Asynchronous)
+        // This prevents the frame from locking up during the loop
+        await SetupChunksAsync();
 
-        _scrollRect.onValueChanged.AddListener(OnScroll);
-
+        // 3. Final Focus
         int currentLevel = DataManager.Instance.GetLevelByID(GameManager.Instance.SaveData.CurrentLevelID).Number;
-        // 2. Use a slight delay to ensure UI layouts are calculated
-        StartCoroutine(DelayedFocus(currentLevel));
+
+        // Wait for one frame to ensure RectTransform changes have propagated to the GPU/UI System
+        await Task.Yield();
+
+        // FocusOnLevel(currentLevel);
     }
 
-    private IEnumerator DelayedFocus(int level)
-    {
-        // Wait for the Canvas to finish its initial layout pass
-        yield return new WaitForEndOfFrame();
-        FocusOnLevel(level);
-    }
-    private void RefreshAllChunks()
+    private async Task SetupChunksAsync()
     {
         int playerLevel = DataManager.Instance.GetLevelByID(GameManager.Instance.SaveData.CurrentLevelID).Number;
-        int playerStars = GameManager.Instance.SaveData.Inventory.Stars;
-
-        // 1. Determine the "Current Map Index" (0-based)
         int currentMapIndex = (playerLevel - 1) / _nodesPerMap;
 
-        // 2. Define the Limit: Current Map + 2 extra chunks
-        // This defines the maximum height the user can ever scroll to
-        // show upto peekNumber
         int peekNumber = 1;
         int maxMapIndexAllowed = currentMapIndex + peekNumber;
-        float totalPages = maxMapIndexAllowed + 1; // +1 because index 0 is page 1
+        float totalPages = maxMapIndexAllowed + 1;
 
-        // Update Content Height
+        // Set content height
         _content.sizeDelta = new Vector2(_content.sizeDelta.x, totalPages * _chunkHeight);
 
-        // Initial Chunk Placement
+        // Position Chunks
         for (int i = 0; i < _chunks.Length; i++)
         {
             _chunks[i].RectTransform.pivot = new Vector2(0.5f, 0f);
@@ -65,9 +57,52 @@ public class InfiniteMapManager : MonoBehaviour
             _chunks[i].RectTransform.anchorMax = new Vector2(0.5f, 0f);
 
             _chunks[i].RectTransform.anchoredPosition = new Vector2(0, i * _chunkHeight);
+
+            // If UpdateChunkData involves disk/DB, we await it
             UpdateChunkData(_chunks[i]);
+
+            // Optimization: Yield every few chunks if the list is long
+            if (i % 2 == 0) await Task.Yield();
         }
+
+        _scrollRect.onValueChanged.AddListener(OnScroll);
     }
+
+    // private IEnumerator DelayedFocus(int level)
+    // {
+    //     // Wait for the Canvas to finish its initial layout pass
+    //     yield return new WaitForEndOfFrame();
+    //     FocusOnLevel(level);
+    // }
+    // private void RefreshAllChunks()
+    // {
+    //     int playerLevel = DataManager.Instance.GetLevelByID(GameManager.Instance.SaveData.CurrentLevelID).Number;
+    //     int playerStars = GameManager.Instance.SaveData.Inventory.Stars;
+
+    //     // 1. Determine the "Current Map Index" (0-based)
+    //     int currentMapIndex = (playerLevel - 1) / _nodesPerMap;
+
+    //     // 2. Define the Limit: Current Map + 2 extra chunks
+    //     // This defines the maximum height the user can ever scroll to
+    //     // show upto peekNumber
+    //     int peekNumber = 1;
+    //     int maxMapIndexAllowed = currentMapIndex + peekNumber;
+    //     float totalPages = maxMapIndexAllowed + 1; // +1 because index 0 is page 1
+
+    //     // Update Content Height
+    //     _content.sizeDelta = new Vector2(_content.sizeDelta.x, totalPages * _chunkHeight);
+
+    //     // Initial Chunk Placement
+    //     for (int i = 0; i < _chunks.Length; i++)
+    //     {
+    //         _chunks[i].RectTransform.pivot = new Vector2(0.5f, 0f);
+    //         _chunks[i].RectTransform.anchorMin = new Vector2(0.5f, 0f);
+    //         _chunks[i].RectTransform.anchorMax = new Vector2(0.5f, 0f);
+
+    //         _chunks[i].RectTransform.anchoredPosition = new Vector2(0, i * _chunkHeight);
+    //         UpdateChunkData(_chunks[i]);
+    //     }
+    // }
 
 
     private void OnScroll(Vector2 scrollPos)
