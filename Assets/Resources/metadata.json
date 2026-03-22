@@ -745,6 +745,111 @@
       "PrefabName": "Baozi",
       "IconName": "icon_baozi",
       "Size": 3
+    },
+    {
+      "Id": "cake_slice_01",
+      "Name": "Cake Slice 01",
+      "PrefabName": "CakeSlice01",
+      "IconName": "icon_cake_slice_01",
+      "Size": 2
+    },
+    {
+      "Id": "cake_slice_02",
+      "Name": "Cake Slice 02",
+      "PrefabName": "CakeSlice02",
+      "IconName": "icon_cake_slice_02",
+      "Size": 2
+    },
+    {
+      "Id": "cake_slice_03",
+      "Name": "Cake Slice 03",
+      "PrefabName": "CakeSlice03",
+      "IconName": "icon_cake_slice_03",
+      "Size": 2
+    },
+    {
+      "Id": "cake_slice_04",
+      "Name": "Cake Slice 04",
+      "PrefabName": "CakeSlice04",
+      "IconName": "icon_cake_slice_04",
+      "Size": 2
+    },
+    {
+      "Id": "cake_slice_05",
+      "Name": "Cake Slice 05",
+      "PrefabName": "CakeSlice05",
+      "IconName": "icon_cake_slice_05",
+      "Size": 2
+    },
+    {
+      "Id": "candy_bar",
+      "Name": "Candy Bar",
+      "PrefabName": "CandyBar",
+      "IconName": "icon_candy_bar",
+      "Size": 3
+    },
+    {
+      "Id": "croissant",
+      "Name": "Croissant",
+      "PrefabName": "Croissant",
+      "IconName": "icon_croissant",
+      "Size": 2
+    },
+    {
+      "Id": "donut_01",
+      "Name": "Donut 01",
+      "PrefabName": "Donut01",
+      "IconName": "icon_donut_01",
+      "Size": 2
+    },
+    {
+      "Id": "donut_02",
+      "Name": "Donut 02",
+      "PrefabName": "Donut02",
+      "IconName": "icon_donut_02",
+      "Size": 2
+    },
+    {
+      "Id": "donut_03",
+      "Name": "Donut 03",
+      "PrefabName": "Donut03",
+      "IconName": "icon_donut_03",
+      "Size": 2
+    },
+    {
+      "Id": "soda_can_01",
+      "Name": "Soda Can 01",
+      "PrefabName": "SodaCan01",
+      "IconName": "icon_soda_can_01",
+      "Size": 2
+    },
+    {
+      "Id": "soda_can_02",
+      "Name": "Soda Can 02",
+      "PrefabName": "SodaCan02",
+      "IconName": "icon_soda_can_02",
+      "Size": 2
+    },
+    {
+      "Id": "strudel",
+      "Name": "Strudel",
+      "PrefabName": "Strudel",
+      "IconName": "icon_strudel",
+      "Size": 3
+    },
+    {
+      "Id": "waffle_01",
+      "Name": "Waffle 01",
+      "PrefabName": "Waffle01",
+      "IconName": "icon_waffle_01",
+      "Size": 2
+    },
+    {
+      "Id": "waffle_02",
+      "Name": "Waffle 02",
+      "PrefabName": "Waffle02",
+      "IconName": "icon_waffle_02",
+      "Size": 2
     }
   ],
   "Levels": [

@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1074570f87f36394b98a0787077aeeb7
+    m_Address: CakeSlice01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1099dcbd961f1b141b51c948bb626819
     m_Address: MiniStove
     m_ReadOnly: 0
@@ -47,6 +52,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 16ac1302fb4151b46aa2d8f46813dd6c
     m_Address: Melon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17613f1cfe677e849bb8d134504da1ec
+    m_Address: CandyBar
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -150,6 +160,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37e36a231c59db0479a7a903dcb2bc7d
+    m_Address: CakeSlice03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3826c4b637f713344982efec996b0f64
     m_Address: Hotdog
     m_ReadOnly: 0
@@ -210,8 +225,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48f26e908e0ac154584e45f209c9e878
+    m_Address: Strudel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4a5cf3c3e6471494e96b212e0225b70e
     m_Address: Pot01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c1e3e6ed81609843942c166a79b0269
+    m_Address: Donut02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -270,6 +295,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6bd71626e33b7e648a45a34f7833e2e4
+    m_Address: Donut01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6fed9b6f53d41b447b7a2b0902abb293
     m_Address: Asparagus
     m_ReadOnly: 0
@@ -305,6 +335,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e9ba95ff7d73bb47af2295f418b68d2
+    m_Address: Donut03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 903374f6447e0f94faa0b5200e5c770d
     m_Address: Onigiri
     m_ReadOnly: 0
@@ -317,6 +352,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 92ffb71259320ea43b8d5a6e37ec005f
     m_Address: Chest
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93b0d6d32d8f5864e9858932e9314cdd
+    m_Address: Waffle01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -380,6 +420,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b08b4fc432a20224e9791b38fea96a61
+    m_Address: SodaCan02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2c03328a6fcd9c48900200a792d1fdd
+    m_Address: CakeSlice02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2db4d5132a2090479c4bb20afb85dbe
+    m_Address: CakeSlice05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b2f91c64eb2ee8b4fbb652eb7a0d2ae9
     m_Address: WaterMelon
     m_ReadOnly: 0
@@ -392,6 +447,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b64598add1c7f1d489a510dd8bd97ee9
     m_Address: Pineapple
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b737a0878a353024391b0f90a21489a9
+    m_Address: Waffle02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -425,6 +485,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c51a58acae958ef4187ff46aca4a80ae
+    m_Address: CakeSlice04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c9267c6aa5ccf8b479940ad740d21904
     m_Address: Tomato
     m_ReadOnly: 0
@@ -452,6 +517,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d17c15cc7923ada4cae5122dc5aa77d5
     m_Address: Cup01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d30c75842e86bf449bb6032587f0ac10
+    m_Address: Croissant
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -527,6 +597,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fc3a11ceed03a06409fda096b4bafa4b
     m_Address: Radish
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fcd1df1bf30e1ee4ab72aad3875fdc70
+    m_Address: SodaCan01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
