@@ -63,11 +63,13 @@ public class PowerUpButton : MonoBehaviour
         {
             case PowerUpType.Magnet:
                 GameEvents.OnMagnetPowerupEvent?.Invoke();
+                SoundController.Instance.PlaySoundEffect("magnet");
                 break;
             case PowerUpType.Shake:
                 GameEvents.OnShakePowerupEvent?.Invoke();
                 break;
             case PowerUpType.Hint:
+                SoundController.Instance.PlaySoundEffect("hint");
                 GameEvents.OnHintPowerupEvent?.Invoke();
                 break;
             case PowerUpType.Undo:
@@ -90,12 +92,10 @@ public class PowerUpButton : MonoBehaviour
             switch (_type)
             {
                 case PowerUpType.Magnet:
-                    SoundController.Instance.PlaySoundEffect("magnet");
                     break;
                 case PowerUpType.Shake:
                     break;
                 case PowerUpType.Hint:
-                    SoundController.Instance.PlaySoundEffect("hint");
                     break;
                 case PowerUpType.Undo:
                     SoundController.Instance.PlaySoundEffect("undo");

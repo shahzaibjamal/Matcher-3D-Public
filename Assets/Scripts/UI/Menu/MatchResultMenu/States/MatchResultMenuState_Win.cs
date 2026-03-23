@@ -15,7 +15,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     {
         base.Enter();
 
-        View.GoldMulitplierButton.gameObject.SetActive(Data.LevelData.Number > AdManager.Instance.rewardedUnlockLevel);
+        View.GoldMulitplierButton.gameObject.SetActive(Data.LevelData.Number > DataManager.Instance.Metadata.Settings.RewardAdLevel);
         View.Result.text = LocaleManager.Localize(LocalizationKeys.result_win);
         View.Status.gameObject.SetActive(false);
 
@@ -148,11 +148,6 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     public override void OnGoldMultiplierButtonClicked()
     {
         base.OnGoldMultiplierButtonClicked();
-
-        // show video ad 
-        // And then callback and continue
-        // Add ad multipler constant
-
         AdManager.Instance.ShowRewarded(OnRewardAdComplete, OnRewardAdFailed);
     }
 

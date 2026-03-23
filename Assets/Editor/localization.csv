@@ -47,8 +47,10 @@ ok,Ok,OK,DE ACUERDO
 restart_message,Restarting this level will cost a life!!,Reiniciar esta fase custará uma vida!!,Reiniciar esta fase cuidará una vida!!
 leave_level_message,Leaving the match will cost a life!!,Abandonar a partida custará uma vida!!,Abandonar a partida custará uma vida!!
 leave,Leave,Deixar,Deixar
-no_restart_message,Can't restart. Out of lives!! \nWould you like to go to main screen?,Não consigo reiniciar. Sem vidas!! \nDeseja ir para a tela principal?,No se puede reiniciar. Sem vidas!! \n¿Desea ir para una tela principal?
+no_restart_message,Can't restart. Out of lives!! \nWould you like to go to main screen?,Não consigo reiniciar. Sem vidas!! \nDeseja ir para a tela principal?,No se puede reiniciar. Sem vidas!! \n¿Deseja ir para una tela principal?
 restart,Restart,Reiniciar,Reiniciar
 store,Store,Loja,Tienda
 iap_error_message,Something went wrong with purchase. Please try again later!!,Ocorreu um problema com a compra. Tente novamente mais tarde!,Ocorreu um problema com a compra. Tente novamente mais tarde!
 no_lives_anymore,No lives anymore,Não há mais vidas,Não há mais vidas
+gift,Gifts,Presentes,Presenta
+coming_soon,Coming Soon,Em breve,En breve

@@ -1,7 +1,11 @@
 {
   "Settings": {
     "MaxLives": 5,
-    "SecondsToRecover": 60
+    "SecondsToRecover": 60,
+    "InterstitialAdLevel": 15,
+    "RewardAdLevel": 5,
+    "BannerAdLevel": 10,
+    "InterstitialAdChance": 0.5
   },
   "Items": [
     {

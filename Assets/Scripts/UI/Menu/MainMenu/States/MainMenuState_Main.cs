@@ -1,6 +1,7 @@
 
 using System.Threading.Tasks;
 using DG.Tweening;
+using TS.LocalizationSystem;
 using UnityEngine;
 
 public class MainMenuBaseState_Main : MainMenuBaseState
@@ -204,6 +205,14 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnGiftButtonClicked()
     {
+        MenuManager.Instance.OpenMenu<GenericPopupMenuView, GenericPopupMenuController, GenericPopupMenuData>(
+            Menus.Type.GenericPopup,
+            new GenericPopupMenuData(
+                LocalizationKeys.gift,
+                LocalizationKeys.coming_soon,
+                LocalizationKeys.ok
+            )
+        );
     }
     private void OnDebugButtonClicked()
     {

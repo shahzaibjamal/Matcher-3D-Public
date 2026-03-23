@@ -562,10 +562,6 @@ MonoBehaviour:
   currentLevel: 1
   _testDevicesIds:
   - 1B9F6BAEEB1823528F77F212C1C46892
-  bannerUnlockLevel: 5
-  interstitialUnlockLevel: 10
-  rewardedUnlockLevel: 3
-  interstitialChance: 0.333
   realBannerId: ca-app-pub-3489872370282662/6280758579
   realInterstitialId: ca-app-pub-3489872370282662/8112026638
   realRewardedId: ca-app-pub-3489872370282662/2696736786
@@ -719,7 +715,8 @@ MonoBehaviour:
     m_Bits: 256
   minScalePercent: 0.3
   maxDistance: 3
-  lightInfluence: 0.5
+  lightInfluence: 0.25
+  maxShadowAlpha: 0.5
 --- !u!4 &486513559
 Transform:
   m_ObjectHideFlags: 0
@@ -1171,7 +1168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00004196167
+      value: 0.0001335144
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1608,7 +1605,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.1
+  m_fontSize: 40
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2149,7 +2146,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: e734ac02aa8d39c448fb0a70f9d0092b, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2157,7 +2154,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 2.6
+  m_PixelsPerUnitMultiplier: 0.68
 --- !u!222 &1180775068
 CanvasRenderer:
   m_ObjectHideFlags: 0

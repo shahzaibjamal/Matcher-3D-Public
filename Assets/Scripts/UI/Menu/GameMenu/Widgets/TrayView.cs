@@ -303,7 +303,7 @@ public class TrayView : MonoBehaviour
             // ParticleManager.Instance.Play("MergePoof", centerSlotPos);
             PoofParticle.transform.position = ghosts[1].transform.position;
             PoofParticle.Play();
-            SoundController.Instance.PlaySoundEffect("poof");
+            SoundController.Instance.PlaySoundEffect("snap");
 
         });
 

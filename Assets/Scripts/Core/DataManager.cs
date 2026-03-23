@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class DataManager : MonoBehaviour
     [SerializeField] private string fileName = "metadata";
 
     public Metadata Metadata { get; private set; }
-
+    // This allows other scripts to 'await' the initialization
     private Dictionary<string, ItemData> _itemCache = new Dictionary<string, ItemData>();
     private Dictionary<string, LevelData> _levelCache = new Dictionary<string, LevelData>();
     private Dictionary<int, DailyRewardData> _dailyRewardCache = new Dictionary<int, DailyRewardData>();
@@ -30,32 +31,41 @@ public class DataManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        LoadMetadata();
     }
 
-    public void LoadMetadata()
+    public async Task LoadMetadataAsync()
     {
-        TextAsset jsonFile = Resources.Load<TextAsset>(fileName);
+        // 1. Still on Main Thread: Load the asset
+        ResourceRequest request = Resources.LoadAsync<TextAsset>(fileName);
+        while (!request.isDone) await Task.Yield();
+
+        TextAsset jsonFile = request.asset as TextAsset;
 
         if (jsonFile == null)
         {
-            Debug.LogError($"[DataManager] {fileName}.json not found in Resources!");
+            Debug.LogError($"[DataManager] {fileName}.json not found!");
             return;
         }
 
+        // 2. Still on Main Thread: Grab the string data
+        // This is the "get_bytes" part that was causing the error
+        string rawJson = jsonFile.text;
+
         try
         {
-            Metadata = JsonConvert.DeserializeObject<Metadata>(jsonFile.text);
+            // 3. Move to Background Thread: Heavy Parsing
+            // We pass the string 'rawJson', NOT the 'jsonFile' object
+            Metadata = await Task.Run(() => JsonConvert.DeserializeObject<Metadata>(rawJson));
+
+            // 4. Back on Main Thread: Finalize
             InitializeCaches();
-            Debug.Log($"[DataManager] Loaded {Metadata.Levels.Count} levels and {Metadata.SpinWheelRewards.Count} spin rewards.");
+            Debug.Log("[DataManager] Async Load Complete.");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"[DataManager] Error parsing JSON: {e.Message}");
+            Debug.LogError($"[DataManager] Error: {e.Message}");
         }
     }
-
     private void InitializeCaches()
     {
         _itemCache = Metadata.Items?.ToDictionary(item => item.Id) ?? new Dictionary<string, ItemData>();

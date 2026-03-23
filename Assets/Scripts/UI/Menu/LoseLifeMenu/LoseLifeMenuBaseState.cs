@@ -16,7 +16,6 @@ public class LoseLifeMenuBaseState : MenuBaseState<LoseLifeMenuController, LoseL
         UIAnimations.ToonIn(View.canvasGroup, View.Root, null);
     }
 
-
     public override void Exit()
     {
         View.CancelButton.onClick.RemoveListener(Controller.HandleBackInput);
@@ -30,17 +29,6 @@ public class LoseLifeMenuBaseState : MenuBaseState<LoseLifeMenuController, LoseL
         {
             GameEvents.OnGameQuitEvent?.Invoke();
             MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main);
-
-            // MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-            // {
-            //     OnLoadingComplete = OnLoadingComplete
-            // });
         });
     }
-
-    // private void OnLoadingComplete()
-    // {
-    //     MenuManager.Instance.OpenMenu<MainMenuView, MainMenuController, MainMenuData>(Menus.Type.Main);
-    // }
-
 }

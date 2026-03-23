@@ -1,21 +1,12 @@
 using System;
 using TS.LocalizationSystem;
-using Unity.VisualScripting;
 
 
 public class MatchResultMenuController : MenuController<MatchResultMenuView, MatchResultMenuData>
 {
     public override void OnEnter()
     {
-        if (Data.IsWin)
-        {
-            SetState(new MatchResultMenuBaseState_Win(this));
-        }
-        else
-        {
-            SetState(new MatchResultMenuBaseState_Lose(this));
-        }
-
+        SetState(new MatchResultMenuBaseState_Win(this));
         View.ContinueButton.onClick.AddListener(OnContinueButtonClicked);
         View.GoldMulitplierButton.onClick.AddListener(OnGoldMultiplierButtonClicked);
         View.TitleLevelNumber.text = String.Format(LocaleManager.Localize(LocalizationKeys.title_level), Data.LevelData.Number);

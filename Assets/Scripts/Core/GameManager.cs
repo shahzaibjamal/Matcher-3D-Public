@@ -33,15 +33,16 @@ public class GameManager : MonoBehaviour
         LocaleManager.SetDefaultLocale();
     }
 
-    private void Start()
+    private async void Start()
     {
-        SaveData = SaveSystem.Load();
-        RewardManager.Instance.Init();
-        LevelManager.Instance.Initialize(SaveData);
-        AdManager.Instance.UpdateLevelProgress(LevelManager.Instance.GetCurrentProgressLevel().Number);
-        IAPManager.Instance.Initialize();
-
-        SoundController.Instance.Init(SaveData.IsMusicMuted, SaveData.IsSoundMuted);
+        MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(
+        Menus.Type.Loading,
+        new LoadingMenuData
+        {
+            Delay = -1,
+            LoadingTask = DataManager.Instance.LoadMetadataAsync,
+            OnLoadingComplete = InitializeManagers
+        });
 
         GameEvents.OnGameInitializedEvent += LoadLevelById;
         GameEvents.OnGameQuitEvent += Cleanup;
@@ -51,6 +52,24 @@ public class GameManager : MonoBehaviour
         GameEvents.OnGoldUpdatedEvent += OnGoldUpdate;
         GameEvents.OnLivesChanged += OnLivesChanged;
         GameEvents.OnLevelCompleteEvent += HandleLevelComplete;
+    }
+
+    private void InitializeManagers()
+    {
+        SaveData = SaveSystem.Load();
+        RewardManager.Instance.Init();
+        LevelManager.Instance.Initialize(SaveData);
+        var settings = DataManager.Instance.Metadata.Settings;
+        AdManager.Instance.Initialize(
+            settings.BannerAdLevel,
+            settings.InterstitialAdLevel,
+            settings.RewardAdLevel,
+            settings.InterstitialAdChance
+        );
+        AdManager.Instance.UpdateLevelProgress(LevelManager.Instance.GetCurrentProgressLevel().Number);
+        IAPManager.Instance.Initialize();
+
+        SoundController.Instance.Init(SaveData.IsMusicMuted, SaveData.IsSoundMuted);
 
         _slotManager = new SlotManager(SLOT_COUNT);
         LaunchGame();
@@ -62,7 +81,6 @@ public class GameManager : MonoBehaviour
 #if UNITY_EDITOR
         delay = 1;
 #endif
-
 
         var saveData = GameManager.Instance.SaveData;
 
@@ -90,18 +108,6 @@ public class GameManager : MonoBehaviour
                 }
             );
         }
-
-        // // 1. Launch the Loading Menu on Startup
-        // MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(
-        //     Menus.Type.Loading,
-        //     new LoadingMenuData
-        //     {
-        //         Delay = delay,
-        //         OnLoadingComplete = () =>
-        //         {
-        //         }
-        //     }
-        // );
     }
     void OnDestroy()
     {

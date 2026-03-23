@@ -66,6 +66,8 @@ MonoBehaviour:
   - store
   - iap_error_message
   - no_lives_anymore
+  - gift
+  - coming_soon
   _values:
   - Select language
   - Hey Guys
@@ -120,3 +122,5 @@ MonoBehaviour:
   - Store
   - Something went wrong with purchase. Please try again later!!
   - No lives anymore
+  - Gifts
+  - Coming Soon

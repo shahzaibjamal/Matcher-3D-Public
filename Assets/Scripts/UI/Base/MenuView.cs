@@ -41,6 +41,7 @@ public abstract class MenuView : MonoBehaviour, IMenuView
         if (DisplayMode == Menus.MenuDisplayMode.Popup || DisplayMode == Menus.MenuDisplayMode.Overlay)
         {
             exitSequence.Join(transform.DOScale(0f, 0.2f).SetEase(Ease.InBack));
+            SoundController.Instance.PlaySoundEffect("popup_close");
         }
 
         if (canvasGroup != null)

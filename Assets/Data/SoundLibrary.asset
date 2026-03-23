@@ -85,3 +85,6 @@ MonoBehaviour:
   - Name: cash
     Clip: {fileID: 8300000, guid: 2ebe19afeca1fcc48989d1dffbe1d6ba, type: 3}
     Volume: 1
+  - Name: snap
+    Clip: {fileID: 8300000, guid: 28bab7a051989c34ba0e49dab03761d0, type: 3}
+    Volume: 1

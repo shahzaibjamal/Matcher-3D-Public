@@ -29,10 +29,6 @@ public abstract class MenuController<TView, TData> : IMenuController
     {
         CurrentState?.Exit();
         CurrentState = null;
-        if (View.DisplayMode == Menus.MenuDisplayMode.Overlay || View.DisplayMode == Menus.MenuDisplayMode.Popup)
-        {
-            SoundController.Instance.PlaySoundEffect("popup_close");
-        }
     }
 
     public abstract void OnPause();

@@ -66,6 +66,8 @@ MonoBehaviour:
   - store
   - iap_error_message
   - no_lives_anymore
+  - gift
+  - coming_soon
   _values:
   - Selecione o idioma
   - Ei pessoal
@@ -115,8 +117,10 @@ MonoBehaviour:
   - "Reiniciar esta fase cuidar\xE1 una vida!!"
   - "Abandonar a partida custar\xE1 uma vida!!"
   - Deixar
-  - "No se puede reiniciar. Sem vidas!! \\n\xBFDesea ir para una tela principal?"
+  - "No se puede reiniciar. Sem vidas!! \\n\xBFDeseja ir para una tela principal?"
   - Reiniciar
   - Tienda
   - Ocorreu um problema com a compra. Tente novamente mais tarde!
   - "N\xE3o h\xE1 mais vidas"
+  - Presenta
+  - En breve
