@@ -123,6 +123,10 @@ public class AutoSpriteBakerEditor : EditorWindow
                     DestroyImmediate(instance);
                     Addressables.Release(handle);
                 }
+                else
+                {
+                    Debug.LogError("Prefab not found - " + item.PrefabName);
+                }
             }
         }
         finally

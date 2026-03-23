@@ -262,9 +262,9 @@ public class SlotManager
     }
 
 
+#if UNITY_EDITOR
     private void OnGUI()
     {
-
         // Example: draw _slots info directly
         if (_slots != null && _slots.Length > 0)
         {
@@ -293,4 +293,5 @@ public class SlotManager
             }
         }
     }
+#endif
 }

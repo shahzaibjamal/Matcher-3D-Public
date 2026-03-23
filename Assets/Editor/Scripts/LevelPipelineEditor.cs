@@ -80,7 +80,12 @@ public class LevelPipelineEditor : Editor
         };
 
         // 3. SELECT POOL
-        List<ItemData> pool = master.OrderBy(x => UnityEngine.Random.value).Take(targetVariety).ToList();
+        // List<ItemData> pool = master.OrderBy(x => UnityEngine.Random.value).Take(targetVariety).ToList();
+        List<ItemData> pool = master
+            .Where(x => x.Enabled)                          // filter first
+            .OrderBy(x => UnityEngine.Random.value)           // shuffle
+            .Take(targetVariety)                              // limit
+            .ToList();
 
         // 4. FILL LOGIC
         int currentCount = 0;

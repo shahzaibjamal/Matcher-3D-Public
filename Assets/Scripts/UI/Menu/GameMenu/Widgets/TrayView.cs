@@ -321,5 +321,4 @@ public class TrayView : MonoBehaviour
             _slots[0].FlashErrorColor();
         }
     }
-
 }
