@@ -1,15 +1,15 @@
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class DebugMenuView : MenuView
 {
-    public GameData GameData;
-    public TMP_InputField LevelIdInput;
-    public Transform ItemsParent;
-    public GameObject ItemRowPrefab;
-    public Button LoadButton;
-    public Button SaveButton;
+    public TMP_Text LevelIdText;
+
+    public SmartToggle DebugToggle;
+    public SmartToggle GraphicsToggle;
+    public Button NextLevelButton;
+    public Button PrevLevelButton;
+    public Button ResetButton;
     public Button BackButton;
     public Button PowerUpButton;
 }

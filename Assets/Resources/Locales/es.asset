@@ -68,6 +68,8 @@ MonoBehaviour:
   - no_lives_anymore
   - gift
   - coming_soon
+  - review
+  - review_message
   _values:
   - Selecione o idioma
   - Ei pessoal
@@ -124,3 +126,5 @@ MonoBehaviour:
   - "N\xE3o h\xE1 mais vidas"
   - Presenta
   - En breve
+  - "An\xE1lisis"
+  - "\xBFGostou haces jogo? Gostaria de nos deixar uma avalia\xE7\xE3o?"

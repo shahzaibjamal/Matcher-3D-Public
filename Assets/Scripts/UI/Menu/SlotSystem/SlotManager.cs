@@ -18,7 +18,9 @@ public class SlotManager
     public void Reset()
     {
         Cleanup();
+#if UNITY_EDITOR
         Scheduler.Instance.SubscribeGUI(OnGUI);
+#endif
         GameEvents.OnItemsCollectedEvent += OnItemsCollected;
         GameEvents.OnUndoPowerupEvent += OnUndoRequest;
         GameEvents.OnCleanSweepTrayEvent += OnCleanSweepTray;
@@ -30,7 +32,9 @@ public class SlotManager
         {
             _slots[i] = null;
         }
+#if UNITY_EDITOR
         Scheduler.Instance.UnsubscribeGUI(OnGUI);
+#endif
         GameEvents.OnItemsCollectedEvent -= OnItemsCollected;
         GameEvents.OnUndoPowerupEvent -= OnUndoRequest;
         GameEvents.OnCleanSweepTrayEvent -= OnCleanSweepTray;

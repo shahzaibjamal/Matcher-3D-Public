@@ -10,4 +10,7 @@ public class GameConfig
     public int  RewardAdLevel;
     public int BannerAdLevel;
     public float InterstitialAdChance;
+    public bool ShowGraphicsSettings;
+    public bool IsDebug;
+    public int ReviewLevel;
 }

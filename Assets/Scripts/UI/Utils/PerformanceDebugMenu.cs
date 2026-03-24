@@ -21,9 +21,26 @@ public class PerformanceDebugMenu : MonoBehaviour
             _cameraData = Camera.main.GetComponent<UniversalAdditionalCameraData>();
 
         _urpAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+        DataManager.OnDataLoaded += OnDataManagerLoaded;
     }
-    private void Update()
+
+    private void OnDataManagerLoaded()
     {
+        Scheduler.Instance.SubscribeGUI(DebugOnGUIGraphicsSettings);
+        Scheduler.Instance.SubscribeUpdate(DebugOnGUIGraphicsSettingsnUpdate);
+    }
+
+    void OnDestroy()
+    {
+        DataManager.OnDataLoaded -= OnDataManagerLoaded;
+        Scheduler.Instance.UnsubscribeGUI(DebugOnGUIGraphicsSettings);
+        Scheduler.Instance.UnsubscribeUpdate(DebugOnGUIGraphicsSettingsnUpdate);
+    }
+
+    private void DebugOnGUIGraphicsSettingsnUpdate(float dt)
+    {
+        if (!DataManager.Instance.Metadata.Settings.ShowGraphicsSettings)
+            return;
         // Update the 'IsMouseOverMenu' state
         if (!_showMenu)
         {
@@ -41,8 +58,11 @@ public class PerformanceDebugMenu : MonoBehaviour
         IsMouseOverMenu = _showMenu;
     }
 
-    private void OnGUI()
+    private void DebugOnGUIGraphicsSettings()
     {
+        if (!DataManager.Instance.Metadata.Settings.ShowGraphicsSettings)
+            return;
+
         // 1. GLOBAL STYLING
         GUI.skin.button.fontSize = 35;
         GUI.skin.label.fontSize = 35;

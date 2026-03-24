@@ -1,37 +1,83 @@
-using Unity.VisualScripting;
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuView, DebugMenuData>
 {
-    private LevelData _currentLevel;
     public DebugMenuBaseState(DebugMenuController controller) : base(controller)
     {
     }
 
     public override void Enter()
     {
-        View.LoadButton.onClick.AddListener(OnLoadButtonClicked);
+        View.NextLevelButton.onClick.AddListener(OnLoadNextLevelButtonClicked);
+        View.PrevLevelButton.onClick.AddListener(OnLoadPrevLevelButtonClicked);
         View.PowerUpButton.onClick.AddListener(OnAddPowerUpButton);
-        View.SaveButton.onClick.AddListener(OnSaveButton);
-        View.BackButton.onClick.AddListener(Controller.HandleBackInput);
-        // LoadGameData();
+        View.ResetButton.onClick.AddListener(OnResetButton);
+
+        View.DebugToggle.SetIsOn(DataManager.Instance.Metadata.Settings.IsDebug, false);
+        View.GraphicsToggle.SetIsOn(DataManager.Instance.Metadata.Settings.ShowGraphicsSettings, false);
+        View.DebugToggle.OnValueChanged += OnDebugToggleChanged;
+        View.GraphicsToggle.OnValueChanged += OnGraphicsToggleChanged;
+        View.LevelIdText.text = GameManager.Instance.SaveData.CurrentLevelID;
+        RefreshUI();
     }
 
+    private void OnGraphicsToggleChanged(bool value)
+    {
+        DataManager.Instance.Metadata.Settings.ShowGraphicsSettings = value;
+    }
+    private void OnDebugToggleChanged(bool value)
+    {
+        DataManager.Instance.Metadata.Settings.IsDebug = value;
+    }
 
     public override void Exit()
     {
-        View.LoadButton.onClick.RemoveListener(OnLoadButtonClicked);
+        View.NextLevelButton.onClick.RemoveListener(OnLoadNextLevelButtonClicked);
+        View.PrevLevelButton.onClick.RemoveListener(OnLoadPrevLevelButtonClicked);
         View.PowerUpButton.onClick.RemoveListener(OnAddPowerUpButton);
-        View.SaveButton.onClick.RemoveListener(OnSaveButton);
-        View.BackButton.onClick.RemoveListener(Controller.HandleBackInput);
+        View.ResetButton.onClick.RemoveListener(OnResetButton);
+        View.DebugToggle.OnValueChanged -= OnDebugToggleChanged;
+        View.GraphicsToggle.OnValueChanged -= OnGraphicsToggleChanged;
     }
 
 
-    private void OnLoadButtonClicked()
+    private void OnLoadPrevLevelButtonClicked()
     {
-        LoadLevel();
+        string currentId = GameManager.Instance.SaveData.CurrentLevelID;
+        LevelData prevLevel = LevelManager.Instance.GetPrevLevelInDatabase(currentId);
+
+        if (prevLevel != null)
+        {
+            // Update Save Data
+            GameManager.Instance.SaveData.CurrentLevelID = prevLevel.Id;
+            RefreshUI();
+        }
     }
+
+    private void OnLoadNextLevelButtonClicked()
+    {
+        string currentId = GameManager.Instance.SaveData.CurrentLevelID;
+        LevelData nextLevel = LevelManager.Instance.GetNextLevelInDatabase(currentId);
+
+        if (nextLevel != null)
+        {
+            // Update Save Data
+            GameManager.Instance.SaveData.CurrentLevelID = nextLevel.Id;
+            RefreshUI();
+        }
+    }
+
+    private void RefreshUI()
+    {
+        var currentLevel = DataManager.Instance.GetLevelByID(GameManager.Instance.SaveData.CurrentLevelID);
+        if (currentLevel != null)
+        {
+            View.LevelIdText.text = $"Level {currentLevel.Number}";
+        }
+    }
+
     private void OnAddPowerUpButton()
     {
         GameManager.Instance.SaveData.Inventory.AddPowerUp(PowerUpType.Shake, 5);
@@ -39,19 +85,28 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
         GameManager.Instance.SaveData.Inventory.AddPowerUp(PowerUpType.Hint, 5);
         GameManager.Instance.SaveData.Inventory.AddPowerUp(PowerUpType.Undo, 5);
     }
-    private void OnSaveButton()
+    private void OnResetButton()
     {
-        MenuManager.Instance.OpenMenu<MatchResultMenuView, MatchResultMenuController, MatchResultMenuData>(Menus.Type.MatchResult, new MatchResultMenuData
+        SaveSystem.ClearSave();
+
+        // 2. Stop all background CPU tasks (Tweens/Coroutines)
+        DOTween.KillAll();
+
+        // 3. The "Nuclear" Part: Destroy ALL persistent objects
+        // We get all root objects in the scene and find which ones are persistent
+        GameObject[] allObjects = GameObject.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+        foreach (GameObject obj in allObjects)
         {
-            IsWin = true,
-            LevelData = LevelManager.Instance.GetLevelByID("level_01"),
-            MatchRate = 1
-        });
+            // If the object has no parent and survives scene loads, kill it
+            if (obj.transform.parent == null && obj.scene.name == "DontDestroyOnLoad")
+            {
+                GameObject.Destroy(obj);
+            }
+
+        }
+
+        // 4. Reload the very first scene in your Build Settings (Index 0)
+        // This forces your "Splash" or "Boot" logic to start 100% fresh
+        SceneManager.LoadScene(0);
     }
-
-    public void LoadLevel()
-    {
-    }
-
-
 }

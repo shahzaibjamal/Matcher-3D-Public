@@ -26,6 +26,8 @@ public class GameSaveData
     public bool IsMusicMuted;
     public bool IsSoundMuted;
     public bool IsVibrateEnabled;
+    public bool IsAppReviewed;
+    public int AppReviewReminderLevel;
     public string languageName;
     public List<int> ClaimedDailyRewards = new List<int>();
 

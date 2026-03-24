@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ public class DataManager : MonoBehaviour
 
     [Header("Data Source")]
     [SerializeField] private string fileName = "metadata";
+
+    public static Action OnDataLoaded;
 
     public Metadata Metadata { get; private set; }
     // This allows other scripts to 'await' the initialization
@@ -59,6 +62,7 @@ public class DataManager : MonoBehaviour
 
             // 4. Back on Main Thread: Finalize
             InitializeCaches();
+            OnDataLoaded?.Invoke();
             Debug.Log("[DataManager] Async Load Complete.");
         }
         catch (System.Exception e)

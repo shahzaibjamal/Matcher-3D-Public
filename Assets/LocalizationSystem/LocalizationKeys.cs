@@ -124,5 +124,9 @@ namespace TS.LocalizationSystem
         public const string gift = "gift";
         
         public const string coming_soon = "coming_soon";
+        
+        public const string review = "review";
+        
+        public const string review_message = "review_message";
     }
 }

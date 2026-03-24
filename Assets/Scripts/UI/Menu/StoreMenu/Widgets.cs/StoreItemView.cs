@@ -17,7 +17,7 @@ public class StoreItemView : MonoBehaviour
     [SerializeField] private RewardIconMapper _rewardIconMapper;
     [SerializeField] private IAPIconMapper _iapIconMapper;
 
-    private StoreItemUIState _state;
+    public StoreItemUIState State { private set; get; }
     private Action<bool> _onPurchaseCallback;
 
     public void Awake()
@@ -31,14 +31,14 @@ public class StoreItemView : MonoBehaviour
     }
     public void Setup(StoreItemUIState state, Action<bool> onPurchaseCallback)
     {
-        _state = state;
+        State = state;
         _onPurchaseCallback = onPurchaseCallback;
-        _titleText.text = _state.Name;
-        _quantityText.text = "+" + _state.DisplayQuantity;
-        _priceText.text = _state.CurrencyType == StoreCurrencyType.Gold ?
-                        _state.DisplayCost.ToString() :
-                        $"${_state.DisplayCost:F2}";
-        _currencyIcon.gameObject.SetActive(_state.CurrencyType == StoreCurrencyType.Gold);
+        _titleText.text = State.Name;
+        _quantityText.text = "+" + State.DisplayQuantity;
+        _priceText.text = State.CurrencyType == StoreCurrencyType.Gold ?
+                        State.DisplayCost.ToString() :
+                        $"${State.DisplayCost:F2}";
+        _currencyIcon.gameObject.SetActive(State.CurrencyType == StoreCurrencyType.Gold);
         LoadRewards();
         RefreshUI();
     }
@@ -46,7 +46,7 @@ public class StoreItemView : MonoBehaviour
     private void OnBuyButtonClicked()
     {
         _buyButton.interactable = false;
-        PurchaseManager.Instance.PurchaseItem(_state.ItemID, OnPurchaseCallback);
+        PurchaseManager.Instance.PurchaseItem(State.ItemID, OnPurchaseCallback);
     }
 
     private void OnPurchaseCallback(bool success)
@@ -71,9 +71,9 @@ public class StoreItemView : MonoBehaviour
 
     public void RefreshUI()
     {
-        if (_state.CurrencyType == StoreCurrencyType.Gold)
+        if (State.CurrencyType == StoreCurrencyType.Gold)
         {
-            _buyButton.interactable = GameManager.Instance.SaveData.Inventory.Gold >= _state.DisplayCost;
+            _buyButton.interactable = GameManager.Instance.SaveData.Inventory.Gold >= State.DisplayCost;
         }
         else
         {
@@ -83,18 +83,22 @@ public class StoreItemView : MonoBehaviour
     }
     public void LoadRewards()
     {
-
-        for (int i = 0; i < _state.ProcessedRewards.Count; i++)
+        while (_rewardsContainer.childCount > 0)
         {
-            var rewardData = _state.ProcessedRewards[i];
+            DestroyImmediate(_rewardsContainer.GetChild(0).gameObject);
+        }
+
+        for (int i = 0; i < State.ProcessedRewards.Count; i++)
+        {
+            var rewardData = State.ProcessedRewards[i];
             if (i == 0)
             {
-                _quantityText.text = "+" + _state.DisplayQuantity;
-                _priceText.text = _state.CurrencyType == StoreCurrencyType.Gold ?
-                                _state.DisplayCost.ToString() :
-                                $"${_state.DisplayCost:F2}";
-                _itemIcon.sprite = _state.CurrencyType == StoreCurrencyType.USD ?
-                _iapIconMapper.GetIcon(_state.ItemID) :
+                _quantityText.text = "+" + State.DisplayQuantity;
+                _priceText.text = State.CurrencyType == StoreCurrencyType.Gold ?
+                                State.DisplayCost.ToString() :
+                                $"${State.DisplayCost:F2}";
+                _itemIcon.sprite = State.CurrencyType == StoreCurrencyType.USD ?
+                _iapIconMapper.GetIcon(State.ItemID) :
                 _rewardIconMapper.GetIcon(rewardData.RewardType);
             }
             else

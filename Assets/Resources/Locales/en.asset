@@ -68,6 +68,8 @@ MonoBehaviour:
   - no_lives_anymore
   - gift
   - coming_soon
+  - review
+  - review_message
   _values:
   - Select language
   - Hey Guys
@@ -124,3 +126,5 @@ MonoBehaviour:
   - No lives anymore
   - Gifts
   - Coming Soon
+  - Review
+  - Did you enjoy the game? Would you like to give us a review?

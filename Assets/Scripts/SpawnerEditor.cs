@@ -50,7 +50,7 @@ public partial class Spawner : MonoBehaviour
 
     private int _debugSpawnIndex = 0;
     private bool _showDebugMenu = false; // Toggle state for the menu
-    private void OnGUI()
+    private void DebugOnGUIItemVisualizer()
     {
         var items = DataManager.Instance.Metadata.Items;
         if (items == null || items.Count == 0) return;

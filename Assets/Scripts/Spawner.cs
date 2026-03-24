@@ -53,6 +53,11 @@ public partial class Spawner : MonoBehaviour
         GameEvents.OnHintPowerupEvent += HandleHintPowerUp;
         GameEvents.OnMagnetPowerupEvent += HandleMagnetPowerUp;
         GameEvents.OnCleanSweepTrayEvent += HandleCleanSweep;
+
+        if (DataManager.Instance.Metadata.Settings.IsDebug)
+        {
+            Scheduler.Instance.SubscribeGUI(DebugOnGUIItemVisualizer);
+        }
     }
 
     private void OnDisable()
@@ -64,6 +69,10 @@ public partial class Spawner : MonoBehaviour
         GameEvents.OnMagnetPowerupEvent -= HandleMagnetPowerUp;
         GameEvents.OnRequestMatchResolveEvent -= HandleMatchResolved;
         GameEvents.OnCleanSweepTrayEvent -= HandleCleanSweep;
+        if (DataManager.Instance.Metadata.Settings.IsDebug)
+        {
+            Scheduler.Instance.UnsubscribeGUI(DebugOnGUIItemVisualizer);
+        }
     }
 
     #region Level Lifecycle
@@ -270,8 +279,6 @@ public partial class Spawner : MonoBehaviour
 
         if (_collectableLeft.ContainsKey(dataToRestore.Id))
             _collectableLeft[dataToRestore.Id]++;
-        else
-            _collectableLeft.Add(dataToRestore.Id, 1);
 
         // Calculate Screen X (0 to 6 based on current stack count)
         // We use the count BEFORE we popped, or the index in the 7-slot tray
@@ -598,7 +605,12 @@ public partial class Spawner : MonoBehaviour
         visual.transform.localScale = size;
 
         if (debugMaterial != null)
-            visual.GetComponent<Renderer>().material = debugMaterial;
+        {
+            var renderer = visual.GetComponent<Renderer>();
+            renderer.material = debugMaterial;
+            renderer.receiveShadows = false;
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        }
 
         DestroyImmediate(visual.GetComponent<BoxCollider>());
     }

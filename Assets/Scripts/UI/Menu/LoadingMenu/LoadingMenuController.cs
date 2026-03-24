@@ -18,7 +18,7 @@ public class LoadingMenuController : MenuController<LoadingMenuView, LoadingMenu
     {
         // 1. Start the "Fake" smooth progress bar (0 to 0.9)
         // We give it a generous estimated time (e.g., 2 seconds)
-        float delay = 3.0f;
+        float delay = Random.Range(0, 3.0f);
 #if UNITY_EDITOR
         delay = 1;
 #endif

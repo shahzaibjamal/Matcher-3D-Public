@@ -1,6 +1,9 @@
 
+using System;
+using System.Collections;
 using System.Threading.Tasks;
 using DG.Tweening;
+using Google.Play.Review;
 using TS.LocalizationSystem;
 using UnityEngine;
 
@@ -49,7 +52,40 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StoreShimmer.Play();
         View.RewardShimmer.Play();
 
-        Scheduler.Instance.ExecuteAfterDelay(0.5f, () => RewardManager.Instance.CheckAndShowNext());
+        Scheduler.Instance.ExecuteAfterDelay(0.5f, () => RewardManager.Instance.CheckAndShowNext(OnAllRewardsClaimed));
+    }
+
+    private void OnAllRewardsClaimed()
+    {
+        GameManager.Instance.SaveData.AppReviewReminderLevel = Math.Max(DataManager.Instance.Metadata.Settings.ReviewLevel, GameManager.Instance.SaveData.AppReviewReminderLevel);
+        if (LevelManager.Instance.GetCurrentProgressLevel().Number > GameManager.Instance.SaveData.AppReviewReminderLevel)
+        {
+            MenuManager.Instance.OpenMenu<GenericPopupMenuView, GenericPopupMenuController, GenericPopupMenuData>(
+                        Menus.Type.GenericPopup,
+                        new GenericPopupMenuData(
+                            LocalizationKeys.review,
+                            LocalizationKeys.review_message,
+                            LocalizationKeys.yes,
+                            CheckForReview,
+                            LocalizationKeys.no,
+                            OnReviewCancelled
+                        )
+                    );
+        }
+    }
+    private void CheckForReview()
+    {
+        ReviewService.Instance.LaunchReviewFlow();
+
+    }
+    private void OnReviewCancelled()
+    {
+        var save = GameManager.Instance.SaveData;
+        var allLevels = DataManager.Instance.Metadata.Levels;
+        int maxLevelCount = (allLevels != null) ? allLevels.Count : 0;
+        int targetLevel = save.AppReviewReminderLevel + 10;
+        save.AppReviewReminderLevel = Mathf.Min(targetLevel, maxLevelCount);
+        GameManager.Instance.SaveGame();
     }
 
     private async Task WaitForSpawnerTask()

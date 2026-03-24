@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using TS.LocalizationSystem;
+using Google.Play.Review;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,8 +10,6 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
-    [Header("Prefabs & References")]
-    [SerializeField] private Spawner _spawnerPrefab;
     private Spawner _activeSpawner;
     private SlotManager _slotManager;
 
@@ -119,7 +119,8 @@ public class GameManager : MonoBehaviour
         GameEvents.OnGoldUpdatedEvent -= OnGoldUpdate;
         GameEvents.OnLivesChanged -= OnLivesChanged;
         GameEvents.OnLevelCompleteEvent -= HandleLevelComplete;
-        _slotManager.Cleanup();
+        if (_slotManager != null)
+            _slotManager.Cleanup();
         _slotManager = null;
     }
 
@@ -151,16 +152,12 @@ public class GameManager : MonoBehaviour
 
     private void LoadLevelSpawner(LevelData levelData)
     {
-        if (_activeSpawner == null && _spawnerPrefab != null)
+        if (_activeSpawner == null)
         {
             AssetLoader.Instance.InstantiatePrefab("Spawner", (spawner) =>
             {
-                if (spawner.TryGetComponent<Spawner>(out _activeSpawner))
+                if (spawner.TryGetComponent(out _activeSpawner))
                 {
-                    // _activeSpawner.SpawnLevel(levelData, (itemData, sourceTransform) =>
-                    // {
-                    //     _slotManager.AddItem(itemData, sourceTransform);
-                    // });
                     _activeSpawner.SpawnLevel(levelData, OnItemClicked);
 
                     _levelStartTime = Time.time;
@@ -278,7 +275,14 @@ public class GameManager : MonoBehaviour
 #endif
         }
     }
-
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause && NotificationManager.Instance != null)
+        {
+            int level = LevelManager.Instance.GetCurrentProgressLevel().Number;
+            NotificationManager.Instance.ScheduleAllNotifications(level);
+        }
+    }
     #endregion
 
 }

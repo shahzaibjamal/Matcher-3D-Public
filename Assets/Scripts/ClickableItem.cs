@@ -30,7 +30,7 @@ public class ClickableItem : MonoBehaviour, IClickable
     // Static gatekeeper shared by all instances
     private bool _isTrayFillable = true;
 
-    // private GameObject _shadow;
+    private Vector3 _initialScale;
 
     void Awake()
     {
@@ -45,12 +45,8 @@ public class ClickableItem : MonoBehaviour, IClickable
         {
             _colliders = GetComponentsInChildren<Collider>();
         }
+        _initialScale = transform.localScale;
 
-        // AssetLoader.Instance.InstantiatePrefab("ShadowBlob", go =>
-        // {
-        //     _shadow = go;
-        //     _shadow.GetComponent<BlobShadow>().TargetObject = transform;
-        // });
         ShadowManager.Instance.RegisterShadow(transform);
     }
 
@@ -108,7 +104,6 @@ public class ClickableItem : MonoBehaviour, IClickable
     {
         if (ItemData == null) return;
         SetLayerRecursive(gameObject, _defaultLayer);
-        // AssetLoader.Instance.ReleaseInstance(_shadow);
         ShadowManager.Instance.UnregisterShadow(transform);
         OnItemClicked?.Invoke(ItemData, transform);
     }
@@ -120,7 +115,8 @@ public class ClickableItem : MonoBehaviour, IClickable
 
         if (isHinted)
         {
-            transform.DOScale(Vector3.one * 1.05f, 0.5f)
+            // Tween from current scale to 105% of the ORIGINAL scale
+            transform.DOScale(_initialScale * 1.05f, 0.5f)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine)
                 .SetId("HintLoop");
@@ -128,7 +124,9 @@ public class ClickableItem : MonoBehaviour, IClickable
         else
         {
             transform.DOKill();
-            transform.DOScale(Vector3.one, 0.2f);
+            // Return smoothly to the original scale
+            transform.DOScale(_initialScale, 0.2f)
+                .SetEase(Ease.OutQuad);
         }
     }
 

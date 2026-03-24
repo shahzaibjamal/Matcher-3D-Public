@@ -2,7 +2,7 @@ public class DebugMenuController : MenuController<DebugMenuView, DebugMenuData>
 {
     public override void OnEnter()
     {
-        SetState(new DebugMenuBaseState_Main(this));
+        SetState(new DebugMenuBaseState(this));
     }
     public override void OnExit()
     {

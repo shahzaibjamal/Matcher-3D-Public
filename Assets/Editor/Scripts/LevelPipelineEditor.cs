@@ -67,7 +67,7 @@ public class LevelPipelineEditor : Editor
         // 2. CALCULATE TARGETS BASED ON LERP
         int targetTotalItems = Mathf.RoundToInt(Mathf.Lerp(MinItems, MaxItems, curvedT));
         int targetVariety = Mathf.RoundToInt(Mathf.Lerp(MinVariety, MaxVariety, curvedT));
-        int targetCollectables = Mathf.RoundToInt(Mathf.Lerp(1, 6, curvedT));
+        int targetCollectables = Mathf.RoundToInt(Mathf.Lerp(1, 5, curvedT));
 
         // Round targetTotalItems to nearest multiple of 3
         targetTotalItems = (targetTotalItems / 3) * 3;
