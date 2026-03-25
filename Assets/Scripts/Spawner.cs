@@ -495,17 +495,24 @@ public partial class Spawner : MonoBehaviour
 
         item.OnHandleClick(default);
     }
-
     private Vector3 CalculateRandomSpawnPos()
     {
-        float padding = 0.5f; // Keep items away from the wall edge
+        float padding = 0.5f;
+        int itemsPerLayer = 15; // Every 15 items, we move up one "floor"
+        float layerHeight = 0.4f; // How much to increase Y per layer
 
-        // Use the calculated max bounds
+        // 1. Calculate the current "Pile Height"
+        // If we have 45 items, currentLayer is 3. 3 * 0.4 = 1.2f extra height.
+        int currentLayer = _itemClickables.Count / itemsPerLayer;
+        float dynamicVerticalOffset = VerticalOffset + (currentLayer * layerHeight);
+
+        // 2. Add a tiny bit of random "jitter" to the height 
+        // This makes the pile look more organic/messy like real toys
+        float yJitter = UnityEngine.Random.Range(0f, 0.5f);
+
         float x = UnityEngine.Random.Range(-_spawnXMax + padding, _spawnXMax - padding);
         float z = UnityEngine.Random.Range(-_spawnZMax + padding, _spawnZMax - padding);
-
-        // Fixed Y to ensure they drop into the scene
-        float y = VerticalOffset + UnityEngine.Random.Range(0f, 2.0f);
+        float y = dynamicVerticalOffset + yJitter;
 
         return Parent.position + new Vector3(x, y, z);
     }
