@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -13,6 +14,14 @@ public class PerformanceDebugMenu : MonoBehaviour
     private Vector2 _scrollPosition = Vector2.zero;
 
     [SerializeField] private UniversalRendererData rendererData;
+
+    private int _selectedShaderIndex = 1; // Default to Lit
+    private readonly string[] _shaderOptions = { "Simple Lit", "Lit", "Cartoon" };
+    private readonly string[] _shaderPaths = {
+        "Universal Render Pipeline/Simple Lit",
+        "Universal Render Pipeline/Lit",
+        "Shader Graphs/CartoonShader" // Ensure this matches your specific path
+    };
 
     private void Start()
     {
@@ -66,7 +75,7 @@ public class PerformanceDebugMenu : MonoBehaviour
         // 1. GLOBAL STYLING
         GUI.skin.button.fontSize = 35;
         GUI.skin.label.fontSize = 35;
-        GUI.skin.horizontalSlider.fixedHeight = 60; // Thicker sliders for easier thumb control
+        GUI.skin.horizontalSlider.fixedHeight = 60;
         GUI.skin.horizontalSliderThumb.fixedWidth = 60;
         GUI.skin.horizontalSliderThumb.fixedHeight = 60;
 
@@ -84,11 +93,11 @@ public class PerformanceDebugMenu : MonoBehaviour
         GUI.backgroundColor = Color.white;
 
         // 4. DYNAMIC SCROLL VIEW
-        // We calculate the content height at the end of the previous frame or use a large buffer
+        // The content rect (3rd param) height should be currentY from the end of the last frame
         _scrollPosition = GUI.BeginScrollView(
             new Rect(0, 130, Screen.width, Screen.height - 150),
             _scrollPosition,
-            new Rect(0, 0, Screen.width - 100, 4000) // Huge buffer to ensure nothing is cut off
+            new Rect(0, 0, Screen.width - 100, 5000)
         );
 
         float xMargin = 50;
@@ -101,29 +110,31 @@ public class PerformanceDebugMenu : MonoBehaviour
         GUI.contentColor = Color.cyan;
         GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"FRAME TIME: {ms:F2} ms ({Mathf.Ceil(fps)} FPS)");
         currentY += 100;
+
 #if UNITY_EDITOR
-        // Retrieve internal Unity Editor stats
-        int drawCalls = UnityEditor.UnityStats.drawCalls;
-        int batches = UnityEditor.UnityStats.batches;
-        int setPassCalls = UnityEditor.UnityStats.setPassCalls;
-        int triangles = UnityEditor.UnityStats.triangles;
-
-        // Note: Unity doesn't expose "Saved by Batching" as a single int, 
-        // but you can see the difference between Batches and Draw Calls.
-
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"BATCHES: {batches}");
-        currentY += 50;
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"DRAW CALLS: {drawCalls}");
-        currentY += 50;
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"SETPASS CALLS: {setPassCalls}");
-        currentY += 50;
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"TRIS: {triangles:N0}"); // N0 adds commas for readability
-        currentY += 100;
-#else
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "STATS: (Only available in Editor)");
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"BATCHES: {UnityEditor.UnityStats.batches} | DRAW CALLS: {UnityEditor.UnityStats.drawCalls}");
+        currentY += 80;
+        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"TRIS: {UnityEditor.UnityStats.triangles:N0}");
         currentY += 100;
 #endif
         GUI.contentColor = Color.white;
+
+        // --- SECTION: GLOBAL SHADER SWAPPER (NEW) ---
+        GUI.Box(new Rect(xMargin - 10, currentY, itemWidth + 20, 350), ""); // Visual container
+        GUI.Label(new Rect(xMargin, currentY + 10, itemWidth, 60), "--- GLOBAL SHADER SWAP ---");
+        currentY += 80;
+
+        // SelectionGrid needs to stay within the currentY flow
+        int newIndex = GUI.SelectionGrid(new Rect(xMargin, currentY, itemWidth, 240), _selectedShaderIndex, _shaderOptions, 1);
+        currentY += 270;
+
+        if (newIndex != _selectedShaderIndex)
+        {
+            _selectedShaderIndex = newIndex;
+            // Call the function that uses targetMaterials
+            ApplyShaderToMaterials(_shaderPaths[_selectedShaderIndex]);
+        }
+        currentY += 50;
 
         // --- SECTION: QUALITY PRESETS ---
         GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "--- PROJECT QUALITY ---");
@@ -156,78 +167,61 @@ public class PerformanceDebugMenu : MonoBehaviour
         _urpAsset.renderScale = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), _urpAsset.renderScale, 0.1f, 1.0f);
         currentY += 120;
 
-        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 110), "TOGGLE SSAO (AMBIENT OCCLUSION)"))
+        GUI.EndScrollView();
+    }
+    private void ApplyShaderToMaterials(string shaderPath)
+    {
+        Shader newShader = Shader.Find(shaderPath);
+        if (newShader == null)
         {
-            if (rendererData != null)
+            Debug.LogError($"Shader not found: {shaderPath}");
+            return;
+        }
+
+        // 1. Find all Renderers in the scene
+        Renderer[] allRenderers = FindObjectsOfType<Renderer>();
+        int count = 0;
+
+        foreach (Renderer rend in allRenderers)
+        {
+            foreach (Material mat in rend.materials) // Use .materials to avoid modifying project assets permanently
             {
-                foreach (var feature in rendererData.rendererFeatures)
-                    if (feature.name.Contains("Ambient") || feature.name.Contains("SSAO")) feature.SetActive(!feature.isActive);
+                if (mat == null || mat.name.Contains("floor_mat")) continue;
+
+                // 2. EXTRACT PROPERTIES (Checking both URP and Legacy names)
+                Color baseCol = Color.white;
+                if (mat.HasProperty("_BaseColor")) baseCol = mat.GetColor("_BaseColor");
+                else if (mat.HasProperty("_Color")) baseCol = mat.GetColor("_Color");
+
+                Texture baseMap = null;
+                if (mat.HasProperty("_BaseMap")) baseMap = mat.GetTexture("_BaseMap");
+                else if (mat.HasProperty("_MainTex")) baseMap = mat.GetTexture("_MainTex");
+
+                // 3. APPLY NEW SHADER
+                mat.shader = newShader;
+
+                // 4. RESTORE PROPERTIES (Apply to all possible slots to be safe)
+                if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", baseCol);
+                if (mat.HasProperty("_Color")) mat.SetColor("_Color", baseCol);
+
+                if (mat.HasProperty("_BaseMap")) mat.SetTexture("_BaseMap", baseMap);
+                if (mat.HasProperty("_MainTex")) mat.SetTexture("_MainTex", baseMap);
+
+                // 5. HANDLE THE BOOLEAN
+                if (mat.HasProperty("_UseTexture"))
+                {
+                    // Set the float value
+                    mat.SetFloat("_UseTexture", baseMap != null ? 1.0f : 0.0f);
+
+                    // CRITICAL: Many shaders need the Keyword enabled to actually show the texture
+                    if (baseMap != null) mat.EnableKeyword("_USE_TEXTURE_ON");
+                    else mat.DisableKeyword("_USE_TEXTURE_ON");
+                }
+
+                count++;
             }
         }
-        currentY += 140;
 
-        // --- SECTION: SHADOW POLISH ---
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "--- SHADOWS & GROUNDING ---");
-        currentY += 70;
-        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 110), "TOGGLE LIGHT SHADOWS"))
-        {
-            if (_dirLight != null) _dirLight.shadows = (_dirLight.shadows == LightShadows.None) ? LightShadows.Hard : LightShadows.None;
-        }
-        currentY += 130;
-
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Shadow Distance: {_urpAsset.shadowDistance:F1}m");
-        currentY += 60;
-        _urpAsset.shadowDistance = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), _urpAsset.shadowDistance, 2f, 20f);
-        currentY += 120;
-
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Shadow Strength: {_dirLight.shadowStrength:F2}");
-        currentY += 60;
-        _dirLight.shadowStrength = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), _dirLight.shadowStrength, 0f, 1f);
-        currentY += 120;
-
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Shadow Bias: {_dirLight.shadowBias:F3}");
-        currentY += 60;
-        _dirLight.shadowBias = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), _dirLight.shadowBias, 0f, 0.05f);
-        currentY += 140;
-
-        // --- SECTION: RIM LIGHT MASTER ---
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), "--- STYLIZED RIM LIGHT ---");
-        currentY += 70;
-
-        bool isRimActive = Shader.IsKeywordEnabled("_RIM_LIGHT_ON");
-        GUI.backgroundColor = isRimActive ? Color.green : Color.red;
-        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 110), isRimActive ? "RIM LIGHT: ON" : "RIM LIGHT: OFF"))
-        {
-            if (isRimActive) Shader.DisableKeyword("_RIM_LIGHT_ON");
-            else Shader.EnableKeyword("_RIM_LIGHT_ON");
-        }
-        GUI.backgroundColor = Color.white;
-        currentY += 130;
-
-        float currentPower = Shader.GetGlobalFloat("_GlobalRimPower");
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Rim Sharpness: {currentPower:F1}");
-        currentY += 60;
-        float newPower = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 80), currentPower, 1.0f, 12.0f);
-        if (newPower != currentPower) Shader.SetGlobalFloat("_GlobalRimPower", newPower);
-        currentY += 120;
-
-        // --- SECTION: GRANULAR COLOR (THE SWEET SPOT) ---
-        Color c = Shader.GetGlobalColor("_RimColor");
-        GUI.Label(new Rect(xMargin, currentY, itemWidth, 60), $"Rim Tint (RGB): [{c.r:F2}, {c.g:F2}, {c.b:F2}]");
-        currentY += 70;
-
-        float r = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 70), c.r, 0f, 1f); currentY += 90;
-        float g = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 70), c.g, 0f, 1f); currentY += 90;
-        float b = GUI.HorizontalSlider(new Rect(xMargin, currentY, itemWidth, 70), c.b, 0f, 1f); currentY += 100;
-
-        if (r != c.r || g != c.g || b != c.b) Shader.SetGlobalColor("_RimColor", new Color(r, g, b, 1.0f));
-
-        if (GUI.Button(new Rect(xMargin, currentY, itemWidth, 100), "RESET TO SWEET SPOT (0.25, 0, 0)"))
-        {
-            Shader.SetGlobalColor("_RimColor", new Color(0.25f, 0f, 0f, 1.0f));
-        }
-        currentY += 150;
-
-        GUI.EndScrollView();
+        Debug.Log($"[ShaderDebugger] Swapped {count} scene materials to {newShader.name}");
     }
 }

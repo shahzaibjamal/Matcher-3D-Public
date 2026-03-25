@@ -655,6 +655,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8debf81f339b4a4898dc992587cdbff
+    m_Address: icon_raspberry
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a9a322a3fdd40fe459a0aa839ff37c90
     m_Address: icon_icecream
     m_ReadOnly: 0
@@ -900,6 +905,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f464cc736a92bf44eb27bc4ee99844d4
+    m_Address: icon_watermelon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f593f8086697b2840a0cfea2008e2577
     m_Address: icon_mic
     m_ReadOnly: 0
@@ -922,6 +932,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fa136f466b376fd49a28e310ba8abf70
     m_Address: icon_treasure_chest
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa930ccdecd7bae43bbdef3f37e4a13b
+    m_Address: icon_chili
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
