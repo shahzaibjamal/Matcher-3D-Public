@@ -1531,16 +1531,16 @@
       "Name": "Level 01",
       "ItemsToSpawn": [
         {
-          "Id": "raspberry",
+          "Id": "ball_02",
           "Count": 3
         },
         {
-          "Id": "mangosteen",
+          "Id": "guitar",
           "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "raspberry"
+        "ball_02"
       ],
       "Rewards": [
         {
@@ -1559,16 +1559,16 @@
       "Name": "Level 02",
       "ItemsToSpawn": [
         {
-          "Id": "pot_01",
+          "Id": "globe",
           "Count": 3
         },
         {
-          "Id": "ring_02",
+          "Id": "harp",
           "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "ring_02"
+        "globe"
       ],
       "Rewards": [
         {
@@ -1587,20 +1587,20 @@
       "Name": "Level 03",
       "ItemsToSpawn": [
         {
-          "Id": "avocado",
+          "Id": "umbrella",
           "Count": 3
         },
         {
-          "Id": "waffle_01",
+          "Id": "letter_cube_01",
           "Count": 3
         },
         {
-          "Id": "garlic",
+          "Id": "wooden_log",
           "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "avocado"
+        "wooden_log"
       ],
       "Rewards": [
         {
@@ -1619,20 +1619,20 @@
       "Name": "Level 04",
       "ItemsToSpawn": [
         {
-          "Id": "wheel",
+          "Id": "drum",
           "Count": 6
         },
         {
-          "Id": "orange",
+          "Id": "pumpkin",
           "Count": 3
         },
         {
-          "Id": "banana",
+          "Id": "megaphone",
           "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "orange"
+        "drum"
       ],
       "Rewards": [
         {
@@ -1651,20 +1651,24 @@
       "Name": "Level 05",
       "ItemsToSpawn": [
         {
-          "Id": "acorn",
-          "Count": 9
+          "Id": "broom",
+          "Count": 6
         },
         {
-          "Id": "litchi",
+          "Id": "bag",
           "Count": 3
         },
         {
-          "Id": "kettle",
+          "Id": "harp",
+          "Count": 3
+        },
+        {
+          "Id": "ball_01",
           "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "acorn"
+        "bag"
       ],
       "Rewards": [
         {
@@ -1672,8 +1676,8 @@
           "Amount": 83
         },
         {
-          "RewardType": "Magnet",
-          "Amount": 1
+          "RewardType": "Shake",
+          "Amount": 2
         }
       ]
     },
@@ -1683,21 +1687,25 @@
       "Name": "Level 06",
       "ItemsToSpawn": [
         {
-          "Id": "drum",
+          "Id": "violin",
           "Count": 6
         },
         {
-          "Id": "chair_04",
-          "Count": 9
+          "Id": "melon",
+          "Count": 3
         },
         {
-          "Id": "spoon_01",
+          "Id": "watermelon",
           "Count": 3
+        },
+        {
+          "Id": "backpack",
+          "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "spoon_01",
-        "drum"
+        "melon",
+        "violin"
       ],
       "Rewards": [
         {
@@ -1712,25 +1720,29 @@
       "Name": "Level 07",
       "ItemsToSpawn": [
         {
-          "Id": "kiwi",
-          "Count": 6
-        },
-        {
-          "Id": "megaphone",
-          "Count": 6
-        },
-        {
-          "Id": "avocado",
+          "Id": "airplane",
           "Count": 3
         },
         {
-          "Id": "yarn",
-          "Count": 6
+          "Id": "ball_01",
+          "Count": 3
+        },
+        {
+          "Id": "pineapple",
+          "Count": 3
+        },
+        {
+          "Id": "melon",
+          "Count": 9
+        },
+        {
+          "Id": "chair_03",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "kiwi",
-        "yarn"
+        "melon",
+        "chair_03"
       ],
       "Rewards": [
         {
@@ -1745,25 +1757,29 @@
       "Name": "Level 08",
       "ItemsToSpawn": [
         {
-          "Id": "balloon",
+          "Id": "lamp",
           "Count": 3
         },
         {
-          "Id": "onion",
-          "Count": 9
+          "Id": "umbrella",
+          "Count": 3
         },
         {
-          "Id": "cake_slice_04",
+          "Id": "trumpet",
           "Count": 6
         },
         {
-          "Id": "croissant",
+          "Id": "letter_cube_01",
+          "Count": 6
+        },
+        {
+          "Id": "treasure_chest",
           "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "onion",
-        "balloon"
+        "treasure_chest",
+        "lamp"
       ],
       "Rewards": [
         {
@@ -1778,25 +1794,33 @@
       "Name": "Level 09",
       "ItemsToSpawn": [
         {
-          "Id": "bee",
+          "Id": "airplane",
           "Count": 3
         },
         {
-          "Id": "apple",
+          "Id": "megaphone",
           "Count": 6
         },
         {
-          "Id": "pot_01",
+          "Id": "ant",
           "Count": 3
         },
         {
-          "Id": "ball_05",
-          "Count": 12
+          "Id": "globe",
+          "Count": 3
+        },
+        {
+          "Id": "canon",
+          "Count": 6
+        },
+        {
+          "Id": "clock_02",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "pot_01",
-        "bee"
+        "clock_02",
+        "airplane"
       ],
       "Rewards": [
         {
@@ -1811,29 +1835,33 @@
       "Name": "Level 10",
       "ItemsToSpawn": [
         {
-          "Id": "chinese_kale",
+          "Id": "ball_01",
+          "Count": 6
+        },
+        {
+          "Id": "bag",
+          "Count": 6
+        },
+        {
+          "Id": "wheel",
           "Count": 3
         },
         {
-          "Id": "raspberry",
+          "Id": "drum",
+          "Count": 3
+        },
+        {
+          "Id": "trumpet",
           "Count": 6
         },
         {
-          "Id": "trophy",
-          "Count": 6
-        },
-        {
-          "Id": "volleyball",
-          "Count": 6
-        },
-        {
-          "Id": "umbrella",
-          "Count": 6
+          "Id": "bicycle",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "trophy",
-        "volleyball"
+        "trumpet",
+        "wheel"
       ],
       "Rewards": [
         {
@@ -1841,8 +1869,8 @@
           "Amount": 97
         },
         {
-          "RewardType": "Shake",
-          "Amount": 2
+          "RewardType": "Hint",
+          "Amount": 1
         }
       ]
     },
@@ -1852,29 +1880,34 @@
       "Name": "Level 11",
       "ItemsToSpawn": [
         {
-          "Id": "baozi",
-          "Count": 9
-        },
-        {
-          "Id": "volleyball",
-          "Count": 3
-        },
-        {
-          "Id": "sushi_02",
+          "Id": "lamp_01",
           "Count": 6
         },
         {
-          "Id": "peach",
+          "Id": "watermelon",
+          "Count": 3
+        },
+        {
+          "Id": "lamp",
           "Count": 9
         },
         {
-          "Id": "xylophone",
+          "Id": "piano",
+          "Count": 3
+        },
+        {
+          "Id": "pumpkin",
+          "Count": 6
+        },
+        {
+          "Id": "ant",
           "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "peach",
-        "xylophone"
+        "watermelon",
+        "lamp",
+        "piano"
       ],
       "Rewards": [
         {
@@ -1889,29 +1922,38 @@
       "Name": "Level 12",
       "ItemsToSpawn": [
         {
-          "Id": "burger_02",
-          "Count": 6
-        },
-        {
-          "Id": "guitar",
-          "Count": 12
-        },
-        {
-          "Id": "litchi",
+          "Id": "letter_cube_01",
           "Count": 3
         },
         {
-          "Id": "cabbage",
+          "Id": "ball_01",
+          "Count": 3
+        },
+        {
+          "Id": "violin",
+          "Count": 3
+        },
+        {
+          "Id": "lamp_01",
           "Count": 9
         },
         {
-          "Id": "giftbox",
+          "Id": "lamp_02",
+          "Count": 6
+        },
+        {
+          "Id": "rocket",
+          "Count": 6
+        },
+        {
+          "Id": "lamp",
           "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "cabbage",
-        "guitar"
+        "violin",
+        "lamp_02",
+        "rocket"
       ],
       "Rewards": [
         {
@@ -1926,33 +1968,38 @@
       "Name": "Level 13",
       "ItemsToSpawn": [
         {
-          "Id": "bone",
+          "Id": "giftbox",
           "Count": 6
         },
         {
-          "Id": "cheese",
-          "Count": 9
-        },
-        {
-          "Id": "letter_cube_01",
+          "Id": "chair_03",
           "Count": 3
         },
         {
-          "Id": "garlic",
+          "Id": "clock_02",
           "Count": 3
         },
         {
-          "Id": "sushi_03",
+          "Id": "volleyball",
+          "Count": 3
+        },
+        {
+          "Id": "harp",
+          "Count": 6
+        },
+        {
+          "Id": "cabbage",
           "Count": 9
         },
         {
-          "Id": "wheel",
+          "Id": "drum",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "bone",
-        "wheel"
+        "chair_03",
+        "harp",
+        "volleyball"
       ],
       "Rewards": [
         {
@@ -1967,34 +2014,42 @@
       "Name": "Level 14",
       "ItemsToSpawn": [
         {
-          "Id": "waffle_02",
+          "Id": "cabbage",
           "Count": 6
         },
         {
-          "Id": "strudel",
+          "Id": "ball_01",
+          "Count": 9
+        },
+        {
+          "Id": "clock_02",
+          "Count": 3
+        },
+        {
+          "Id": "bee",
+          "Count": 3
+        },
+        {
+          "Id": "pumpkin",
+          "Count": 3
+        },
+        {
+          "Id": "bag",
+          "Count": 3
+        },
+        {
+          "Id": "lamp_02",
           "Count": 6
         },
         {
-          "Id": "fan",
-          "Count": 6
-        },
-        {
-          "Id": "trophy",
-          "Count": 6
-        },
-        {
-          "Id": "baozi",
-          "Count": 6
-        },
-        {
-          "Id": "croissant",
-          "Count": 6
+          "Id": "giftbox",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "croissant",
-        "baozi",
-        "waffle_02"
+        "lamp_02",
+        "pumpkin",
+        "clock_02"
       ],
       "Rewards": [
         {
@@ -2009,34 +2064,42 @@
       "Name": "Level 15",
       "ItemsToSpawn": [
         {
-          "Id": "corn",
-          "Count": 3
-        },
-        {
-          "Id": "trumpet",
-          "Count": 6
-        },
-        {
-          "Id": "scissors",
-          "Count": 6
-        },
-        {
-          "Id": "taco",
-          "Count": 12
-        },
-        {
-          "Id": "treasure_chest",
-          "Count": 3
-        },
-        {
-          "Id": "sushi_03",
+          "Id": "ball_04",
           "Count": 9
+        },
+        {
+          "Id": "backpack",
+          "Count": 6
+        },
+        {
+          "Id": "scooter",
+          "Count": 3
+        },
+        {
+          "Id": "giftbox",
+          "Count": 3
+        },
+        {
+          "Id": "dice",
+          "Count": 3
+        },
+        {
+          "Id": "robot",
+          "Count": 6
+        },
+        {
+          "Id": "volleyball",
+          "Count": 6
+        },
+        {
+          "Id": "wheel",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "sushi_03",
-        "treasure_chest",
-        "corn"
+        "wheel",
+        "volleyball",
+        "scooter"
       ],
       "Rewards": [
         {
@@ -2055,34 +2118,47 @@
       "Name": "Level 16",
       "ItemsToSpawn": [
         {
-          "Id": "violin",
+          "Id": "canon",
+          "Count": 6
+        },
+        {
+          "Id": "wooden_log",
           "Count": 3
         },
         {
-          "Id": "candy",
-          "Count": 9
+          "Id": "ball_05",
+          "Count": 6
         },
         {
-          "Id": "helmet",
-          "Count": 12
+          "Id": "radio",
+          "Count": 6
         },
         {
-          "Id": "sushi_04",
+          "Id": "backpack",
           "Count": 3
         },
         {
-          "Id": "tank",
-          "Count": 12
+          "Id": "broom",
+          "Count": 3
         },
         {
-          "Id": "basket",
+          "Id": "harp",
+          "Count": 6
+        },
+        {
+          "Id": "pineapple",
+          "Count": 6
+        },
+        {
+          "Id": "lamp",
           "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "candy",
-        "tank",
-        "basket"
+        "backpack",
+        "broom",
+        "pineapple",
+        "radio"
       ],
       "Rewards": [
         {
@@ -2097,38 +2173,47 @@
       "Name": "Level 17",
       "ItemsToSpawn": [
         {
-          "Id": "waffle_02",
+          "Id": "violin",
           "Count": 6
         },
         {
-          "Id": "onion",
+          "Id": "umbrella",
+          "Count": 6
+        },
+        {
+          "Id": "bicycle",
+          "Count": 6
+        },
+        {
+          "Id": "bee",
           "Count": 3
         },
         {
-          "Id": "sushi_01",
-          "Count": 6
-        },
-        {
-          "Id": "cabbage",
-          "Count": 6
-        },
-        {
-          "Id": "apple",
-          "Count": 12
-        },
-        {
-          "Id": "pencil",
+          "Id": "trumpet",
           "Count": 9
         },
         {
-          "Id": "onigiri",
+          "Id": "chair_03",
           "Count": 3
+        },
+        {
+          "Id": "cabbage",
+          "Count": 3
+        },
+        {
+          "Id": "harp",
+          "Count": 3
+        },
+        {
+          "Id": "ant",
+          "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "onion",
-        "pencil",
-        "sushi_01"
+        "bicycle",
+        "trumpet",
+        "ant",
+        "cabbage"
       ],
       "Rewards": [
         {
@@ -2143,38 +2228,51 @@
       "Name": "Level 18",
       "ItemsToSpawn": [
         {
-          "Id": "sushi_02",
+          "Id": "cabbage",
+          "Count": 3
+        },
+        {
+          "Id": "dice",
+          "Count": 3
+        },
+        {
+          "Id": "papaya",
           "Count": 9
+        },
+        {
+          "Id": "megaphone",
+          "Count": 3
+        },
+        {
+          "Id": "rocket",
+          "Count": 6
+        },
+        {
+          "Id": "violin",
+          "Count": 3
         },
         {
           "Id": "ball_02",
           "Count": 6
         },
         {
-          "Id": "coconut",
+          "Id": "wooden_log",
           "Count": 9
         },
         {
-          "Id": "robot",
+          "Id": "backpack",
           "Count": 3
         },
         {
-          "Id": "globe",
-          "Count": 9
-        },
-        {
-          "Id": "chinese_kale",
-          "Count": 6
-        },
-        {
-          "Id": "shoes",
-          "Count": 6
+          "Id": "harp",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "robot",
-        "ball_02",
-        "chinese_kale"
+        "cabbage",
+        "backpack",
+        "rocket",
+        "ball_02"
       ],
       "Rewards": [
         {
@@ -2189,38 +2287,51 @@
       "Name": "Level 19",
       "ItemsToSpawn": [
         {
-          "Id": "treasure_chest",
-          "Count": 9
-        },
-        {
-          "Id": "acorn",
+          "Id": "dice",
           "Count": 3
         },
         {
-          "Id": "cake_slice_01",
+          "Id": "cabbage",
           "Count": 6
+        },
+        {
+          "Id": "piano",
+          "Count": 3
+        },
+        {
+          "Id": "chinese_kale",
+          "Count": 6
+        },
+        {
+          "Id": "megaphone",
+          "Count": 9
         },
         {
           "Id": "wooden_log",
-          "Count": 9
+          "Count": 3
         },
         {
-          "Id": "corn",
+          "Id": "guitar",
+          "Count": 3
+        },
+        {
+          "Id": "scooter",
           "Count": 6
         },
         {
-          "Id": "shield",
-          "Count": 9
+          "Id": "canon",
+          "Count": 6
         },
         {
-          "Id": "lime",
-          "Count": 6
+          "Id": "ball_01",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "shield",
-        "wooden_log",
-        "treasure_chest"
+        "piano",
+        "ball_01",
+        "chinese_kale",
+        "wooden_log"
       ],
       "Rewards": [
         {
@@ -2235,42 +2346,51 @@
       "Name": "Level 20",
       "ItemsToSpawn": [
         {
-          "Id": "cake_slice_05",
+          "Id": "letter_cube_01",
           "Count": 6
         },
         {
-          "Id": "rocket",
-          "Count": 3
-        },
-        {
-          "Id": "litchi",
+          "Id": "scooter",
           "Count": 6
         },
         {
-          "Id": "lamp",
-          "Count": 12
-        },
-        {
-          "Id": "broom",
-          "Count": 9
-        },
-        {
-          "Id": "spoon_01",
+          "Id": "treasure_chest",
           "Count": 3
         },
         {
-          "Id": "canon",
+          "Id": "melon",
+          "Count": 6
+        },
+        {
+          "Id": "cabbage",
           "Count": 9
         },
         {
-          "Id": "pear",
+          "Id": "ball_04",
           "Count": 3
+        },
+        {
+          "Id": "globe",
+          "Count": 3
+        },
+        {
+          "Id": "shield",
+          "Count": 3
+        },
+        {
+          "Id": "giftbox",
+          "Count": 6
+        },
+        {
+          "Id": "wheel",
+          "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "broom",
-        "litchi",
-        "pear"
+        "shield",
+        "letter_cube_01",
+        "treasure_chest",
+        "ball_04"
       ],
       "Rewards": [
         {
@@ -2279,7 +2399,7 @@
         },
         {
           "RewardType": "Undo",
-          "Amount": 1
+          "Amount": 5
         }
       ]
     },
@@ -2289,42 +2409,56 @@
       "Name": "Level 21",
       "ItemsToSpawn": [
         {
-          "Id": "sushi_02",
+          "Id": "megaphone",
+          "Count": 6
+        },
+        {
+          "Id": "umbrella",
+          "Count": 6
+        },
+        {
+          "Id": "broom",
+          "Count": 6
+        },
+        {
+          "Id": "pineapple",
           "Count": 3
         },
         {
-          "Id": "lime",
-          "Count": 6
-        },
-        {
-          "Id": "croissant",
+          "Id": "volleyball",
           "Count": 3
         },
         {
-          "Id": "strudel",
+          "Id": "rocket",
+          "Count": 3
+        },
+        {
+          "Id": "violin",
           "Count": 6
         },
         {
-          "Id": "sushi_01",
-          "Count": 12
+          "Id": "wooden_log",
+          "Count": 3
         },
         {
-          "Id": "shoes",
-          "Count": 12
+          "Id": "trumpet",
+          "Count": 9
         },
         {
-          "Id": "helmet",
+          "Id": "backpack",
           "Count": 6
         },
         {
-          "Id": "nut",
-          "Count": 6
+          "Id": "chair_03",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "sushi_01",
-        "shoes",
-        "croissant"
+        "trumpet",
+        "umbrella",
+        "violin",
+        "backpack",
+        "rocket"
       ],
       "Rewards": [
         {
@@ -2339,42 +2473,56 @@
       "Name": "Level 22",
       "ItemsToSpawn": [
         {
-          "Id": "lamp_01",
-          "Count": 9
-        },
-        {
-          "Id": "steak",
-          "Count": 9
-        },
-        {
-          "Id": "harp",
+          "Id": "dice",
           "Count": 3
         },
         {
-          "Id": "pear",
+          "Id": "cabbage",
           "Count": 3
         },
         {
-          "Id": "lamp",
-          "Count": 9
+          "Id": "pineapple",
+          "Count": 6
         },
         {
-          "Id": "ball_05",
+          "Id": "chair_03",
+          "Count": 6
+        },
+        {
+          "Id": "backpack",
           "Count": 3
         },
         {
-          "Id": "toilet_paper",
+          "Id": "bee",
+          "Count": 6
+        },
+        {
+          "Id": "piano",
+          "Count": 6
+        },
+        {
+          "Id": "bicycle",
+          "Count": 6
+        },
+        {
+          "Id": "violin",
+          "Count": 3
+        },
+        {
+          "Id": "scooter",
           "Count": 9
         },
         {
-          "Id": "mango",
-          "Count": 12
+          "Id": "trophy",
+          "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "ball_05",
-        "lamp",
-        "mango"
+        "piano",
+        "pineapple",
+        "violin",
+        "trophy",
+        "bicycle"
       ],
       "Rewards": [
         {
@@ -2389,43 +2537,61 @@
       "Name": "Level 23",
       "ItemsToSpawn": [
         {
-          "Id": "orange",
-          "Count": 12
-        },
-        {
-          "Id": "lamp_02",
+          "Id": "cabbage",
           "Count": 3
         },
         {
-          "Id": "kettle",
+          "Id": "backpack",
+          "Count": 9
+        },
+        {
+          "Id": "drum",
+          "Count": 3
+        },
+        {
+          "Id": "ball_02",
+          "Count": 3
+        },
+        {
+          "Id": "watermelon",
+          "Count": 3
+        },
+        {
+          "Id": "tank",
+          "Count": 3
+        },
+        {
+          "Id": "key",
           "Count": 6
         },
         {
-          "Id": "globe",
-          "Count": 9
+          "Id": "trumpet",
+          "Count": 3
+        },
+        {
+          "Id": "cake_slice_03",
+          "Count": 6
+        },
+        {
+          "Id": "garlic",
+          "Count": 6
         },
         {
           "Id": "waffle_01",
           "Count": 6
         },
         {
-          "Id": "fries",
+          "Id": "volleyball",
           "Count": 9
-        },
-        {
-          "Id": "radio",
-          "Count": 9
-        },
-        {
-          "Id": "basket",
-          "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "radio",
-        "fries",
-        "kettle",
-        "orange"
+        "garlic",
+        "key",
+        "tank",
+        "cabbage",
+        "trumpet",
+        "volleyball"
       ],
       "Rewards": [
         {
@@ -2440,47 +2606,61 @@
       "Name": "Level 24",
       "ItemsToSpawn": [
         {
-          "Id": "building_block_01",
-          "Count": 9
+          "Id": "train",
+          "Count": 3
         },
         {
-          "Id": "broom",
+          "Id": "wooden_log",
           "Count": 6
         },
         {
-          "Id": "white_radish",
-          "Count": 6
+          "Id": "ball_01",
+          "Count": 3
         },
         {
           "Id": "ant",
-          "Count": 3
-        },
-        {
-          "Id": "key",
-          "Count": 3
-        },
-        {
-          "Id": "scooter",
           "Count": 9
         },
         {
-          "Id": "onigiri",
+          "Id": "lamp_02",
           "Count": 6
         },
         {
-          "Id": "ship",
-          "Count": 15
+          "Id": "rocket",
+          "Count": 3
         },
         {
-          "Id": "burger_02",
+          "Id": "wheel",
+          "Count": 9
+        },
+        {
+          "Id": "lamp_01",
           "Count": 6
+        },
+        {
+          "Id": "chinese_kale",
+          "Count": 3
+        },
+        {
+          "Id": "helmet",
+          "Count": 6
+        },
+        {
+          "Id": "ball_04",
+          "Count": 6
+        },
+        {
+          "Id": "melon",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "broom",
-        "building_block_01",
-        "white_radish",
-        "burger_02"
+        "lamp_01",
+        "ant",
+        "melon",
+        "wheel",
+        "helmet",
+        "ball_04"
       ],
       "Rewards": [
         {
@@ -2495,47 +2675,61 @@
       "Name": "Level 25",
       "ItemsToSpawn": [
         {
-          "Id": "volleyball",
-          "Count": 15
-        },
-        {
-          "Id": "corn",
-          "Count": 3
-        },
-        {
-          "Id": "cup_03",
-          "Count": 3
-        },
-        {
-          "Id": "cucumber",
+          "Id": "rocket",
           "Count": 6
         },
         {
-          "Id": "strawberry",
+          "Id": "wheel",
           "Count": 6
         },
         {
-          "Id": "bicycle",
-          "Count": 6
-        },
-        {
-          "Id": "butterfly",
+          "Id": "broom",
           "Count": 3
         },
         {
-          "Id": "melon",
-          "Count": 12
+          "Id": "robot",
+          "Count": 6
         },
         {
-          "Id": "steak",
+          "Id": "scissors",
           "Count": 9
+        },
+        {
+          "Id": "fries",
+          "Count": 6
+        },
+        {
+          "Id": "clock_02",
+          "Count": 3
+        },
+        {
+          "Id": "ball_03",
+          "Count": 9
+        },
+        {
+          "Id": "airplane",
+          "Count": 3
+        },
+        {
+          "Id": "coconut",
+          "Count": 6
+        },
+        {
+          "Id": "bowl",
+          "Count": 3
+        },
+        {
+          "Id": "tambourine",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "bicycle",
-        "butterfly",
-        "strawberry",
-        "corn"
+        "ball_03",
+        "fries",
+        "coconut",
+        "rocket",
+        "robot",
+        "clock_02"
       ],
       "Rewards": [
         {
@@ -2544,7 +2738,7 @@
         },
         {
           "RewardType": "Shake",
-          "Amount": 1
+          "Amount": 2
         }
       ]
     },
@@ -2554,47 +2748,61 @@
       "Name": "Level 26",
       "ItemsToSpawn": [
         {
-          "Id": "ball_03",
-          "Count": 15
-        },
-        {
-          "Id": "umbrella",
+          "Id": "ball_02",
           "Count": 3
         },
         {
-          "Id": "cake_slice_02",
-          "Count": 3
+          "Id": "scooter",
+          "Count": 6
+        },
+        {
+          "Id": "treasure_chest",
+          "Count": 6
+        },
+        {
+          "Id": "globe",
+          "Count": 6
         },
         {
           "Id": "volleyball",
-          "Count": 12
-        },
-        {
-          "Id": "book_01",
-          "Count": 6
-        },
-        {
-          "Id": "ring_01",
-          "Count": 6
-        },
-        {
-          "Id": "chair_04",
-          "Count": 6
-        },
-        {
-          "Id": "strawberry",
           "Count": 3
         },
         {
-          "Id": "trophy",
-          "Count": 12
+          "Id": "chair_04",
+          "Count": 9
+        },
+        {
+          "Id": "ball_04",
+          "Count": 6
+        },
+        {
+          "Id": "wooden_log",
+          "Count": 9
+        },
+        {
+          "Id": "eggplant",
+          "Count": 6
+        },
+        {
+          "Id": "strudel",
+          "Count": 3
+        },
+        {
+          "Id": "nut",
+          "Count": 6
+        },
+        {
+          "Id": "chinese_kale",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "volleyball",
-        "trophy",
-        "strawberry",
-        "cake_slice_02"
+        "strudel",
+        "nut",
+        "treasure_chest",
+        "wooden_log",
+        "ball_02",
+        "scooter"
       ],
       "Rewards": [
         {
@@ -2609,51 +2817,60 @@
       "Name": "Level 27",
       "ItemsToSpawn": [
         {
-          "Id": "broom",
+          "Id": "umbrella",
           "Count": 6
         },
         {
-          "Id": "ring_02",
-          "Count": 9
-        },
-        {
-          "Id": "meatballs_sub",
+          "Id": "guitar",
           "Count": 6
         },
         {
-          "Id": "white_radish",
-          "Count": 6
-        },
-        {
-          "Id": "globe",
+          "Id": "wheel",
           "Count": 15
         },
         {
-          "Id": "peach",
+          "Id": "pineapple",
           "Count": 6
         },
         {
-          "Id": "papaya",
+          "Id": "donut_03",
           "Count": 3
         },
         {
-          "Id": "candy",
+          "Id": "toilet_paper",
+          "Count": 3
+        },
+        {
+          "Id": "taco",
+          "Count": 9
+        },
+        {
+          "Id": "lamp",
+          "Count": 3
+        },
+        {
+          "Id": "soda_can_02",
+          "Count": 3
+        },
+        {
+          "Id": "peach",
+          "Count": 3
+        },
+        {
+          "Id": "chair_03",
           "Count": 6
         },
         {
-          "Id": "pear",
-          "Count": 6
-        },
-        {
-          "Id": "bone",
+          "Id": "violin",
           "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "ring_02",
-        "papaya",
-        "broom",
-        "white_radish"
+        "peach",
+        "donut_03",
+        "taco",
+        "umbrella",
+        "violin"
       ],
       "Rewards": [
         {
@@ -2668,51 +2885,60 @@
       "Name": "Level 28",
       "ItemsToSpawn": [
         {
-          "Id": "ball_04",
-          "Count": 6
-        },
-        {
-          "Id": "bowl",
+          "Id": "trumpet",
           "Count": 3
         },
         {
-          "Id": "plant",
+          "Id": "lamp_02",
           "Count": 6
         },
         {
-          "Id": "basket",
+          "Id": "harp",
           "Count": 6
         },
         {
-          "Id": "cup_03",
+          "Id": "wooden_log",
           "Count": 9
         },
         {
-          "Id": "mango",
+          "Id": "drum",
           "Count": 3
         },
         {
-          "Id": "guitar",
-          "Count": 15
-        },
-        {
-          "Id": "radish",
+          "Id": "dice",
           "Count": 6
         },
         {
-          "Id": "pepper",
+          "Id": "lamp",
+          "Count": 6
+        },
+        {
+          "Id": "letter_cube_01",
+          "Count": 3
+        },
+        {
+          "Id": "robot",
           "Count": 12
         },
         {
-          "Id": "car",
-          "Count": 6
+          "Id": "taco",
+          "Count": 3
+        },
+        {
+          "Id": "peach",
+          "Count": 3
+        },
+        {
+          "Id": "scooter",
+          "Count": 12
         }
       ],
       "ItemsToCollect": [
-        "cup_03",
-        "radish",
-        "plant",
-        "mango"
+        "peach",
+        "scooter",
+        "trumpet",
+        "drum",
+        "lamp_02"
       ],
       "Rewards": [
         {
@@ -2727,51 +2953,60 @@
       "Name": "Level 29",
       "ItemsToSpawn": [
         {
-          "Id": "meatballs_sub",
-          "Count": 15
+          "Id": "dice",
+          "Count": 3
         },
         {
-          "Id": "cake_slice_04",
+          "Id": "ant",
+          "Count": 3
+        },
+        {
+          "Id": "papaya",
+          "Count": 3
+        },
+        {
+          "Id": "lamp_01",
+          "Count": 3
+        },
+        {
+          "Id": "robot",
+          "Count": 9
+        },
+        {
+          "Id": "eggplant",
+          "Count": 3
+        },
+        {
+          "Id": "violin",
           "Count": 6
         },
         {
-          "Id": "pot_03",
-          "Count": 6
+          "Id": "corn",
+          "Count": 9
         },
         {
-          "Id": "sushi_02",
+          "Id": "globe",
+          "Count": 3
+        },
+        {
+          "Id": "umbrella",
           "Count": 12
         },
         {
-          "Id": "shoes",
-          "Count": 6
-        },
-        {
-          "Id": "burger_02",
-          "Count": 3
-        },
-        {
-          "Id": "scissors",
-          "Count": 3
-        },
-        {
-          "Id": "croissant",
-          "Count": 3
+          "Id": "broom",
+          "Count": 12
         },
         {
           "Id": "building_block_01",
           "Count": 9
-        },
-        {
-          "Id": "waffle_01",
-          "Count": 12
         }
       ],
       "ItemsToCollect": [
-        "scissors",
-        "cake_slice_04",
-        "sushi_02",
-        "waffle_01"
+        "corn",
+        "building_block_01",
+        "broom",
+        "dice",
+        "robot"
       ],
       "Rewards": [
         {
@@ -2786,55 +3021,61 @@
       "Name": "Level 30",
       "ItemsToSpawn": [
         {
-          "Id": "burger_02",
+          "Id": "violin",
           "Count": 6
         },
         {
-          "Id": "cucumber",
-          "Count": 3
-        },
-        {
-          "Id": "bowl",
-          "Count": 6
-        },
-        {
-          "Id": "soda_can_02",
-          "Count": 3
-        },
-        {
-          "Id": "apple",
-          "Count": 12
-        },
-        {
-          "Id": "corn",
-          "Count": 12
-        },
-        {
-          "Id": "lamp_02",
+          "Id": "ship",
           "Count": 9
         },
         {
-          "Id": "flying_saucer",
+          "Id": "chair_03",
+          "Count": 3
+        },
+        {
+          "Id": "canon",
           "Count": 6
         },
         {
-          "Id": "piano",
+          "Id": "xylophone",
           "Count": 6
         },
         {
-          "Id": "icecream",
+          "Id": "star_fruit",
+          "Count": 3
+        },
+        {
+          "Id": "trumpet",
           "Count": 6
         },
         {
-          "Id": "scooter",
+          "Id": "taco",
+          "Count": 6
+        },
+        {
+          "Id": "onion",
+          "Count": 9
+        },
+        {
+          "Id": "nut",
+          "Count": 6
+        },
+        {
+          "Id": "helmet",
+          "Count": 9
+        },
+        {
+          "Id": "papaya",
           "Count": 9
         }
       ],
       "ItemsToCollect": [
-        "scooter",
-        "corn",
-        "icecream",
-        "soda_can_02"
+        "onion",
+        "taco",
+        "nut",
+        "xylophone",
+        "papaya",
+        "chair_03"
       ],
       "Rewards": [
         {
@@ -2843,7 +3084,7 @@
         },
         {
           "RewardType": "Hint",
-          "Amount": 3
+          "Amount": 2
         }
       ]
     },
@@ -2853,56 +3094,61 @@
       "Name": "Level 31",
       "ItemsToSpawn": [
         {
-          "Id": "dice",
+          "Id": "megaphone",
           "Count": 6
         },
         {
-          "Id": "broccoli",
+          "Id": "chair_03",
           "Count": 6
         },
         {
-          "Id": "cake_slice_05",
-          "Count": 9
+          "Id": "corn",
+          "Count": 12
         },
         {
-          "Id": "book_01",
+          "Id": "chair_04",
           "Count": 6
         },
         {
-          "Id": "sushi_01",
-          "Count": 6
-        },
-        {
-          "Id": "cake_slice_04",
-          "Count": 6
-        },
-        {
-          "Id": "peach",
-          "Count": 9
-        },
-        {
-          "Id": "ship",
+          "Id": "orange",
           "Count": 3
         },
         {
-          "Id": "rocket",
+          "Id": "key",
           "Count": 6
         },
         {
-          "Id": "sushi_03",
-          "Count": 9
+          "Id": "donut_03",
+          "Count": 12
         },
         {
-          "Id": "cake_slice_03",
-          "Count": 12
+          "Id": "cake_slice_01",
+          "Count": 6
+        },
+        {
+          "Id": "raspberry",
+          "Count": 3
+        },
+        {
+          "Id": "apple",
+          "Count": 6
+        },
+        {
+          "Id": "baozi",
+          "Count": 3
+        },
+        {
+          "Id": "star_fruit",
+          "Count": 9
         }
       ],
       "ItemsToCollect": [
-        "cake_slice_04",
-        "rocket",
-        "sushi_01",
-        "sushi_03",
-        "ship"
+        "baozi",
+        "raspberry",
+        "corn",
+        "key",
+        "apple",
+        "star_fruit"
       ],
       "Rewards": [
         {
@@ -2917,56 +3163,60 @@
       "Name": "Level 32",
       "ItemsToSpawn": [
         {
-          "Id": "sushi_04",
-          "Count": 3
-        },
-        {
-          "Id": "icecream",
+          "Id": "melon",
           "Count": 9
         },
         {
-          "Id": "watermelon",
+          "Id": "ship",
           "Count": 9
         },
         {
           "Id": "pineapple",
-          "Count": 6
-        },
-        {
-          "Id": "helmet",
           "Count": 12
         },
         {
-          "Id": "cake_slice_02",
+          "Id": "soda_can_01",
           "Count": 6
         },
         {
-          "Id": "steak",
+          "Id": "star_fruit",
+          "Count": 6
+        },
+        {
+          "Id": "carrot",
           "Count": 3
         },
         {
-          "Id": "egg",
-          "Count": 6
-        },
-        {
-          "Id": "litchi",
-          "Count": 9
+          "Id": "onion",
+          "Count": 12
         },
         {
           "Id": "volleyball",
           "Count": 6
         },
         {
-          "Id": "balloon",
-          "Count": 12
+          "Id": "piano",
+          "Count": 3
+        },
+        {
+          "Id": "mushroom",
+          "Count": 9
+        },
+        {
+          "Id": "coconut",
+          "Count": 3
+        },
+        {
+          "Id": "cake_slice_02",
+          "Count": 3
         }
       ],
       "ItemsToCollect": [
-        "helmet",
-        "balloon",
-        "sushi_04",
-        "pineapple",
-        "litchi"
+        "carrot",
+        "soda_can_01",
+        "coconut",
+        "star_fruit",
+        "onion"
       ],
       "Rewards": [
         {
@@ -2981,56 +3231,61 @@
       "Name": "Level 33",
       "ItemsToSpawn": [
         {
-          "Id": "burger_02",
-          "Count": 21
-        },
-        {
           "Id": "melon",
-          "Count": 9
-        },
-        {
-          "Id": "robot",
-          "Count": 3
-        },
-        {
-          "Id": "pumpkin",
           "Count": 6
         },
         {
-          "Id": "watermelon",
+          "Id": "canon",
+          "Count": 3
+        },
+        {
+          "Id": "kettle",
+          "Count": 21
+        },
+        {
+          "Id": "drum",
+          "Count": 3
+        },
+        {
+          "Id": "cake_slice_02",
+          "Count": 6
+        },
+        {
+          "Id": "building_block_02",
           "Count": 3
         },
         {
           "Id": "banana",
-          "Count": 9
-        },
-        {
-          "Id": "ball_05",
           "Count": 3
         },
         {
-          "Id": "corn",
+          "Id": "mic",
           "Count": 9
         },
         {
-          "Id": "mushroom",
-          "Count": 12
-        },
-        {
-          "Id": "ball_02",
+          "Id": "litchi",
           "Count": 6
         },
         {
-          "Id": "airplane",
-          "Count": 3
+          "Id": "robot",
+          "Count": 9
+        },
+        {
+          "Id": "jar",
+          "Count": 9
+        },
+        {
+          "Id": "donut_03",
+          "Count": 6
         }
       ],
       "ItemsToCollect": [
-        "ball_05",
-        "watermelon",
-        "burger_02",
-        "corn",
-        "airplane"
+        "mic",
+        "banana",
+        "donut_03",
+        "litchi",
+        "kettle",
+        "jar"
       ],
       "Rewards": [
         {
@@ -3045,60 +3300,61 @@
       "Name": "Level 34",
       "ItemsToSpawn": [
         {
-          "Id": "icecream",
-          "Count": 12
-        },
-        {
-          "Id": "shoes",
+          "Id": "cake_slice_03",
           "Count": 6
         },
         {
-          "Id": "chair_03",
+          "Id": "radish",
+          "Count": 6
+        },
+        {
+          "Id": "leek",
           "Count": 3
         },
         {
-          "Id": "umbrella",
-          "Count": 6
-        },
-        {
-          "Id": "garlic",
-          "Count": 9
-        },
-        {
-          "Id": "cake_slice_05",
-          "Count": 9
-        },
-        {
-          "Id": "coconut",
-          "Count": 6
-        },
-        {
-          "Id": "lamp_02",
-          "Count": 6
-        },
-        {
-          "Id": "bag",
+          "Id": "pear",
           "Count": 3
         },
         {
-          "Id": "cheese",
-          "Count": 12
+          "Id": "acorn",
+          "Count": 9
         },
         {
-          "Id": "radio",
+          "Id": "burger_02",
+          "Count": 9
+        },
+        {
+          "Id": "jar",
+          "Count": 9
+        },
+        {
+          "Id": "nut",
+          "Count": 9
+        },
+        {
+          "Id": "trophy",
+          "Count": 9
+        },
+        {
+          "Id": "mushroom",
+          "Count": 3
+        },
+        {
+          "Id": "apple",
           "Count": 6
         },
         {
-          "Id": "book_01",
-          "Count": 9
+          "Id": "lamp_01",
+          "Count": 15
         }
       ],
       "ItemsToCollect": [
-        "coconut",
-        "radio",
-        "chair_03",
-        "bag",
-        "icecream"
+        "acorn",
+        "mushroom",
+        "radish",
+        "nut",
+        "pear",
+        "trophy"
       ],
       "Rewards": [
         {
@@ -3113,60 +3369,60 @@
       "Name": "Level 35",
       "ItemsToSpawn": [
         {
-          "Id": "canon",
-          "Count": 12
-        },
-        {
-          "Id": "plant",
-          "Count": 6
-        },
-        {
-          "Id": "drum",
-          "Count": 9
-        },
-        {
-          "Id": "piano",
-          "Count": 6
-        },
-        {
-          "Id": "onigiri",
+          "Id": "egg",
           "Count": 3
         },
         {
-          "Id": "train",
+          "Id": "white_radish",
           "Count": 6
         },
         {
-          "Id": "icecream",
-          "Count": 9
-        },
-        {
-          "Id": "rainbow",
-          "Count": 9
-        },
-        {
-          "Id": "scissors",
-          "Count": 12
-        },
-        {
-          "Id": "car",
-          "Count": 6
+          "Id": "lime",
+          "Count": 3
         },
         {
           "Id": "bicycle",
+          "Count": 12
+        },
+        {
+          "Id": "meatballs_sub",
           "Count": 6
         },
         {
-          "Id": "kettle",
+          "Id": "scissors",
           "Count": 6
+        },
+        {
+          "Id": "building_block_02",
+          "Count": 9
+        },
+        {
+          "Id": "balloon",
+          "Count": 12
+        },
+        {
+          "Id": "shield",
+          "Count": 9
+        },
+        {
+          "Id": "cake_slice_04",
+          "Count": 6
+        },
+        {
+          "Id": "papaya",
+          "Count": 9
+        },
+        {
+          "Id": "helmet",
+          "Count": 9
         }
       ],
       "ItemsToCollect": [
-        "scissors",
-        "plant",
-        "kettle",
-        "train",
-        "canon"
+        "building_block_02",
+        "shield",
+        "meatballs_sub",
+        "egg",
+        "cake_slice_04"
       ],
       "Rewards": [
         {
@@ -3174,7 +3430,7 @@
           "Amount": 138
         },
         {
-          "RewardType": "Hint",
+          "RewardType": "Undo",
           "Amount": 1
         }
       ]

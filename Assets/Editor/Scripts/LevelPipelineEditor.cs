@@ -57,19 +57,21 @@ public class LevelPipelineEditor : Editor
 
     private static LevelData CalculateBudgetedLevel(int lv, List<ItemData> master)
     {
-        // 1. NORMALIZE DIFFICULTY (0.0 to 1.0)
         float t = (float)(lv - 1) / (MaxLevels - 1);
 
-        // Use a curve if you want levels to stay easy longer, then spike at the end
-        // float curvedT = t * t; // Exponential growth
-        float curvedT = t;      // Linear growth
+        // 1. STEPPED COLLECTIBLE LOGIC
+        // Precise control: 1-5 (1), 6-10 (2), 11-20 (3), 21-40 (4), 41+ (5-6)
+        int targetCollectables;
+        if (lv <= 5) targetCollectables = 1;
+        else if (lv <= 10) targetCollectables = 2;
+        else if (lv <= 15) targetCollectables = 3;
+        else if (lv <= 20) targetCollectables = 4;
+        else targetCollectables = UnityEngine.Random.Range(5, 7); // Max spike
 
-        // 2. CALCULATE TARGETS BASED ON LERP
-        int targetTotalItems = Mathf.RoundToInt(Mathf.Lerp(MinItems, MaxItems, curvedT));
-        int targetVariety = Mathf.RoundToInt(Mathf.Lerp(MinVariety, MaxVariety, curvedT));
-        int targetCollectables = Mathf.RoundToInt(Mathf.Lerp(1, 5, curvedT));
+        // 2. PILE SIZE (Linear growth is fine for the "mess")
+        int targetTotalItems = Mathf.RoundToInt(Mathf.Lerp(MinItems, MaxItems, t));
+        int targetVariety = Mathf.RoundToInt(Mathf.Lerp(MinVariety, MaxVariety, Mathf.Clamp01(t * 1.5f)));
 
-        // Round targetTotalItems to nearest multiple of 3
         targetTotalItems = (targetTotalItems / 3) * 3;
 
         LevelData data = new LevelData
@@ -79,24 +81,31 @@ public class LevelPipelineEditor : Editor
             Name = $"Level {lv:D2}"
         };
 
-        // 3. SELECT POOL
-        // List<ItemData> pool = master.OrderBy(x => UnityEngine.Random.value).Take(targetVariety).ToList();
-        List<ItemData> pool = master
-            .Where(x => x.Enabled)                          // filter first
-            .OrderBy(x => UnityEngine.Random.value)           // shuffle
-            .Take(targetVariety)                              // limit
+        // 3. STRICT SIZE LOCKING
+        List<ItemData> availablePool = master.Where(x => x.Enabled).ToList();
+
+        // Level 1-5: ONLY Large items exist in the game.
+        if (lv <= 5)
+            availablePool = availablePool.Where(x => x.Size == ItemSize.Large).ToList();
+        // Level 6-15: Large and Medium only.
+        else if (lv <= 15)
+            availablePool = availablePool.Where(x => x.Size != ItemSize.Small).ToList();
+        // Level 16+: The "Toy Box" is fully open.
+
+        // 4. SELECT VARIETY (Weighted to prefer Large as background clutter)
+        List<ItemData> selectedPool = availablePool
+            .OrderByDescending(x => GetSpawnWeight(x.Size, t) * UnityEngine.Random.value)
+            .Take(targetVariety)
             .ToList();
 
-        // 4. FILL LOGIC
+        // 5. FILL SPAWNS
         int currentCount = 0;
-        // First, ensure every item in the variety pool has at least 3
-        foreach (var item in pool)
+        foreach (var item in selectedPool)
         {
             data.ItemsToSpawn.Add(new LevelItemEntry { Id = item.Id, Count = 3 });
             currentCount += 3;
         }
 
-        // Then, top up random items from the pool until we hit the targetTotalItems
         int safety = 0;
         while (currentCount < targetTotalItems && safety < 500)
         {
@@ -106,22 +115,53 @@ public class LevelPipelineEditor : Editor
             currentCount += 3;
         }
 
-        // 5. ASSIGN COLLECTABLES
-        // Take unique IDs from the spawn list for targets
+        // 6. ASSIGN COLLECTABLES (Size-Targeting)
+        // Ensures the 1 target you find in Lv 1-5 is always a Large item.
         data.ItemsToCollect = data.ItemsToSpawn
-            .Select(x => x.Id)
-            .OrderBy(x => UnityEngine.Random.value)
+            .Select(x => selectedPool.Find(p => p.Id == x.Id))
+            .OrderByDescending(x => GetCollectableWeight(x.Size, t) * UnityEngine.Random.value)
             .Take(targetCollectables)
+            .Select(x => x.Id)
             .ToList();
 
-        // 6. REWARDS
+        // 7. REWARDS & POWERUPS
         int goldAmount = Mathf.FloorToInt(50 + (15 * Mathf.Sqrt(lv)));
         data.Rewards.Add(new RewardData { RewardType = RewardType.Gold, Amount = goldAmount });
+
         HandlePowerupRewards(lv, data);
 
         return data;
     }
 
+    // Higher value = More likely to be in the level as clutter/background
+    private static float GetSpawnWeight(ItemSize size, float t)
+    {
+        switch (size)
+        {
+            case ItemSize.Large: return 5.0f; // Always prefer Large to fill the screen
+            case ItemSize.Medium: return 2.0f + (t * 3.0f);
+            case ItemSize.Small: return 0.1f + (t * 5.0f);
+            default: return 1.0f;
+        }
+    }
+
+    // Higher value = More likely to be chosen as a REQUIRED target to find
+    private static float GetCollectableWeight(ItemSize size, float t)
+    {
+        if (t < 0.2f) // Early Levels: Force Large targets
+        {
+            return (size == ItemSize.Large) ? 10f : 0.1f;
+        }
+
+        // Late Levels: Prefer Small/Medium as targets
+        switch (size)
+        {
+            case ItemSize.Large: return 1.0f;
+            case ItemSize.Medium: return 2.0f + t;
+            case ItemSize.Small: return 5.0f * t;
+            default: return 1.0f;
+        }
+    }
     private static void HandlePowerupRewards(int lv, LevelData data)
     {
         if (lv == 1) data.Rewards.Add(new RewardData { RewardType = RewardType.Undo, Amount = 5 });
