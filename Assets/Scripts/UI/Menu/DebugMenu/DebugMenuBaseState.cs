@@ -20,7 +20,29 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
         View.DebugToggle.OnValueChanged += OnDebugToggleChanged;
         View.GraphicsToggle.OnValueChanged += OnGraphicsToggleChanged;
         View.LevelIdText.text = GameManager.Instance.SaveData.CurrentLevelID;
+        float savedScale = DataManager.Instance.Metadata.Settings.ItemScaleMultiplier;
+        View.ScaleSlider.value = savedScale;
+
+        var settings = DataManager.Instance.Metadata.Settings;
+        float minScale = settings.MinItemScale;
+        float maxScale = settings.MaxItemScale;
+        float currentScale = settings.ItemScaleMultiplier;
+
+        // 1. Setup Slider Bounds
+        View.ScaleSlider.minValue = minScale;
+        View.ScaleSlider.maxValue = maxScale;
+        View.ScaleSlider.value = currentScale;
+
+        // 2. Initial Text Update
+        View.ScaleMinText.text = minScale.ToString("F1");
+        View.ScaleMaxText.text = maxScale.ToString("F1");
+        UpdateCurrentScaleText(currentScale);
+
+        // 3. Add the Listener
+        View.ScaleSlider.onValueChanged.AddListener(OnItemScaleChanged);
+
         RefreshUI();
+
     }
 
     private void OnGraphicsToggleChanged(bool value)
@@ -40,8 +62,33 @@ public class DebugMenuBaseState : MenuBaseState<DebugMenuController, DebugMenuVi
         View.ResetButton.onClick.RemoveListener(OnResetButton);
         View.DebugToggle.OnValueChanged -= OnDebugToggleChanged;
         View.GraphicsToggle.OnValueChanged -= OnGraphicsToggleChanged;
+        View.ScaleSlider.onValueChanged.RemoveListener(OnItemScaleChanged);
     }
 
+    private void OnItemScaleChanged(float newValue)
+    {
+        // 4. Snap to 0.05 increments for a "cleaner" feel
+        float snappedValue = Mathf.Round(newValue * 20f) / 20f;
+
+        // Update metadata and save
+        DataManager.Instance.Metadata.Settings.ItemScaleMultiplier = snappedValue;
+
+        // 5. Update UI Text
+        UpdateCurrentScaleText(snappedValue);
+
+        // Optional: Only update slider position if it's significantly different 
+        // to avoid recursive listener triggers or "jitter"
+        if (Mathf.Abs(View.ScaleSlider.value - snappedValue) > 0.01f)
+        {
+            View.ScaleSlider.value = snappedValue;
+        }
+    }
+    private void UpdateCurrentScaleText(float value)
+    {
+        // "F2" shows two decimals (e.g., 1.05) which is usually 
+        // best for scale multipliers.
+        View.ScaleCurrentText.text = value.ToString("F2") + "x";
+    }
 
     private void OnLoadPrevLevelButtonClicked()
     {

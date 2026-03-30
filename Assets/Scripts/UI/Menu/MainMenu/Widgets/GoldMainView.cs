@@ -10,6 +10,7 @@ public class GoldMainView : MonoBehaviour
     public Image GoldIcon;
     public RectTransform Container; // The main parent of this HUD element
     public Button AddMoreButton;  //store
+    public bool AnimateGold = true;
 
     private int _displayedAmount = 0;
     private Tween _countTween;
@@ -35,7 +36,10 @@ public class GoldMainView : MonoBehaviour
     }
     private void OnGoldUpdate(int amount)
     {
-        PlayCollectAnimation(amount);
+        if (AnimateGold)
+            PlayCollectAnimation(amount);
+        else
+            UpdateAmount(amount);
     }
 
     private void UpdateAmount(int initialAmount)

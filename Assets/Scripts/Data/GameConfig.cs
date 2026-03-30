@@ -12,5 +12,9 @@ public class GameConfig
     public float InterstitialAdChance;
     public bool ShowGraphicsSettings;
     public bool IsDebug;
+    public int ReviewReminderLevelsInterval;
     public int ReviewLevel;
+    public float ItemScaleMultiplier;
+    public float MinItemScale;
+    public float MaxItemScale;
 }

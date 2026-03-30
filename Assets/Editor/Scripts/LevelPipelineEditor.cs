@@ -60,13 +60,13 @@ public class LevelPipelineEditor : Editor
         float t = (float)(lv - 1) / (MaxLevels - 1);
 
         // 1. STEPPED COLLECTIBLE LOGIC
-        // Precise control: 1-5 (1), 6-10 (2), 11-20 (3), 21-40 (4), 41+ (5-6)
+        // Precise control: 1-5 (2), 6-10 (3), 11-20 (4), 21-40 (5), 41+ (6-7)
         int targetCollectables;
-        if (lv <= 5) targetCollectables = 1;
-        else if (lv <= 10) targetCollectables = 2;
-        else if (lv <= 15) targetCollectables = 3;
-        else if (lv <= 20) targetCollectables = 4;
-        else targetCollectables = UnityEngine.Random.Range(5, 7); // Max spike
+        if (lv <= 5) targetCollectables = 2;
+        else if (lv <= 10) targetCollectables = 3;
+        else if (lv <= 15) targetCollectables = 4;
+        else if (lv <= 20) targetCollectables = 5;
+        else targetCollectables = UnityEngine.Random.Range(6, 7); // Max spike
 
         // 2. PILE SIZE (Linear growth is fine for the "mess")
         int targetTotalItems = Mathf.RoundToInt(Mathf.Lerp(MinItems, MaxItems, t));

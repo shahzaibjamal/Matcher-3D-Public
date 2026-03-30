@@ -1,5 +1,6 @@
-using Google.Play.Review;
+using System;
 using System.Collections;
+using Google.Play.Review;
 using UnityEngine;
 
 public class ReviewService : MonoBehaviour
@@ -22,26 +23,56 @@ public class ReviewService : MonoBehaviour
     }
 
     /// <summary>
-    /// Starts the Google Play In-App Review flow.
+    /// Evaluates if the player should see the review popup based on Level and Time.
     /// </summary>
-    public void LaunchReviewFlow()
+    public bool ShouldShowReview()
     {
-        if (_isRequesting) return;
+        if (_isRequesting) return false;
 
-        // Safety check: Don't run if already reviewed
-        if (GameManager.Instance.SaveData.IsAppReviewed) return;
+        var save = GameManager.Instance.SaveData;
 
-        StartCoroutine(ReviewRoutine());
+        // 1. Check if the user already gave a review (Permanent Block)
+        if (save.IsAppReviewed) return false;
+
+        // 2. Level Gate: Player must reach a minimum progress level
+        int currentLevel = LevelManager.Instance.GetCurrentProgressLevel().Number;
+        if (currentLevel <= save.AppReviewReminderLevel) return false;
+
+        // 3. Hybrid Time Gate: 
+        // If it's the very first time (Day 1), we skip the date check.
+        // If they've seen it before, we enforce a 7-day cooldown.
+        if (!string.IsNullOrEmpty(save.LastReviewRequestDate))
+        {
+            DateTime lastAsked = DateTime.Parse(save.LastReviewRequestDate);
+            if ((DateTime.Now - lastAsked).TotalDays < 7)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    private IEnumerator ReviewRoutine()
+    /// <summary>
+    /// Triggers the Google Play Review flow. Call this when the user clicks 'Yes'.
+    /// </summary>
+    public void LaunchReviewFlow(Action onComplete = null)
+    {
+        StartCoroutine(ReviewRoutine(onComplete));
+    }
+
+    private IEnumerator ReviewRoutine(Action onComplete)
     {
         _isRequesting = true;
+        var save = GameManager.Instance.SaveData;
+
+        // Push metadata forward immediately to prevent duplicate prompts 
+        // in the same session if the Google UI is slow to load.
+        UpdateNextReminderMetadata();
 
         if (_reviewManager == null)
             _reviewManager = new ReviewManager();
 
-        // 1. Request Review Info
         var requestFlowOperation = _reviewManager.RequestReviewFlow();
         yield return requestFlowOperation;
 
@@ -49,38 +80,46 @@ public class ReviewService : MonoBehaviour
         {
             Debug.LogWarning($"[ReviewService] Request Error: {requestFlowOperation.Error}");
             _isRequesting = false;
+            onComplete?.Invoke();
             yield break;
         }
 
         _playReviewInfo = requestFlowOperation.GetResult();
-
-        // 2. Launch Review Flow
         var launchFlowOperation = _reviewManager.LaunchReviewFlow(_playReviewInfo);
         yield return launchFlowOperation;
 
-        // Cleanup
-        _playReviewInfo = null;
-        _isRequesting = false;
-
-        if (launchFlowOperation.Error != ReviewErrorCode.NoError)
-        {
-            Debug.LogWarning($"[ReviewService] Launch Error: {launchFlowOperation.Error}");
-            yield break;
-        }
-
-        // 3. Mark as reviewed and save
-        GameManager.Instance.SaveData.IsAppReviewed = true;
+        // Mark as reviewed so we never ask again. 
+        // Google Play API doesn't tell us if they actually typed a review, 
+        // only that the window finished.
+        save.IsAppReviewed = true;
         GameManager.Instance.SaveGame();
 
-        Debug.Log("[ReviewService] Flow finished successfully.");
+        _playReviewInfo = null;
+        _isRequesting = false;
+        onComplete?.Invoke();
+        Debug.Log("[ReviewService] Flow completed successfully.");
     }
 
     /// <summary>
-    /// Deep-links directly to the Play Store page as a fallback.
+    /// Moves the next reminder goal 10 levels ahead and resets the timestamp.
+    /// Call this if the user clicks 'No' or when the flow starts.
+    /// </summary>
+    public void UpdateNextReminderMetadata()
+    {
+        var save = GameManager.Instance.SaveData;
+        int currentLevel = LevelManager.Instance.GetCurrentProgressLevel().Number;
+        int interval = DataManager.Instance.Metadata.Settings.ReviewReminderLevelsInterval;
+
+        save.AppReviewReminderLevel = currentLevel + interval;
+        save.LastReviewRequestDate = DateTime.Now.ToString();
+        GameManager.Instance.SaveGame();
+    }
+
+    /// <summary>
+    /// Standard fallback to the store page if needed.
     /// </summary>
     public void OpenStorePageDirectly()
     {
-        string appId = Application.identifier;
-        Application.OpenURL($"market://details?id={appId}");
+        Application.OpenURL($"market://details?id={Application.identifier}");
     }
 }

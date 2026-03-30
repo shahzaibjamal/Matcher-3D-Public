@@ -183,6 +183,10 @@ public partial class Spawner : MonoBehaviour
 
         AssetLoader.Instance.InstantiatePrefab(item.PrefabName, spawnPos, randomRot, Parent, (go) =>
         {
+            // remove once finalized 
+            float scaleMultiplier = DataManager.Instance.Metadata.Settings.ItemScaleMultiplier;
+            go.transform.localScale = go.transform.localScale * scaleMultiplier;
+
             if (go.TryGetComponent<ClickableItem>(out var clickable))
             {
                 CheckFTUE(item, clickable);

@@ -35,7 +35,7 @@ public class MatchLoseMenuController : MenuController<MatchLoseMenuView, MatchLo
     {
         MenuManager.Instance.OpenMenu<GenericPopupMenuView, GenericPopupMenuController, GenericPopupMenuData>(Menus.Type.GenericPopup, new GenericPopupMenuData
         (
-            LocalizationKeys.no,
+            LocalizationKeys.no_ads,
             LocalizationKeys.no_ads_message,
             LocalizationKeys.ok
         ));

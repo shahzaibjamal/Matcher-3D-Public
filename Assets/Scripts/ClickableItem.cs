@@ -103,7 +103,7 @@ public class ClickableItem : MonoBehaviour, IClickable
     private void HandleLogic()
     {
         if (ItemData == null) return;
-        SetLayerRecursive(gameObject, _defaultLayer);
+        SetLayerRecursive(gameObject, _hintLayer);
         ShadowManager.Instance.UnregisterShadow(transform);
         OnItemClicked?.Invoke(ItemData, transform);
     }

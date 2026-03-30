@@ -10,6 +10,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     public MatchResultMenuBaseState_Win(MatchResultMenuController controller) : base(controller)
     {
     }
+    private Vector2 _goldInitialPosition;
 
     public override void Enter()
     {
@@ -31,6 +32,16 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         {
             View.Status.text = LocaleManager.Localize(LocalizationKeys.status_good);
         }
+
+        RectTransform goldRect = View.GoldMainView.GetComponent<RectTransform>();
+
+        // 1. Initial State: Position & Rotation
+        _goldInitialPosition = goldRect.anchoredPosition;
+
+        // Start way off-screen (Top-Left) and rotated
+        goldRect.anchoredPosition = new Vector2(_goldInitialPosition.x - 600f, _goldInitialPosition.y);
+        // goldRect.localRotation = Quaternion.Euler(0, 0, 45f); // Tilted start
+        // goldRect.localScale = Vector3.zero; // Start tiny
     }
 
     public override void Exit()
@@ -56,7 +67,6 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         Scheduler.Instance.ExecuteAfterDelay(starsAppearDelay, () =>
         {
             SoundController.Instance.PlaySoundEffect("star");
-
         });
 
         for (int i = 0; i < View.StarViews.Length; i++)
@@ -93,17 +103,38 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     private void PlayGoldAnimation(int goldAmount, int totalAmount, float delay, Action onComplete = null)
     {
         View.GoldRewardView.ShowReward(goldAmount, totalAmount, delay, onComplete);
-        GameManager.Instance.SaveData.Inventory.TryUpdateGoldAmount(goldAmount);
     }
 
     public override void OnContinueButtonClicked()
     {
         base.OnContinueButtonClicked();
         Data.Rewards = Data.LevelData.Rewards;
-
-        OnGoldAnimationCompleted();
+        foreach (var reward in Data.Rewards)
+        {
+            if (reward.RewardType == RewardType.Gold)
+            {
+                int finalTotalGold = GameManager.Instance.SaveData.Inventory.Gold + reward.Amount;
+                AnimateGoldViewEntrance(() =>
+                {
+                    PlayGoldAnimation(reward.Amount, finalTotalGold, 0f, OnGoldAnimationCompleted);
+                });
+            }
+        }
     }
 
+    public void AnimateGoldViewEntrance(Action onComplete = null)
+    {
+        RectTransform goldRect = View.GoldMainView.GetComponent<RectTransform>();
+        // 2. The Juicy Sequence
+        Sequence s = DOTween.Sequence();
+
+        s.Append(goldRect.DOAnchorPos(_goldInitialPosition, 0.7f)
+            .SetEase(Ease.OutBack)); // High overshoot value for extra "spring"
+        s.OnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
+    }
     public void DisplayRewards()
     {
         // 1. Reset Visuals
@@ -198,7 +229,10 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
         // 4. Trigger the UI/Animation
         // We pass the 3x amount and the calculated final total
         // PlayGoldAnimation(goldAmountForAnimation, finalTotalGold, 0f, OnGoldAnimationCompleted);
-        OnGoldAnimationCompleted();
+        AnimateGoldViewEntrance(() =>
+        {
+            PlayGoldAnimation(goldAmountForAnimation, finalTotalGold, 0f, OnGoldAnimationCompleted);
+        });
     }
 
     private void OnGoldAnimationCompleted()

@@ -62,7 +62,6 @@ public class GoldRewardView : MonoBehaviour
         // This ignores the world-space "tug of war" and moves relative to the parent
         seq.Append(RewardContainer.DOLocalMove(localTarget, FlyDuration).SetEase(FlyEase));
         seq.Join(RewardContainer.DOScale(0.5f, FlyDuration).SetEase(Ease.InQuad));
-
         seq.OnComplete(() =>
         {
             RewardContainer.gameObject.SetActive(false);

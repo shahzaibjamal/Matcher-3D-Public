@@ -2,13 +2,17 @@
   "Settings": {
     "MaxLives": 5,
     "SecondsToRecover": 60,
-    "InterstitialAdLevel": 15,
+    "InterstitialAdLevel": 20,
     "RewardAdLevel": 5,
     "BannerAdLevel": 10,
     "InterstitialAdChance": 0.5,
     "ShowGraphicsSettings": true,
     "IsDebug": true,
-    "ReviewLevel": 0
+    "ReviewReminderLevelsInterval": 15,
+    "ReviewLevel": 15,
+    "ItemScaleMultiplier": 1.0,
+    "MinItemScale": 0.5,
+    "MaxItemScale": 1.5
   },
   "Items": [
     {
@@ -1540,7 +1544,8 @@
         }
       ],
       "ItemsToCollect": [
-        "ball_02"
+        "ball_02",
+        "guitar"
       ],
       "Rewards": [
         {
@@ -1568,7 +1573,8 @@
         }
       ],
       "ItemsToCollect": [
-        "globe"
+        "globe",
+        "harp"
       ],
       "Rewards": [
         {
@@ -1600,7 +1606,8 @@
         }
       ],
       "ItemsToCollect": [
-        "wooden_log"
+        "wooden_log",
+        "letter_cube_01"
       ],
       "Rewards": [
         {
@@ -1632,7 +1639,8 @@
         }
       ],
       "ItemsToCollect": [
-        "drum"
+        "drum",
+        "pumpkin"
       ],
       "Rewards": [
         {
@@ -1668,7 +1676,8 @@
         }
       ],
       "ItemsToCollect": [
-        "bag"
+        "bag",
+        "harp"
       ],
       "Rewards": [
         {

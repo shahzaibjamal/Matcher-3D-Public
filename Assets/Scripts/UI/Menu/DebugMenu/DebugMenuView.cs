@@ -12,4 +12,8 @@ public class DebugMenuView : MenuView
     public Button ResetButton;
     public Button BackButton;
     public Button PowerUpButton;
+    public Slider ScaleSlider;
+    public TMP_Text ScaleCurrentText;
+    public TMP_Text ScaleMinText;
+    public TMP_Text ScaleMaxText;
 }

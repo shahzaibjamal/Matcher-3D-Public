@@ -28,6 +28,7 @@ public class GameSaveData
     public bool IsVibrateEnabled;
     public bool IsAppReviewed;
     public int AppReviewReminderLevel;
+    public string LastReviewRequestDate; // Store last review data as string 
     public string languageName;
     public List<int> ClaimedDailyRewards = new List<int>();
 

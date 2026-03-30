@@ -57,35 +57,21 @@ public class MainMenuBaseState_Main : MainMenuBaseState
 
     private void OnAllRewardsClaimed()
     {
-        GameManager.Instance.SaveData.AppReviewReminderLevel = Math.Max(DataManager.Instance.Metadata.Settings.ReviewLevel, GameManager.Instance.SaveData.AppReviewReminderLevel);
-        if (LevelManager.Instance.GetCurrentProgressLevel().Number > GameManager.Instance.SaveData.AppReviewReminderLevel)
+        // Ask the service if the Level/Time gates are open
+        if (ReviewService.Instance.ShouldShowReview())
         {
             MenuManager.Instance.OpenMenu<GenericPopupMenuView, GenericPopupMenuController, GenericPopupMenuData>(
-                        Menus.Type.GenericPopup,
-                        new GenericPopupMenuData(
-                            LocalizationKeys.review,
-                            LocalizationKeys.review_message,
-                            LocalizationKeys.yes,
-                            CheckForReview,
-                            LocalizationKeys.no,
-                            OnReviewCancelled
-                        )
-                    );
+                Menus.Type.GenericPopup,
+                new GenericPopupMenuData(
+                    LocalizationKeys.review,
+                    LocalizationKeys.review_message,
+                    LocalizationKeys.yes,
+                    () => ReviewService.Instance.LaunchReviewFlow(), // Mark as reviewed and launch
+                    LocalizationKeys.no,
+                    () => ReviewService.Instance.UpdateNextReminderMetadata() // Just push the level/time goal
+                )
+            );
         }
-    }
-    private void CheckForReview()
-    {
-        ReviewService.Instance.LaunchReviewFlow();
-
-    }
-    private void OnReviewCancelled()
-    {
-        var save = GameManager.Instance.SaveData;
-        var allLevels = DataManager.Instance.Metadata.Levels;
-        int maxLevelCount = (allLevels != null) ? allLevels.Count : 0;
-        int targetLevel = save.AppReviewReminderLevel + 10;
-        save.AppReviewReminderLevel = Mathf.Min(targetLevel, maxLevelCount);
-        GameManager.Instance.SaveGame();
     }
 
     private async Task WaitForSpawnerTask()
