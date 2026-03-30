@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,7 @@ public class MainMenuView : MenuView
 {
     public Button StartButton;
     public Button SettingsButton;
+    public Button LevelButton;
     public Button DebugButton;
 
     public GoldMainView GoldMainView;
@@ -19,4 +21,8 @@ public class MainMenuView : MenuView
 
     public UIShimmerEffect StoreShimmer;
     public UIShimmerEffect RewardShimmer;
+
+    public GameObject LevelPanel;
+    public Image LevelPanelFlashImage;
+    public TMP_Text LevelNumber;
 }

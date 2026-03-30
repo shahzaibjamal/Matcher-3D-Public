@@ -234,6 +234,10 @@ public partial class Spawner : MonoBehaviour
                 if (_collectableLeft[data.Id] <= 0)
                     _collectableLeft.Remove(data.Id);
             }
+            else
+            {
+                SoundController.Instance.PlaySoundEffect("gold_appear"); //using it for normal pick ups as well
+            }
         }
     }
 

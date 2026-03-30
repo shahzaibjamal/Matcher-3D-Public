@@ -26,8 +26,6 @@ public class ClickableItem : MonoBehaviour, IClickable
 
     private Vector3 _originalLocalPos;
     private bool _isInitialized = false;
-
-    // Static gatekeeper shared by all instances
     private bool _isTrayFillable = true;
 
     private Vector3 _initialScale;
@@ -106,7 +104,6 @@ public class ClickableItem : MonoBehaviour, IClickable
         SetLayerRecursive(gameObject, _hintLayer);
         ShadowManager.Instance.UnregisterShadow(transform);
         OnItemClicked?.Invoke(ItemData, transform);
-        SoundController.Instance.PlaySoundEffect("pick");
     }
 
     public void Highlight(bool isHinted)

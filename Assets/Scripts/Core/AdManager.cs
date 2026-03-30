@@ -81,6 +81,7 @@ public class AdManager : MonoBehaviour
                 RefreshAdLoads();
             });
         });
+        Debug.LogError("Device Id - " + SystemInfo.deviceUniqueIdentifier);
 #endif
     }
 
@@ -118,13 +119,21 @@ public class AdManager : MonoBehaviour
 #if USE_ADMOB
         if (_bannerView == null)
         {
+            Debug.Log("[AdManager] Creating BannerView...");
             _bannerView = new BannerView(_activeBannerId, AdSize.Banner, AdPosition.Bottom);
+
+            // Add these listeners to see the real error on your device
+            _bannerView.OnBannerAdLoaded += () => Debug.Log("<color=green>[AdManager] Banner Loaded Successfully!</color>");
+
+            _bannerView.OnBannerAdLoadFailed += (LoadAdError error) =>
+            {
+                Debug.LogError($"[AdManager] Banner Failed: {error.GetMessage()} | Code: {error.GetCode()}");
+            };
+
             _bannerView.LoadAd(new AdRequest());
-            Debug.Log("[AdManager] Banner Requested.");
         }
 #endif
     }
-
     private void RefreshAdLoads()
     {
 #if USE_ADMOB

@@ -6,6 +6,7 @@ using DG.Tweening;
 using Google.Play.Review;
 using TS.LocalizationSystem;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuBaseState_Main : MainMenuBaseState
 {
@@ -29,6 +30,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.DailySpinButton.onClick.AddListener(OnDailySpinButtonClicked);
         View.DailyRewardButton.onClick.AddListener(OnDailyRewardsButtonClicked);
         View.StoreButton.onClick.AddListener(OnStoreButtonClicked);
+        View.LevelButton.onClick.AddListener(OnLevelButtonClicked);
         GameEvents.OnGoldUpdatedEvent += HandleGoldUpdate;
 
         Scheduler.Instance.SubscribeUpdate(UpdateLivesDisplay);
@@ -38,7 +40,9 @@ public class MainMenuBaseState_Main : MainMenuBaseState
             OnLoadingComplete = OnLoadingComplete,
             LoadingTask = WaitForSpawnerTask
         });
+        View.StartButton.interactable = false;
     }
+
     private void OnLoadingComplete()
     {
         // Animations
@@ -52,7 +56,9 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.StoreShimmer.Play();
         View.RewardShimmer.Play();
 
-        Scheduler.Instance.ExecuteAfterDelay(0.5f, () => RewardManager.Instance.CheckAndShowNext(OnAllRewardsClaimed));
+        string currentLevel = GameManager.Instance.SaveData.CurrentLevelID;
+        int levelNumber = DataManager.Instance.GetLevelByID(currentLevel).Number;
+        ShowLevel(levelNumber, () => Scheduler.Instance.ExecuteAfterDelay(0.5f, () => RewardManager.Instance.CheckAndShowNext(OnAllRewardsClaimed)));
     }
 
     private void OnAllRewardsClaimed()
@@ -66,12 +72,25 @@ public class MainMenuBaseState_Main : MainMenuBaseState
                     LocalizationKeys.review,
                     LocalizationKeys.review_message,
                     LocalizationKeys.yes,
-                    () => ReviewService.Instance.LaunchReviewFlow(), // Mark as reviewed and launch
+                    () => ReviewService.Instance.LaunchReviewFlow(OnMainMenuIdle), // Mark as reviewed and launch
                     LocalizationKeys.no,
-                    () => ReviewService.Instance.UpdateNextReminderMetadata() // Just push the level/time goal
+                    () =>
+                    {
+                        ReviewService.Instance.UpdateNextReminderMetadata();
+                        OnMainMenuIdle();
+                    }
                 )
             );
         }
+        else
+        {
+            OnMainMenuIdle();
+        }
+    }
+
+    private void OnMainMenuIdle()
+    {
+        View.StartButton.interactable = true;
     }
 
     private async Task WaitForSpawnerTask()
@@ -90,8 +109,8 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         View.DailySpinButton.onClick.RemoveListener(OnDailySpinButtonClicked);
         View.DailyRewardButton.onClick.RemoveListener(OnDailyRewardsButtonClicked);
         View.StoreButton.onClick.RemoveListener(OnStoreButtonClicked);
+        View.LevelButton.onClick.RemoveListener(OnLevelButtonClicked);
         GameEvents.OnGoldUpdatedEvent -= HandleGoldUpdate;
-
 
         // 1. Kill Sequences
         _playButtonSequence?.Kill();
@@ -112,6 +131,51 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         Scheduler.Instance.UnsubscribeUpdate(UpdateLivesDisplay);
 
         base.Exit();
+    }
+    public void ShowLevel(int number, Action onComplete)
+    {
+        // 1. Initial State & Store Positions
+        Vector3 originalPos = View.LevelPanel.transform.localPosition;
+        View.LevelPanel.transform.localScale = Vector3.zero;
+        View.LevelPanel.transform.localPosition = originalPos + new Vector3(0, 150f, 0);
+
+        // 2. FLASH IMAGE RESET (Crucial)
+        // We set alpha to 0 so it's invisible, but color to white so the flash is ready
+        View.LevelPanelFlashImage.DOKill(); // Kill any old stuck tweens
+        View.LevelPanelFlashImage.color = new Color(1, 1, 1, 0);
+
+        // Text Setup
+        View.LevelNumber.text = number.ToString();
+        View.LevelNumber.alpha = 0;
+        View.LevelNumber.transform.localScale = Vector3.one;
+
+        // 3. The Impact Sequence
+        Sequence juiceSeq = DOTween.Sequence();
+
+        // DROP
+        juiceSeq.Append(View.LevelPanel.transform.DOLocalMove(originalPos, 0.35f).SetEase(Ease.InQuad));
+        juiceSeq.Join(View.LevelPanel.transform.DOScale(1.1f, 0.35f).SetEase(Ease.OutQuad));
+        juiceSeq.Append(View.LevelPanel.transform.DOScale(1.0f, 0.1f));
+
+        // 4. THE CLEAN FLASH
+        // We use DOFade instead of DOColor for the "cast" to prevent the RGB stickiness
+        juiceSeq.Insert(0.35f, View.LevelPanelFlashImage.DOFade(0.2f, 0.1f)
+            .SetLoops(2, LoopType.Yoyo)
+            .OnComplete(() =>
+            {
+                // Hard reset to alpha 0 to ensure no white cast remains
+                View.LevelPanelFlashImage.color = new Color(1, 1, 1, 0);
+            }));
+
+        // 5. TEXT & ROTATION JUICE
+        juiceSeq.Insert(0.35f, View.LevelNumber.DOFade(1f, 0.1f));
+        juiceSeq.Insert(0.35f, View.LevelNumber.transform.DOScale(1.2f, 0.15f).SetEase(Ease.OutBack));
+        juiceSeq.Insert(0.35f, View.LevelPanel.transform.DOPunchRotation(new Vector3(0, 0, 15f), 0.5f, 10, 1f));
+
+        juiceSeq.OnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
     }
 
     private void UpdateLivesDisplay(float dt)
@@ -223,6 +287,10 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnStoreButtonClicked()
     {
+        MenuManager.Instance.OpenMenu<StoreMenuView, StoreMenuController, StoreMenuData>(Menus.Type.Store);
+    }
+    private void OnLevelButtonClicked()
+    {
         MenuManager.Instance.OpenMenu<LevelSelectMenuView, LevelSelectMenuController, LevelSelectMenuData>(Menus.Type.LevelSelect);
     }
     private void OnGiftButtonClicked()
@@ -238,6 +306,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnDebugButtonClicked()
     {
-        MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug);
+        // MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug);
+        ShowLevel(UnityEngine.Random.Range(1, 100), null);
     }
 }
