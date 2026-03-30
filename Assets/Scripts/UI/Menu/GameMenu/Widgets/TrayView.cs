@@ -77,7 +77,6 @@ public class TrayView : MonoBehaviour
             return;
         }
 
-
         // UNDO
         if (!isAdded)
         {
@@ -113,14 +112,14 @@ public class TrayView : MonoBehaviour
 
         // 1. Setup Positions
         Vector3 startPos = source.position;
-        // Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, targetSlot.transform.position);
-        // Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 8f));
-        float boardDepth = Mathf.Abs(Camera.main.transform.position.z - source.position.z);
-        float verticalDepth = Mathf.Abs(Camera.main.transform.position.y - source.position.y);
+        Camera camera = Camera.main;
+        Transform cameraTransform = camera.transform;
+
+        // float boardDepth = Mathf.Abs(cameraTransform.position.z - source.position.z);
+        float verticalDepth = Mathf.Abs(cameraTransform.position.y - source.position.y);
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, targetSlot.transform.position);
-        Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, verticalDepth));
-        // worldTarget.y = source.position.y;
-        // Vector3 worldTarget = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, boardDepth));
+
+        Vector3 worldTarget = camera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, verticalDepth));
         worldTarget = Vector3.Lerp(startPos, worldTarget, percentage);
 
         // 2. Create projectile arc control points (axis swapped, 4 points)

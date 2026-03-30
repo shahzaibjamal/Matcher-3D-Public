@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class MatchResultMenuView : MenuView
 {
     public CanvasGroup Root;
+    public CanvasGroup BGCanvasGroup;
     public Button ContinueButton;
     public Button GoldMulitplierButton;
     public GameObject GodRays;

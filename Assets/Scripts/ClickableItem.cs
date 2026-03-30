@@ -106,6 +106,7 @@ public class ClickableItem : MonoBehaviour, IClickable
         SetLayerRecursive(gameObject, _hintLayer);
         ShadowManager.Instance.UnregisterShadow(transform);
         OnItemClicked?.Invoke(ItemData, transform);
+        SoundController.Instance.PlaySoundEffect("pick");
     }
 
     public void Highlight(bool isHinted)
@@ -153,6 +154,7 @@ public class ClickableItem : MonoBehaviour, IClickable
             transform.DOLocalMove(transform.localPosition + Vector3.up * liftAmount, 0.1f)
                 .SetEase(Ease.OutCubic)
                 .SetId("HoverTween");
+            SoundController.Instance.PlaySoundEffect("pick");
         }
         else
         {

@@ -54,20 +54,36 @@ public class GoldMainView : MonoBehaviour
     public void PlayCollectAnimation(int targetAmount, float duration = 0.5f)
     {
         // 1. Scale Pulse (Juice)
-        // Punch the container slightly when gold hits it
         if (Container != null)
             Container.DOPunchScale(new Vector3(0.15f, 0.15f, 0.15f), 0.3f, 10, 1f);
 
-        // Punch the icon specifically for more visual feedback
         GoldIcon.transform.DOPunchRotation(new Vector3(0, 0, 15f), 0.4f);
 
         // 2. Numerical Counting Animation
         _countTween?.Kill();
+
+        // Track the last value we played a sound for
+        int lastSoundValue = _displayedAmount;
+
+        // Determine how often to play the sound (e.g., every 5 gold or every 1 unit)
+        // For large amounts, use a bigger step so it doesn't overwhelm the audio engine
+        int totalDiff = Mathf.Abs(targetAmount - _displayedAmount);
+        int soundStep = totalDiff > 100 ? 10 : 1;
+
         _countTween = DOTween.To(() => _displayedAmount, x =>
         {
             _displayedAmount = x;
             GoldText.text = _displayedAmount.ToString("N0");
-        }, targetAmount, duration).SetEase(Ease.OutQuad);
+
+            // Only play sound if the value has changed by our 'step'
+            if (Mathf.Abs(_displayedAmount - lastSoundValue) >= soundStep)
+            {
+                lastSoundValue = _displayedAmount;
+                SoundController.Instance.PlaySoundEffect("coin_collect");
+            }
+        }, targetAmount, duration)
+        .SetEase(Ease.OutQuad);
+
     }
 
     // Returns the world position of the icon for the fly animation target

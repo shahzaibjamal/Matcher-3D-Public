@@ -57,44 +57,48 @@ public class LevelPipelineEditor : Editor
 
     private static LevelData CalculateBudgetedLevel(int lv, List<ItemData> master)
     {
+        // t is 0.0 to 1.0. 
         float t = (float)(lv - 1) / (MaxLevels - 1);
 
-        // 1. STEPPED COLLECTIBLE LOGIC
-        // Precise control: 1-5 (2), 6-10 (3), 11-20 (4), 21-40 (5), 41+ (6-7)
+        // EXPONENTIAL CURVE: (t^0.7) makes it get harder FASTER in the beginning.
+        // Use t^2 if you want it to start easy and get hard only at the end.
+        float heatCurve = Mathf.Pow(t, 0.7f);
+
+        // 1. DYNAMIC COLLECTIBLE COUNT
         int targetCollectables;
-        if (lv <= 5) targetCollectables = 2;
-        else if (lv <= 10) targetCollectables = 3;
+        if (lv % 5 == 0) targetCollectables = Mathf.Clamp(Mathf.CeilToInt(t * 8) + 3, 3, 8); // Spike on 5s
+        else if (lv <= 5) targetCollectables = 3;
         else if (lv <= 15) targetCollectables = 4;
-        else if (lv <= 20) targetCollectables = 5;
-        else targetCollectables = UnityEngine.Random.Range(6, 7); // Max spike
+        else targetCollectables = 5;
 
-        // 2. PILE SIZE (Linear growth is fine for the "mess")
-        int targetTotalItems = Mathf.RoundToInt(Mathf.Lerp(MinItems, MaxItems, t));
-        int targetVariety = Mathf.RoundToInt(Mathf.Lerp(MinVariety, MaxVariety, Mathf.Clamp01(t * 1.5f)));
+        // 2. EXPONENTIAL PILE SIZE
+        // We add a "Spike" multiplier for every 5th level
+        float spikeMultiplier = (lv % 5 == 0) ? 1.3f : 1.0f;
+        int targetTotalItems = Mathf.RoundToInt(Mathf.Lerp(MinItems, MaxItems, heatCurve) * spikeMultiplier);
 
+        // Variety grows quickly to create visual mess
+        int targetVariety = Mathf.RoundToInt(Mathf.Lerp(MinVariety, MaxVariety, Mathf.Sqrt(t)));
+
+        // Ensure it's a multiple of 3 for match-3 logic
         targetTotalItems = (targetTotalItems / 3) * 3;
 
         LevelData data = new LevelData
         {
             Id = $"level_{lv:D2}",
             Number = lv,
-            Name = $"Level {lv:D2}"
+            Name = (lv % 5 == 0) ? $"CHALLENGE {lv:D2}" : $"Level {lv:D2}"
         };
 
-        // 3. STRICT SIZE LOCKING
+        // 3. RELAXED SIZE LOCKING
+        // We now allow Small items as "clutter" from Level 3 onwards, 
+        // but they might not be "Collectables" yet.
         List<ItemData> availablePool = master.Where(x => x.Enabled).ToList();
-
-        // Level 1-5: ONLY Large items exist in the game.
-        if (lv <= 5)
-            availablePool = availablePool.Where(x => x.Size == ItemSize.Large).ToList();
-        // Level 6-15: Large and Medium only.
-        else if (lv <= 15)
+        if (lv < 3)
             availablePool = availablePool.Where(x => x.Size != ItemSize.Small).ToList();
-        // Level 16+: The "Toy Box" is fully open.
 
-        // 4. SELECT VARIETY (Weighted to prefer Large as background clutter)
+        // 4. SELECT VARIETY (Weighted)
         List<ItemData> selectedPool = availablePool
-            .OrderByDescending(x => GetSpawnWeight(x.Size, t) * UnityEngine.Random.value)
+            .OrderByDescending(x => GetSpawnWeight(x.Size, t, lv % 5 == 0) * UnityEngine.Random.value)
             .Take(targetVariety)
             .ToList();
 
@@ -115,52 +119,54 @@ public class LevelPipelineEditor : Editor
             currentCount += 3;
         }
 
-        // 6. ASSIGN COLLECTABLES (Size-Targeting)
-        // Ensures the 1 target you find in Lv 1-5 is always a Large item.
+        // 6. ASSIGN COLLECTABLES (Aggressive Small-Item Targeting)
         data.ItemsToCollect = data.ItemsToSpawn
             .Select(x => selectedPool.Find(p => p.Id == x.Id))
-            .OrderByDescending(x => GetCollectableWeight(x.Size, t) * UnityEngine.Random.value)
+            .OrderByDescending(x => GetCollectableWeight(x.Size, t, lv % 5 == 0) * UnityEngine.Random.value)
             .Take(targetCollectables)
             .Select(x => x.Id)
             .ToList();
 
-        // 7. REWARDS & POWERUPS
-        int goldAmount = Mathf.FloorToInt(50 + (15 * Mathf.Sqrt(lv)));
-        data.Rewards.Add(new RewardData { RewardType = RewardType.Gold, Amount = goldAmount });
+        // 7. REWARDS
+        int goldAmount = Mathf.FloorToInt(50 + (25 * Mathf.Pow(lv, 0.6f)));
+        if (lv % 5 == 0) goldAmount = Mathf.RoundToInt(goldAmount * 1.5f); // Bonus gold for spikes
 
+        data.Rewards.Add(new RewardData { RewardType = RewardType.Gold, Amount = goldAmount });
         HandlePowerupRewards(lv, data);
 
         return data;
     }
-
-    // Higher value = More likely to be in the level as clutter/background
-    private static float GetSpawnWeight(ItemSize size, float t)
+    private static float GetSpawnWeight(ItemSize size, float t, bool isSpikeLevel)
     {
+        // On Spike levels, we flood the screen with small/medium items to create a mess
+        float spikeBonus = isSpikeLevel ? 2.0f : 1.0f;
+
         switch (size)
         {
-            case ItemSize.Large: return 5.0f; // Always prefer Large to fill the screen
-            case ItemSize.Medium: return 2.0f + (t * 3.0f);
-            case ItemSize.Small: return 0.1f + (t * 5.0f);
+            case ItemSize.Large: return 3.0f; // Baseline clutter
+            case ItemSize.Medium: return 2.0f + (t * 4.0f * spikeBonus);
+            case ItemSize.Small: return 0.5f + (t * 8.0f * spikeBonus); // Small items increase rapidly
             default: return 1.0f;
         }
     }
 
-    // Higher value = More likely to be chosen as a REQUIRED target to find
-    private static float GetCollectableWeight(ItemSize size, float t)
+    private static float GetCollectableWeight(ItemSize size, float t, bool isSpikeLevel)
     {
-        if (t < 0.2f) // Early Levels: Force Large targets
-        {
-            return (size == ItemSize.Large) ? 10f : 0.1f;
-        }
+        // We want to force the user to find SMALL items as the level target
+        // because they are harder to see under the large items.
+        float weight = 1.0f;
 
-        // Late Levels: Prefer Small/Medium as targets
         switch (size)
         {
-            case ItemSize.Large: return 1.0f;
-            case ItemSize.Medium: return 2.0f + t;
-            case ItemSize.Small: return 5.0f * t;
-            default: return 1.0f;
+            case ItemSize.Large: weight = 1.0f; break;
+            case ItemSize.Medium: weight = 3.0f + (t * 2.0f); break;
+            case ItemSize.Small: weight = 5.0f + (t * 10.0f); break; // High priority for targets
         }
+
+        // If it's a spike level, aggressively target the smallest items
+        if (isSpikeLevel && size == ItemSize.Small) weight *= 3.0f;
+
+        return weight;
     }
     private static void HandlePowerupRewards(int lv, LevelData data)
     {

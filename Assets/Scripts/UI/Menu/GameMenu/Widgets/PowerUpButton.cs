@@ -98,7 +98,8 @@ public class PowerUpButton : MonoBehaviour
                 case PowerUpType.Hint:
                     break;
                 case PowerUpType.Undo:
-                    SoundController.Instance.PlaySoundEffect("undo");
+                    if (success)
+                        SoundController.Instance.PlaySoundEffect("undo");
                     break;
             }
         }

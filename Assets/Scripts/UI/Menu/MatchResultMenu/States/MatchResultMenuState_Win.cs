@@ -40,8 +40,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
 
         // Start way off-screen (Top-Left) and rotated
         goldRect.anchoredPosition = new Vector2(_goldInitialPosition.x - 600f, _goldInitialPosition.y);
-        // goldRect.localRotation = Quaternion.Euler(0, 0, 45f); // Tilted start
-        // goldRect.localScale = Vector3.zero; // Start tiny
+        View.BGCanvasGroup.DOFade(1.0f, 0.5f);
     }
 
     public override void Exit()
@@ -130,6 +129,8 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
 
         s.Append(goldRect.DOAnchorPos(_goldInitialPosition, 0.7f)
             .SetEase(Ease.OutBack)); // High overshoot value for extra "spring"
+        SoundController.Instance.PlaySoundEffect("ding");
+
         s.OnComplete(() =>
         {
             onComplete?.Invoke();
