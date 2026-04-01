@@ -10,6 +10,7 @@ public class SlotManager
     private Stack<string> _undoStack = new Stack<string>(); // Stores UIds
     private bool _isProcessingMatches;
     private bool _allGoalsReached;
+    private bool _isGameover;
     public SlotManager(int size)
     {
         _slots = new ItemData[size];
@@ -40,10 +41,12 @@ public class SlotManager
         GameEvents.OnCleanSweepTrayEvent -= OnCleanSweepTray;
 
         _allGoalsReached = false;
+        _isGameover = false;
         _undoStack.Clear();
     }
     private async void OnCleanSweepTray()
     {
+        _isGameover = false;
         // Iterate backwards through the tray
         for (int i = _slots.Length - 1; i >= 0; i--)
         {
@@ -120,6 +123,10 @@ public class SlotManager
 
     public async void AddItem(ItemData data, Transform source)
     {
+        if (_isGameover)
+        {
+            return;
+        }
         if (_allGoalsReached)
         {
             TriggerGameOver("All items collected", true);
@@ -190,6 +197,7 @@ public class SlotManager
     }
     private void TriggerGameOver(string reason, bool win)
     {
+        _isGameover = true;
         Debug.LogError($"[GAME OVER] {reason}");
         GameEvents.OnGameOverEvent?.Invoke(win); // Fire an event to show UI
         GameEvents.OnSlotsFillableEvent?.Invoke(false);

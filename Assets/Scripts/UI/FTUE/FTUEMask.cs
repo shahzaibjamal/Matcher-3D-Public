@@ -42,7 +42,7 @@ public class FTUEMask : MonoBehaviour, ICanvasRaycastFilter, IPointerClickHandle
         }
         else
         {
-            _maskMat.SetFloat(SizeID, 0); // Hide hole
+            _maskMat.SetFloat(SizeID, 1); // Hide hole
         }
     }
 

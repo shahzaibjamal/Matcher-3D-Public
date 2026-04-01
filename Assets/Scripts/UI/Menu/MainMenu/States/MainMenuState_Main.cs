@@ -156,6 +156,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
         juiceSeq.Append(View.LevelPanel.transform.DOLocalMove(originalPos, 0.35f).SetEase(Ease.InQuad));
         juiceSeq.Join(View.LevelPanel.transform.DOScale(1.1f, 0.35f).SetEase(Ease.OutQuad));
         juiceSeq.Append(View.LevelPanel.transform.DOScale(1.0f, 0.1f));
+        SoundController.Instance.PlaySoundEffect("level_main_ui");
 
         // 4. THE CLEAN FLASH
         // We use DOFade instead of DOColor for the "cast" to prevent the RGB stickiness

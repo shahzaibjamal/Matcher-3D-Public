@@ -6,7 +6,7 @@ using UnityEngine;
 public partial class Spawner : MonoBehaviour
 {
 #if UNITY_EDITOR
-    private void Update()
+    private void OnUpdate(float dt)
     {
         if (Input.GetKeyDown(KeyCode.Space)) Debug_ClickRandom();
         if (Input.GetKeyDown(KeyCode.M)) Debug_ClickTarget();

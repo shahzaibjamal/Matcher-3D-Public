@@ -15,9 +15,12 @@ public class TrayView : MonoBehaviour
     [SerializeField] private float _leapDuration = 0.5f;
 
     private SlotView[] _slots;
+    private Vector3[] _slotWorldTargets;
+    private int _groundLayerMask;
 
     public void Initialize(int slotCount)
     {
+        _groundLayerMask = LayerMask.GetMask("Ground");
         // Kill existing slots if any (Cleanup)
         foreach (Transform child in slotParent)
         {
@@ -30,6 +33,7 @@ public class TrayView : MonoBehaviour
             _slots[i] = Instantiate(slotPrefab, slotParent);
             _slots[i].SetIndex(i);
         }
+        Scheduler.Instance.ExecuteAfterDelay(0.1f, InitializeSlotTargets);
     }
     private void OnEnable()
     {
@@ -47,6 +51,27 @@ public class TrayView : MonoBehaviour
         GameEvents.OnUndoInvalidEvent -= HandleUndoInvalid;
     }
 
+    private void InitializeSlotTargets()
+    {
+        _slotWorldTargets = new Vector3[_slots.Length];
+        Camera mainCam = Camera.main;
+
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, _slots[i].transform.position);
+            Ray ray = mainCam.ScreenPointToRay(screenPos);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f, _groundLayerMask))
+            {
+                _slotWorldTargets[i] = hit.point;
+            }
+            else
+            {
+                // Fallback to average depth if ray misses
+                _slotWorldTargets[i] = mainCam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 10f));
+            }
+        }
+    }
     // Wrapper methods to bridge the Event to the Coroutine
     private void HandleSteppedLeapRequest(ItemData d, int from, int to, Action cb)
     {
@@ -70,118 +95,121 @@ public class TrayView : MonoBehaviour
     public float Angle = 90;
     private void HandleItemAddedToSlot(ItemData data, int targetIdx, Transform source, bool isAdded, Action onComplete)
     {
-        if (_slots == null || targetIdx < 0 || targetIdx >= _slots.Length)
+        if (!IsValidSlot(targetIdx))
         {
-            Debug.LogError($"[TrayView] Target index {targetIdx} is out of bounds!");
             onComplete?.Invoke();
             return;
         }
 
-        // UNDO
         if (!isAdded)
         {
-            _slots[targetIdx].Clear();
-            _slots[targetIdx].PlayPoof();
-            _slots[targetIdx].Bounce();
-            Scheduler.Instance.ExecuteAfterDelay(0.2f, () => onComplete?.Invoke());
+            PerformUndoVisuals(targetIdx, onComplete);
             return;
         }
 
-        Vector3 rotationVector = default;
-        if (source.TryGetComponent<ClickableItem>(out var clickableItem))
+        // 1. Setup Data & Rotation
+        _slots[targetIdx].SetItemDataOnly(data);
+        Vector3 targetRotation = CalculateLandingRotation(source);
+        Vector3 targetWorldPos = _slotWorldTargets[targetIdx];
+
+        // 2. Execute the "Toss" Animation
+        AnimateItemToTray(source, targetWorldPos, targetRotation, () =>
         {
-            clickableItem.Rigidbody.isKinematic = true;
-            clickableItem.SetCollidersEnabled(false);
-            // rotationVector = clickableItem.Rotation;
-            // rotationVector = new Vector3(clickableItem.Rotation.x, clickableItem.Rotation.y - 180f, clickableItem.Rotation.z);
-            Quaternion originalRotation = Quaternion.Euler(clickableItem.Rotation);
+            FinalizeLanding(targetIdx, data, source);
+            onComplete?.Invoke();
+        });
+    }
+    private bool IsValidSlot(int idx) => _slots != null && idx >= 0 && idx < _slots.Length;
+    private void PerformUndoVisuals(int targetIdx, Action onComplete)
+    {
+        SlotView slot = _slots[targetIdx];
 
-            // 2. Create the "Axis Flip" rotation (90 degrees around X)
-            Quaternion axisFlip = Quaternion.AngleAxis(Angle, Axis);
+        // 1. Visual feedback on the slot itself
+        slot.Clear(); // Clears the icon/data
+        slot.PlayPoof(); // Your particle/vfx for removal
 
-            // 3. Combine them. 
-            // Note: Multiplying 'axisFlip' on the left applies it in World Space.
-            Quaternion topDownRotation = axisFlip * originalRotation;
+        // 2. Physical feedback
+        slot.transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0.1f), 0.2f, 5, 0.5f);
 
-            // 4. Extract the final angle for your use elsewhere
-            rotationVector = clickableItem.IsUpright ? clickableItem.Rotation + new Vector3(0, 180, 0) : topDownRotation.eulerAngles + new Vector3(0, 180, 0);
-        }
+        // 3. Delay the callback slightly so the "poof" can be seen
+        Scheduler.Instance.ExecuteAfterDelay(0.2f, () => onComplete?.Invoke());
+    }
+    private Vector3 CalculateLandingRotation(Transform source)
+    {
+        if (!source.TryGetComponent<ClickableItem>(out var clickableItem))
+            return source.eulerAngles;
 
-        SlotView targetSlot = _slots[targetIdx];
-        targetSlot.SetItemDataOnly(data);
+        clickableItem.Rigidbody.isKinematic = true;
+        clickableItem.SetCollidersEnabled(false);
 
-        // 1. Setup Positions
-        Vector3 startPos = source.position;
-        Camera camera = Camera.main;
-        Transform cameraTransform = camera.transform;
+        Quaternion originalRotation = Quaternion.Euler(clickableItem.Rotation);
+        Quaternion axisFlip = Quaternion.AngleAxis(Angle, Axis);
+        Quaternion topDownRotation = axisFlip * originalRotation;
 
-        // float boardDepth = Mathf.Abs(cameraTransform.position.z - source.position.z);
-        float verticalDepth = Mathf.Abs(cameraTransform.position.y - source.position.y);
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, targetSlot.transform.position);
+        return clickableItem.IsUpright ?
+            clickableItem.Rotation + new Vector3(0, 180, 0) :
+            topDownRotation.eulerAngles + new Vector3(0, 180, 0);
+    }
+    private void AnimateItemToTray(Transform item, Vector3 targetPos, Vector3 targetRot, Action onDone)
+    {
+        Vector3 startPos = item.position;
 
-        Vector3 worldTarget = camera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, verticalDepth));
-        worldTarget = Vector3.Lerp(startPos, worldTarget, percentage);
+        // Adjusting peak height for a better "Toss"
+        float peakHeight = Mathf.Max(startPos.y, targetPos.y) + _forwardYOffset;
 
-        // 2. Create projectile arc control points (axis swapped, 4 points)
-        Vector3 midPoint25 = Vector3.Lerp(startPos, worldTarget, 0.25f);
-        Vector3 midPoint75 = Vector3.Lerp(startPos, worldTarget, 0.75f);
+        // Control points for the CatmullRom path
+        Vector3 mid1 = Vector3.Lerp(startPos, targetPos, 0.3f);
+        Vector3 mid2 = Vector3.Lerp(startPos, targetPos, 0.7f);
 
-        // Arc height in z
-        midPoint25.z += _arcZOffset;
-        midPoint75.z += _arcZOffset;
+        mid1.y = peakHeight;
+        mid2.y = peakHeight;
+        mid1.z += _arcZOffset;
+        mid2.z += _arcZOffset;
 
-        // Forward push in y (constant)
-        float forwardY = Mathf.Max(startPos.y, worldTarget.y) + _forwardYOffset;
-        midPoint25.y = forwardY;
-        midPoint75.y = forwardY;
-        worldTarget.y = forwardY;
-
-        // Exaggerate curve toward slot in x
-        float xDir = Mathf.Sign(worldTarget.x - startPos.x); // direction toward slot
-        midPoint25.x += xDir * _xExaggeration;
-        midPoint75.x += xDir * _xExaggeration;
-
-        // Build path with 4 points
-        Vector3[] path = new Vector3[] { startPos, midPoint25, midPoint75, worldTarget };
-
-        // 3. Sequence
-        Sequence flightSeq = DOTween.Sequence();
+        Sequence s = DOTween.Sequence();
 
         // Reset rotation cleanly
-        source.DORotate(rotationVector, 0.3f, RotateMode.Fast);
+        item.DORotate(targetRot, 0.3f, RotateMode.Fast);
 
         // Projectile-style move along arc, ignoring rotation
-        flightSeq.Append(source.DOPath(path, _flightToTrayDuration, PathType.CatmullRom, PathMode.Ignore)
+        s.Append(item.DOPath(new Vector3[] { startPos, mid1, mid2, targetPos }, _flightToTrayDuration, PathType.CatmullRom, PathMode.Ignore)
                 .SetEase(Ease.Linear)
                 .SetOptions(false)); // prevents orientation snapping
 
         // Scale effects
-        flightSeq.Join(source.DOScale(Vector3.one * 1.2f, _flightToTrayDuration * 0.4f).SetEase(Ease.OutCubic));
-        flightSeq.Insert(_flightToTrayDuration * 0.5f, source.DOScale(Vector3.one * 0.3f, _flightToTrayDuration * 0.5f).SetEase(Ease.InSine));
-        flightSeq.Insert(_flightToTrayDuration * 0.9f, source.DOScaleY(0.1f, 0.1f));
+        s.Join(item.DOScale(Vector3.one * 1.2f, _flightToTrayDuration * 0.4f).SetEase(Ease.OutCubic));
+        s.Insert(_flightToTrayDuration * 0.5f, item.DOScale(Vector3.one * 0.4f, _flightToTrayDuration * 0.5f).SetEase(Ease.InSine));
+        s.Insert(_flightToTrayDuration * 0.9f, item.DOScaleY(0.1f, 0.1f));
 
-        flightSeq.OnComplete(() =>
-        {
-            targetSlot.transform.DOPunchScale(Vector3.one * 0.2f, 0.2f);
+        s.OnComplete(() => onDone?.Invoke());
+    }
+    private void FinalizeLanding(int targetIdx, ItemData data, Transform source)
+    {
+        SlotView targetSlot = _slots[targetIdx];
+        targetSlot.transform.DOPunchScale(Vector3.one * 0.2f, 0.2f);
 
-            if (targetSlot.CurrentItem == data)
-                targetSlot.RevealIcon(true);
+        if (targetSlot.CurrentItem == data)
+            targetSlot.RevealIcon(true);
 
-            AssetLoader.Instance.ReleaseInstance(source.gameObject);
-
-            onComplete?.Invoke();
-
-            if (!FTUEManager.Instance.IsSequenceCompleted("Undo") && GameManager.Instance.SaveData.CurrentLevelID == "level_02")
-            {
-                FTUEManager.Instance.PlayTutorial("Undo");
-            }
-            if (targetIdx == GameManager.SLOT_COUNT - 2)
-            {
-                _slots[_slots.Length - 1].FlashErrorColor(isSound: false);
-            }
-        });
+        AssetLoader.Instance.ReleaseInstance(source.gameObject);
+        CheckFTUEConditions(targetIdx);
     }
 
+    private void CheckFTUEConditions(int targetIdx)
+    {
+        // 1. Handle the Undo Tutorial trigger for Level 2
+        bool isUndoTutorialDone = FTUEManager.Instance.IsSequenceCompleted("Undo");
+        bool isLevelTwo = GameManager.Instance.SaveData.CurrentLevelID == "level_02";
+
+        if (!isUndoTutorialDone && isLevelTwo)
+        {
+            FTUEManager.Instance.PlayTutorial("Undo");
+        }
+        if (targetIdx == GameManager.SLOT_COUNT - 2)
+        {
+            _slots[_slots.Length - 1].FlashErrorColor(isSound: false);
+        }
+    }
     private IEnumerator SteppedLeapRoutine(ItemData data, int from, int targetIdx, Action onComplete)
     {
         if (from < 0 || from >= _slots.Length) { onComplete?.Invoke(); yield break; }
@@ -303,7 +331,6 @@ public class TrayView : MonoBehaviour
             PoofParticle.transform.position = ghosts[1].transform.position;
             PoofParticle.Play();
             SoundController.Instance.PlaySoundEffect("snap");
-
         });
 
         yield return mainSeq.WaitForCompletion();

@@ -34,5 +34,6 @@ public class LevelSelectMenuController : MenuController<LevelSelectMenuView, Lev
     {
         string currentLevel = GameManager.Instance.SaveData.CurrentLevelID;
         Scheduler.Instance.ExecuteAfterDelay(0.3f, () => View.InfiniteMapManager.FocusOnLevel(DataManager.Instance.GetLevelByID(currentLevel).Number)); ;
+        SoundController.Instance.PlaySoundEffect("level_screen_load");
     }
 }

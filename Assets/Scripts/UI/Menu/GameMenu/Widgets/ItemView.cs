@@ -53,9 +53,6 @@ public class ItemView : MonoBehaviour
     {
         if (datas.Length == 0 || datas[0].Id != ItemData.Id) return;
 
-        // Visual feedback only on match
-        PlayMatchShake();
-
         if (CurrentCount <= 0)
         {
             // Unsubscribe early so it doesn't catch more events during animation
@@ -67,6 +64,10 @@ public class ItemView : MonoBehaviour
                 _onFinished?.Invoke(); // Tells State "I'm gone!"
                 Destroy(gameObject);
             });
+        }
+        else
+        {
+            SoundController.Instance.PlaySoundEffect("match");
         }
     }
 

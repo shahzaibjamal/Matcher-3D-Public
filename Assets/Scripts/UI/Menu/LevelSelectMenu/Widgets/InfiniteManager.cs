@@ -137,9 +137,8 @@ public class InfiniteMapManager : MonoBehaviour
         // Is this the chunk the player is currently playing in?
         bool isCurrentPlayerChunk = (chunkMapIndex == currentPlayerMapIndex);
 
-        // Is this the 'Preview' chunk above the player?
-        bool isLockedPreviewChunk = (chunkMapIndex == currentPlayerMapIndex + 1);
-
+        // 1. Get Player Progress
+        int playerStars = GameManager.Instance.SaveData.Inventory.Stars;
 
         if (data != null && data.Count > 0)
         {
@@ -147,10 +146,14 @@ public class InfiniteMapManager : MonoBehaviour
             var theme = DataManager.Instance.GetThemeByLevelNumber(startIndex + 1);
             chunk.Configure(data, startIndex, _nodePrefab, theme.BackgroundSpriteName, theme.FogColorHex);
 
-            int playerStars = GameManager.Instance.SaveData.Inventory.Stars;
             bool isThemeLocked = playerStars < theme.StarRequirement;
             chunk.ShowLockedOverlay(isThemeLocked, isThemeLocked ? $"x{theme.StarRequirement}" : "");
-            chunk.SetCloudTopState(isCurrentPlayerChunk);
+            // chunk.SetCloudTopState(isCurrentPlayerChunk);
+
+            var nextTheme = DataManager.Instance.GetThemeByLevelNumber(startIndex + _nodesPerMap + 1);
+            bool nextMapIsThemeLocked = playerStars < nextTheme.StarRequirement;
+            bool shouldShowClouds = isCurrentPlayerChunk && nextMapIsThemeLocked;
+            chunk.SetCloudTopState(shouldShowClouds);
         }
         else
         {

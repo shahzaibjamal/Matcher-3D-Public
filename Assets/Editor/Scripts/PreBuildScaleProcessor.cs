@@ -15,7 +15,7 @@ public class PreBuildScaleProcessor
     private static string MetadataPath => Path.Combine(Application.dataPath, "Resources/metadata.json");
 
     [MenuItem("Tools/Prefabs/Apply x0.9 Multiplier to Items")]
-    public static void ApplyMultiplier() => ProcessItems(0.9f);
+    public static void ApplyMultiplier() => ProcessItems(1.2f);
 
     [MenuItem("Tools/Prefabs/Revert Items to Original")]
     public static void RevertItems() => ProcessItems(1.0f, true);
@@ -46,7 +46,7 @@ public class PreBuildScaleProcessor
             string prefabAddress = item.PrefabName;
             if (string.IsNullOrEmpty(prefabAddress)) continue;
 
-            if (item.Size == ItemSize.Small)
+            if (item.Size != ItemSize.Small)
                 continue;
 
             // Find the Addressable entry that matches the PrefabName

@@ -41,6 +41,8 @@ public partial class Spawner : MonoBehaviour
     private LevelData _currentLevelData;
     private Dictionary<string, int> _collectableLeft;
     private Stack<ItemData> _undoHistory = new();
+    private float elapsedTime = 0;
+    private float MAX_IDLE_TIME = 10f;
 
     private void OnEnable()
     {
@@ -57,6 +59,11 @@ public partial class Spawner : MonoBehaviour
         {
             Scheduler.Instance.SubscribeGUI(DebugOnGUIItemVisualizer);
         }
+#if UNITY_EDITOR
+        Scheduler.Instance.SubscribeUpdate(OnUpdate);
+#endif
+        Scheduler.Instance.SubscribeUpdate(TimerUpdate);
+
     }
 
     private void OnDisable()
@@ -71,6 +78,24 @@ public partial class Spawner : MonoBehaviour
         if (DataManager.Instance.Metadata.Settings.IsDebug)
         {
             Scheduler.Instance.UnsubscribeGUI(DebugOnGUIItemVisualizer);
+        }
+
+#if UNITY_EDITOR
+        Scheduler.Instance.UnsubscribeUpdate(OnUpdate);
+#endif
+        Scheduler.Instance.UnsubscribeUpdate(TimerUpdate);
+    }
+
+
+    private void TimerUpdate(float dt)
+    {
+        if (!FTUEManager.Instance.IsTutorialActive())
+            elapsedTime += dt;
+
+        if (elapsedTime > MAX_IDLE_TIME)
+        {
+            elapsedTime = 0;
+            HandleHintPowerUp();
         }
     }
 
@@ -221,6 +246,7 @@ public partial class Spawner : MonoBehaviour
     {
         if (isAdded)
         {
+            elapsedTime = 0;
             // Record the data before the object is destroyed by your Tray logic
             _undoHistory.Push(data);
 

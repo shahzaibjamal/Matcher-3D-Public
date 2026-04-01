@@ -20,7 +20,7 @@ MonoBehaviour:
     RequireClick: 0
     ShowCutout: 1
     ShowHand: 1
-    CustomSize: 0.08
+    CustomSize: 0.07
     HandDirection: 2
   - TargetID: Item1
     RequiredEvent: 
@@ -47,3 +47,12 @@ MonoBehaviour:
     ShowHand: 1
     CustomSize: 0.1
     HandDirection: 4
+  - TargetID: 
+    RequiredEvent: 
+    Message: <color=green><b>Woohoo!!</b></color> Now collect the rest of the items
+      to win the level!
+    RequireClick: 0
+    ShowCutout: 0
+    ShowHand: 0
+    CustomSize: 0
+    HandDirection: 2
