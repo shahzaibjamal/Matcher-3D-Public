@@ -10,11 +10,19 @@ using UnityEngine;
 public class LevelPipelineEditor : Editor
 {
     // --- TWEAKABLE SETTINGS ---
-    private const int MinItems = 6;      // Level 1 total objects (e.g., 2 types * 3)
-    private const int MaxItems = 90;     // Level 35 total objects
-    private const int MinVariety = 2;    // Level 1 unique item types
-    private const int MaxVariety = 12;   // Level 35 unique item types
+    private const int MinItems = 12;
+    private const int MaxItems = 48; // Updated to your preferred cap
+    private const int MinVariety = 2;
+    private const int MaxVariety = 10;
     private const int MaxLevels = 35;
+    private const int DifficultyPivot = 15;
+    private const int MaxCollectibles = 7;
+
+    // --- THE SLIDER (0-10) ---
+    // 0 = Very Easy (Mostly Large items, easy targets)
+    // 5 = Balanced (Your current logic)
+    // 10 = Max Difficulty (Aggressive Small items, tiny targets)
+    private const float DifficultyScalar = 10.0f;
 
     [MenuItem("Tools/Pipeline/Generate and Export to Sheets")]
     public static void GenerateAndExport()
@@ -52,35 +60,34 @@ public class LevelPipelineEditor : Editor
 
         File.WriteAllText(exportPath, sb.ToString());
         AssetDatabase.Refresh();
-        Debug.Log($"<color=green>GENERATION COMPLETE:</color> Normalized scaling applied (Max Items: {MaxItems})");
+
+        Debug.Log($"<color=green>PIPELINE COMPLETE:</color> Difficulty Scalar: {DifficultyScalar}/10. Max Items: {MaxItems}.");
     }
 
     private static LevelData CalculateBudgetedLevel(int lv, List<ItemData> master)
     {
-        // t is 0.0 to 1.0. 
-        float t = (float)(lv - 1) / (MaxLevels - 1);
+        float t;
+        if (lv <= DifficultyPivot)
+        {
+            float pivotT = (float)(lv - 1) / (DifficultyPivot - 1);
+            t = Mathf.Pow(pivotT, 2.0f);
+        }
+        else
+        {
+            t = UnityEngine.Random.Range(0.9f, 1.0f);
+        }
 
-        // EXPONENTIAL CURVE: (t^0.7) makes it get harder FASTER in the beginning.
-        // Use t^2 if you want it to start easy and get hard only at the end.
-        float heatCurve = Mathf.Pow(t, 0.7f);
+        // Apply DifficultyScalar to the progression 't' (Normalizes 0-10 to 0-2 range modifier)
+        float diffMod = DifficultyScalar / 5.0f;
+        float weightedT = Mathf.Clamp01(t * diffMod);
 
-        // 1. DYNAMIC COLLECTIBLE COUNT
-        int targetCollectables;
-        if (lv % 5 == 0) targetCollectables = Mathf.Clamp(Mathf.CeilToInt(t * 8) + 3, 3, 8); // Spike on 5s
-        else if (lv <= 5) targetCollectables = 3;
-        else if (lv <= 15) targetCollectables = 4;
-        else targetCollectables = 5;
+        int targetCollectables = Mathf.Clamp(Mathf.RoundToInt(Mathf.Lerp(3, 6, weightedT)), 3, 6);
+        if (lv % 5 == 0) targetCollectables = Mathf.Min(targetCollectables + 1, MaxCollectibles);
 
-        // 2. EXPONENTIAL PILE SIZE
-        // We add a "Spike" multiplier for every 5th level
-        float spikeMultiplier = (lv % 5 == 0) ? 1.3f : 1.0f;
-        int targetTotalItems = Mathf.RoundToInt(Mathf.Lerp(MinItems, MaxItems, heatCurve) * spikeMultiplier);
-
-        // Variety grows quickly to create visual mess
-        int targetVariety = Mathf.RoundToInt(Mathf.Lerp(MinVariety, MaxVariety, Mathf.Sqrt(t)));
-
-        // Ensure it's a multiple of 3 for match-3 logic
+        int targetTotalItems = Mathf.RoundToInt(Mathf.Lerp(MinItems, MaxItems, weightedT));
         targetTotalItems = (targetTotalItems / 3) * 3;
+
+        int targetVariety = Mathf.RoundToInt(Mathf.Lerp(MinVariety, MaxVariety, weightedT));
 
         LevelData data = new LevelData
         {
@@ -89,20 +96,14 @@ public class LevelPipelineEditor : Editor
             Name = (lv % 5 == 0) ? $"CHALLENGE {lv:D2}" : $"Level {lv:D2}"
         };
 
-        // 3. RELAXED SIZE LOCKING
-        // We now allow Small items as "clutter" from Level 3 onwards, 
-        // but they might not be "Collectables" yet.
         List<ItemData> availablePool = master.Where(x => x.Enabled).ToList();
-        if (lv < 3)
-            availablePool = availablePool.Where(x => x.Size != ItemSize.Small).ToList();
 
-        // 4. SELECT VARIETY (Weighted)
+        // The Scalar is passed into weights to favor Small vs Large
         List<ItemData> selectedPool = availablePool
-            .OrderByDescending(x => GetSpawnWeight(x.Size, t, lv % 5 == 0) * UnityEngine.Random.value)
+            .OrderByDescending(x => GetSpawnWeight(x.Size, t, DifficultyScalar) * UnityEngine.Random.value)
             .Take(targetVariety)
             .ToList();
 
-        // 5. FILL SPAWNS
         int currentCount = 0;
         foreach (var item in selectedPool)
         {
@@ -119,73 +120,67 @@ public class LevelPipelineEditor : Editor
             currentCount += 3;
         }
 
-        // 6. ASSIGN COLLECTABLES (Aggressive Small-Item Targeting)
         data.ItemsToCollect = data.ItemsToSpawn
             .Select(x => selectedPool.Find(p => p.Id == x.Id))
-            .OrderByDescending(x => GetCollectableWeight(x.Size, t, lv % 5 == 0) * UnityEngine.Random.value)
+            .OrderByDescending(x => GetCollectableWeight(x.Size, t, DifficultyScalar) * UnityEngine.Random.value)
             .Take(targetCollectables)
             .Select(x => x.Id)
             .ToList();
 
-        // 7. REWARDS
-        int goldAmount = Mathf.FloorToInt(50 + (25 * Mathf.Pow(lv, 0.6f)));
-        if (lv % 5 == 0) goldAmount = Mathf.RoundToInt(goldAmount * 1.5f); // Bonus gold for spikes
+        int gold = Mathf.FloorToInt(50 + (25 * Mathf.Pow(lv, 0.7f)));
+        if (lv % 5 == 0) gold = Mathf.RoundToInt(gold * 1.5f);
+        data.Rewards.Add(new RewardData { RewardType = RewardType.Gold, Amount = gold });
 
-        data.Rewards.Add(new RewardData { RewardType = RewardType.Gold, Amount = goldAmount });
         HandlePowerupRewards(lv, data);
 
         return data;
     }
-    private static float GetSpawnWeight(ItemSize size, float t, bool isSpikeLevel)
-    {
-        // On Spike levels, we flood the screen with small/medium items to create a mess
-        float spikeBonus = isSpikeLevel ? 2.0f : 1.0f;
 
-        switch (size)
-        {
-            case ItemSize.Large: return 3.0f; // Baseline clutter
-            case ItemSize.Medium: return 2.0f + (t * 4.0f * spikeBonus);
-            case ItemSize.Small: return 0.5f + (t * 8.0f * spikeBonus); // Small items increase rapidly
-            default: return 1.0f;
-        }
-    }
-
-    private static float GetCollectableWeight(ItemSize size, float t, bool isSpikeLevel)
-    {
-        // We want to force the user to find SMALL items as the level target
-        // because they are harder to see under the large items.
-        float weight = 1.0f;
-
-        switch (size)
-        {
-            case ItemSize.Large: weight = 1.0f; break;
-            case ItemSize.Medium: weight = 3.0f + (t * 2.0f); break;
-            case ItemSize.Small: weight = 5.0f + (t * 10.0f); break; // High priority for targets
-        }
-
-        // If it's a spike level, aggressively target the smallest items
-        if (isSpikeLevel && size == ItemSize.Small) weight *= 3.0f;
-
-        return weight;
-    }
     private static void HandlePowerupRewards(int lv, LevelData data)
     {
-        if (lv == 1) data.Rewards.Add(new RewardData { RewardType = RewardType.Undo, Amount = 5 });
+        if (lv == 1) data.Rewards.Add(new RewardData { RewardType = RewardType.Undo, Amount = 6 });
         else if (lv == 2) data.Rewards.Add(new RewardData { RewardType = RewardType.Hint, Amount = 3 });
-        else if (lv == 3) data.Rewards.Add(new RewardData { RewardType = RewardType.Shake, Amount = 2 });
-        else if (lv == 4) data.Rewards.Add(new RewardData { RewardType = RewardType.Magnet, Amount = 2 });
+        else if (lv == 3) data.Rewards.Add(new RewardData { RewardType = RewardType.Shake, Amount = 3 });
+        else if (lv == 4) data.Rewards.Add(new RewardData { RewardType = RewardType.Magnet, Amount = 3 });
         else if (lv % 5 == 0)
         {
             RewardType randomType = (RewardType)UnityEngine.Random.Range(2, 6);
             int amount = 1;
             switch (randomType)
             {
-                case RewardType.Undo: amount = UnityEngine.Random.Range(1, 6); break;
-                case RewardType.Hint: amount = UnityEngine.Random.Range(1, 4); break;
-                case RewardType.Shake: amount = UnityEngine.Random.Range(1, 3); break;
-                case RewardType.Magnet: amount = 1; break;
+                case RewardType.Undo: amount = UnityEngine.Random.Range(1, 4); break;
+                case RewardType.Hint: amount = UnityEngine.Random.Range(1, 3); break;
+                default: amount = 1; break;
             }
             data.Rewards.Add(new RewardData { RewardType = randomType, Amount = amount });
+        }
+    }
+
+    private static float GetSpawnWeight(ItemSize size, float t, float scalar)
+    {
+        // Adjusts weights based on 0-10 scalar. 
+        // Higher scalar = Lower weight for Large, Higher weight for Small.
+        float sMod = scalar / 5.0f;
+
+        switch (size)
+        {
+            case ItemSize.Large: return Mathf.Lerp(6.0f, 2.5f / sMod, t);
+            case ItemSize.Medium: return 3.0f + (t * 2.0f);
+            case ItemSize.Small: return 1.0f + (t * 5.0f * sMod);
+            default: return 1.0f;
+        }
+    }
+
+    private static float GetCollectableWeight(ItemSize size, float t, float scalar)
+    {
+        float sMod = scalar / 5.0f;
+
+        switch (size)
+        {
+            case ItemSize.Large: return 0.5f / sMod;
+            case ItemSize.Medium: return 3.0f;
+            case ItemSize.Small: return 4.0f + (t * 4.0f * sMod);
+            default: return 1.0f;
         }
     }
 }

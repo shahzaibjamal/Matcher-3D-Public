@@ -88,3 +88,9 @@ MonoBehaviour:
   - Name: snap
     Clip: {fileID: 8300000, guid: 28bab7a051989c34ba0e49dab03761d0, type: 3}
     Volume: 1
+  - Name: coin_collect
+    Clip: {fileID: 8300000, guid: fe560b6d3a6201f408e8683e44ff7b9d, type: 3}
+    Volume: 1
+  - Name: gold_appear
+    Clip: {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
+    Volume: 1

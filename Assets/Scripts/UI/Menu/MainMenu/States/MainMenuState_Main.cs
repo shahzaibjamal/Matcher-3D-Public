@@ -306,7 +306,7 @@ public class MainMenuBaseState_Main : MainMenuBaseState
     }
     private void OnDebugButtonClicked()
     {
-        // MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug);
-        ShowLevel(UnityEngine.Random.Range(1, 100), null);
+        MenuManager.Instance.OpenMenu<DebugMenuView, DebugMenuController, DebugMenuData>(Menus.Type.Debug);
+        // ShowLevel(UnityEngine.Random.Range(1, 100), null);
     }
 }
