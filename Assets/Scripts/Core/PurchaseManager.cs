@@ -90,6 +90,7 @@ public class PurchaseManager : MonoBehaviour
             if (save.Inventory.TryUpdateGoldAmount(-(int)currentState.DisplayCost))
             {
                 FulfillRewards(currentState.ProcessedRewards);
+                AnalyticsManager.Instance.LogResourceEvent(GameAnalyticsSDK.GAResourceFlowType.Sink, currentState.CurrencyType.ToString(), currentState.DisplayCost, currentState.Category.ToString(), currentState.ItemID);
                 onComplete?.Invoke(true);
             }
             else
@@ -118,6 +119,7 @@ public class PurchaseManager : MonoBehaviour
                 {
                     // The only place USD rewards are granted
                     FulfillRewards(currentState.ProcessedRewards);
+                    AnalyticsManager.Instance.LogResourceEvent(GameAnalyticsSDK.GAResourceFlowType.Source, currentState.CurrencyType.ToString(), currentState.DisplayCost, currentState.Category.ToString(), currentState.ItemID);
                     onComplete?.Invoke(true);
                 }
                 else

@@ -11,7 +11,7 @@ public class LevelPipelineEditor : Editor
 {
     // --- TWEAKABLE SETTINGS ---
     private const int MinItems = 12;
-    private const int MaxItems = 48; // Updated to your preferred cap
+    private const int MaxItems = 90; // Updated to your preferred cap
     private const int MinVariety = 2;
     private const int MaxVariety = 10;
     private const int MaxLevels = 35;

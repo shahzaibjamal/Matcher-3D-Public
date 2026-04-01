@@ -4,6 +4,7 @@ using TMPro;
 using System;
 using System.Collections.Generic;
 using TS.LocalizationSystem;
+using Unity.VisualScripting;
 
 public class DailyRewardView : MonoBehaviour
 {
@@ -48,6 +49,9 @@ public class DailyRewardView : MonoBehaviour
             Sprite icon = iconMapper.GetIcon(reward.RewardType);
 
             rv.Initialize(icon, reward.Amount);
+            var layoutElement = rv.AddComponent<LayoutElement>();
+            layoutElement.preferredWidth = 192;
+            layoutElement.minWidth = 142;
             _spawnedRewards.Add(rv);
         }
 

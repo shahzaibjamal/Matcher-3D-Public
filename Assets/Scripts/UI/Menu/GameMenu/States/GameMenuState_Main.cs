@@ -19,6 +19,9 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     public override void Enter()
     {
         base.Enter();
+        var levelData = LevelManager.Instance.GetLevelByID(Data.levelId);
+        AnalyticsManager.Instance.LogLevelStart(levelData.Number);
+
         View.PauseButton.onClick.AddListener(OnPauseButtonClicked);
         GameEvents.OnMatchStartedEvent += HandleMatchStarted;
         GameEvents.OnShowMatchResultEvent += HandleMatchResult;

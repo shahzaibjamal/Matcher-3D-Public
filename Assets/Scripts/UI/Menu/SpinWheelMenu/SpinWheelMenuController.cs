@@ -36,14 +36,17 @@ public class SpinWheelMenuController : MenuController<SpinWheelMenuView, SpinWhe
     {
         // show ad and then turn the wheel
         AdManager.Instance.ShowRewarded(OnRewardAdComplete, OnRewardAdFailed);
+        AnalyticsManager.Instance.LogAdEvent(GameAnalyticsSDK.GAAdAction.Clicked, GameAnalyticsSDK.GAAdType.RewardedVideo, "Admobs", "DailySpinner");
     }
     private void OnRewardAdComplete()
     {
         View.SpinButton.interactable = false;
         View.SpinWheelController.TurnWheel();
+        AnalyticsManager.Instance.LogAdEvent(GameAnalyticsSDK.GAAdAction.RewardReceived, GameAnalyticsSDK.GAAdType.RewardedVideo, "Admobs", "DailySpinner");
     }
     private void OnRewardAdFailed()
     {
+        AnalyticsManager.Instance.LogAdEvent(GameAnalyticsSDK.GAAdAction.FailedShow, GameAnalyticsSDK.GAAdType.RewardedVideo, "Admobs", "DailySpinner");
         MenuManager.Instance.OpenMenu<GenericPopupMenuView, GenericPopupMenuController, GenericPopupMenuData>(Menus.Type.GenericPopup, new GenericPopupMenuData
         (
             LocalizationKeys.no,

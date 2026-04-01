@@ -4,6 +4,7 @@
   <Project Path="Unity.PlasticSCM.Editor.csproj" />
   <Project Path="Unity.Services.Core.Internal.csproj" />
   <Project Path="Unity.ScriptableBuildPipeline.Editor.csproj" />
+  <Project Path="GameAnalyticsSDK.csproj" />
   <Project Path="Unity.Mathematics.csproj" />
   <Project Path="Unity.Timeline.Editor.csproj" />
   <Project Path="Unity.Collections.csproj" />
@@ -71,6 +72,7 @@
   <Project Path="Google.Play.Review.csproj" />
   <Project Path="Unity.VSCode.Editor.csproj" />
   <Project Path="Unity.Services.Core.Threading.csproj" />
+  <Project Path="GameAnalyticsSDK.Editor.csproj" />
   <Project Path="CFXRRuntime.csproj" />
   <Project Path="Unity.Notifications.Tests.csproj" />
   <Project Path="Unity.Settings.Editor.csproj" />

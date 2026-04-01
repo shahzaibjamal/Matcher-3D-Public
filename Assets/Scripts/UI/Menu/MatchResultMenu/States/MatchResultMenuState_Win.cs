@@ -16,6 +16,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     {
         base.Enter();
 
+        AnalyticsManager.Instance.LogLevelComplete(Data.LevelData.Number, Data.Score);
         View.GoldMulitplierButton.gameObject.SetActive(Data.LevelData.Number > DataManager.Instance.Metadata.Settings.RewardAdLevel);
         View.Result.text = LocaleManager.Localize(LocalizationKeys.result_win);
         View.Status.gameObject.SetActive(false);
@@ -180,6 +181,7 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     public override void OnGoldMultiplierButtonClicked()
     {
         base.OnGoldMultiplierButtonClicked();
+        AnalyticsManager.Instance.LogAdEvent(GameAnalyticsSDK.GAAdAction.Clicked, GameAnalyticsSDK.GAAdType.RewardedVideo, "Admobs", "GoldMultiplier");
         AdManager.Instance.ShowRewarded(OnRewardAdComplete, OnRewardAdFailed);
     }
 

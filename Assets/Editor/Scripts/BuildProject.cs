@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Build;
-
+using GameAnalyticsSDK.Setup; // Required to access the settings object
 public class BuildProject : EditorWindow
 {
     private static string ProjectRoot => Path.Combine(Application.dataPath, "..");
@@ -31,7 +31,11 @@ public class BuildProject : EditorWindow
         PlayerSettings.bundleVersion = settings["Version"];
         PlayerSettings.Android.bundleVersionCode = int.Parse(settings["BundleVersionCode"]);
 
-        // --- 2. Keystore Configuration ---
+
+        Settings sett = Resources.Load<Settings>("GameAnalytics/Settings");
+        sett.Build.Add(PlayerSettings.bundleVersion);
+        // Loop through all platforms (Android, iOS, etc.) defined in your GA settings
+
         string keystoreName = settings["KeystorePath"];
         string absoluteKeystorePath = Path.Combine(ProjectRoot, keystoreName);
 
