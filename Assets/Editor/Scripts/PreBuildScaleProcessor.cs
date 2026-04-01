@@ -46,6 +46,9 @@ public class PreBuildScaleProcessor
             string prefabAddress = item.PrefabName;
             if (string.IsNullOrEmpty(prefabAddress)) continue;
 
+            if (item.Size == ItemSize.Small)
+                continue;
+
             // Find the Addressable entry that matches the PrefabName
             var entry = entries.FirstOrDefault(e => e.address == prefabAddress);
             if (entry == null)
