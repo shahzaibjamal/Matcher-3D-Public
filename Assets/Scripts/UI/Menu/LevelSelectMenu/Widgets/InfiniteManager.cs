@@ -37,7 +37,8 @@ public class InfiniteMapManager : MonoBehaviour
 
         await Task.Yield();
         Canvas.ForceUpdateCanvases();
-
+        _scrollRect.onValueChanged.RemoveAllListeners();
+        _scrollRect.onValueChanged.AddListener(OnScroll);
         // 7. Finalize
         _scrollRect.enabled = true;
         _isInitialized = true;
@@ -130,6 +131,16 @@ public class InfiniteMapManager : MonoBehaviour
         int startIndex = Mathf.RoundToInt(chunk.RectTransform.anchoredPosition.y / _chunkHeight) * _nodesPerMap;
         var data = LevelManager.Instance.GetLevelBatch(startIndex, _nodesPerMap);
 
+        int chunkMapIndex = Mathf.RoundToInt(chunk.RectTransform.anchoredPosition.y / _chunkHeight);
+        int playerLevel = DataManager.Instance.GetLevelByID(GameManager.Instance.SaveData.CurrentLevelID).Number;
+        int currentPlayerMapIndex = (playerLevel - 1) / _nodesPerMap;
+        // Is this the chunk the player is currently playing in?
+        bool isCurrentPlayerChunk = (chunkMapIndex == currentPlayerMapIndex);
+
+        // Is this the 'Preview' chunk above the player?
+        bool isLockedPreviewChunk = (chunkMapIndex == currentPlayerMapIndex + 1);
+
+
         if (data != null && data.Count > 0)
         {
             chunk.gameObject.SetActive(true);
@@ -139,6 +150,7 @@ public class InfiniteMapManager : MonoBehaviour
             int playerStars = GameManager.Instance.SaveData.Inventory.Stars;
             bool isThemeLocked = playerStars < theme.StarRequirement;
             chunk.ShowLockedOverlay(isThemeLocked, isThemeLocked ? $"x{theme.StarRequirement}" : "");
+            chunk.SetCloudTopState(isCurrentPlayerChunk);
         }
         else
         {

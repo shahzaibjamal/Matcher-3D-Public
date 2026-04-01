@@ -118,6 +118,7 @@ public class SoundController : MonoBehaviour
 
     public AudioSource PlaySoundEffect(string name, bool loop = false, float volume = -1f)
     {
+        Debug.LogError("Name - " + name);
         if (!_isSfxEnabled) return null;
 
         SoundEffect soundEffect = GetSoundByName(name);

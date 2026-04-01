@@ -67,7 +67,7 @@ public class PurchaseManager : MonoBehaviour
             }
             else
             {
-                state.DisplayCost = (int)data.Cost;
+                state.DisplayCost = data.Cost;
             }
 
             state.ProcessedRewards.Add(newReward);

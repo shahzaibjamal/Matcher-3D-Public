@@ -19,7 +19,7 @@ public class GameMenuBaseState_Main : GameMenuBaseState
     public override void Enter()
     {
         base.Enter();
-        var levelData = LevelManager.Instance.GetLevelByID(Data.levelId);
+        var levelData = LevelManager.Instance.GetLevelByID(GameManager.Instance.SaveData.CurrentLevelID);
         AnalyticsManager.Instance.LogLevelStart(levelData.Number);
 
         View.PauseButton.onClick.AddListener(OnPauseButtonClicked);

@@ -53,11 +53,12 @@ public class MatchResultMenuBaseState_Win : MatchResultMenuBaseState
     protected override void OnMenuOpenAnimationComplete()
     {
         base.OnMenuOpenAnimationComplete();
-        int score = Data.MatchRate > 0.9f ? 3 : Data.MatchRate > 0.7f ? 2 : 1;
+        int score = 3; //Data.MatchRate > 0.9f ? 3 : Data.MatchRate > 0.7f ? 2 : 1;
         Data.Score = score;
         SoundController.Instance.PlaySoundEffect("level_complete");
         GameManager.Instance.Vibrate(Haptics.HapticTypes.Success);
         AnimateAllStars(score);
+        GameManager.Instance.SaveData.Inventory.Stars += score;
     }
 
     private void AnimateAllStars(int score)

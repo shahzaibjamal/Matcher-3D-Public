@@ -50,8 +50,6 @@ public class DailyRewardView : MonoBehaviour
 
             rv.Initialize(icon, reward.Amount);
             var layoutElement = rv.AddComponent<LayoutElement>();
-            layoutElement.preferredWidth = 192;
-            layoutElement.minWidth = 142;
             _spawnedRewards.Add(rv);
         }
 

@@ -67,7 +67,6 @@ public class ClickableItem : MonoBehaviour, IClickable
     {
         transform.DOKill();
         OnItemClicked = null;
-        // AssetLoader.Instance.ReleaseInstance(_shadow);
         ShadowManager.Instance.UnregisterShadow(transform);
     }
 

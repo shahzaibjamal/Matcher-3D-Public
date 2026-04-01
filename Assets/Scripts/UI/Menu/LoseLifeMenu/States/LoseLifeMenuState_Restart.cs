@@ -36,12 +36,6 @@ public class LoseLifeMenuBaseState_Restart : LoseLifeMenuBaseState
             GameEvents.OnGameQuitEvent?.Invoke();
             GameEvents.OnLevelRestartEvent?.Invoke();
             MenuManager.Instance.OpenMenu<GameMenuView, GameMenuController, GameMenuData>(Menus.Type.Game);
-            // MenuManager.Instance.OpenMenu<LoadingMenuView, LoadingMenuController, LoadingMenuData>(Menus.Type.Loading, new LoadingMenuData
-            // {
-            //     OnLoadingComplete = () =>
-            //     {
-            //     }
-            // });
         });
     }
 }

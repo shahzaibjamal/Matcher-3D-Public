@@ -14,7 +14,7 @@ public class LevelPipelineEditor : Editor
     private const int MaxItems = 90; // Updated to your preferred cap
     private const int MinVariety = 2;
     private const int MaxVariety = 10;
-    private const int MaxLevels = 35;
+    private const int MaxLevels = 85;
     private const int DifficultyPivot = 15;
     private const int MaxCollectibles = 7;
 

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public partial class Spawner : MonoBehaviour
@@ -62,7 +61,7 @@ public partial class Spawner : MonoBehaviour
 
     private void OnDisable()
     {
-        GameEvents.OnItemAddedToSlotEvent += HandleInternalItemClicked;
+        GameEvents.OnItemAddedToSlotEvent -= HandleInternalItemClicked;
         GameEvents.OnUndoPowerupEvent -= HandleUndoPowerUp;
         GameEvents.OnShakePowerupEvent -= ShakeArea;
         GameEvents.OnHintPowerupEvent -= HandleHintPowerUp;

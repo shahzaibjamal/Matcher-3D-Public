@@ -71,12 +71,6 @@ public class MapChunk : MonoBehaviour
             _currentBaseKey = bgName;
             LoadBackgrounds(bgName);
         }
-
-        if (ColorUtility.TryParseHtmlString(themeColor, out Color fogColor))
-        {
-            _topFog.color = fogColor;
-            _bottomFog.color = fogColor;
-        }
     }
 
     private void LoadBackgrounds(string bgName)
@@ -104,6 +98,11 @@ public class MapChunk : MonoBehaviour
     {
         _lockOverlay.SetActive(show);
         _starRequirementText.text = text;
+    }
+
+    public void SetCloudTopState(bool show)
+    {
+        _topFog.gameObject.SetActive(show);
     }
 
     private void OnDestroy()
