@@ -1171,7 +1171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000091552734
+      value: 0.000049591064
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1608,7 +1608,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
+  m_fontSize: 33.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1997,8 +1997,8 @@ MonoBehaviour:
   typewriter: {fileID: 1180775069}
   tooltipContainer: {fileID: 1180775066}
   tooltipText: {fileID: 867075492}
-  tooltipOffset: {x: 0, y: 353.6}
-  screenPadding: 350.1
+  tooltipOffset: {x: 0, y: 713.8}
+  screenPadding: 418
   popDuration: 0.5
   pointerHand: {fileID: 1482744681}
   handOffset: {x: 0, y: 196.7}

@@ -30,32 +30,33 @@ public class ReviewService : MonoBehaviour
         if (_isRequesting) return false;
 
         var save = GameManager.Instance.SaveData;
+        var settings = DataManager.Instance.Metadata.Settings;
 
-        // 1. Check if the user already gave a review (Permanent Block)
         if (save.IsAppReviewed) return false;
 
-        // 2. Level Gate: Player must reach a minimum progress level
+        // 1. Get current progress
         int currentLevel = LevelManager.Instance.GetCurrentProgressLevel().Number;
-        if (currentLevel <= save.AppReviewReminderLevel) return false;
 
-        // 3. Hybrid Time Gate: 
-        // If it's the very first time (Day 1), we skip the date check.
-        // If they've seen it before, we enforce a 7-day cooldown.
+        // 2. The Global vs. Local Gate
+        // This ensures we never ask before the 'ReviewLevel' metadata floor,
+        // but also respects the 'ReminderLevel' (which increases every time they say "Later").
+        int effectiveGate = Mathf.Max(settings.ReviewLevel, save.AppReviewReminderLevel);
+
+        if (currentLevel < effectiveGate) return false;
+
+        // 3. The 7-Day Cooldown (Hard-coded safety)
         if (!string.IsNullOrEmpty(save.LastReviewRequestDate))
         {
-            DateTime lastAsked = DateTime.Parse(save.LastReviewRequestDate);
-            if ((DateTime.Now - lastAsked).TotalDays < 7)
+            if (DateTime.TryParse(save.LastReviewRequestDate, out DateTime lastAsked))
             {
-                return false;
+                if ((DateTime.UtcNow - lastAsked).TotalDays < 7) return false;
             }
         }
 
         return true;
-    }
-
-    /// <summary>
-    /// Triggers the Google Play Review flow. Call this when the user clicks 'Yes'.
-    /// </summary>
+    }    /// <summary>
+         /// Triggers the Google Play Review flow. Call this when the user clicks 'Yes'.
+         /// </summary>
     public void LaunchReviewFlow(Action onComplete = null)
     {
         StartCoroutine(ReviewRoutine(onComplete));
@@ -111,7 +112,7 @@ public class ReviewService : MonoBehaviour
         int interval = DataManager.Instance.Metadata.Settings.ReviewReminderLevelsInterval;
 
         save.AppReviewReminderLevel = currentLevel + interval;
-        save.LastReviewRequestDate = DateTime.Now.ToString();
+        save.LastReviewRequestDate = DateTime.UtcNow.ToString();
         GameManager.Instance.SaveGame();
     }
 
