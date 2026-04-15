@@ -61,11 +61,4 @@ To ensure a highly polished release, the game includes powerful developer tools:
 * **Strategic Ads:** Banner ads at specific menus, Interstitial ads between levels, and highly desirable Rewarded Video integrations (e.g., clearing the slot tray to prevent a game over).
 
 ---
-## 🚀 Getting Started
-
-To run this project locally:
-
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/shahzaibjamal/Matcher.git](https://github.com/shahzaibjamal/Matcher.git)
 
