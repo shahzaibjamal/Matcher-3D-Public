@@ -1,6 +1,9 @@
 # Matcher 3D
 
-<img src="https://github.com/user-attachments/assets/16521583-463c-4549-a2a7-b2aff1168a76" width="250" />  <img src="https://github.com/user-attachments/assets/61077353-74ff-4565-b01a-7b735e98dc27" width="250" />  <img src="https://github.com/user-attachments/assets/25350b65-0df7-4391-91d9-58b7f338e962" width="250" /> 
+<img width="250" alt="Screenshot_Matcher_2" src="https://github.com/user-attachments/assets/9c21c138-d571-47e7-ab41-b805e1581ec9" />
+<img width="250" alt="Screenshot_Matcher_1" src="https://github.com/user-attachments/assets/1185facc-47d3-4d3f-9a55-911a2b231ab5" />
+<img width="250" alt="Screenshot_Matcher_3" src="https://github.com/user-attachments/assets/72c4f51a-dfb3-4e62-923c-5267e9f6006f" />
+https://github.com/user-attachments/assets/966887b2-6190-4ff6-b304-0d0718944fdb
 
 📝 Portfolio Note: This public repository contains the core gameplay systems, scripts, and architecture for Matcher 3D. Art assets, levels, and proprietary plugins have been omitted to comply with Unity Asset Store licensing. The code demonstrates the highly modular systems and Google Sheets metadata pipeline used in the game.
 
@@ -63,9 +66,4 @@ To run this project locally:
 1. Clone the repository:
    ```bash
    git clone [https://github.com/shahzaibjamal/Matcher.git](https://github.com/shahzaibjamal/Matcher.git)
-
-
-https://github.com/user-attachments/assets/51d22067-d8ef-4918-ae5a-3a5593c662b0
-
-
 
